@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>c2b46aa1-667c-401a-b21c-8cb991990e1e</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Celestia">
+      <UniqueIdentifier>{363e8197-8db4-4b24-914b-1f2c5f40d9fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celcompat">
+      <UniqueIdentifier>{d63ed3ab-8848-4524-8197-4640f69b64db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celutil">
+      <UniqueIdentifier>{2ac4e072-2a77-4f3f-800b-bac511aa7847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celephem">
+      <UniqueIdentifier>{a1b235e4-69ca-4080-8b74-7eb6acad90db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celengine">
+      <UniqueIdentifier>{7086804c-4996-40e3-a89f-ef300f553b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celttf">
+      <UniqueIdentifier>{36401055-4cd7-456b-aa85-8a2643a0b70e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celscript">
+      <UniqueIdentifier>{18279cb9-e3b6-4fae-b0e5-6705c6b40bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\cel3ds">
+      <UniqueIdentifier>{74025a7c-041a-401b-8b6e-9b8f0aeab0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celmath">
+      <UniqueIdentifier>{7c1bbf0e-5750-4c4a-abf7-e0770e23b743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celmodel">
+      <UniqueIdentifier>{8be7beef-399f-48ff-b877-aeb22ccaf84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celestia">
+      <UniqueIdentifier>{d67144fa-54e8-49e8-9583-66e363a6c235}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="CelestiaAppCore.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
+      <Filter>Celestia\celcompat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celcompat\fs.cpp">
+      <Filter>Celestia\celcompat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\debug.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\memorypool.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\timer.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\utf8.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\util.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\winutil.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\cel3ds\3dsmodel.cpp">
+      <Filter>Celestia\cel3ds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp">
+      <Filter>Celestia\cel3ds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmodel\material.cpp">
+      <Filter>Celestia\celmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp">
+      <Filter>Celestia\celmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp">
+      <Filter>Celestia\celmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp">
+      <Filter>Celestia\celmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp">
+      <Filter>Celestia\celmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmath\perlin.cpp">
+      <Filter>Celestia\celmath</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="CelestiaAppCore.h" />
+    <ClInclude Include="..\..\Celestia\src\celcompat\cc.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\fs.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\string_view.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\sv.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\align.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\array_view.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\bigfix.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\bytes.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\color.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\debug.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\filetype.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\formatnum.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\fsutils.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\gettext.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\memorypool.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\stringutils.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\strnatcmp.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\tee.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\timer.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\utf8.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\util.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\watcher.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\winutil.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\cel3ds\3dschunk.h">
+      <Filter>Celestia\cel3ds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\cel3ds\3dsmodel.h">
+      <Filter>Celestia\cel3ds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\cel3ds\3dsread.h">
+      <Filter>Celestia\cel3ds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmodel\material.h">
+      <Filter>Celestia\celmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmodel\mesh.h">
+      <Filter>Celestia\celmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmodel\model.h">
+      <Filter>Celestia\celmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmodel\modelfile.h">
+      <Filter>Celestia\celmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\aabox.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\capsule.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\distance.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\ellipsoid.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\frustum.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\geomutil.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\intersect.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\mathlib.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\perlin.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\plane.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\quaternion.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\ray.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\solve.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\sphere.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\vecmath.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
