@@ -38,6 +38,15 @@
     <Filter Include="Celestia\celestia">
       <UniqueIdentifier>{d67144fa-54e8-49e8-9583-66e363a6c235}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Celestia\celscript\common">
+      <UniqueIdentifier>{e988cfb6-dffb-4fd5-93d5-1fbb7db4796f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celscript\legacy">
+      <UniqueIdentifier>{a95c6750-9d55-4391-be36-734a481fcbe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Celestia\celscript\lua">
+      <UniqueIdentifier>{d60a15a7-d2d7-4998-925d-4c1ce41e18c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -110,6 +119,372 @@
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celmath\perlin.cpp">
       <Filter>Celestia\celmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\customorbit.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\customrotation.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\jpleph.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\nutation.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\orbit.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\precession.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\rotation.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\samporbit.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\samporient.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptobject.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptorbit.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptrotation.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dds_decompress.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\asterismrenderer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\astroobj.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\body.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\boundariesrenderer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\catalogxref.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\category.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\console.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dds.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dispmap.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dsorenderer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\frame.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\framebuffer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\frametree.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\galaxy.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\globular.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\image.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\location.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\marker.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\meshmanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\modelgeometry.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\multitexture.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\name.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\nebula.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\observer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\opencluster.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\overlay.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\parser.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\pointstarrenderer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\render.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\renderglsl.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\rotationmanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\selection.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\shadermanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\simulation.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\skygrid.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\solarsys.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\spheremesh.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\star.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\starbrowser.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\starcolors.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\stardb.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\starname.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\staroctree.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\stellarclass.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\texmanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\tokenizer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\univcoord.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\value.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\vertexobject.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\virtualtex.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\visibleregion.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp">
+      <Filter>Celestia\celttf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp">
+      <Filter>Celestia\celscript\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\common\scriptmaps.cpp">
+      <Filter>Celestia\celscript\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\cmdparser.cpp">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\command.cpp">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\execution.cpp">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\legacyscript.cpp">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_category.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_celestia.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_frame.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_misc.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_object.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_observer.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_phase.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_position.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_rotation.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_vector.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\celestiacore.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\celestiastate.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\configfile.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\destination.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\eclipsefinder.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\imagecapture.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\url.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\view.cpp">
+      <Filter>Celestia\celestia</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +640,423 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\vecmath.h">
       <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\customorbit.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\customrotation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\jpleph.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\nutation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\orbit.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\precession.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\rotation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\samporbit.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\samporient.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptobject.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptorbit.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptrotation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\vsop87.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\xyzvbinary.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\asterism.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\asterismrenderer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\astro.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\atmosphere.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\axisarrow.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\body.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\boundaries.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\boundariesrenderer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\catalogxref.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\category.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\console.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\constellation.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dds_decompress.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dispmap.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dsorenderer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\frame.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\framebuffer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\frametree.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\galaxy.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\geometry.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\globular.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\glshader.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\hash.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\image.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\location.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\marker.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\meshmanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\modelgeometry.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\multitexture.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\name.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\nebula.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\objectrenderer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\observer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\octree.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\opencluster.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\orbitsampler.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\overlay.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\parser.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\pointstarrenderer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\rectangle.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\referencemark.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\rendcontext.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\render.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\renderglsl.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\renderinfo.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\renderlistentry.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\rotationmanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\selection.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\shadermanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\shadowmap.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\shared.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\simulation.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\skygrid.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\solarsys.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\spheremesh.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\star.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\starbrowser.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\starcolors.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\stardb.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\starname.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\staroctree.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\stellarclass.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\surface.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\texmanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\texture.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\timeline.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\tokenizer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\universe.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\value.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\vertexbuf.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\vertexobject.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h">
+      <Filter>Celestia\celttf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\common\script.h">
+      <Filter>Celestia\celscript\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\common\scriptmaps.h">
+      <Filter>Celestia\celscript\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\cmdparser.h">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\command.h">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\execenv.h">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\execution.h">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\legacyscript.h">
+      <Filter>Celestia\celscript\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_category.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_celestia.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_frame.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_internal.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_misc.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_object.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_observer.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_phase.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_position.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_rotation.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_vector.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\celestiacore.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\celestiastate.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\configfile.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\destination.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\eclipsefinder.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\favorites.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\helper.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\imagecapture.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\url.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\view.h">
+      <Filter>Celestia\celestia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

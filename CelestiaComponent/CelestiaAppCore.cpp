@@ -4,6 +4,6 @@
 using namespace CelestiaComponent;
 using namespace Platform;
 
-Class1::Class1()
+CelestiaAppCore::CelestiaAppCore() : core(new CelestiaCore)
 {
 }

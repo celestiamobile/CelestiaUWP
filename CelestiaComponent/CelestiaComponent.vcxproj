@@ -150,13 +150,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -278,6 +279,124 @@
     <ClInclude Include="..\..\Celestia\src\celcompat\fs.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\string_view.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\sv.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\asterism.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\asterismrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\astro.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\atmosphere.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\axisarrow.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\body.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\boundaries.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\boundariesrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\catalogxref.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\category.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\console.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dds_decompress.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dispmap.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsorenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\frame.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\framebuffer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\frametree.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\galaxy.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\geometry.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\globular.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\glshader.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\hash.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\image.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\location.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\marker.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\meshmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\modelgeometry.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\multitexture.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\name.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\nebula.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\objectrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\observer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\octree.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\opencluster.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\orbitsampler.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\overlay.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\parser.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\pointstarrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\rectangle.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\referencemark.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\rendcontext.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\render.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\renderglsl.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\renderinfo.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\renderlistentry.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\rotationmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\selection.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\shadermanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\shadowmap.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\shared.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\simulation.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\skygrid.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\solarsys.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\spheremesh.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\star.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\starbrowser.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\starcolors.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\stardb.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\starname.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\staroctree.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\stellarclass.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\surface.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\texmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\texture.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\timeline.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\tokenizer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\universe.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\value.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\vertexbuf.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\vertexobject.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\customorbit.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\customrotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\jpleph.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\nutation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\orbit.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\precession.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\rotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\samporbit.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\samporient.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptobject.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptorbit.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\scriptrotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\vsop87.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\xyzvbinary.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\celestiacore.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\celestiastate.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\configfile.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\destination.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\eclipsefinder.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\favorites.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\helper.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\imagecapture.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\url.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\view.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\aabox.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\capsule.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\distance.h" />
@@ -297,6 +416,27 @@
     <ClInclude Include="..\..\Celestia\src\celmodel\mesh.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\model.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\modelfile.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\common\script.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\common\scriptmaps.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\cmdparser.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\command.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\execenv.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\execution.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\legacy\legacyscript.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_category.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_celestia.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_frame.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_internal.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_misc.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_object.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_observer.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_phase.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_position.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_rotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_vector.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h" />
+    <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bigfix.h" />
@@ -328,12 +468,134 @@
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\fs.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\asterismrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\astroobj.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\boundariesrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\catalogxref.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\category.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\console.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dds.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dds_decompress.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dispmap.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsorenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\frame.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\framebuffer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\frametree.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\galaxy.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\globular.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\image.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\location.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\marker.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\meshmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\modelgeometry.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\multitexture.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\name.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\nebula.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\observer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\opencluster.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\overlay.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\parser.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\pointstarrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\render.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\renderglsl.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\rotationmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\selection.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\shadermanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\simulation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\skygrid.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\solarsys.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\spheremesh.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\star.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\starbrowser.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\starcolors.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\stardb.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\starname.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\staroctree.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\stellarclass.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\texmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\tokenizer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\univcoord.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\value.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\vertexobject.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\virtualtex.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\visibleregion.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\customorbit.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\customrotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\jpleph.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\nutation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\orbit.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\precession.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\rotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\samporbit.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\samporient.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptobject.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptorbit.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\scriptrotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\celestiacore.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\celestiastate.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\configfile.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\destination.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\eclipsefinder.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\imagecapture.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\url.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\view.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\perlin.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\material.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\common\scriptmaps.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\cmdparser.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\command.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\execution.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\legacy\legacyscript.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_category.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_celestia.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_frame.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_misc.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_object.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_observer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_phase.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_position.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_rotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_vector.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\debug.cpp" />
@@ -365,11 +627,15 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\fmt.7.0.1\build\fmt.targets" Condition="Exists('..\packages\fmt.7.0.1\build\fmt.targets')" />
+    <Import Project="..\packages\lua.5.4.2\build\native\Lua.targets" Condition="Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" />
+    <Import Project="..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets" Condition="Exists('..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\fmt.7.0.1\build\fmt.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\fmt.7.0.1\build\fmt.targets'))" />
+    <Error Condition="!Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.5.4.2\build\native\Lua.targets'))" />
+    <Error Condition="!Exists('..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets'))" />
   </Target>
 </Project>

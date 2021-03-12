@@ -1,10 +1,14 @@
 ﻿#pragma once
 
+#include <celestia/celestiacore.h>
+
 namespace CelestiaComponent
 {
-    public ref class Class1 sealed
+    public ref class CelestiaAppCore sealed
     {
     public:
-        Class1();
+        CelestiaAppCore();
+    private:
+        CelestiaCore* core;
     };
 }
