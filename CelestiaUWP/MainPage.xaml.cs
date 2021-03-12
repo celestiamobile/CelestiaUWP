@@ -28,6 +28,8 @@ namespace CelestiaUWP
         private object mRenderSurfaceCriticalSection = new object();
         private IAsyncAction mRenderLoopWorker;
 
+        private bool isCelestiaSetUp = false;
+
         public MainPage()
         {
             mOpenGLES = new OpenGLES();
@@ -117,6 +119,7 @@ namespace CelestiaUWP
 
         void StartRenderLoop()
         {
+            double scale = (double)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale / 100.0;
             // If the render loop is already running then do not start another thread.
             if (mRenderLoopWorker != null && mRenderLoopWorker.Status == Windows.Foundation.AsyncStatus.Started)
             {
@@ -132,22 +135,54 @@ namespace CelestiaUWP
                         mOpenGLES.MakeCurrent(mRenderSurface);
                         CelestiaAppCore.InitGL();
 
-                        string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
-                        Directory.SetCurrentDirectory(installedPath + "\\CelestiaResources");
-                        string[] extraPaths = { };
-                        bool success = mAppCore.StartSimulation("celestia.cfg",  extraPaths, delegate (string progress)
+                        if (!isCelestiaSetUp)
                         {
-                            Console.WriteLine(progress);
-                        });
+                            string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
+                            Directory.SetCurrentDirectory(installedPath + "\\CelestiaResources");
+                            string[] extraPaths = { };
+                            if (!mAppCore.StartSimulation("celestia.cfg", extraPaths, delegate (string progress)
+                            {
+                                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => 
+                                {
+                                    loadingTextBlock.Text = progress;
+                                });
+                            }))
+                            {
+                                return;
+                            }
+                            if (!mAppCore.StartRenderer())
+                                return;
 
+                            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                loadingTextBlock.Visibility = Visibility.Collapsed;
+                            });
+
+                            //mAppCore.SetDPI((int)(scale * 96.0));
+                            mAppCore.Start();
+
+                            isCelestiaSetUp = true;
+                        }
+
+                        int panelWidth = 0;
+                        int panelHeight = 0;
                         while (action.Status == Windows.Foundation.AsyncStatus.Started)
                         {
-                            int panelWidth = 0;
-                            int panelHeight = 0;
-                            mOpenGLES.GetSurfaceDimensions(mRenderSurface, ref panelWidth, ref panelHeight);
+                            int newWidth = 0;
+                            int newHeight = 0;
+                            mOpenGLES.GetSurfaceDimensions(mRenderSurface, ref newWidth, ref newHeight);
+                            if (newWidth != panelWidth || newHeight != panelHeight)
+                            {
+                                panelWidth = newWidth;
+                                panelHeight = newHeight;
+                                //panelWidth = (int)(newWidth * scale);
+                                //panelHeight = (int)(newHeight * scale);
+                                mAppCore.Resize(panelWidth, panelHeight);
+                            }
 
                             // Logic to update the scene could go here
-                            // TODO: Draw
+                            mAppCore.Tick();
+                            mAppCore.Draw();
 
                             // The call to eglSwapBuffers might not be successful (i.e. due to Device Lost)
                             // If the call fails, then we must reinitialize EGL and the GL resources.

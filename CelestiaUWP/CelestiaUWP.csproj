@@ -126,7 +126,6 @@
     <Compile Include="OpenGLES\EGL\EGL.cs" />
     <Compile Include="OpenGLES\EGL\EGLExtAngle.cs" />
     <Compile Include="OpenGLES\EGL\EGLTypes.cs" />
-    <Compile Include="OpenGLES\GLView.cs" />
     <Compile Include="OpenGLES\GL\GL.cs" />
     <Compile Include="OpenGLES\GL\GLDebug.cs" />
     <Compile Include="OpenGLES\GL\GLenums.cs" />

@@ -9,6 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <SwapChainPanel x:Name="swapChainPanel">
-        <TextBlock Text="OpenGL ES and XAML" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
+        <TextBlock x:Name="loadingTextBlock" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
     </SwapChainPanel>
 </Page>

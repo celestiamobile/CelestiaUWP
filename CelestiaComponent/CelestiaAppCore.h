@@ -13,6 +13,12 @@ namespace CelestiaComponent
         CelestiaAppCore();
 
         bool StartSimulation(String^ configFileName, const Platform::Array<String^>^ extraDirectories, CelestiaLoadCallback^ loadCallback);
+        bool StartRenderer();
+        void Tick();
+        void Draw();
+        void Resize(int width, int height);
+        void Start();
+        void SetDPI(int dpi);
 
         static void InitGL();
         static void SetLocaleDirectory(String^ localeDirectory);
