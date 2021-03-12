@@ -486,6 +486,7 @@
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
+    <ClCompile Include="CXStringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1058,6 +1059,7 @@
     <ClInclude Include="..\..\Celestia\src\celestia\view.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
+    <ClInclude Include="CXStringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
