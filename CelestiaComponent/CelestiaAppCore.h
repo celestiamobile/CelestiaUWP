@@ -1,29 +1,33 @@
 ﻿#pragma once
 
+#include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 
-using namespace Platform;
-
-namespace CelestiaComponent
+namespace winrt::CelestiaComponent::implementation
 {
-    public delegate void CelestiaLoadCallback(Platform::String^ arg);
-    public ref class CelestiaAppCore sealed
+    struct CelestiaAppCore : CelestiaAppCoreT<CelestiaAppCore>
     {
-    public:
         CelestiaAppCore();
 
-        bool StartSimulation(String^ configFileName, const Platform::Array<String^>^ extraDirectories, CelestiaLoadCallback^ loadCallback);
+        bool StartSimulation(hstring configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const &callback);
         bool StartRenderer();
         void Tick();
         void Draw();
-        void Resize(int width, int height);
+        void Resize(int32_t width, int32_t height);
         void Start();
-        void SetDPI(int dpi);
+        void SetDPI(int32_t dpi);
 
         static void InitGL();
-        static void SetLocaleDirectory(String^ localeDirectory);
+        static void SetLocaleDirectory(hstring localeDirectory);
 
     private:
         CelestiaCore* core;
+    };
+}
+
+namespace winrt::CelestiaComponent::factory_implementation
+{
+    struct CelestiaAppCore : CelestiaAppCoreT<CelestiaAppCore, implementation::CelestiaAppCore>
+    {
     };
 }

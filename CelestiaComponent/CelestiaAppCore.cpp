@@ -1,103 +1,102 @@
 ﻿#include "pch.h"
 #include "CelestiaAppCore.h"
+#if __has_include("CelestiaAppCore.g.cpp")
+#include "CelestiaAppCore.g.cpp"
+#endif
 
-#include <celengine/glsupport.h>
-#include <celutil/gettext.h>
-
-#include "CXStringUtils.h"
-
-using namespace CelestiaComponent;
-using namespace Platform;
 using namespace std;
 
-class AppCoreProgressWatcher : public ProgressNotifier
+namespace winrt::CelestiaComponent::implementation
 {
-public:
-	AppCoreProgressWatcher(CelestiaLoadCallback^ loadCallback) : ProgressNotifier(), loadCallback(loadCallback) {};
+    class AppCoreProgressWatcher : public ProgressNotifier
+    {
+    public:
+        AppCoreProgressWatcher(CelestiaComponent::CelestiaLoadCallback const& loadCallback) : ProgressNotifier(), loadCallback(loadCallback) {};
+        void update(const string& status)
+        {
+            loadCallback(to_hstring(status));
+        }
+    private:
+        CelestiaComponent::CelestiaLoadCallback loadCallback;
+    };
 
-	void update(const std::string& status)
-	{
-		loadCallback(Std_Str_To_Managed_Str(status));
-	}
-private:
-	CelestiaLoadCallback^ loadCallback;
-};
+    CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>()
+    {
+        core = new CelestiaCore;
+    }
 
-CelestiaAppCore::CelestiaAppCore() : core(new CelestiaCore)
-{
-}
+    bool CelestiaAppCore::StartSimulation(hstring configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
+    {
+        AppCoreProgressWatcher watcher(callback);
+        string config = to_string(configFileName);
+        vector<fs::path> extraPaths;
 
-void CelestiaAppCore::InitGL()
-{
-	celestia::gl::init();
-}
+        for (unsigned int i = 0; i < extraDirectories.size(); i++)
+        {
+            extraPaths.emplace_back(to_string(extraDirectories[i]));
+        }
+        return core->initSimulation(config, extraPaths, &watcher);
+    }
 
-bool CelestiaAppCore::StartSimulation(String^ configFileName, const Platform::Array<String^>^ extraDirectories, CelestiaLoadCallback^ loadCallback)
-{
-	AppCoreProgressWatcher watcher(loadCallback);
-	string config = Managed_Str_To_Std_Str(configFileName);
-	vector<fs::path> extraPaths;
+    bool CelestiaAppCore::StartRenderer()
+    {
+        bool success = core->initRenderer();
 
-	for (int i = 0; i < extraDirectories->Length; i++)
-	{
-		extraPaths.emplace_back(Managed_Str_To_Std_Str(extraDirectories->get(i)));
-	}
-	return core->initSimulation(config, extraPaths, &watcher);
-}
+        // start with default values
+        const int DEFAULT_ORBIT_MASK = Body::Planet | Body::Moon | Body::Stellar;
+        const int DEFAULT_LABEL_MODE = 2176;
+        const float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
+        const float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
+        const Renderer::StarStyle DEFAULT_STAR_STYLE = Renderer::FuzzyPointStars;
+        const ColorTableType DEFAULT_STARS_COLOR = ColorTable_Blackbody_D65;
+        const unsigned int DEFAULT_TEXTURE_RESOLUTION = medres;
 
-bool CelestiaAppCore::StartRenderer()
-{
-    bool success = core->initRenderer();
+        core->getRenderer()->setRenderFlags(Renderer::DefaultRenderFlags);
+        core->getRenderer()->setOrbitMask(DEFAULT_ORBIT_MASK);
+        core->getRenderer()->setLabelMode(DEFAULT_LABEL_MODE);
+        core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
+        core->getRenderer()->setStarStyle(DEFAULT_STAR_STYLE);
+        core->getRenderer()->setResolution(DEFAULT_TEXTURE_RESOLUTION);
+        core->getRenderer()->setStarColorTable(GetStarColorTable(DEFAULT_STARS_COLOR));
 
-    // start with default values
-    const int DEFAULT_ORBIT_MASK = Body::Planet | Body::Moon | Body::Stellar;
-    const int DEFAULT_LABEL_MODE = 2176;
-    const float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
-    const float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
-    const Renderer::StarStyle DEFAULT_STAR_STYLE = Renderer::FuzzyPointStars;
-    const ColorTableType DEFAULT_STARS_COLOR = ColorTable_Blackbody_D65;
-    const unsigned int DEFAULT_TEXTURE_RESOLUTION = medres;
+        core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
 
-    core->getRenderer()->setRenderFlags(Renderer::DefaultRenderFlags);
-    core->getRenderer()->setOrbitMask(DEFAULT_ORBIT_MASK);
-    core->getRenderer()->setLabelMode(DEFAULT_LABEL_MODE);
-    core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
-    core->getRenderer()->setStarStyle(DEFAULT_STAR_STYLE);
-    core->getRenderer()->setResolution(DEFAULT_TEXTURE_RESOLUTION);
-    core->getRenderer()->setStarColorTable(GetStarColorTable(DEFAULT_STARS_COLOR));
+        core->getRenderer()->setSolarSystemMaxDistance((core->getConfig()->SolarSystemMaxDistance));
 
-    core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
+        return success;
+    }
 
-    core->getRenderer()->setSolarSystemMaxDistance((core->getConfig()->SolarSystemMaxDistance));
+    void CelestiaAppCore::Tick()
+    {
+        core->tick();
+    }
 
-    return success;
-}
+    void CelestiaAppCore::Draw()
+    {
+        core->draw();
+    }
 
-void CelestiaAppCore::Tick()
-{
-    core->tick();
-}
+    void CelestiaAppCore::Resize(int32_t width, int32_t height)
+    {
+        core->resize(width, height);
+    }
 
-void CelestiaAppCore::Draw()
-{
-    core->draw();
-}
+    void CelestiaAppCore::Start()
+    {
+        core->start();
+    }
 
-void CelestiaAppCore::Resize(int width, int height)
-{
-    core->resize(width, height);
-}
+    void CelestiaAppCore::SetDPI(int32_t dpi)
+    {
+        core->setScreenDpi(dpi);
+    }
 
-void CelestiaAppCore::Start()
-{
-    core->start();
-}
+    void CelestiaAppCore::InitGL()
+    {
+        celestia::gl::init();
+    }
 
-void CelestiaAppCore::SetDPI(int dpi)
-{
-    core->setScreenDpi(dpi);
-}
-
-void CelestiaAppCore::SetLocaleDirectory(String^ localeDirectory)
-{
+    void CelestiaAppCore::SetLocaleDirectory(hstring localeDirectory)
+    {
+    }
 }

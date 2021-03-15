@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="CelestiaAppCore.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
@@ -486,11 +485,11 @@
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
-    <ClCompile Include="CXStringUtils.cpp" />
+    <ClCompile Include="CelestiaAppCore.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="CelestiaAppCore.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\cc.h">
       <Filter>Celestia\celcompat</Filter>
     </ClInclude>
@@ -1059,9 +1058,9 @@
     <ClInclude Include="..\..\Celestia\src\celestia\view.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
-    <ClInclude Include="CXStringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="CelestiaComponent.def" />
   </ItemGroup>
 </Project>

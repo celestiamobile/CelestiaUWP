@@ -1,0 +1,21 @@
+namespace CelestiaComponent
+{
+    delegate void CelestiaLoadCallback(String status);
+
+    [default_interface]
+    runtimeclass CelestiaAppCore
+    {
+        CelestiaAppCore();
+
+        Boolean StartSimulation(String configFileName, String[] extraDirectories, CelestiaLoadCallback callback);
+        Boolean StartRenderer();
+        void Tick();
+        void Draw();
+        void Resize(Int32 width, Int32 height);
+        void Start();
+        void SetDPI(Int32 dpi);
+
+        static void InitGL();
+        static void SetLocaleDirectory(String localeDirectory);
+    }
+}
