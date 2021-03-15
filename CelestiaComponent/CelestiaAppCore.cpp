@@ -91,6 +91,21 @@ namespace winrt::CelestiaComponent::implementation
         core->setScreenDpi(dpi);
     }
 
+    void CelestiaAppCore::MouseMove(float x, float y, int32_t button)
+    {
+        core->mouseMove(x, y, button);
+    }
+
+    void CelestiaAppCore::MouseButtonUp(float x, float y, int32_t button)
+    {
+        core->mouseButtonUp(x, y, button);
+    }
+
+    void CelestiaAppCore::MouseButtonDown(float x, float y, int32_t button)
+    {
+        core->mouseButtonDown(x, y, button);
+    }
+
     void CelestiaAppCore::InitGL()
     {
         celestia::gl::init();

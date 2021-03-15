@@ -14,6 +14,9 @@ namespace CelestiaComponent
         void Resize(Int32 width, Int32 height);
         void Start();
         void SetDPI(Int32 dpi);
+        void MouseMove(Single x, Single y, Int32 button);
+        void MouseButtonUp(Single x, Single y, Int32 button);
+        void MouseButtonDown(Single x, Single y, Int32 button);
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);
