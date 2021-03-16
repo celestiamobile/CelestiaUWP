@@ -31,6 +31,8 @@ namespace CelestiaUWP
         private Point? mLastLeftMousePosition = null;
         private Point? mLastRightMousePosition = null;
 
+        private GLView glView;
+
         public MainPage()
         {
             mAppCore = new CelestiaAppCore();
@@ -45,8 +47,8 @@ namespace CelestiaUWP
 
             grid.Children.Add(loadingText);
 
-            GLView view = new GLView();
-            view.Prepare += (sender) =>
+            glView = new GLView();
+            glView.Prepare += (sender) =>
             {
                 CelestiaAppCore.InitGL();
                 string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
@@ -68,21 +70,27 @@ namespace CelestiaUWP
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     loadingText.Visibility = Visibility.Collapsed;
+                    SetUpGLViewInteractions();
                 });
 
                 mAppCore.Start();
                 return true;
             };
-            view.Resize += (sender, width, height) =>
+            glView.Resize += (sender, width, height) =>
             {
                 mAppCore.Resize(width, height);
             };
-            view.Draw += (sender) =>
+            glView.Draw += (sender) =>
             {
                 mAppCore.Tick();
                 mAppCore.Draw();
             };
-            view.PointerPressed += (sender, args) =>
+            grid.Children.Add(glView);
+        }
+
+        void SetUpGLViewInteractions()
+        {
+            glView.PointerPressed += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -100,7 +108,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            view.PointerMoved += (sender, args) =>
+            glView.PointerMoved += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -129,7 +137,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            view.PointerReleased += (sender, args) =>
+            glView.PointerReleased += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -147,15 +155,6 @@ namespace CelestiaUWP
                     }
                 }
             };
-
-            grid.Children.Add(view);
-
-            MenuBar menuBar = new MenuBar();
-            menuBar.HorizontalAlignment = HorizontalAlignment.Left;
-            menuBar.VerticalAlignment = VerticalAlignment.Top;
-            menuBar.Foreground = new SolidColorBrush(Colors.White);
-            menuBar.Items.Add(new MenuBarItem { Title = "File" });
-            grid.Children.Add(menuBar);
         }
     }
 }

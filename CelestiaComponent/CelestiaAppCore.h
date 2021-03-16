@@ -9,7 +9,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaAppCore();
 
-        bool StartSimulation(hstring configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const &callback);
+        bool StartSimulation(hstring const& configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const &callback);
         bool StartRenderer();
         void Tick();
         void Draw();
@@ -21,7 +21,8 @@ namespace winrt::CelestiaComponent::implementation
         void MouseButtonDown(float x, float y, int32_t button);
 
         static void InitGL();
-        static void SetLocaleDirectory(hstring localeDirectory);
+        static void SetLocaleDirectory(hstring const& localeDirectory);
+        static hstring LocalizedString(hstring const& original);
 
     private:
         CelestiaCore* core;

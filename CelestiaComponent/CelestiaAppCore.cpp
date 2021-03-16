@@ -25,7 +25,7 @@ namespace winrt::CelestiaComponent::implementation
         core = new CelestiaCore;
     }
 
-    bool CelestiaAppCore::StartSimulation(hstring configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
+    bool CelestiaAppCore::StartSimulation(hstring const&configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
     {
         AppCoreProgressWatcher watcher(callback);
         string config = to_string(configFileName);
@@ -111,7 +111,12 @@ namespace winrt::CelestiaComponent::implementation
         celestia::gl::init();
     }
 
-    void CelestiaAppCore::SetLocaleDirectory(hstring localeDirectory)
+    void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory)
     {
+    }
+
+    hstring CelestiaAppCore::LocalizedString(hstring const& original)
+    {
+        return original;
     }
 }

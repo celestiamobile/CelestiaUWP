@@ -20,5 +20,6 @@ namespace CelestiaComponent
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);
+        static String LocalizedString(String original);
     }
 }
