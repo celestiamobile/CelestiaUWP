@@ -228,6 +228,14 @@ namespace GLUWP
         }
 
         [DllImport(libEGL)]
+        private static extern int eglGetError();
+
+        public static int GetError()
+        {
+            return eglGetError();
+        }
+
+        [DllImport(libEGL)]
         private static extern int eglMakeCurrent(IntPtr dpy, IntPtr draw, IntPtr read, IntPtr ctx);
 
         public static int MakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, EGLContext ctx)

@@ -39,7 +39,7 @@ namespace GLUWP
 
             int[] contextAttributes =
             {
-                EGL.CONTEXT_CLIENT_VERSION, 3,
+                EGL.CONTEXT_CLIENT_VERSION, 2,
                 EGL.NONE
             };
 
@@ -48,10 +48,6 @@ namespace GLUWP
                 // These are the default display attributes, used to request ANGLE's D3D11 renderer.
                 // eglInitialize will only succeed with these attributes if the hardware supports D3D11 Feature Level 10_0+.
                 EGL.PLATFORM_ANGLE_TYPE_ANGLE, EGL.PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
-
-                // EGL.ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER is an optimization that can have large performance benefits on mobile devices.
-                // Its syntax is subject to change, though. Please update your Visual Studio templates if you experience compilation issues with it.
-                EGL.ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER, EGL.TRUE,
 
                 // EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE is an option that enables ANGLE to automatically call 
                 // the IDXGIDevice3::Trim method on behalf of the application when it gets suspended. 
@@ -67,7 +63,6 @@ namespace GLUWP
                 EGL.PLATFORM_ANGLE_TYPE_ANGLE, EGL.PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
                 EGL.PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9,
                 EGL.PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3,
-                EGL.ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER, EGL.TRUE,
                 EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL.TRUE,
                 EGL.NONE,
             };
@@ -78,7 +73,6 @@ namespace GLUWP
                 // They are used if eglInitialize fails with both the default display attributes and the 9_3 display attributes.
                 EGL.PLATFORM_ANGLE_TYPE_ANGLE, EGL.PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
                 EGL.PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL.PLATFORM_ANGLE_DEVICE_TYPE_WARP_ANGLE,
-                EGL.ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER, EGL.TRUE,
                 EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL.TRUE,
                 EGL.NONE,
             };
@@ -186,9 +180,6 @@ namespace GLUWP
 
             int[] surfaceAttributes =
             {
-                // EGL.ANGLE_SURFACE_RENDER_TO_BACK_BUFFER is part of the same optimization as EGL.ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER (see above).
-                // If you have compilation issues with it then please update your Visual Studio templates.
-                EGL.ANGLE_SURFACE_RENDER_TO_BACK_BUFFER, EGL.TRUE,
                 EGL.NONE
             };
 
@@ -202,7 +193,7 @@ namespace GLUWP
                 surfaceCreationProperties.Add(ANGLEWindowsStore.EGLRenderSurfaceSizeProperty,
                     PropertyValue.CreateSize((Size) renderSurfaceSize));
             }
-            
+
 #if TODO
             // If a resolution scale is specified, add it to the surface creation properties
             if (resolutionScale != null)
@@ -212,7 +203,7 @@ namespace GLUWP
             }
 #endif
 
-            surface = EGL.CreateWindowSurface(mEglDisplay, mEglConfig, surfaceCreationProperties, surfaceAttributes);
+            surface = EGL.CreateWindowSurface(mEglDisplay, mEglConfig, panel, surfaceAttributes);
             if (surface == EGL.NO_SURFACE)
             {
                 throw new ApplicationException("Failed to create EGL surface");
