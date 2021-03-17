@@ -120,6 +120,11 @@ namespace winrt::CelestiaComponent::implementation
         core->mouseButtonDown(x, y, button);
     }
 
+    void CelestiaAppCore::CharEnter(int16_t input)
+    {
+        core->charEntered(input);
+    }
+
     void CelestiaAppCore::SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler)
     {
         auto previousHandler = core->getContextMenuHandler();

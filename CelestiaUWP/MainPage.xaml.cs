@@ -92,6 +92,16 @@ namespace CelestiaUWP
         {
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
+                var menu = new MenuFlyout();
+                var goItem = new MenuFlyoutItem();
+                goItem.Text = CelestiaAppCore.LocalizedString("Go");
+                goItem.Click += (sender, arg) =>
+                {
+                    mAppCore.Simulation.Selection = selection;
+                    mAppCore.CharEnter(103);
+                };
+                menu.Items.Add(goItem);
+                menu.ShowAt(mGLView, new Point(x, y));
             });
             mGLView.PointerPressed += (sender, args) =>
             {
