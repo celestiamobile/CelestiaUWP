@@ -45,7 +45,7 @@ namespace CelestiaUWP
             loadingText.VerticalAlignment = VerticalAlignment.Center;
             loadingText.FontSize = 30;
 
-            grid.Children.Add(loadingText);
+            MainContainer.Children.Add(loadingText);
 
             mGLView = new GLView();
             mGLView.Prepare += (sender) =>
@@ -71,6 +71,7 @@ namespace CelestiaUWP
                 {
                     loadingText.Visibility = Visibility.Collapsed;
                     SetUpGLViewInteractions();
+                    PopulateMenuBar();
                 });
 
                 mAppCore.Start();
@@ -85,7 +86,7 @@ namespace CelestiaUWP
                 mAppCore.Tick();
                 mAppCore.Draw();
             };
-            grid.Children.Add(mGLView);
+            MainContainer.Children.Add(mGLView);
         }
 
         void SetUpGLViewInteractions()
@@ -184,6 +185,71 @@ namespace CelestiaUWP
                     }
                 }
             };
+        }
+        void PopulateMenuBar()
+        {
+            var fileItem = new MenuBarItem();
+            fileItem.Title = CelestiaAppCore.LocalizedString("File");
+
+            var openScriptItem = new MenuFlyoutItem();
+            openScriptItem.Text = CelestiaAppCore.LocalizedString("Open Script...");
+            openScriptItem.Click += (sender, arg) =>
+            {
+                PickScript();
+            };
+            fileItem.Items.Add(openScriptItem);
+
+            fileItem.Items.Add(new MenuFlyoutSeparator());
+
+            var exitItem = new MenuFlyoutItem();
+            exitItem.Text = CelestiaAppCore.LocalizedString("Exit");
+            exitItem.Click += (sender, arg) =>
+            {
+                Application.Current.Exit();
+            };
+            fileItem.Items.Add(exitItem);
+
+            var navigationItem = new MenuBarItem();
+            navigationItem.Title = CelestiaAppCore.LocalizedString("Navigation");
+
+            var homeItme = new MenuFlyoutItem();
+            homeItme.Text = CelestiaAppCore.LocalizedString("Select Sol");
+            homeItme.Click += (sender, arg) =>
+            {
+                mAppCore.CharEnter(104);
+            };
+            navigationItem.Items.Add(homeItme);
+
+            var timeItem = new MenuBarItem();
+            timeItem.Title = CelestiaAppCore.LocalizedString("Time");
+            var renderItem = new MenuBarItem();
+            renderItem.Title = CelestiaAppCore.LocalizedString("Render");
+            var viewItem = new MenuBarItem();
+            viewItem.Title = CelestiaAppCore.LocalizedString("View");
+            var bookmarkItem = new MenuBarItem();
+            bookmarkItem.Title = CelestiaAppCore.LocalizedString("Bookmarks");
+            var helpItem = new MenuBarItem();
+            helpItem.Title = CelestiaAppCore.LocalizedString("Help");
+
+            MenuBar.Items.Add(fileItem);
+            MenuBar.Items.Add(navigationItem);
+            MenuBar.Items.Add(timeItem);
+            MenuBar.Items.Add(renderItem);
+            MenuBar.Items.Add(viewItem);
+            MenuBar.Items.Add(bookmarkItem);
+            MenuBar.Items.Add(helpItem);
+        }
+
+        async void PickScript()
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Downloads;
+            picker.FileTypeFilter.Add(".cel");
+            picker.FileTypeFilter.Add(".celx");
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+                mAppCore.RunScript(file.Path);
         }
     }
 }

@@ -134,6 +134,11 @@ namespace winrt::CelestiaComponent::implementation
         core->setContextMenuHandler(new AppCoreContextMenuHandler(handler));
     }
 
+    void CelestiaAppCore::RunScript(hstring const& path)
+    {
+        core->runScript(to_string(path));
+    }
+
     CelestiaComponent::CelestiaSimulation CelestiaAppCore::Simulation()
     {
         if (sim == nullptr)

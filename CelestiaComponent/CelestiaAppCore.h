@@ -22,6 +22,7 @@ namespace winrt::CelestiaComponent::implementation
         void MouseButtonDown(float x, float y, int32_t button);
         void CharEnter(int16_t input);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
+        void RunScript(hstring const& path);
         CelestiaComponent::CelestiaSimulation Simulation();
 
         static void InitGL();

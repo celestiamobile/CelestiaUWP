@@ -23,6 +23,7 @@ namespace CelestiaComponent
         void MouseButtonDown(Single x, Single y, Int32 button);
         void CharEnter(Int16 input);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
+        void RunScript(String path);
         CelestiaSimulation Simulation{ get; };
 
         static void InitGL();
