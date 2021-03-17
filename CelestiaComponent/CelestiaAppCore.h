@@ -29,6 +29,7 @@ namespace winrt::CelestiaComponent::implementation
 
     private:
         CelestiaCore* core;
+        CelestiaComponent::CelestiaSimulation sim;
     };
 }
 

@@ -34,7 +34,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaContextMenuCallback handler;
     };
 
-    CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>()
+    CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>(), sim(nullptr)
     {
         core = new CelestiaCore;
     }
@@ -131,7 +131,9 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaSimulation CelestiaAppCore::Simulation()
     {
-        return make<implementation::CelestiaSimulation>(core->getSimulation());
+        if (sim == nullptr)
+            sim = make<implementation::CelestiaSimulation>(core->getSimulation());
+        return sim;
     }
 
     void CelestiaAppCore::InitGL()

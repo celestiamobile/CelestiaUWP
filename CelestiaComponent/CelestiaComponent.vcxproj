@@ -693,6 +693,20 @@
     <ClCompile Include="CelestiaSimulation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaUniverse.h">
+      <DependentUpon>CelestiaUniverse.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaUniverse.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaUniverse.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaUniverse.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <Midl Include="CelestiaSimulation.idl">
       <SubType>Code</SubType>
       <DependentUpon>CelestiaSimulation.cpp</DependentUpon>

@@ -8,7 +8,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaSimulation::CelestiaSimulation(Simulation* sim) : CelestiaSimulationT<CelestiaSimulation>(), sim(sim)
+	CelestiaSimulation::CelestiaSimulation(Simulation* sim) : CelestiaSimulationT<CelestiaSimulation>(), sim(sim), u(nullptr)
 	{
 	}
 
@@ -20,5 +20,12 @@ namespace winrt::CelestiaComponent::implementation
 	void CelestiaSimulation::Selection(CelestiaComponent::CelestiaSelection const& selection)
 	{
 		sim->setSelection(*get_self<CelestiaSelection>(selection)->s);
+	}
+
+	CelestiaComponent::CelestiaUniverse CelestiaSimulation::Universe()
+	{
+		if (u == nullptr)
+			u = make<CelestiaUniverse>(sim->getUniverse());
+		return u;
 	}
 }

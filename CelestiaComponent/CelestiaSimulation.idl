@@ -1,4 +1,5 @@
 import "CelestiaSelection.idl";
+import "CelestiaUniverse.idl";
 
 namespace CelestiaComponent
 {
@@ -6,5 +7,6 @@ namespace CelestiaComponent
     runtimeclass CelestiaSimulation
     {
         CelestiaSelection Selection;
+        CelestiaUniverse Universe{ get; };
     }
 }
