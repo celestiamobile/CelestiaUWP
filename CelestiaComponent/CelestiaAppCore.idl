@@ -1,4 +1,5 @@
 import "CelestiaSelection.idl";
+import "CelestiaSimulation.idl";
 
 namespace CelestiaComponent
 {
@@ -21,6 +22,7 @@ namespace CelestiaComponent
         void MouseButtonUp(Single x, Single y, Int32 button);
         void MouseButtonDown(Single x, Single y, Int32 button);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
+        CelestiaSimulation Simulation{ get; };
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);

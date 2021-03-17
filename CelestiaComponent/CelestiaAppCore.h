@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CelestiaSimulation.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 
@@ -20,6 +21,7 @@ namespace winrt::CelestiaComponent::implementation
         void MouseButtonUp(float x, float y, int32_t button);
         void MouseButtonDown(float x, float y, int32_t button);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
+        CelestiaComponent::CelestiaSimulation Simulation();
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory);

@@ -1,0 +1,10 @@
+import "CelestiaSelection.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaSimulation
+    {
+        CelestiaSelection Selection;
+    }
+}

@@ -15,7 +15,6 @@ namespace winrt::CelestiaComponent::implementation
 
         ~CelestiaSelection();
 
-    private:
         Selection* s;
     };
 }

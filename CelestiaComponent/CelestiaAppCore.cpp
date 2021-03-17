@@ -129,6 +129,11 @@ namespace winrt::CelestiaComponent::implementation
         core->setContextMenuHandler(new AppCoreContextMenuHandler(handler));
     }
 
+    CelestiaComponent::CelestiaSimulation CelestiaAppCore::Simulation()
+    {
+        return make<implementation::CelestiaSimulation>(core->getSimulation());
+    }
+
     void CelestiaAppCore::InitGL()
     {
         celestia::gl::init();
