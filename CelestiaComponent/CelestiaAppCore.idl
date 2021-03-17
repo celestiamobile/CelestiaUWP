@@ -1,6 +1,9 @@
+import "CelestiaSelection.idl";
+
 namespace CelestiaComponent
 {
     delegate void CelestiaLoadCallback(String status);
+    delegate void CelestiaContextMenuCallback(Int32 x, Int32 y, CelestiaSelection selection);
 
     [default_interface]
     runtimeclass CelestiaAppCore
@@ -17,6 +20,7 @@ namespace CelestiaComponent
         void MouseMove(Single x, Single y, Int32 button);
         void MouseButtonUp(Single x, Single y, Int32 button);
         void MouseButtonDown(Single x, Single y, Int32 button);
+        void SetContextMenuHandler(CelestiaContextMenuCallback handler);
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);

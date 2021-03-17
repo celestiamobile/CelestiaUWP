@@ -1,0 +1,12 @@
+import "CelestiaAstroObject.idl";
+import "CelestiaBody.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaSelection
+    {
+        CelestiaSelection(CelestiaAstroObject object);
+        CelestiaBody Body{ get; };
+    }
+}

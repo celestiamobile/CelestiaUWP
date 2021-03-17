@@ -1,0 +1,9 @@
+import "CelestiaDSO.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaGalaxy : CelestiaDSO
+    {
+    }
+}

@@ -31,7 +31,7 @@ namespace CelestiaUWP
         private Point? mLastLeftMousePosition = null;
         private Point? mLastRightMousePosition = null;
 
-        private GLView glView;
+        private GLView mGLView;
 
         public MainPage()
         {
@@ -47,8 +47,8 @@ namespace CelestiaUWP
 
             grid.Children.Add(loadingText);
 
-            glView = new GLView();
-            glView.Prepare += (sender) =>
+            mGLView = new GLView();
+            mGLView.Prepare += (sender) =>
             {
                 CelestiaAppCore.InitGL();
                 string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
@@ -76,21 +76,30 @@ namespace CelestiaUWP
                 mAppCore.Start();
                 return true;
             };
-            glView.Resize += (sender, width, height) =>
+            mGLView.Resize += (sender, width, height) =>
             {
                 mAppCore.Resize(width, height);
             };
-            glView.Draw += (sender) =>
+            mGLView.Draw += (sender) =>
             {
                 mAppCore.Tick();
                 mAppCore.Draw();
             };
-            grid.Children.Add(glView);
+            grid.Children.Add(mGLView);
         }
 
         void SetUpGLViewInteractions()
         {
-            glView.PointerPressed += (sender, args) =>
+            mAppCore.SetContextMenuHandler((x, y, selection) =>
+            {
+                var body = selection.Body;
+                if (body != null)
+                {
+                    var name = body.Name;
+                    int a = x + y;
+                }
+            });
+            mGLView.PointerPressed += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -108,7 +117,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            glView.PointerMoved += (sender, args) =>
+            mGLView.PointerMoved += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -137,7 +146,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            glView.PointerReleased += (sender, args) =>
+            mGLView.PointerReleased += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {

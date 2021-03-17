@@ -643,6 +643,90 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaAstroObject.h">
+      <DependentUpon>CelestiaAstroObject.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaAstroObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaAstroObject.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaAstroObject.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaBody.h">
+      <DependentUpon>CelestiaBody.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaBody.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaBody.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaBody.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaDSO.h">
+      <DependentUpon>CelestiaDSO.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaDSO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaDSO.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaDSO.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaGalaxy.h">
+      <DependentUpon>CelestiaGalaxy.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaGalaxy.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaGalaxy.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaGalaxy.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaStar.h">
+      <DependentUpon>CelestiaStar.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaStar.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaStar.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaStar.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaSelection.h">
+      <DependentUpon>CelestiaSelection.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaSelection.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaSelection.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaSelection.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="CelestiaComponent.def" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -650,7 +734,6 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\fmt.7.0.1\build\fmt.targets" Condition="Exists('..\packages\fmt.7.0.1\build\fmt.targets')" />
     <Import Project="..\packages\lua.5.4.2\build\native\Lua.targets" Condition="Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" />
-    <Import Project="..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets" Condition="Exists('..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets')" />
     <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -659,7 +742,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\fmt.7.0.1\build\fmt.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\fmt.7.0.1\build\fmt.targets'))" />
     <Error Condition="!Exists('..\packages\lua.5.4.2\build\native\Lua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.5.4.2\build\native\Lua.targets'))" />
-    <Error Condition="!Exists('..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ANGLE.WindowsStore.2.1.13\build\native\ANGLE.WindowsStore.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>

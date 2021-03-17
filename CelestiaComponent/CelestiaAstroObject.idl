@@ -1,0 +1,7 @@
+namespace CelestiaComponent
+{
+    [default_interface]
+    unsealed runtimeclass CelestiaAstroObject
+    {
+    }
+}

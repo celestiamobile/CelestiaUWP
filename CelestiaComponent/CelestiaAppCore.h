@@ -19,6 +19,7 @@ namespace winrt::CelestiaComponent::implementation
         void MouseMove(float x, float y, int32_t button);
         void MouseButtonUp(float x, float y, int32_t button);
         void MouseButtonDown(float x, float y, int32_t button);
+        void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory);

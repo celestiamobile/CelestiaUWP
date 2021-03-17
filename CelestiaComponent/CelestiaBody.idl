@@ -1,0 +1,10 @@
+import "CelestiaAstroObject.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaBody : CelestiaAstroObject
+    {
+        String Name{ get; };
+    }
+}

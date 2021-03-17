@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "CelestiaAppCore.h"
+#include "CelestiaSelection.h"
 #if __has_include("CelestiaAppCore.g.cpp")
 #include "CelestiaAppCore.g.cpp"
 #endif
@@ -18,6 +19,19 @@ namespace winrt::CelestiaComponent::implementation
         }
     private:
         CelestiaComponent::CelestiaLoadCallback loadCallback;
+    };
+
+    class AppCoreContextMenuHandler : public CelestiaCore::ContextMenuHandler
+    {
+    public:
+        AppCoreContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler) : CelestiaCore::ContextMenuHandler(), handler(handler) {};
+
+        void requestContextMenu(float x, float y, Selection sel)
+        {
+            handler(x, y, make<CelestiaSelection>(sel));
+        }
+    private:
+        CelestiaComponent::CelestiaContextMenuCallback handler;
     };
 
     CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>()
@@ -104,6 +118,15 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaAppCore::MouseButtonDown(float x, float y, int32_t button)
     {
         core->mouseButtonDown(x, y, button);
+    }
+
+    void CelestiaAppCore::SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler)
+    {
+        auto previousHandler = core->getContextMenuHandler();
+        if (previousHandler)
+            delete previousHandler;
+
+        core->setContextMenuHandler(new AppCoreContextMenuHandler(handler));
     }
 
     void CelestiaAppCore::InitGL()

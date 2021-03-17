@@ -1,0 +1,9 @@
+import "CelestiaAstroObject.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    unsealed runtimeclass CelestiaDSO : CelestiaAstroObject
+    {
+    }
+}
