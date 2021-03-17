@@ -707,6 +707,34 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaStarCatalog.h">
+      <DependentUpon>CelestiaStarCatalog.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaStarCatalog.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaStarCatalog.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaStarCatalog.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaDSOCatalog.h">
+      <DependentUpon>CelestiaDSOCatalog.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaDSOCatalog.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaDSOCatalog.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaDSOCatalog.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <Midl Include="CelestiaSimulation.idl">
       <SubType>Code</SubType>
       <DependentUpon>CelestiaSimulation.cpp</DependentUpon>

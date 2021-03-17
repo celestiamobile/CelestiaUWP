@@ -1,0 +1,12 @@
+import "CelestiaStar.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaStarCatalog
+    {
+        Int32 Count{ get; };
+        CelestiaStar StarAt(Int32 index);
+        String StarName(CelestiaStar star);
+    }
+}

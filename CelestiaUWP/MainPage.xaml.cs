@@ -93,6 +93,11 @@ namespace CelestiaUWP
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
                 var menu = new MenuFlyout();
+                var nameItem = new MenuFlyoutItem();
+                nameItem.IsEnabled = false;
+                nameItem.Text = mAppCore.Simulation.Universe.NameForSelection(selection);
+                menu.Items.Add(nameItem);
+                menu.Items.Add(new MenuFlyoutSeparator());
                 var actions = new (String, short)[] {
                     ("Go", 103),
                     ("Follow", 102),

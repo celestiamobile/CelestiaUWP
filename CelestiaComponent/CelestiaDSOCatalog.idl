@@ -1,0 +1,12 @@
+import "CelestiaDSO.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaDSOCatalog
+    {
+        Int32 Count{ get; };
+        CelestiaDSO DSOAt(Int32 index);
+        String DSOName(CelestiaDSO DSO);
+    }
+}

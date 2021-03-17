@@ -1,4 +1,6 @@
 import "CelestiaSelection.idl";
+import "CelestiaStarCatalog.idl";
+import "CelestiaDSOCatalog.idl";
 
 namespace CelestiaComponent
 {
@@ -6,5 +8,9 @@ namespace CelestiaComponent
     runtimeclass CelestiaUniverse
     {
         CelestiaSelection Find(String name);
+        String NameForSelection(CelestiaSelection selection);
+
+        CelestiaStarCatalog StarCatalog{ get; };
+        CelestiaDSOCatalog DSOCatalog{ get; };
     }
 }
