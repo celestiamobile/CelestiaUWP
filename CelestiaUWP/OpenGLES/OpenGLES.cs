@@ -203,7 +203,7 @@ namespace GLUWP
             }
 #endif
 
-            surface = EGL.CreateWindowSurface(mEglDisplay, mEglConfig, panel, surfaceAttributes);
+            surface = EGL.CreateWindowSurface(mEglDisplay, mEglConfig, surfaceCreationProperties, surfaceAttributes);
             if (surface == EGL.NO_SURFACE)
             {
                 throw new ApplicationException("Failed to create EGL surface");

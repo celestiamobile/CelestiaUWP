@@ -93,14 +93,25 @@ namespace CelestiaUWP
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
                 var menu = new MenuFlyout();
-                var goItem = new MenuFlyoutItem();
-                goItem.Text = CelestiaAppCore.LocalizedString("Go");
-                goItem.Click += (sender, arg) =>
-                {
-                    mAppCore.Simulation.Selection = selection;
-                    mAppCore.CharEnter(103);
+                var actions = new (String, short)[] {
+                    ("Go", 103),
+                    ("Follow", 102),
+                    ("Orbit Synchronously", 121),
+                    ("Lock Phase", 58),
+                    ("Chase", 34),
                 };
-                menu.Items.Add(goItem);
+                foreach (var action in actions)
+                {
+                    var item = new MenuFlyoutItem();
+                    item.Text = CelestiaAppCore.LocalizedString(action.Item1);
+                    item.Click += (sender, arg) =>
+                    {
+                        mAppCore.Simulation.Selection = selection;
+                        mAppCore.CharEnter(action.Item2);
+                    };
+                    menu.Items.Add(item);
+                }
+                
                 menu.ShowAt(mGLView, new Point(x, y));
             });
             mGLView.PointerPressed += (sender, args) =>
