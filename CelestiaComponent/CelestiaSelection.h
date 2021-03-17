@@ -2,7 +2,6 @@
 
 #include <celengine/selection.h>
 #include "CelestiaAstroObject.h"
-#include "CelestiaBody.h"
 #include "CelestiaSelection.g.h"
 
 namespace winrt::CelestiaComponent::implementation
@@ -12,7 +11,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj);
         CelestiaSelection(Selection const& sel);
 
-        CelestiaComponent::CelestiaBody Body();
+        CelestiaComponent::CelestiaAstroObject Object();
 
         ~CelestiaSelection();
 

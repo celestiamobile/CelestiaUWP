@@ -92,12 +92,6 @@ namespace CelestiaUWP
         {
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
-                var body = selection.Body;
-                if (body != null)
-                {
-                    var name = body.Name;
-                    int a = x + y;
-                }
             });
             mGLView.PointerPressed += (sender, args) =>
             {

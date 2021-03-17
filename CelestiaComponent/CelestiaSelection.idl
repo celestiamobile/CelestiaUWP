@@ -1,5 +1,4 @@
 import "CelestiaAstroObject.idl";
-import "CelestiaBody.idl";
 
 namespace CelestiaComponent
 {
@@ -7,6 +6,6 @@ namespace CelestiaComponent
     runtimeclass CelestiaSelection
     {
         CelestiaSelection(CelestiaAstroObject object);
-        CelestiaBody Body{ get; };
+        CelestiaAstroObject Object{ get; };
     }
 }

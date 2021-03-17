@@ -7,8 +7,8 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaAstroObject : CelestiaAstroObjectT<CelestiaAstroObject>
     {
+    public:
         CelestiaAstroObject(AstroObject* obj);
-    protected:
         AstroObject* obj;
     };
 }
