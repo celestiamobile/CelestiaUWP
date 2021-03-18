@@ -70,6 +70,11 @@ namespace winrt::CelestiaComponent::implementation
         }
     }
 
+    bool CelestiaSelection::IsEmpty()
+    {
+        return s->empty();
+    }
+
     CelestiaSelection::~CelestiaSelection()
     {
         delete s;

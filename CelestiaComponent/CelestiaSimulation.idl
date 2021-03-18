@@ -10,6 +10,7 @@ namespace CelestiaComponent
         CelestiaSelection Selection;
         CelestiaUniverse Universe{ get; };
 
+        CelestiaSelection Find(String name);
         void GoToDestination(CelestiaDestination destination);
     }
 }

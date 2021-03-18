@@ -29,6 +29,11 @@ namespace winrt::CelestiaComponent::implementation
 		return u;
 	}
 
+    CelestiaComponent::CelestiaSelection CelestiaSimulation::Find(hstring const& name)
+    {
+        return make<CelestiaSelection>(sim->findObject(to_string(name)));
+    }
+
     void CelestiaSimulation::GoToDestination(CelestiaComponent::CelestiaDestination destination)
     {
         auto d = get_self<CelestiaDestination>(destination);

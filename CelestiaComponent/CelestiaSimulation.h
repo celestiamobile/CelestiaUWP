@@ -17,6 +17,7 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaUniverse Universe();
 
+        CelestiaComponent::CelestiaSelection Find(hstring const& name);
         void GoToDestination(CelestiaComponent::CelestiaDestination destination);
 
         Simulation* sim;

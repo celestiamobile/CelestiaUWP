@@ -230,6 +230,10 @@ namespace CelestiaUWP
             {
                 ShowTourGuide();
             });
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Select Object"), (sender, arg) =>
+            {
+                ShowSelectObject();
+            });
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
@@ -290,6 +294,27 @@ namespace CelestiaUWP
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
+        }
+        async void ShowSelectObject()
+        {
+            var dialog = new SelectObjectDialog();
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var text = dialog.Text;
+                var selection = mAppCore.Simulation.Find(text);
+                if (selection.IsEmpty)
+                {
+                    var alert = new ContentDialog();
+                    alert.Title = CelestiaAppCore.LocalizedString("Object not found.");
+                    alert.PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
+                    await alert.ShowAsync();
+                }
+                else
+                {
+                    mAppCore.Simulation.Selection = selection;
+                }
+            }
         }
     }
 }
