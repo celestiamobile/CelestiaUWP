@@ -259,6 +259,11 @@ namespace CelestiaUWP
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Browser"), (sender, arg) =>
+            {
+                ShowBrowser();
+            });
+
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
             var renderItem = new MenuBarItem();
@@ -365,6 +370,20 @@ namespace CelestiaUWP
                     mAppCore.Simulation.GoToLocation(location);
                 }
             }
+        }
+
+        async void ShowBrowser()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(BrowserPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
         }
     }
 }

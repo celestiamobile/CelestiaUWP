@@ -9,5 +9,6 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaDSO : CelestiaDSOT<CelestiaDSO, CelestiaAstroObject>
     {
         CelestiaDSO(DeepSkyObject* dso);
+        hstring Type();
     };
 }

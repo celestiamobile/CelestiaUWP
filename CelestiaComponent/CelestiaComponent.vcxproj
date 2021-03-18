@@ -707,6 +707,34 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaStarBrowser.h">
+      <DependentUpon>CelestiaStarBrowser.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaStarBrowser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaStarBrowser.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaStarBrowser.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaBrowserItem.h">
+      <DependentUpon>CelestiaBrowserItem.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaBrowserItem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaBrowserItem.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaBrowserItem.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaStarCatalog.h">
       <DependentUpon>CelestiaStarCatalog.cpp</DependentUpon>
     </ClInclude>

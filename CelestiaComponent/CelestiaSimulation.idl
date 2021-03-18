@@ -1,6 +1,7 @@
 import "CelestiaDestination.idl";
 import "CelestiaGotoLocation.idl";
 import "CelestiaSelection.idl";
+import "CelestiaStarBrowser.idl";
 import "CelestiaUniverse.idl";
 
 namespace CelestiaComponent
@@ -12,6 +13,7 @@ namespace CelestiaComponent
         CelestiaUniverse Universe{ get; };
 
         CelestiaSelection Find(String name);
+        CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type);
         void GoToDestination(CelestiaDestination destination);
         void GoToLocation(CelestiaGotoLocation location);
     }

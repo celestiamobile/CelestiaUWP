@@ -1,0 +1,19 @@
+import "CelestiaAstroObject.idl";
+
+namespace CelestiaComponent
+{
+    runtimeclass CelestiaBrowserItem;
+
+    delegate CelestiaBrowserItem[] CelestiaBrowserItemChildrenProvider(CelestiaBrowserItem item);
+
+    [default_interface]
+    runtimeclass CelestiaBrowserItem
+    {
+        CelestiaBrowserItem(String name, CelestiaBrowserItem[] children);
+        CelestiaBrowserItem(String name, CelestiaAstroObject obj, CelestiaBrowserItemChildrenProvider provider);
+        CelestiaBrowserItemChildrenProvider Provider{ get; };
+        String Name{ get; };
+        CelestiaAstroObject Object{ get; };
+        CelestiaBrowserItem[] Children{ get; };
+    }
+}

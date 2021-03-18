@@ -1,3 +1,6 @@
+import "CelestiaStar.idl";
+import "CelestiaBody.idl";
+import "CelestiaBrowserItem.idl";
 import "CelestiaSelection.idl";
 import "CelestiaStarCatalog.idl";
 import "CelestiaDSOCatalog.idl";
@@ -9,6 +12,9 @@ namespace CelestiaComponent
     {
         CelestiaSelection Find(String name);
         String NameForSelection(CelestiaSelection selection);
+
+        CelestiaBrowserItem[] ChildrenForStar(CelestiaStar star, CelestiaBrowserItemChildrenProvider provider);
+        CelestiaBrowserItem[] ChildrenForBody(CelestiaBody body, CelestiaBrowserItemChildrenProvider provider);
 
         CelestiaStarCatalog StarCatalog{ get; };
         CelestiaDSOCatalog DSOCatalog{ get; };

@@ -4,6 +4,7 @@
 #include "CelestiaDestination.h"
 #include "CelestiaGotoLocation.h"
 #include "CelestiaSelection.h"
+#include "CelestiaStarBrowser.h"
 #include "CelestiaUniverse.h"
 #include "CelestiaSimulation.g.h"
 
@@ -19,6 +20,9 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaUniverse Universe();
 
         CelestiaComponent::CelestiaSelection Find(hstring const& name);
+
+        CelestiaComponent::CelestiaStarBrowser StarBrowser(CelestiaComponent::CelestiaStarBrowserType type);
+
         void GoToDestination(CelestiaComponent::CelestiaDestination const& destination);
         void GoToLocation(CelestiaComponent::CelestiaGotoLocation const& location);
 

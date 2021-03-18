@@ -1,0 +1,17 @@
+import "CelestiaStar.idl";
+
+namespace CelestiaComponent
+{
+    enum CelestiaStarBrowserType
+    {
+        nearest = 0,
+        brightest = 2,
+        withPlants = 3
+    };
+
+    [default_interface]
+    runtimeclass CelestiaStarBrowser
+    {
+        CelestiaStar[] Stars{ get; };
+    }
+}

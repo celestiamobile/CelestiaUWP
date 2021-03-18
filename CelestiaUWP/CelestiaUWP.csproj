@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BrowserPage.xaml.cs">
+      <DependentUpon>BrowserPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GLView.cs" />
     <Compile Include="GotoObjectDialog.xaml.cs">
       <DependentUpon>GotoObjectDialog.xaml</DependentUpon>
@@ -162,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BrowserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GotoObjectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
