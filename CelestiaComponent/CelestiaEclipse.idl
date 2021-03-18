@@ -1,0 +1,20 @@
+import "CelestiaBody.idl";
+
+namespace CelestiaComponent
+{
+    enum CelestiaEclipseKind
+    {
+        solar = 1,
+        lunar = 2,
+        solarAndLunar = 3
+    };
+
+    [default_interface]
+    runtimeclass CelestiaEclipse
+    {
+        CelestiaBody Occulter{ get; };
+        CelestiaBody Receiver{ get; };
+        Double StartTime{ get; };
+        Double EndTime{ get; };
+    }
+}

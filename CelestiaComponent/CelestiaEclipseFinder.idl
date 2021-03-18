@@ -1,0 +1,12 @@
+import "CelestiaBody.idl";
+import "CelestiaEclipse.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaEclipseFinder
+    {
+        CelestiaEclipseFinder(CelestiaBody body);
+        CelestiaEclipse[] Search(CelestiaEclipseKind kind, Double startTime, Double endTime);
+    }
+}
