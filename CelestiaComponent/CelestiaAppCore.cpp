@@ -139,6 +139,17 @@ namespace winrt::CelestiaComponent::implementation
         core->runScript(to_string(path));
     }
 
+    com_array<CelestiaComponent::CelestiaDestination> CelestiaAppCore::Destinations()
+    {
+        auto destinations = core->getDestinations();
+        std::vector<CelestiaComponent::CelestiaDestination> vector;
+        for (unsigned int i = 0; i < destinations->size(); ++i)
+        {
+            vector.push_back(make<implementation::CelestiaDestination>(destinations->at(i)));
+        }
+        return com_array(vector);
+    }
+
     CelestiaComponent::CelestiaSimulation CelestiaAppCore::Simulation()
     {
         if (sim == nullptr)

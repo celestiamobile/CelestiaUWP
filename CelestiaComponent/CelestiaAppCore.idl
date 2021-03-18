@@ -1,3 +1,4 @@
+import "CelestiaDestination.idl";
 import "CelestiaScript.idl";
 import "CelestiaSelection.idl";
 import "CelestiaSimulation.idl";
@@ -25,6 +26,7 @@ namespace CelestiaComponent
         void CharEnter(Int16 input);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
         void RunScript(String path);
+        CelestiaDestination[] Destinations{ get; };
         CelestiaSimulation Simulation{ get; };
 
         static void InitGL();

@@ -735,6 +735,20 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaDestination.h">
+      <DependentUpon>CelestiaDestination.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaDestination.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaDestination.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaDestination.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaDSOCatalog.h">
       <DependentUpon>CelestiaDSOCatalog.cpp</DependentUpon>
     </ClInclude>

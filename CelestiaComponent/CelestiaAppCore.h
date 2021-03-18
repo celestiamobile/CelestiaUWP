@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "CelestiaDestination.h"
 #include "CelestiaSimulation.h"
 #include "CelestiaScript.h"
 #include "CelestiaAppCore.g.h"
@@ -24,6 +25,7 @@ namespace winrt::CelestiaComponent::implementation
         void CharEnter(int16_t input);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
         void RunScript(hstring const& path);
+        com_array<CelestiaComponent::CelestiaDestination> Destinations();
         CelestiaComponent::CelestiaSimulation Simulation();
 
         static void InitGL();

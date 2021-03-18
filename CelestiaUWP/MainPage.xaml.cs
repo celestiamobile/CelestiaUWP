@@ -193,49 +193,41 @@ namespace CelestiaUWP
             var fileItem = new MenuBarItem();
             fileItem.Title = CelestiaAppCore.LocalizedString("File");
 
-            var openScriptItem = new MenuFlyoutItem();
-            openScriptItem.Text = CelestiaAppCore.LocalizedString("Open Script...");
-            openScriptItem.Click += (sender, arg) =>
+            AppendItem(fileItem, CelestiaAppCore.LocalizedString("Open Script..."), (sender, arg) =>
             {
                 PickScript();
-            };
-            fileItem.Items.Add(openScriptItem);
+            });
 
             var scriptsItem = new MenuFlyoutSubItem();
             scriptsItem.Text = CelestiaAppCore.LocalizedString("Scripts");
             var scripts = CelestiaAppCore.ReadScripts(mCurrentPath + "\\scripts", true);
             foreach (var script in scripts)
             {
-                var scriptItem = new MenuFlyoutItem();
-                scriptItem.Text = script.Title;
-                scriptsItem.Items.Add(scriptItem);
-                scriptItem.Click += (sender, arg) =>
+                AppendSubItem(scriptsItem, script.Title, (sender, arg) =>
                 {
                     mAppCore.RunScript(script.Filename);
-                };
+                });
             }
             fileItem.Items.Add(scriptsItem);
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
-            var exitItem = new MenuFlyoutItem();
-            exitItem.Text = CelestiaAppCore.LocalizedString("Exit");
-            exitItem.Click += (sender, arg) =>
+            AppendItem(fileItem, CelestiaAppCore.LocalizedString("Exit"), (sender, arg) =>
             {
                 Application.Current.Exit();
-            };
-            fileItem.Items.Add(exitItem);
+            });
 
             var navigationItem = new MenuBarItem();
             navigationItem.Title = CelestiaAppCore.LocalizedString("Navigation");
 
-            var homeItme = new MenuFlyoutItem();
-            homeItme.Text = CelestiaAppCore.LocalizedString("Select Sol");
-            homeItme.Click += (sender, arg) =>
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Select Sol"), (sender, arg) =>
             {
                 mAppCore.CharEnter(104);
-            };
-            navigationItem.Items.Add(homeItme);
+            });
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Tour Guide"), (sender, arg) =>
+            {
+                ShowTourGuide();
+            });
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
@@ -257,6 +249,22 @@ namespace CelestiaUWP
             MenuBar.Items.Add(helpItem);
         }
 
+        void AppendItem(MenuBarItem parent, String text, RoutedEventHandler click)
+        {
+            var item = new MenuFlyoutItem();
+            item.Text = text;
+            item.Click += click;
+            parent.Items.Add(item);
+        }
+
+        void AppendSubItem(MenuFlyoutSubItem parent, String text, RoutedEventHandler click)
+        {
+            var item = new MenuFlyoutItem();
+            item.Text = text;
+            item.Click += click;
+            parent.Items.Add(item);
+        }
+
         async void PickScript()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
@@ -267,6 +275,10 @@ namespace CelestiaUWP
             var file = await picker.PickSingleFileAsync();
             if (file != null)
                 mAppCore.RunScript(file.Path);
+        }
+        void ShowTourGuide()
+        {
+
         }
     }
 }

@@ -1,0 +1,11 @@
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaDestination
+    {
+        String Name{ get; };
+        String Target{ get; };
+        String Content{ get; };
+        Double Distance{ get; };
+    }
+}
