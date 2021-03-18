@@ -109,6 +109,7 @@ namespace CelestiaUWP
                     ("Orbit Synchronously", 121),
                     ("Lock Phase", 58),
                     ("Chase", 34),
+                    ("Track", 116)
                 };
                 foreach (var action in actions)
                 {
@@ -238,6 +239,25 @@ namespace CelestiaUWP
             {
                 ShowGotoObject();
             });
+
+            navigationItem.Items.Add(new MenuFlyoutSeparator());
+
+            var actions = new (String, short)[] {
+                    ("Go", 103),
+                    ("Follow", 102),
+                    ("Orbit Synchronously", 121),
+                    ("Lock Phase", 58),
+                    ("Chase", 34),
+                    ("Track", 116)
+                };
+            foreach (var action in actions)
+            {
+                AppendItem(navigationItem, CelestiaAppCore.LocalizedString(action.Item1), (sender, arg) =>
+                {
+                    mAppCore.CharEnter(action.Item2);
+                });
+            }
+            navigationItem.Items.Add(new MenuFlyoutSeparator());
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
