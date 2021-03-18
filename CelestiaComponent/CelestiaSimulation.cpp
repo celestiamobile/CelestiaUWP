@@ -28,4 +28,29 @@ namespace winrt::CelestiaComponent::implementation
 			u = make<CelestiaUniverse>(sim->getUniverse());
 		return u;
 	}
+
+    void CelestiaSimulation::GoToDestination(CelestiaComponent::CelestiaDestination destination)
+    {
+        auto d = get_self<CelestiaDestination>(destination);
+        auto sel = sim->findObjectFromPath(to_string(d->Target()));
+        if (!sel.empty())
+        {
+            sim->follow();
+            sim->setSelection(sel);
+            if (d->Distance() <= 0)
+            {
+                // Use the default distance
+                sim->gotoSelection(5.0,
+                    Eigen::Vector3f::UnitY(),
+                    ObserverFrame::ObserverLocal);
+            }
+            else
+            {
+                sim->gotoSelection(5.0,
+                    d->Distance(),
+                    Eigen::Vector3f::UnitY(),
+                    ObserverFrame::ObserverLocal);
+            }
+        }
+    }
 }

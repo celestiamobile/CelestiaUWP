@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Navigation;
 using GLUWP;
 using CelestiaComponent;
 using Windows.UI.Core;
+using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Hosting;
 
 namespace CelestiaUWP
 {
@@ -276,9 +278,18 @@ namespace CelestiaUWP
             if (file != null)
                 mAppCore.RunScript(file.Path);
         }
-        void ShowTourGuide()
+        async void ShowTourGuide()
         {
-
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(TourGuidePage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
         }
     }
 }

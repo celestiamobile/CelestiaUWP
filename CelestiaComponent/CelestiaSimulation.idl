@@ -1,3 +1,4 @@
+import "CelestiaDestination.idl";
 import "CelestiaSelection.idl";
 import "CelestiaUniverse.idl";
 
@@ -8,5 +9,7 @@ namespace CelestiaComponent
     {
         CelestiaSelection Selection;
         CelestiaUniverse Universe{ get; };
+
+        void GoToDestination(CelestiaDestination destination);
     }
 }
