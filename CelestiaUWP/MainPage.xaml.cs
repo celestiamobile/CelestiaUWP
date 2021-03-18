@@ -234,6 +234,10 @@ namespace CelestiaUWP
             {
                 ShowSelectObject();
             });
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Go to Object"), (sender, arg) =>
+            {
+                ShowGotoObject();
+            });
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
@@ -313,6 +317,32 @@ namespace CelestiaUWP
                 else
                 {
                     mAppCore.Simulation.Selection = selection;
+                }
+            }
+        }
+        async void ShowGotoObject()
+        {
+            var dialog = new GotoObjectDialog();
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var objectName = dialog.Text;
+                var latitude = dialog.Latitude;
+                var longitude = dialog.Longitude;
+                var distance = dialog.Distance;
+                var unit = (CelestiaGotoLocationDistanceUnit)dialog.Unit;
+                var selection = mAppCore.Simulation.Find(objectName);
+                if (selection.IsEmpty)
+                {
+                    var alert = new ContentDialog();
+                    alert.Title = CelestiaAppCore.LocalizedString("Object not found.");
+                    alert.PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
+                    await alert.ShowAsync();
+                }
+                else
+                {
+                    var location = new CelestiaGotoLocation(selection, latitude, longitude, distance, unit);
+                    mAppCore.Simulation.GoToLocation(location);
                 }
             }
         }

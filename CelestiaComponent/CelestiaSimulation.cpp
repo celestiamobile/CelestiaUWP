@@ -34,7 +34,7 @@ namespace winrt::CelestiaComponent::implementation
         return make<CelestiaSelection>(sim->findObject(to_string(name)));
     }
 
-    void CelestiaSimulation::GoToDestination(CelestiaComponent::CelestiaDestination destination)
+    void CelestiaSimulation::GoToDestination(CelestiaComponent::CelestiaDestination const& destination)
     {
         auto d = get_self<CelestiaDestination>(destination);
         auto sel = sim->findObjectFromPath(to_string(d->Target()));
@@ -56,6 +56,40 @@ namespace winrt::CelestiaComponent::implementation
                     Eigen::Vector3f::UnitY(),
                     ObserverFrame::ObserverLocal);
             }
+        }
+    }
+
+    void CelestiaSimulation::GoToLocation(CelestiaComponent::CelestiaGotoLocation const& location)
+    {
+        CelestiaGotoLocation* loc = get_self<CelestiaGotoLocation>(location);
+        CelestiaSelection* sel = get_self<CelestiaSelection>(loc->selection);
+        Selection(loc->selection);
+        sim->geosynchronousFollow();
+        double radius = sel->Radius();
+        double distance = radius * 5;
+
+        if (loc->distance && loc->unit)
+        {
+            double distanceValue = loc->distance.Value();
+            switch (loc->unit.Value())
+            {
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::km:
+                distance = distanceValue;
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::au:
+                distance = astro::AUtoKilometers(distanceValue);
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::radii:
+                distance = radius * distanceValue;
+            }
+        }
+
+        Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
+        if (loc->longitude && loc->latitude)
+        {
+            sim->gotoSelectionLongLat(5, distance, (float)loc->longitude.Value() * M_PI / 180.0, (float)loc->latitude.Value() * M_PI / 180.0, up);
+        }
+        else
+        {
+            sim->gotoSelection(5, distance, up, ObserverFrame::ObserverLocal);
         }
     }
 }

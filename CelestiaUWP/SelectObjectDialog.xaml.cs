@@ -19,13 +19,7 @@ namespace CelestiaUWP
 {
     public sealed partial class SelectObjectDialog : ContentDialog
     {
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(SelectObjectDialog), new PropertyMetadata(default(string)));
-        public string Text
-        {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
-        }
+        public string Text = "";
 
         public SelectObjectDialog()
         {

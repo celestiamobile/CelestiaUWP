@@ -75,6 +75,11 @@ namespace winrt::CelestiaComponent::implementation
         return s->empty();
     }
 
+    double CelestiaSelection::Radius()
+    {
+        return s->radius();
+    }
+
     CelestiaSelection::~CelestiaSelection()
     {
         delete s;

@@ -14,6 +14,6 @@
     x:Name="ContentDialog">
 
     <Grid>
-        <TextBox Text="{Binding ElementName=ContentDialog, Path=Text, Mode=TwoWay}" />
+        <TextBox Text="{x:Bind Text, Mode=TwoWay}" />
     </Grid>
 </ContentDialog>

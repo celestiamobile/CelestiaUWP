@@ -1,4 +1,5 @@
 import "CelestiaDestination.idl";
+import "CelestiaGotoLocation.idl";
 import "CelestiaSelection.idl";
 import "CelestiaUniverse.idl";
 
@@ -12,5 +13,6 @@ namespace CelestiaComponent
 
         CelestiaSelection Find(String name);
         void GoToDestination(CelestiaDestination destination);
+        void GoToLocation(CelestiaGotoLocation location);
     }
 }

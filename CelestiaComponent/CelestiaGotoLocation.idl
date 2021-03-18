@@ -1,0 +1,17 @@
+import "CelestiaSelection.idl";
+
+namespace CelestiaComponent
+{
+    enum CelestiaGotoLocationDistanceUnit
+    {
+        km = 0,
+        radii = 1,
+        au = 2
+    };
+
+    [default_interface]
+    runtimeclass CelestiaGotoLocation
+    {
+        CelestiaGotoLocation(CelestiaSelection selection, Windows.Foundation.IReference<Double> latitude, Windows.Foundation.IReference<Double> longitude, Windows.Foundation.IReference<Double> distance, Windows.Foundation.IReference<CelestiaGotoLocationDistanceUnit> unit);
+    }
+}

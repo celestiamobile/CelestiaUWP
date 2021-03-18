@@ -8,5 +8,6 @@ namespace CelestiaComponent
         CelestiaSelection(CelestiaAstroObject object);
         CelestiaAstroObject Object{ get; };
         Boolean IsEmpty{ get; };
+        Double Radius{ get; };
     }
 }

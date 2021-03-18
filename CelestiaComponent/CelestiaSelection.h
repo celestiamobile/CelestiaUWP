@@ -13,6 +13,7 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaAstroObject Object();
         bool IsEmpty();
+        double Radius();
 
         ~CelestiaSelection();
 
