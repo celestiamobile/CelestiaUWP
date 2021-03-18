@@ -1,0 +1,9 @@
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaScript
+    {
+        String Filename{ get; };
+        String Title{ get; };
+    }
+}

@@ -32,6 +32,7 @@ namespace CelestiaUWP
         private Point? mLastRightMousePosition = null;
 
         private GLView mGLView;
+        private String mCurrentPath;
 
         public MainPage()
         {
@@ -52,7 +53,8 @@ namespace CelestiaUWP
             {
                 CelestiaAppCore.InitGL();
                 string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
-                Directory.SetCurrentDirectory(installedPath + "\\CelestiaResources");
+                mCurrentPath = installedPath + "\\CelestiaResources";
+                Directory.SetCurrentDirectory(mCurrentPath);
                 string[] extraPaths = { };
                 if (!mAppCore.StartSimulation("celestia.cfg", extraPaths, delegate (string progress)
                 {
@@ -198,6 +200,21 @@ namespace CelestiaUWP
                 PickScript();
             };
             fileItem.Items.Add(openScriptItem);
+
+            var scriptsItem = new MenuFlyoutSubItem();
+            scriptsItem.Text = CelestiaAppCore.LocalizedString("Scripts");
+            var scripts = CelestiaAppCore.ReadScripts(mCurrentPath + "\\scripts", true);
+            foreach (var script in scripts)
+            {
+                var scriptItem = new MenuFlyoutItem();
+                scriptItem.Text = script.Title;
+                scriptsItem.Items.Add(scriptItem);
+                scriptItem.Click += (sender, arg) =>
+                {
+                    mAppCore.RunScript(script.Filename);
+                };
+            }
+            fileItem.Items.Add(scriptsItem);
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 

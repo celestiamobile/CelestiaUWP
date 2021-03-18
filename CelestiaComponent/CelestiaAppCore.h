@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CelestiaSimulation.h"
+#include "CelestiaScript.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 
@@ -28,6 +29,7 @@ namespace winrt::CelestiaComponent::implementation
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory);
         static hstring LocalizedString(hstring const& original);
+        static com_array<CelestiaComponent::CelestiaScript> ReadScripts(hstring const& directory, bool deepScan);
 
     private:
         CelestiaCore* core;

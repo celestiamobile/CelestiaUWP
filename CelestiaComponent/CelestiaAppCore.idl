@@ -1,3 +1,4 @@
+import "CelestiaScript.idl";
 import "CelestiaSelection.idl";
 import "CelestiaSimulation.idl";
 
@@ -29,5 +30,6 @@ namespace CelestiaComponent
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);
         static String LocalizedString(String original);
+        static CelestiaScript[] ReadScripts(String directory, Boolean deepScan);
     }
 }
