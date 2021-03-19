@@ -306,6 +306,20 @@ namespace CelestiaUWP
             {
                 ShowViewOptions();
             });
+            AppendItem(renderItem, CelestiaAppCore.LocalizedString("Locations"), (sender, arg) =>
+            {
+                ShowLocationSettings();
+            });
+            renderItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(renderItem, CelestiaAppCore.LocalizedString("More Stars Visible"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(93);
+            });
+            AppendItem(renderItem, CelestiaAppCore.LocalizedString("Fewer Stars Visible"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(91);
+            });
+
 
             var viewItem = new MenuBarItem();
             viewItem.Title = CelestiaAppCore.LocalizedString("View");
@@ -455,6 +469,20 @@ namespace CelestiaUWP
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
             appWindowContentFrame.Navigate(typeof(ViewOptionsPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
+        }
+
+        async void ShowLocationSettings()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(LocationSettingsPage), mAppCore);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
             await appWindow.TryShowAsync();
             appWindow.Closed += delegate

@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="CelestiaUWP.LocationSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <RelativePanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <TextBlock Margin="0, 8, 0, 8" Text="Show" x:Name="FeaturesHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="FeaturesHint">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCityLabels, Mode=TwoWay}" Content="Cities"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowObservatoryLabels, Mode=TwoWay}" Content="Observatories"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowLandingSiteLabels, Mode=TwoWay}" Content="Landing Sites"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMonsLabels, Mode=TwoWay}" Content="Montes (Mountains)"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMareLabels, Mode=TwoWay}" Content="Maria (Seas)"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="2">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCraterLabels, Mode=TwoWay}" Content="Craters"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowVallisLabels, Mode=TwoWay}" Content="Valles (Valleys)"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowTerraLabels, Mode=TwoWay}" Content="Terrae (Land masses)"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowOtherLabels, Mode=TwoWay}" Content="Other features"/>
+                </StackPanel>
+            </Grid>
+        </RelativePanel>
+        <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}" Content="Label Features"/>
+    </Grid>
+</Page>

@@ -25,9 +25,8 @@
             <TextBlock Margin="0, 8, 0, 8" Text="Show" x:Name="ShowHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
             <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="ShowHint">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="304*"/>
-                    <ColumnDefinition Width="27*"/>
-                    <ColumnDefinition Width="331*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
                     <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}" Content="Show Galaxies"/>

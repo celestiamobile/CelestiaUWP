@@ -129,6 +129,9 @@
     <Compile Include="GotoObjectDialog.xaml.cs">
       <DependentUpon>GotoObjectDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocationSettingsPage.xaml.cs">
+      <DependentUpon>LocationSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -183,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GotoObjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LocationSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
