@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "CelestiaHelper.h"
 #include "CelestiaEclipse.h"
 #if __has_include("CelestiaEclipse.g.cpp")
 #include "CelestiaEclipse.g.cpp"
@@ -8,7 +9,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaEclipse::CelestiaEclipse(Eclipse* e) : CelestiaEclipseT<CelestiaEclipse>(), startTime(e->startTime), endTime(endTime), occulter(nullptr), receiver(nullptr)
+	CelestiaEclipse::CelestiaEclipse(Eclipse* e) : CelestiaEclipseT<CelestiaEclipse>(), startTime(e->startTime), endTime(e->endTime), occulter(nullptr), receiver(nullptr)
 	{
 		occulter = make<CelestiaBody>(e->occulter);
 		receiver = make<CelestiaBody>(e->receiver);
@@ -24,13 +25,13 @@ namespace winrt::CelestiaComponent::implementation
 		return receiver;
 	}
 
-	double CelestiaEclipse::StartTime()
+	Windows::Foundation::DateTime CelestiaEclipse::StartTime()
 	{
-		return startTime;
+		return CelestiaHelper::DateTimeFromJulianDay(startTime);
 	}
 
-	double CelestiaEclipse::EndTime()
+	Windows::Foundation::DateTime CelestiaEclipse::EndTime()
 	{
-		return endTime;
+		return CelestiaHelper::DateTimeFromJulianDay(endTime);
 	}
 }

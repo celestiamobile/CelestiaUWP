@@ -14,7 +14,7 @@ namespace CelestiaComponent
     {
         CelestiaBody Occulter{ get; };
         CelestiaBody Receiver{ get; };
-        Double StartTime{ get; };
-        Double EndTime{ get; };
+        Windows.Foundation.DateTime StartTime{ get; };
+        Windows.Foundation.DateTime EndTime{ get; };
     }
 }

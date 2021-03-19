@@ -2,6 +2,7 @@
 
 #include <celengine/simulation.h>
 #include "CelestiaDestination.h"
+#include "CelestiaEclipse.h"
 #include "CelestiaGotoLocation.h"
 #include "CelestiaSelection.h"
 #include "CelestiaStarBrowser.h"
@@ -25,6 +26,7 @@ namespace winrt::CelestiaComponent::implementation
 
         void GoToDestination(CelestiaComponent::CelestiaDestination const& destination);
         void GoToLocation(CelestiaComponent::CelestiaGotoLocation const& location);
+        void GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse);
 
         Simulation* sim;
         CelestiaComponent::CelestiaUniverse u;

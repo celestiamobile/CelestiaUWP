@@ -263,6 +263,10 @@ namespace CelestiaUWP
             {
                 ShowBrowser();
             });
+            AppendItem(navigationItem, CelestiaAppCore.LocalizedString("Eclipse Finder"), (sender, arg) =>
+            {
+                ShowEclipseFinder();
+            });
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
@@ -377,6 +381,20 @@ namespace CelestiaUWP
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
             appWindowContentFrame.Navigate(typeof(BrowserPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
+        }
+
+        async void ShowEclipseFinder()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(EclipseFinderPage), mAppCore);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
             await appWindow.TryShowAsync();
             appWindow.Closed += delegate

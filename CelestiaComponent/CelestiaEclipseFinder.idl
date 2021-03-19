@@ -7,6 +7,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaEclipseFinder
     {
         CelestiaEclipseFinder(CelestiaBody body);
-        CelestiaEclipse[] Search(CelestiaEclipseKind kind, Double startTime, Double endTime);
+        CelestiaEclipse[] Search(CelestiaEclipseKind kind, Windows.Foundation.DateTime startTime, Windows.Foundation.DateTime endTime);
+        void Abort();
     }
 }

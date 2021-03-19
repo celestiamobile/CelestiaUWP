@@ -9,8 +9,10 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaEclipseFinder : CelestiaEclipseFinderT<CelestiaEclipseFinder>
     {
         CelestiaEclipseFinder(CelestiaComponent::CelestiaBody body);
-        com_array<CelestiaComponent::CelestiaEclipse> Search(CelestiaComponent::CelestiaEclipseKind kind, double startTime, double endTime);
+        com_array<CelestiaComponent::CelestiaEclipse> Search(CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const& startTime, Windows::Foundation::DateTime const& endTime);
         ~CelestiaEclipseFinder();
+
+        void Abort();
 
         EclipseFinder* f;
         EclipseFinderWatcher* w;

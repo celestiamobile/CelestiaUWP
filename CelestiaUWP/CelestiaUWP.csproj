@@ -122,6 +122,9 @@
     <Compile Include="BrowserPage.xaml.cs">
       <DependentUpon>BrowserPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EclipseFinderPage.xaml.cs">
+      <DependentUpon>EclipseFinderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GLView.cs" />
     <Compile Include="GotoObjectDialog.xaml.cs">
       <DependentUpon>GotoObjectDialog.xaml</DependentUpon>
@@ -166,6 +169,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="BrowserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EclipseFinderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

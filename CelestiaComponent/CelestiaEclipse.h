@@ -12,8 +12,8 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaBody Occulter();
         CelestiaComponent::CelestiaBody Receiver();
-        double StartTime();
-        double EndTime();
+        Windows::Foundation::DateTime StartTime();
+        Windows::Foundation::DateTime EndTime();
 
         CelestiaComponent::CelestiaBody occulter;
         CelestiaComponent::CelestiaBody receiver;

@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="CelestiaUWP.EclipseFinderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP"
+    xmlns:celestia="using:CelestiaComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <local:TimeConverter x:Key="TimeConverter"/>
+            <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+    <RelativePanel>
+        <ListView x:Name="ResultList" ItemsSource="{x:Bind mEclipses, Mode=OneWay}" SelectedIndex="{x:Bind mSelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="celestia:CelestiaEclipse">
+                    <RelativePanel>
+                        <TextBlock Text="{x:Bind local:EclipseFinderPage.GetEclipseDescription(Occulter, Receiver)}" RelativePanel.AlignLeftWithPanel="True"
+                                Grid.Column="0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind StartTime}" RelativePanel.AlignRightWithPanel="True"
+                                Grid.Column="2" VerticalAlignment="Center"/>
+                    </RelativePanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel x:Name="ControlContainer" Spacing="8" Orientation="Vertical" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+            <RelativePanel>
+                <TextBlock Text="Start time:" x:Name="StartTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind mStartTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+            <RelativePanel>
+                <TextBlock Text="End time:" x:Name="EndTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind mEndTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Object:" x:Name="ObjectHint" Grid.Column="0" VerticalAlignment="Center"/>
+                <ComboBox x:Name="ObjectChooser" ItemsSource="{x:Bind mAvailableObjects}" SelectedIndex="{x:Bind mSelectedObjectIndex, Mode=TwoWay}" Grid.Column="1"/>
+                <CheckBox Content="Solar" IsChecked="{x:Bind mFindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
+                <CheckBox Content="Lunar" IsChecked="{x:Bind mFindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
+            </Grid>
+            <RelativePanel>
+                <Button Content="Compute" x:Name="ComputeButton" Click="ComputeButton_Click" RelativePanel.AlignLeftWithPanel="True"/>
+                <Button Content="Set Date and Go to Planet" x:Name="GoButton" Click="GoButton_Click" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+        </StackPanel>
+    </RelativePanel>
+</Page>

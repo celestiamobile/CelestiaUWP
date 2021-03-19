@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include <celmath/geomutil.h>
 #include "CelestiaSimulation.h"
 #if __has_include("CelestiaSimulation.g.cpp")
 #include "CelestiaSimulation.g.cpp"
@@ -96,5 +97,29 @@ namespace winrt::CelestiaComponent::implementation
         {
             sim->gotoSelection(5, distance, up, ObserverFrame::ObserverLocal);
         }
+    }
+
+    void CelestiaSimulation::GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse)
+    {
+        auto e = get_self<CelestiaEclipse>(eclipse);
+        auto o = get_self<CelestiaBody>(e->Occulter());
+        auto r = get_self<CelestiaBody>(e->Receiver());
+        Star* star = reinterpret_cast<Body*>(r->obj)->getSystem()->getStar();
+        if (!star)
+            return;
+
+        auto target = ::Selection(reinterpret_cast<Body*>(r->obj));
+        auto ref = ::Selection(star);
+
+        if (target.empty() || ref.empty())
+            return;
+
+        sim->setTime(e->startTime);
+        sim->setFrame(ObserverFrame::PhaseLock, target, ref);
+        sim->update(0);
+        double distance = target.radius() * 4.0;
+        sim->gotoLocation(UniversalCoord::Zero().offsetKm(Eigen::Vector3d::UnitX() * distance),
+            celmath::YRotation(-0.5 * PI) * celmath::XRotation(-0.5 * PI),
+            2.5);
     }
 }

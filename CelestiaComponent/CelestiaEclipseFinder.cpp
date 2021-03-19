@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "CelestiaHelper.h"
 #include "CelestiaEclipseFinder.h"
 #if __has_include("CelestiaEclipseFinder.g.cpp")
 #include "CelestiaEclipseFinder.g.cpp"
@@ -29,11 +30,11 @@ namespace winrt::CelestiaComponent::implementation
         f = new EclipseFinder(reinterpret_cast<Body*>(get_self<CelestiaBody>(body)->obj), w);
 	}
 
-	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, double startTime, double endTime)
+	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const& startTime, Windows::Foundation::DateTime const& endTime)
 	{
         aborted = false;
         std::vector<Eclipse> results;
-        f->findEclipses(startTime, endTime, (int)kind, results);
+        f->findEclipses(CelestiaHelper::JulianDayFromDateTime(startTime), CelestiaHelper::JulianDayFromDateTime(endTime), (int)kind, results);
 
         std::vector<CelestiaComponent::CelestiaEclipse> vec;
         for (Eclipse& result : results)
@@ -48,5 +49,10 @@ namespace winrt::CelestiaComponent::implementation
     {
         delete f;
         delete w;
+    }
+
+    void CelestiaEclipseFinder::Abort()
+    {
+        aborted = true;
     }
 }
