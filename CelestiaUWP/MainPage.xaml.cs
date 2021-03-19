@@ -124,7 +124,7 @@ namespace CelestiaUWP
                     menu.Items.Add(item);
                 }
                 
-                menu.ShowAt(mGLView, new Point(x, y));
+                menu.ShowAt(mGLView, new Point(x, y - MenuBar.Height));
             });
             mGLView.PointerPressed += (sender, args) =>
             {
