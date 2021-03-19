@@ -301,6 +301,12 @@ namespace CelestiaUWP
 
             var renderItem = new MenuBarItem();
             renderItem.Title = CelestiaAppCore.LocalizedString("Render");
+
+            AppendItem(renderItem, CelestiaAppCore.LocalizedString("View Options"), (sender, arg) =>
+            {
+                ShowViewOptions();
+            });
+
             var viewItem = new MenuBarItem();
             viewItem.Title = CelestiaAppCore.LocalizedString("View");
             var bookmarkItem = new MenuBarItem();
@@ -442,6 +448,20 @@ namespace CelestiaUWP
                 var date = dialog.DisplayDate;
                 mAppCore.Simulation.Time = date;
             }
+        }
+
+        async void ShowViewOptions()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(ViewOptionsPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
         }
     }
 }

@@ -1,0 +1,122 @@
+﻿<Page
+    x:Class="CelestiaUWP.ViewOptionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="16" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <TextBlock Margin="0, 8, 0, 8" Text="Show" x:Name="ShowHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="ShowHint">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="304*"/>
+                    <ColumnDefinition Width="27*"/>
+                    <ColumnDefinition Width="331*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}" Content="Show Galaxies"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowGlobulars, Mode=TwoWay}" Content="Show Globulars"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowOpenClusters, Mode=TwoWay}" Content="Show Open Clusters"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowNebulae, Mode=TwoWay}" Content="Show Nebulae"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowStars, Mode=TwoWay}" Content="Show Stars"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowPlanets, Mode=TwoWay}" Content="Show Planets"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="2">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowAtmospheres, Mode=TwoWay}" Content="Show Atmospheres"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudMaps, Mode=TwoWay}" Content="Show Clouds"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudShadows, Mode=TwoWay}" Content="Show Cloud Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowRingShadows, Mode=TwoWay}" Content="Show Ring Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowEclipseShadows, Mode=TwoWay}" Content="Show Eclipse Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowNightMaps, Mode=TwoWay}" Content="Show Night Side Lights"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}" Content="Show Comet Tails"/>
+                </StackPanel>
+            </Grid>
+        </RelativePanel>
+        <RelativePanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="Orbits/Labels" x:Name="OrbitLabelHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="OrbitLabelHint">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowStellarOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowStarLabels, Mode=TwoWay}" Content="Stars"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowPlanetOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowPlanetLabels, Mode=TwoWay}" Content="Planets"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowDwarfPlanetOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowDwarfPlanetLabels, Mode=TwoWay}" Content="Dwarf Planets"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMoonLabels, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMoonLabels, Mode=TwoWay}" Content="Moons"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMinorMoonOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMinorMoonLabels, Mode=TwoWay}" Content="Minor Moons"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowAsteroidOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowAsteroidLabels, Mode=TwoWay}" Content="Asteroids"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCometOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}" Content="Comets"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowSpacecraftOrbits, Mode=TwoWay}" MinWidth="0"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowSpacecraftLabels, Mode=TwoWay}" Content="Spacecraft"/>
+                </StackPanel>
+            </StackPanel>
+        </RelativePanel>
+        <RelativePanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="DSO Labels" x:Name="DSOHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="DSOHint">
+                <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxyLabels, Mode=TwoWay}" Content="Galaxies"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowGlobularLabels, Mode=TwoWay}" Content="Globulars"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowOpenClusterLabels, Mode=TwoWay}" Content="Open Clusters"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowNebulaLabels, Mode=TwoWay}" Content="Nebulae"/>
+            </StackPanel>
+        </RelativePanel>
+        <RelativePanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="Information Text" x:Name="InfoHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="InfoHint">
+                <muxc:RadioButtons ItemsSource="{x:Bind InfoDescriptions}" SelectedIndex="{x:Bind AppCore.HudDetail, Mode=TwoWay}"></muxc:RadioButtons>
+            </StackPanel>
+        </RelativePanel>
+        <RelativePanel Grid.Row="2" Grid.Column="2" Grid.RowSpan="1" Grid.ColumnSpan="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="Constellations" x:Name="ConstellationHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="ConstellationHint">
+                <CheckBox IsChecked="{x:Bind AppCore.ShowDiagrams, Mode=TwoWay}" Content="Diagrams"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowBoundaries, Mode=TwoWay}" Content="Boundaries"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowConstellationLabels, Mode=TwoWay}" Content="Labels"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowLatinConstellationLabels, Mode=TwoWay}" Content="Latin Names"/>
+            </StackPanel>
+        </RelativePanel>
+        <RelativePanel Grid.Row="1" Grid.Column="2" Grid.RowSpan="1" Grid.ColumnSpan="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="Grids" x:Name="GridHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="GridHint">
+                <CheckBox IsChecked="{x:Bind AppCore.ShowCelestialSphere, Mode=TwoWay}" Content="Equatorial"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowHorizonGrid, Mode=TwoWay}" Content="Horizontal"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowGalacticGrid, Mode=TwoWay}" Content="Galactic"/>
+                <CheckBox IsChecked="{x:Bind AppCore.ShowEclipticGrid, Mode=TwoWay}" Content="Ecliptic"/>
+            </StackPanel>
+        </RelativePanel>
+    </Grid>
+</Page>

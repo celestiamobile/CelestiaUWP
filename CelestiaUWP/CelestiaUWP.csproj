@@ -150,6 +150,9 @@
     <Compile Include="TourGuidePage.xaml.cs">
       <DependentUpon>TourGuidePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewOptionsPage.xaml.cs">
+      <DependentUpon>ViewOptionsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TourGuidePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

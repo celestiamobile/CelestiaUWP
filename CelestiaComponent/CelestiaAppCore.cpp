@@ -193,7 +193,7 @@ namespace winrt::CelestiaComponent::implementation
 #define RENDERMETHODS(flag) \
 bool CelestiaAppCore::Show##flag() \
 { \
-    return (core->getRenderer()->getRenderFlags() & Renderer::Show##flag) == 0; \
+    return (core->getRenderer()->getRenderFlags() & Renderer::Show##flag) != 0; \
 } \
 void CelestiaAppCore::Show##flag(bool value) \
 { \
@@ -235,7 +235,7 @@ void CelestiaAppCore::Show##flag(bool value) \
 #define LABELMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Labels() \
 { \
-    return (core->getRenderer()->getLabelMode() & Renderer::flag##Labels) == 0; \
+    return (core->getRenderer()->getLabelMode() & Renderer::flag##Labels) != 0; \
 } \
 void CelestiaAppCore::Show##flag##Labels(bool value) \
 { \
@@ -271,7 +271,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 #define ORBITMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Orbits() \
 { \
-    return (core->getRenderer()->getOrbitMask() & Body::flag) == 0; \
+    return (core->getRenderer()->getOrbitMask() & Body::flag) != 0; \
 } \
 void CelestiaAppCore::Show##flag##Orbits(bool value) \
 { \
@@ -290,7 +290,7 @@ void CelestiaAppCore::Show##flag##Orbits(bool value) \
 #define FEATUREMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Labels() \
 { \
-    return (core->getSimulation()->getObserver().getLocationFilter() & Location::flag) == 0; \
+    return (core->getSimulation()->getObserver().getLocationFilter() & Location::flag) != 0; \
 } \
 void CelestiaAppCore::Show##flag##Labels(bool value) \
 { \
@@ -359,7 +359,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     int32_t CelestiaAppCore::DateFormat()
     {
-        return core->getDateFormat();
+        return (int32_t)core->getDateFormat();
     }
 
     void CelestiaAppCore::DateFormat(int32_t dateFormat)
