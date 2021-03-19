@@ -26,8 +26,10 @@ namespace CelestiaComponent
         void CharEnter(Int16 input);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
         void RunScript(String path);
+        void GoToURL(String url);
         CelestiaDestination[] Destinations{ get; };
         CelestiaSimulation Simulation{ get; };
+        String CurrentURL{ get; };
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);

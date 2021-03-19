@@ -25,8 +25,10 @@ namespace winrt::CelestiaComponent::implementation
         void CharEnter(int16_t input);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
         void RunScript(hstring const& path);
+        void GoToURL(hstring const& url);
         com_array<CelestiaComponent::CelestiaDestination> Destinations();
         CelestiaComponent::CelestiaSimulation Simulation();
+        hstring CurrentURL();
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory);

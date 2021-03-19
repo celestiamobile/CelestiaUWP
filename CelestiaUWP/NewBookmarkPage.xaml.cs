@@ -20,12 +20,21 @@ using System.Collections.ObjectModel;
 
 namespace CelestiaUWP
 {
-    public sealed partial class BookmarkOrganizerPage : Page, INotifyPropertyChanged
+    public class BookmarkNode
+    {
+        public bool IsFolder;
+        public string Name;
+        public string URL;
+        public ObservableCollection<BookmarkNode> Children;
+    }
+
+    public sealed partial class NewBookmarkPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
+        private string NameText;
 
         private ObservableCollection<BookmarkNode> Bookmarks = new ObservableCollection<BookmarkNode>();
-        public BookmarkOrganizerPage()
+        public NewBookmarkPage()
         {
             this.InitializeComponent();
         }
@@ -154,12 +163,20 @@ namespace CelestiaUWP
             }
         }
 
-        private void GoButton_Click(object sender, RoutedEventArgs e)
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Tree.SelectedItem == null) return;
-            var bookmark = (BookmarkNode)Tree.SelectedItem;
-            if (bookmark.URL != null)
-                mAppCore.GoToURL(bookmark.URL);
+            if (NameText == null) return;
+            var bookmark = new BookmarkNode();
+            bookmark.IsFolder = false;
+            bookmark.Name = NameText;
+            bookmark.URL = mAppCore.CurrentURL;
+            bookmark.Children = new ObservableCollection<BookmarkNode>();
+            var parent = Tree.SelectedItem;
+            if (parent == null)
+                Bookmarks.Add(bookmark);
+            else
+                ((BookmarkNode)parent).Children.Add(bookmark);
+            writeBookmarks();
         }
     }
 }

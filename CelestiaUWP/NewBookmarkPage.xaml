@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="CelestiaUWP.BookmarkOrganizerPage"
+    x:Class="CelestiaUWP.NewBookmarkPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CelestiaUWP"
@@ -10,7 +10,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <RelativePanel Margin="16">
-        <muxc:TreeView x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
+        <RelativePanel x:Name="NewNameContainer" Margin="0, 0, 0, 16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  RelativePanel.AlignTopWithPanel="True" >
+            <TextBox Text="{x:Bind NameText, Mode=TwoWay}" Margin="0, 0, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="ConfirmButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="OK" x:Name="ConfirmButton" Click="ConfirmButton_Click" Width="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
+        <muxc:TreeView x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="NewNameContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <muxc:TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:BookmarkNode">
                     <muxc:TreeViewItem ItemsSource="{x:Bind Children}"
@@ -18,11 +22,10 @@
                 </DataTemplate>
             </muxc:TreeView.ItemTemplate>
         </muxc:TreeView>
-        <StackPanel x:Name="ButtonStack" Spacing="8" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
+        <StackPanel x:Name="ButtonStack" Spacing="8" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="NewNameContainer" RelativePanel.AlignBottomWithPanel="True" >
             <Button Content="New Folder" x:Name="NewFolderButton" Click="NewFolderButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Rename" x:Name="RenameButton" Click="RenameButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Delete" x:Name="DeleteButton" Click="DeleteButton_Click" HorizontalAlignment="Center" Width="100"></Button>
-            <Button Content="Go" x:Name="GoButton" Click="GoButton_Click" HorizontalAlignment="Center" Width="100"></Button>
         </StackPanel>
     </RelativePanel>
 </Page>

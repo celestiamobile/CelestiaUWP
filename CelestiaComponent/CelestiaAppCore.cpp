@@ -1,4 +1,6 @@
 ﻿#include "pch.h"
+#include <celestia/celestiastate.h>
+#include <celestia/url.h>
 #include "CelestiaAppCore.h"
 #include "CelestiaSelection.h"
 #if __has_include("CelestiaAppCore.g.cpp")
@@ -139,6 +141,11 @@ namespace winrt::CelestiaComponent::implementation
         core->runScript(to_string(path));
     }
 
+    void CelestiaAppCore::GoToURL(hstring const& url)
+    {
+        core->goToUrl(to_string(url));
+    }
+
     com_array<CelestiaComponent::CelestiaDestination> CelestiaAppCore::Destinations()
     {
         auto destinations = core->getDestinations();
@@ -155,6 +162,15 @@ namespace winrt::CelestiaComponent::implementation
         if (sim == nullptr)
             sim = make<implementation::CelestiaSimulation>(core->getSimulation());
         return sim;
+    }
+
+    hstring CelestiaAppCore::CurrentURL()
+    {
+        CelestiaState appState(core);
+        appState.captureState();
+
+        Url currentURL(appState, Url::CurrentVersion);
+        return to_hstring(currentURL.getAsString());
     }
 
     void CelestiaAppCore::InitGL()

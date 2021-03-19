@@ -194,6 +194,7 @@ namespace CelestiaUWP
         }
         void PopulateMenuBar()
         {
+            MenuBar.Visibility = Visibility.Visible;
             var fileItem = new MenuBarItem();
             fileItem.Title = CelestiaAppCore.LocalizedString("File");
 
@@ -375,6 +376,7 @@ namespace CelestiaUWP
             bookmarkItem.Title = CelestiaAppCore.LocalizedString("Bookmarks");
             AppendItem(bookmarkItem, CelestiaAppCore.LocalizedString("Add Bookmarks"), (sender, arg) =>
             {
+                ShowNewBookmark();
             });
             AppendItem(bookmarkItem, CelestiaAppCore.LocalizedString("Organize Bookmarks"), (sender, arg) =>
             {
@@ -557,6 +559,20 @@ namespace CelestiaUWP
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
             appWindowContentFrame.Navigate(typeof(BookmarkOrganizerPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
+        }
+
+        async void ShowNewBookmark()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(NewBookmarkPage), mAppCore);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
             await appWindow.TryShowAsync();
             appWindow.Closed += delegate
