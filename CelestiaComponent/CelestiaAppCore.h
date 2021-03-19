@@ -29,6 +29,7 @@ namespace winrt::CelestiaComponent::implementation
         com_array<CelestiaComponent::CelestiaDestination> Destinations();
         CelestiaComponent::CelestiaSimulation Simulation();
         hstring CurrentURL();
+        hstring RenderInfo();
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory);

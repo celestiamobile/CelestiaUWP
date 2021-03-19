@@ -389,6 +389,11 @@ namespace CelestiaUWP
             {
                 mAppCore.CharEnter(100);
             });
+            helpItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(helpItem, CelestiaAppCore.LocalizedString("OpenGL Info"), (sender, arg) =>
+            {
+                ShowOpenGLInfo();
+            });
 
             MenuBar.Items.Add(fileItem);
             MenuBar.Items.Add(navigationItem);
@@ -580,6 +585,12 @@ namespace CelestiaUWP
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
+        }
+        async void ShowOpenGLInfo()
+        {
+            var dialog = new InfoDialog(mAppCore.RenderInfo);
+            dialog.Title = CelestiaAppCore.LocalizedString("OpenGL Info");
+            await dialog.ShowAsync();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -122,6 +122,9 @@
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InfoDialog.xaml.cs">
+      <DependentUpon>InfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewBookmarkPage.xaml.cs">
       <DependentUpon>NewBookmarkPage.xaml</DependentUpon>
     </Compile>
@@ -184,6 +187,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="BookmarkOrganizerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

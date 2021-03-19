@@ -30,6 +30,7 @@ namespace CelestiaComponent
         CelestiaDestination[] Destinations{ get; };
         CelestiaSimulation Simulation{ get; };
         String CurrentURL{ get; };
+        String RenderInfo{ get; };
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory);

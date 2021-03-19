@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include <celestia/celestiastate.h>
 #include <celestia/url.h>
+#include <celestia/helper.h>
 #include "CelestiaAppCore.h"
 #include "CelestiaSelection.h"
 #if __has_include("CelestiaAppCore.g.cpp")
@@ -171,6 +172,11 @@ namespace winrt::CelestiaComponent::implementation
 
         Url currentURL(appState, Url::CurrentVersion);
         return to_hstring(currentURL.getAsString());
+    }
+
+    hstring CelestiaAppCore::RenderInfo()
+    {
+        return to_hstring(Helper::getRenderInfo(core->getRenderer()));
     }
 
     void CelestiaAppCore::InitGL()

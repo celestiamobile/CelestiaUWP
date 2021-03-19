@@ -10,7 +10,7 @@
 
     <RelativePanel>
         <Frame Background="Black" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
-        <MenuBar x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
+        <MenuBar Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
         <Grid x:Name="MainContainer" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></Grid>
     </RelativePanel>
 </Page>
