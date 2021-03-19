@@ -493,6 +493,19 @@
     <ClCompile Include="CelestiaGalaxy.cpp" />
     <ClCompile Include="CelestiaStar.cpp" />
     <ClCompile Include="CelestiaSelection.cpp" />
+    <ClCompile Include="CelestiaLocation.cpp" />
+    <ClCompile Include="CelestiaSimulation.cpp" />
+    <ClCompile Include="CelestiaUniverse.cpp" />
+    <ClCompile Include="CelestiaEclipse.cpp" />
+    <ClCompile Include="CelestiaEclipseFinder.cpp" />
+    <ClCompile Include="CelestiaHelper.cpp" />
+    <ClCompile Include="CelestiaStarBrowser.cpp" />
+    <ClCompile Include="CelestiaBrowserItem.cpp" />
+    <ClCompile Include="CelestiaStarCatalog.cpp" />
+    <ClCompile Include="CelestiaScript.cpp" />
+    <ClCompile Include="CelestiaGotoLocation.cpp" />
+    <ClCompile Include="CelestiaDestination.cpp" />
+    <ClCompile Include="CelestiaDSOCatalog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
