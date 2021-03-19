@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include <celmath/geomutil.h>
+#include "CelestiaHelper.h"
 #include "CelestiaSimulation.h"
 #if __has_include("CelestiaSimulation.g.cpp")
 #include "CelestiaSimulation.g.cpp"
@@ -22,6 +23,16 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		sim->setSelection(*get_self<CelestiaSelection>(selection)->s);
 	}
+
+    Windows::Foundation::DateTime CelestiaSimulation::Time()
+    {
+        return CelestiaHelper::DateTimeFromJulianDay(sim->getTime());
+    }
+
+    void CelestiaSimulation::Time(Windows::Foundation::DateTime const& time)
+    {
+        sim->setTime(CelestiaHelper::JulianDayFromDateTime(time));
+    }
 
 	CelestiaComponent::CelestiaUniverse CelestiaSimulation::Universe()
 	{

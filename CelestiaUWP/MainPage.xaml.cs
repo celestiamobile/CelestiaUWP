@@ -270,6 +270,35 @@ namespace CelestiaUWP
 
             var timeItem = new MenuBarItem();
             timeItem.Title = CelestiaAppCore.LocalizedString("Time");
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("10x Faster"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(108);
+            });
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("10x Slower"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(107);
+            });
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("Freeze"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(32);
+            });
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("Real Time"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(33);
+            });
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("Reverse Time"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(106);
+            });
+
+            timeItem.Items.Add(new MenuFlyoutSeparator());
+
+            AppendItem(timeItem, CelestiaAppCore.LocalizedString("Set Time..."), (sender, arg) =>
+            {
+                ShowTimeSetting();
+            });
+
+
             var renderItem = new MenuBarItem();
             renderItem.Title = CelestiaAppCore.LocalizedString("Render");
             var viewItem = new MenuBarItem();
@@ -402,6 +431,17 @@ namespace CelestiaUWP
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
+        }
+
+        async void ShowTimeSetting()
+        {
+            var dialog = new TimeSettingDialog(mAppCore.Simulation.Time);
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var date = dialog.DisplayDate;
+                mAppCore.Simulation.Time = date;
+            }
         }
     }
 }

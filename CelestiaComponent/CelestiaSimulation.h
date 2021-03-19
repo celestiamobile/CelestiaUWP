@@ -18,6 +18,9 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaSelection Selection();
         void Selection(CelestiaComponent::CelestiaSelection const& selection);
 
+        Windows::Foundation::DateTime Time();
+        void Time(Windows::Foundation::DateTime const& time);
+
         CelestiaComponent::CelestiaUniverse Universe();
 
         CelestiaComponent::CelestiaSelection Find(hstring const& name);

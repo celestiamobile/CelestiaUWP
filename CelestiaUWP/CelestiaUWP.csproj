@@ -144,6 +144,9 @@
     <Compile Include="SelectObjectDialog.xaml.cs">
       <DependentUpon>SelectObjectDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TimeSettingDialog.xaml.cs">
+      <DependentUpon>TimeSettingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TourGuidePage.xaml.cs">
       <DependentUpon>TourGuidePage.xaml</DependentUpon>
     </Compile>
@@ -185,6 +188,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SelectObjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeSettingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

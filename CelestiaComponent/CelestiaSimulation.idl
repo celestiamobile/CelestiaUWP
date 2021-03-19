@@ -11,6 +11,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaSimulation
     {
         CelestiaSelection Selection;
+        Windows.Foundation.DateTime Time;
         CelestiaUniverse Universe{ get; };
 
         CelestiaSelection Find(String name);
