@@ -19,10 +19,11 @@ using CelestiaComponent;
 using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Hosting;
+using System.ComponentModel;
 
 namespace CelestiaUWP
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
 
@@ -319,14 +320,65 @@ namespace CelestiaUWP
             {
                 mAppCore.CharEnter(91);
             });
-
+            var starStyleItem = new MenuFlyoutSubItem();
+            starStyleItem.Text = CelestiaAppCore.LocalizedString("Star Style");
+            AppendSubItem(starStyleItem, CelestiaAppCore.LocalizedString("Fuzzy Points"), (sender, arg) =>
+            {
+                mAppCore.StarStyle = 0;
+            });
+            AppendSubItem(starStyleItem, CelestiaAppCore.LocalizedString("Points"), (sender, arg) =>
+            {
+                mAppCore.StarStyle = 1;
+            });
+            AppendSubItem(starStyleItem, CelestiaAppCore.LocalizedString("Scaled Discs"), (sender, arg) =>
+            {
+                mAppCore.StarStyle = 2;
+            });
+            renderItem.Items.Add(starStyleItem);
+            renderItem.Items.Add(new MenuFlyoutSeparator());
+            var resolutionItem = new MenuFlyoutSubItem();
+            resolutionItem.Text = CelestiaAppCore.LocalizedString("Texture Resolution");
+            AppendSubItem(resolutionItem, CelestiaAppCore.LocalizedString("Low"), (sender, arg) =>
+            {
+                mAppCore.Resolution = 0;
+            });
+            AppendSubItem(resolutionItem, CelestiaAppCore.LocalizedString("Medium"), (sender, arg) =>
+            {
+                mAppCore.Resolution = 1;
+            });
+            AppendSubItem(resolutionItem, CelestiaAppCore.LocalizedString("High"), (sender, arg) =>
+            {
+                mAppCore.Resolution = 2;
+            });
+            renderItem.Items.Add(resolutionItem);
 
             var viewItem = new MenuBarItem();
             viewItem.Title = CelestiaAppCore.LocalizedString("View");
+            AppendItem(viewItem, CelestiaAppCore.LocalizedString("Split Horizontally"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(18);
+            });
+            AppendItem(viewItem, CelestiaAppCore.LocalizedString("Split Vertically"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(21);
+            });
+            AppendItem(viewItem, CelestiaAppCore.LocalizedString("Delete Active View"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(127);
+            });
+            AppendItem(viewItem, CelestiaAppCore.LocalizedString("Single View"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(4);
+            });
+
             var bookmarkItem = new MenuBarItem();
             bookmarkItem.Title = CelestiaAppCore.LocalizedString("Bookmarks");
             var helpItem = new MenuBarItem();
             helpItem.Title = CelestiaAppCore.LocalizedString("Help");
+            AppendItem(helpItem, CelestiaAppCore.LocalizedString("Run Demo"), (sender, arg) =>
+            {
+                mAppCore.CharEnter(100);
+            });
 
             MenuBar.Items.Add(fileItem);
             MenuBar.Items.Add(navigationItem);
@@ -490,6 +542,15 @@ namespace CelestiaUWP
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
