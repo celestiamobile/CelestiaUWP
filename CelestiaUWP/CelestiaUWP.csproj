@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookmarkOrganizerPage.xaml.cs">
+      <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BrowserPage.xaml.cs">
       <DependentUpon>BrowserPage.xaml</DependentUpon>
     </Compile>
@@ -144,8 +147,8 @@
     <Compile Include="OpenGLES\GL\GLenums.cs" />
     <Compile Include="OpenGLES\OpenGLES.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectObjectDialog.xaml.cs">
-      <DependentUpon>SelectObjectDialog.xaml</DependentUpon>
+    <Compile Include="TextInputDialog.xaml.cs">
+      <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeSettingDialog.xaml.cs">
       <DependentUpon>TimeSettingDialog.xaml</DependentUpon>
@@ -177,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BookmarkOrganizerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BrowserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,7 +204,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SelectObjectDialog.xaml">
+    <Page Include="TextInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -373,6 +373,14 @@ namespace CelestiaUWP
 
             var bookmarkItem = new MenuBarItem();
             bookmarkItem.Title = CelestiaAppCore.LocalizedString("Bookmarks");
+            AppendItem(bookmarkItem, CelestiaAppCore.LocalizedString("Add Bookmarks"), (sender, arg) =>
+            {
+            });
+            AppendItem(bookmarkItem, CelestiaAppCore.LocalizedString("Organize Bookmarks"), (sender, arg) =>
+            {
+                ShowBookmarkOrganizer();
+            });
+
             var helpItem = new MenuBarItem();
             helpItem.Title = CelestiaAppCore.LocalizedString("Help");
             AppendItem(helpItem, CelestiaAppCore.LocalizedString("Run Demo"), (sender, arg) =>
@@ -431,7 +439,7 @@ namespace CelestiaUWP
         }
         async void ShowSelectObject()
         {
-            var dialog = new SelectObjectDialog();
+            var dialog = new TextInputDialog(CelestiaAppCore.LocalizedString("Object name:"));
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
@@ -535,6 +543,20 @@ namespace CelestiaUWP
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
             appWindowContentFrame.Navigate(typeof(LocationSettingsPage), mAppCore);
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
+        }
+
+        async void ShowBookmarkOrganizer()
+        {
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(BookmarkOrganizerPage), mAppCore);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
             await appWindow.TryShowAsync();
             appWindow.Closed += delegate

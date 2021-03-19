@@ -17,14 +17,14 @@ using CelestiaComponent;
 
 namespace CelestiaUWP
 {
-    public sealed partial class SelectObjectDialog : ContentDialog
+    public sealed partial class TextInputDialog : ContentDialog
     {
         public string Text = "";
 
-        public SelectObjectDialog()
+        public TextInputDialog(string title)
         {
             this.InitializeComponent();
-            Title = CelestiaAppCore.LocalizedString("Object name:");
+            Title = title;
             PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
             SecondaryButtonText = CelestiaAppCore.LocalizedString("Cancel");
         }
