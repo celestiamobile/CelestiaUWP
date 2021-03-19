@@ -182,4 +182,243 @@ namespace winrt::CelestiaComponent::implementation
         }
         return com_array(vector);
     }
+
+
+    static uint64_t bit_mask_value_update(bool value, uint64_t bit, uint64_t set)
+    {
+        uint64_t result = value ? ((bit & set) ? set : (set | bit)) : ((bit & set) ? (set ^ bit) : set);
+        return result;
+    }
+
+#define RENDERMETHODS(flag) \
+bool CelestiaAppCore::Show##flag() \
+{ \
+    return (core->getRenderer()->getRenderFlags() & Renderer::Show##flag) == 0; \
+} \
+void CelestiaAppCore::Show##flag(bool value) \
+{ \
+    core->getRenderer()->setRenderFlags(bit_mask_value_update(value, Renderer::Show##flag, core->getRenderer()->getRenderFlags())); \
+} \
+
+    RENDERMETHODS(Stars)
+    RENDERMETHODS(Planets)
+    RENDERMETHODS(DwarfPlanets)
+    RENDERMETHODS(Moons)
+    RENDERMETHODS(MinorMoons)
+    RENDERMETHODS(Asteroids)
+    RENDERMETHODS(Comets)
+    RENDERMETHODS(Spacecrafts)
+    RENDERMETHODS(Galaxies)
+    RENDERMETHODS(Globulars)
+    RENDERMETHODS(Nebulae)
+    RENDERMETHODS(OpenClusters)
+    RENDERMETHODS(Diagrams)
+    RENDERMETHODS(Boundaries)
+    RENDERMETHODS(CloudMaps)
+    RENDERMETHODS(NightMaps)
+    RENDERMETHODS(Atmospheres)
+    RENDERMETHODS(CometTails)
+    RENDERMETHODS(PlanetRings)
+    RENDERMETHODS(Markers)
+    RENDERMETHODS(Orbits)
+    RENDERMETHODS(PartialTrajectories)
+    RENDERMETHODS(SmoothLines)
+    RENDERMETHODS(EclipseShadows)
+    RENDERMETHODS(RingShadows)
+    RENDERMETHODS(CloudShadows)
+    RENDERMETHODS(AutoMag)
+    RENDERMETHODS(CelestialSphere)
+    RENDERMETHODS(EclipticGrid)
+    RENDERMETHODS(HorizonGrid)
+    RENDERMETHODS(GalacticGrid)
+
+#define LABELMETHODS(flag) \
+bool CelestiaAppCore::Show##flag##Labels() \
+{ \
+    return (core->getRenderer()->getLabelMode() & Renderer::flag##Labels) == 0; \
+} \
+void CelestiaAppCore::Show##flag##Labels(bool value) \
+{ \
+    core->getRenderer()->setLabelMode((int)bit_mask_value_update(value, Renderer::flag##Labels, core->getRenderer()->getLabelMode())); \
+}
+    LABELMETHODS(Star)
+    LABELMETHODS(Planet)
+    LABELMETHODS(Moon)
+    LABELMETHODS(Constellation)
+    LABELMETHODS(Galaxy)
+    LABELMETHODS(Globular)
+    LABELMETHODS(Nebula)
+    LABELMETHODS(OpenCluster)
+    LABELMETHODS(Asteroid)
+    LABELMETHODS(Spacecraft)
+    LABELMETHODS(Location)
+    LABELMETHODS(Comet)
+    LABELMETHODS(DwarfPlanet)
+    LABELMETHODS(MinorMoon)
+    LABELMETHODS(I18nConstellation)
+
+
+    bool CelestiaAppCore::ShowLatinConstellationLabels()
+    {
+        return !ShowI18nConstellationLabels();
+    }
+
+    void CelestiaAppCore::ShowLatinConstellationLabels(bool showLatinConstellationLabels)
+    {
+        ShowI18nConstellationLabels(!showLatinConstellationLabels);
+    }
+
+#define ORBITMETHODS(flag) \
+bool CelestiaAppCore::Show##flag##Orbits() \
+{ \
+    return (core->getRenderer()->getOrbitMask() & Body::flag) == 0; \
+} \
+void CelestiaAppCore::Show##flag##Orbits(bool value) \
+{ \
+    core->getRenderer()->setOrbitMask((int)bit_mask_value_update(value, Body::flag, core->getRenderer()->getOrbitMask())); \
+}
+
+    ORBITMETHODS(Planet)
+    ORBITMETHODS(Moon)
+    ORBITMETHODS(Asteroid)
+    ORBITMETHODS(Spacecraft)
+    ORBITMETHODS(Comet)
+    ORBITMETHODS(Stellar)
+    ORBITMETHODS(DwarfPlanet)
+    ORBITMETHODS(MinorMoon)
+
+#define FEATUREMETHODS(flag) \
+bool CelestiaAppCore::Show##flag##Labels() \
+{ \
+    return (core->getSimulation()->getObserver().getLocationFilter() & Location::flag) == 0; \
+} \
+void CelestiaAppCore::Show##flag##Labels(bool value) \
+{ \
+    core->getSimulation()->getObserver().setLocationFilter((int)bit_mask_value_update(value, Location::flag, core->getSimulation()->getObserver().getLocationFilter())); \
+}
+    FEATUREMETHODS(City)
+    FEATUREMETHODS(Observatory)
+    FEATUREMETHODS(LandingSite)
+    FEATUREMETHODS(Crater)
+    FEATUREMETHODS(Vallis)
+    FEATUREMETHODS(Mons)
+    FEATUREMETHODS(Planum)
+    FEATUREMETHODS(Chasma)
+    FEATUREMETHODS(Patera)
+    FEATUREMETHODS(Mare)
+    FEATUREMETHODS(Rupes)
+    FEATUREMETHODS(Tessera)
+    FEATUREMETHODS(Regio)
+    FEATUREMETHODS(Chaos)
+    FEATUREMETHODS(Terra)
+    FEATUREMETHODS(Astrum)
+    FEATUREMETHODS(Corona)
+    FEATUREMETHODS(Dorsum)
+    FEATUREMETHODS(Fossa)
+    FEATUREMETHODS(Catena)
+    FEATUREMETHODS(Mensa)
+    FEATUREMETHODS(Rima)
+    FEATUREMETHODS(Undae)
+    FEATUREMETHODS(Reticulum)
+    FEATUREMETHODS(Planitia)
+    FEATUREMETHODS(Linea)
+    FEATUREMETHODS(Fluctus)
+    FEATUREMETHODS(Farrum)
+    FEATUREMETHODS(EruptiveCenter)
+    FEATUREMETHODS(Other)
+
+    int32_t CelestiaAppCore::Resolution()
+    {
+        return core->getRenderer()->getResolution();
+    }
+
+    void CelestiaAppCore::Resolution(int32_t resolution)
+    {
+        core->getRenderer()->setResolution(resolution);
+    }
+
+    int32_t CelestiaAppCore::StarStyle()
+    {
+        return (int32_t)core->getRenderer()->getStarStyle();
+    }
+
+    void CelestiaAppCore::StarStyle(int32_t starStyle)
+    {
+        core->getRenderer()->setStarStyle((Renderer::StarStyle)starStyle);
+    }
+
+    int32_t CelestiaAppCore::HudDetail()
+    {
+        return core->getHudDetail();
+    }
+
+    void CelestiaAppCore::HudDetail(int32_t hudDetail)
+    {
+        core->setHudDetail(hudDetail);
+    }
+
+    int32_t CelestiaAppCore::DateFormat()
+    {
+        return core->getDateFormat();
+    }
+
+    void CelestiaAppCore::DateFormat(int32_t dateFormat)
+    {
+        core->setDateFormat((astro::Date::Format)dateFormat);
+    }
+
+    double CelestiaAppCore::AmbientLightLevel()
+    {
+        return core->getRenderer()->getAmbientLightLevel();
+    }
+
+    void CelestiaAppCore::AmbientLightLevel(double ambientLightLevel)
+    {
+        core->getRenderer()->setAmbientLightLevel((float)ambientLightLevel);
+    }
+
+    double CelestiaAppCore::FaintestVisible()
+    {
+        if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
+        {
+            return core->getSimulation()->getFaintestVisible();
+        }
+        else
+        {
+            return core->getRenderer()->getFaintestAM45deg();
+        }
+    }
+
+    void CelestiaAppCore::FaintestVisible(double faintestVisible)
+    {
+        if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
+        {
+            core->setFaintest((float)faintestVisible);
+        }
+        else
+        {
+            core->getRenderer()->setFaintestAM45deg((float)faintestVisible);
+            core->setFaintestAutoMag();
+        }
+    }
+
+    double CelestiaAppCore::GalaxyBrightness()
+    {
+        return Galaxy::getLightGain();
+    }
+
+    void CelestiaAppCore::GalaxyBrightness(double galaxyBrightness)
+    {
+        Galaxy::setLightGain((float)galaxyBrightness);
+    }
+
+    double CelestiaAppCore::MinimumFeatureSize()
+    {
+        return core->getRenderer()->getMinimumFeatureSize();
+    }
+
+    void CelestiaAppCore::MinimumFeatureSize(double minimumFeatureSize)
+    {
+        core->getRenderer()->setMinimumFeatureSize((float)minimumFeatureSize);
+    }
 }
