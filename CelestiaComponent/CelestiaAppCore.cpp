@@ -2,6 +2,9 @@
 #include <celestia/celestiastate.h>
 #include <celestia/url.h>
 #include <celestia/helper.h>
+#ifdef ENABLE_NLS
+#include <celutil/gettext.h>
+#endif
 #include "CelestiaAppCore.h"
 #include "CelestiaSelection.h"
 #if __has_include("CelestiaAppCore.g.cpp")
@@ -186,6 +189,19 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory)
     {
+#ifdef ENABLE_NLS
+        std::string dir = to_string(localeDirectory);
+        // Gettext integration
+        setlocale(LC_ALL, "");
+        setlocale(LC_NUMERIC, "C");
+        bindtextdomain("celestia", dir.c_str());
+        bind_textdomain_codeset("celestia", "UTF-8");
+        bindtextdomain("celestia_constellations", dir.c_str());
+        bind_textdomain_codeset("celestia_constellations", "UTF-8");
+        bindtextdomain("celestia_ui", dir.c_str());
+        bind_textdomain_codeset("celestia_ui", "UTF-8");
+        textdomain("celestia");
+#endif
     }
 
     hstring CelestiaAppCore::LocalizedString(hstring const& original)

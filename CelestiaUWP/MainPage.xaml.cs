@@ -58,6 +58,7 @@ namespace CelestiaUWP
                 string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
                 mCurrentPath = installedPath + "\\CelestiaResources";
                 Directory.SetCurrentDirectory(mCurrentPath);
+                CelestiaAppCore.SetLocaleDirectory(mCurrentPath + "\\locale");
                 string[] extraPaths = { };
                 if (!mAppCore.StartSimulation("celestia.cfg", extraPaths, delegate (string progress)
                 {
