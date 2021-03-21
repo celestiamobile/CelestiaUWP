@@ -67,7 +67,7 @@ namespace GLUWP
 			{
 				// The app can configure the the SwapChainPanel which may boost performance.
 				// By default, this template uses the default configuration.
-				mRenderSurface = mOpenGLES.CreateSurface(this, null, null);
+				mRenderSurface = mOpenGLES.CreateSurface(this, null, ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f);
 
 				// You can configure the SwapChainPanel to render at a lower resolution and be scaled up to
 				// the swapchain panel size. This scaling is often free on mobile hardware.

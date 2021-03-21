@@ -3,6 +3,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml.Controls;
 
+using WinRTHelper;
+
 namespace GLUWP
 {
     public class OpenGLES
@@ -194,14 +196,11 @@ namespace GLUWP
                     PropertyValue.CreateSize((Size) renderSurfaceSize));
             }
 
-#if TODO
             // If a resolution scale is specified, add it to the surface creation properties
             if (resolutionScale != null)
             {
-                surfaceCreationProperties.Add(ANGLEWindowsStore.EGLRenderResolutionScaleProperty,
-                    PropertyValue.CreateSingle(resolutionScale));
+                Helper.PropertySetAddSingle(surfaceCreationProperties, ANGLEWindowsStore.EGLRenderResolutionScaleProperty, (float)resolutionScale);
             }
-#endif
 
             surface = EGL.CreateWindowSurface(mEglDisplay, mEglConfig, surfaceCreationProperties, surfaceAttributes);
             if (surface == EGL.NO_SURFACE)

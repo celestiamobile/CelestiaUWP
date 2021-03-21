@@ -8,11 +8,7 @@ using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 using GLUWP;
 using CelestiaComponent;
@@ -37,6 +33,8 @@ namespace CelestiaUWP
         private GLView mGLView;
         private String mCurrentPath;
 
+        private float scale = 1.0f;
+
         public MainPage()
         {
             mAppCore = new CelestiaAppCore();
@@ -48,6 +46,8 @@ namespace CelestiaUWP
             loadingText.HorizontalAlignment = HorizontalAlignment.Center;
             loadingText.VerticalAlignment = VerticalAlignment.Center;
             loadingText.FontSize = 30;
+
+            scale = ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f;
 
             MainContainer.Children.Add(loadingText);
 
@@ -69,6 +69,7 @@ namespace CelestiaUWP
                 {
                     return false;
                 }
+                mAppCore.SetDPI((int)(96 * scale));
                 if (!mAppCore.StartRenderer())
                     return false;
 
@@ -124,14 +125,15 @@ namespace CelestiaUWP
                     menu.Items.Add(item);
                 }
                 
-                menu.ShowAt(mGLView, new Point(x, y - MenuBar.Height));
+                menu.ShowAt(mGLView, new Point(x / scale, y / scale));
             });
             mGLView.PointerPressed += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
-                    var properties = args.GetCurrentPoint(this).Properties;
-                    var position = args.GetCurrentPoint(this).Position;
+                    var properties = args.GetCurrentPoint((UIElement)sender).Properties;
+                    var position = args.GetCurrentPoint((UIElement)sender).Position;
+                    position = new Point(position.X * scale, position.Y * scale);
                     if (properties.IsLeftButtonPressed)
                     {
                         mAppCore.MouseButtonDown((float)position.X, (float)position.Y, leftMouseButton);
@@ -148,9 +150,9 @@ namespace CelestiaUWP
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
-                    var properties = args.GetCurrentPoint(this).Properties;
-                    var position = args.GetCurrentPoint(this).Position;
-
+                    var properties = args.GetCurrentPoint((UIElement)sender).Properties;
+                    var position = args.GetCurrentPoint((UIElement)sender).Position;
+                    position = new Point(position.X * scale, position.Y * scale);
                     if (properties.IsLeftButtonPressed && mLastLeftMousePosition != null)
                     {
                         var lastPos = mLastLeftMousePosition;
@@ -177,8 +179,9 @@ namespace CelestiaUWP
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
-                    var properties = args.GetCurrentPoint(this).Properties;
-                    var position = args.GetCurrentPoint(this).Position;
+                    var properties = args.GetCurrentPoint((UIElement)sender).Properties;
+                    var position = args.GetCurrentPoint((UIElement)sender).Position;
+                    position = new Point(position.X * scale, position.Y * scale);
                     if (mLastLeftMousePosition != null && !properties.IsLeftButtonPressed)
                     {
                         mAppCore.MouseButtonUp((float)position.X, (float)position.Y, leftMouseButton);
