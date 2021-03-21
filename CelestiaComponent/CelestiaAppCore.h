@@ -24,6 +24,9 @@ namespace winrt::CelestiaComponent::implementation
         void MouseButtonDown(float x, float y, int32_t button);
         void CharEnter(int16_t input);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
+        void SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
+        void SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
+        void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
         void RunScript(hstring const& path);
         void GoToURL(hstring const& url);
         com_array<CelestiaComponent::CelestiaDestination> Destinations();
@@ -32,7 +35,7 @@ namespace winrt::CelestiaComponent::implementation
         hstring RenderInfo();
 
         static void InitGL();
-        static void SetLocaleDirectory(hstring const& localeDirectory);
+        static void SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale);
         static hstring LocalizedString(hstring const& original);
         static com_array<CelestiaComponent::CelestiaScript> ReadScripts(hstring const& directory, bool deepScan);
 

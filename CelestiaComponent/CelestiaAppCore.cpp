@@ -140,6 +140,21 @@ namespace winrt::CelestiaComponent::implementation
         core->setContextMenuHandler(new AppCoreContextMenuHandler(handler));
     }
 
+    void CelestiaAppCore::SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
+    {
+        core->setFont(to_string(fontPath), collectionIndex, fontSize);
+    }
+
+    void CelestiaAppCore::SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
+    {
+        core->setTitleFont(to_string(fontPath), collectionIndex, fontSize);
+    }
+
+    void CelestiaAppCore::SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle)
+    {
+        core->setRendererFont(to_string(fontPath), collectionIndex, fontSize, (Renderer::FontStyle)fontStyle);
+    }
+
     void CelestiaAppCore::RunScript(hstring const& path)
     {
         core->runScript(to_string(path));
@@ -187,9 +202,10 @@ namespace winrt::CelestiaComponent::implementation
         celestia::gl::init();
     }
 
-    void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory)
+    void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
 #ifdef ENABLE_NLS
+        _putenv_s("LANGUAGE", to_string(locale).c_str());
         std::string dir = to_string(localeDirectory);
         // Gettext integration
         setlocale(LC_ALL, "");

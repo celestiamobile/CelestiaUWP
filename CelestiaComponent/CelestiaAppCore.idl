@@ -5,6 +5,12 @@ import "CelestiaSimulation.idl";
 
 namespace CelestiaComponent
 {
+    enum CelestiaFontStyle
+    {
+        normal = 0,
+        large = 1
+    };
+
     delegate void CelestiaLoadCallback(String status);
     delegate void CelestiaContextMenuCallback(Int32 x, Int32 y, CelestiaSelection selection);
 
@@ -25,6 +31,9 @@ namespace CelestiaComponent
         void MouseButtonDown(Single x, Single y, Int32 button);
         void CharEnter(Int16 input);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
+        void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
+        void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
+        void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);
         void RunScript(String path);
         void GoToURL(String url);
         CelestiaDestination[] Destinations{ get; };
@@ -33,7 +42,7 @@ namespace CelestiaComponent
         String RenderInfo{ get; };
 
         static void InitGL();
-        static void SetLocaleDirectory(String localeDirectory);
+        static void SetLocaleDirectory(String localeDirectory, String locale);
         static String LocalizedString(String original);
         static CelestiaScript[] ReadScripts(String directory, Boolean deepScan);
 

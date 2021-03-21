@@ -31,7 +31,12 @@ namespace CelestiaUWP
         private Point? mLastRightMousePosition = null;
 
         private GLView mGLView;
-        private String mCurrentPath;
+        private string mCurrentPath;
+
+        private string mLocalePath
+        {
+            get { return mCurrentPath + "\\locale"; }
+        }
 
         private float scale = 1.0f;
 
@@ -51,14 +56,17 @@ namespace CelestiaUWP
 
             MainContainer.Children.Add(loadingText);
 
+            string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
+            mCurrentPath = installedPath + "\\CelestiaResources";
+            Directory.SetCurrentDirectory(mCurrentPath);
+
             mGLView = new GLView();
             mGLView.Prepare += (sender) =>
             {
+                var locale = GetLocale().Result;
+                CelestiaAppCore.SetLocaleDirectory(mLocalePath, locale);
+
                 CelestiaAppCore.InitGL();
-                string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
-                mCurrentPath = installedPath + "\\CelestiaResources";
-                Directory.SetCurrentDirectory(mCurrentPath);
-                CelestiaAppCore.SetLocaleDirectory(mCurrentPath + "\\locale");
                 string[] extraPaths = { };
                 if (!mAppCore.StartSimulation("celestia.cfg", extraPaths, delegate (string progress)
                 {
@@ -73,6 +81,21 @@ namespace CelestiaUWP
                 mAppCore.SetDPI((int)(96 * scale));
                 if (!mAppCore.StartRenderer())
                     return false;
+
+                var fontMap = new Dictionary<string, (string, int, string, int)>() {
+                    { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },
+                    { "ko", ("NotoSansCJK-Regular.ttc", 1, "NotoSansCJK-Bold.ttc", 1) },
+                    { "zh_CN", ("NotoSansCJK-Regular.ttc", 2, "NotoSansCJK-Bold.ttc", 2) },
+                    { "zh_TW", ("NotoSansCJK-Regular.ttc", 3, "NotoSansCJK-Bold.ttc", 3) },
+                    { "ar", ("NotoSansArabic-Regular.ttf", 0, "NotoSansArabic-Bold.ttf", 0) },
+                };
+                var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
+                var font = fontMap.GetValueOrDefault(locale, defaultFont);
+
+                mAppCore.SetFont(mCurrentPath + "\\fonts\\" + font.Item1, font.Item2, 9);
+                mAppCore.SetTitleFont(mCurrentPath + "\\fonts\\" + font.Item3, font.Item4, 15);
+                mAppCore.SetRenderFont(mCurrentPath + "\\fonts\\" + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
+                mAppCore.SetRenderFont(mCurrentPath + "\\fonts\\" + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -595,6 +618,35 @@ namespace CelestiaUWP
             var dialog = new InfoDialog(mAppCore.RenderInfo);
             dialog.Title = CelestiaAppCore.LocalizedString("OpenGL Info");
             await dialog.ShowAsync();
+        }
+
+        async System.Threading.Tasks.Task<string> GetLocale()
+        {
+            var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(mLocalePath);
+            var files = await folder.GetFoldersAsync();
+            var availableLocales = new List<string>();
+            var preferredLocale = System.Globalization.CultureInfo.CurrentCulture.Name;
+            preferredLocale = preferredLocale.Replace("-", "_");
+            foreach (var file in files)
+            {
+                availableLocales.Add(file.Name);
+            }
+            if (availableLocales.Contains(preferredLocale))
+                return preferredLocale;
+            var components = new List<string>(preferredLocale.Split("_"));
+            if (components.Count() == 3)
+                components.RemoveAt(1);
+            preferredLocale = string.Join("_", components);
+            if (availableLocales.Contains(preferredLocale))
+                return preferredLocale;
+
+            foreach (var lang in availableLocales)
+            {
+                if (lang == components[0] || lang.StartsWith(components[0] + "_"))
+                    return lang;
+            }
+
+            return "";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
