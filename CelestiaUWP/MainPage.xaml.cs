@@ -629,6 +629,8 @@ namespace CelestiaUWP
             var components = new List<string>(preferredLocale.Split("_"));
             if (components.Count() == 3)
                 components.RemoveAt(1);
+            if (components.Count() == 2)
+                components[1] = components[1].ToUpper();
             preferredLocale = string.Join("_", components);
             if (availableLocales.Contains(preferredLocale))
                 return preferredLocale;
