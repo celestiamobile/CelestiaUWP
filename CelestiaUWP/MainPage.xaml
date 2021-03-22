@@ -11,6 +11,8 @@
     <RelativePanel>
         <Frame Background="Black" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
         <MenuBar Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
-        <Grid x:Name="MainContainer" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></Grid>
+        <SwapChainPanel x:Name="GLView" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <TextBlock x:Name="LoadingText" Foreground="White" FontSize="30" ></TextBlock>
+        </SwapChainPanel>
     </RelativePanel>
 </Page>

@@ -10,7 +10,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-using GLUWP;
 using CelestiaComponent;
 using Windows.UI.Core;
 using Windows.UI.WindowManagement;
@@ -22,6 +21,7 @@ namespace CelestiaUWP
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
+        private CelestiaRenderer mRenderer;
 
         private static int leftMouseButton = 1;
         private static int middleMouseButton = 2;
@@ -30,7 +30,6 @@ namespace CelestiaUWP
         private Point? mLastLeftMousePosition = null;
         private Point? mLastRightMousePosition = null;
 
-        private GLView mGLView;
         private string mCurrentPath;
 
         private string mLocalePath
@@ -46,23 +45,18 @@ namespace CelestiaUWP
 
             InitializeComponent();
 
-            TextBlock loadingText = new TextBlock();
-            loadingText.Foreground = new SolidColorBrush(Colors.White);
-            loadingText.HorizontalAlignment = HorizontalAlignment.Center;
-            loadingText.VerticalAlignment = VerticalAlignment.Center;
-            loadingText.FontSize = 30;
-
             scale = ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f;
-
-            MainContainer.Children.Add(loadingText);
 
             string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
             mCurrentPath = installedPath + "\\CelestiaResources";
             Directory.SetCurrentDirectory(mCurrentPath);
 
-            mGLView = new GLView();
-            mGLView.Prepare += (sender) =>
-            {
+            Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            mRenderer = new CelestiaRenderer(() => {
                 var locale = GetLocale().Result;
                 CelestiaAppCore.SetLocaleDirectory(mLocalePath, locale);
 
@@ -72,7 +66,7 @@ namespace CelestiaUWP
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        loadingText.Text = progress;
+                        LoadingText.Text = progress;
                     });
                 }))
                 {
@@ -99,24 +93,23 @@ namespace CelestiaUWP
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    loadingText.Visibility = Visibility.Collapsed;
+                    LoadingText.Visibility = Visibility.Collapsed;
                     SetUpGLViewInteractions();
                     PopulateMenuBar();
+                    mRenderer.SetSize((int)GLView.Width, (int)GLView.Height);
                 });
 
                 mAppCore.Start();
                 return true;
-            };
-            mGLView.Resize += (sender, width, height) =>
+            }, () => {
+            });
+            mRenderer.SetCorePointer(mAppCore.Pointer);
+            mRenderer.SetSurface(GLView, scale);
+            GLView.SizeChanged += (view, arg) =>
             {
-                mAppCore.Resize(width, height);
+                mRenderer.SetSize((int)arg.NewSize.Width, (int)arg.NewSize.Height);
             };
-            mGLView.Draw += (sender) =>
-            {
-                mAppCore.Tick();
-                mAppCore.Draw();
-            };
-            MainContainer.Children.Add(mGLView);
+            mRenderer.Start();
         }
 
         void SetUpGLViewInteractions()
@@ -149,9 +142,9 @@ namespace CelestiaUWP
                     menu.Items.Add(item);
                 }
                 
-                menu.ShowAt(mGLView, new Point(x / scale, y / scale));
+                menu.ShowAt(GLView, new Point(x / scale, y / scale));
             });
-            mGLView.PointerPressed += (sender, args) =>
+            GLView.PointerPressed += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -170,7 +163,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            mGLView.PointerMoved += (sender, args) =>
+            GLView.PointerMoved += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
@@ -199,7 +192,7 @@ namespace CelestiaUWP
                     }
                 }
             };
-            mGLView.PointerReleased += (sender, args) =>
+            GLView.PointerReleased += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {

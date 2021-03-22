@@ -1,0 +1,18 @@
+namespace CelestiaComponent
+{
+    delegate Boolean CelestiaRendererEngineStartedHandler();
+    delegate void CelestiaRendererFlushTasksHandler();
+
+    [default_interface]
+    runtimeclass CelestiaRenderer
+    {
+        CelestiaRenderer(CelestiaRendererEngineStartedHandler engineStarted, CelestiaRendererFlushTasksHandler flushTasks);
+        void Start();
+        void Stop();
+        void Pause();
+        void Resume();
+        void SetSurface(Windows.UI.Xaml.Controls.SwapChainPanel surface, Single scale);
+        void SetSize(Int32 width, Int32 height);
+        void SetCorePointer(Int64 core);
+    }
+}

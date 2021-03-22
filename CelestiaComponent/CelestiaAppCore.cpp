@@ -197,6 +197,11 @@ namespace winrt::CelestiaComponent::implementation
         return to_hstring(Helper::getRenderInfo(core->getRenderer()));
     }
 
+    int64_t CelestiaAppCore::Pointer()
+    {
+        return reinterpret_cast<int64_t>(core);
+    }
+
     void CelestiaAppCore::InitGL()
     {
         celestia::gl::init();

@@ -33,6 +33,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaSimulation Simulation();
         hstring CurrentURL();
         hstring RenderInfo();
+        int64_t Pointer();
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale);
