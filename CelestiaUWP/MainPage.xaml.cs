@@ -15,6 +15,7 @@ using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Hosting;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace CelestiaUWP
 {
@@ -101,7 +102,6 @@ namespace CelestiaUWP
 
                 mAppCore.Start();
                 return true;
-            }, () => {
             });
             mRenderer.SetCorePointer(mAppCore.Pointer);
             mRenderer.SetSurface(GLView, scale);
@@ -116,33 +116,36 @@ namespace CelestiaUWP
         {
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
-                var menu = new MenuFlyout();
-                var nameItem = new MenuFlyoutItem();
-                nameItem.IsEnabled = false;
-                nameItem.Text = mAppCore.Simulation.Universe.NameForSelection(selection);
-                menu.Items.Add(nameItem);
-                menu.Items.Add(new MenuFlyoutSeparator());
-                var actions = new (String, short)[] {
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                  {
+                      var menu = new MenuFlyout();
+                      var nameItem = new MenuFlyoutItem();
+                      nameItem.IsEnabled = false;
+                      nameItem.Text = mAppCore.Simulation.Universe.NameForSelection(selection);
+                      menu.Items.Add(nameItem);
+                      menu.Items.Add(new MenuFlyoutSeparator());
+                      var actions = new (String, short)[] {
                     ("Go", 103),
                     ("Follow", 102),
                     ("Orbit Synchronously", 121),
                     ("Lock Phase", 58),
                     ("Chase", 34),
                     ("Track", 116)
-                };
-                foreach (var action in actions)
-                {
-                    var item = new MenuFlyoutItem();
-                    item.Text = CelestiaAppCore.LocalizedString(action.Item1);
-                    item.Click += (sender, arg) =>
-                    {
-                        mAppCore.Simulation.Selection = selection;
-                        mAppCore.CharEnter(action.Item2);
-                    };
-                    menu.Items.Add(item);
-                }
-                
-                menu.ShowAt(GLView, new Point(x / scale, y / scale));
+                  };
+                      foreach (var action in actions)
+                      {
+                          var item = new MenuFlyoutItem();
+                          item.Text = CelestiaAppCore.LocalizedString(action.Item1);
+                          item.Click += (sender, arg) =>
+                          {
+                              mAppCore.Simulation.Selection = selection;
+                              mAppCore.CharEnter(action.Item2);
+                          };
+                          menu.Items.Add(item);
+                      }
+
+                      menu.ShowAt(GLView, new Point(x / scale, y / scale));
+                  });
             });
             GLView.PointerPressed += (sender, args) =>
             {
@@ -153,13 +156,19 @@ namespace CelestiaUWP
                     position = new Point(position.X * scale, position.Y * scale);
                     if (properties.IsLeftButtonPressed)
                     {
-                        mAppCore.MouseButtonDown((float)position.X, (float)position.Y, leftMouseButton);
                         mLastLeftMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, leftMouseButton);
+                        });
                     }
                     if (properties.IsRightButtonPressed)
                     {
-                        mAppCore.MouseButtonDown((float)position.X, (float)position.Y, rightMouseButton);
                         mLastRightMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, rightMouseButton);
+                        });
                     }
                 }
             };
@@ -177,8 +186,11 @@ namespace CelestiaUWP
 
                         var x = position.X - oldPos.X;
                         var y = position.Y - oldPos.Y;
-                        mAppCore.MouseMove((float)x, (float)y, leftMouseButton);
                         mLastLeftMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseMove((float)x, (float)y, leftMouseButton);
+                        });
                     }
                     if (properties.IsRightButtonPressed && mLastRightMousePosition != null)
                     {
@@ -187,8 +199,11 @@ namespace CelestiaUWP
 
                         var x = position.X - oldPos.X;
                         var y = position.Y - oldPos.Y;
-                        mAppCore.MouseMove((float)x, (float)y, rightMouseButton);
                         mLastRightMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseMove((float)x, (float)y, rightMouseButton);
+                        });
                     }
                 }
             };
@@ -201,19 +216,45 @@ namespace CelestiaUWP
                     position = new Point(position.X * scale, position.Y * scale);
                     if (mLastLeftMousePosition != null && !properties.IsLeftButtonPressed)
                     {
-                        mAppCore.MouseButtonUp((float)position.X, (float)position.Y, leftMouseButton);
                         mLastLeftMousePosition = null;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, leftMouseButton);
+                        });
                     }
                     if (mLastRightMousePosition != null && !properties.IsRightButtonPressed)
                     {
-                        mAppCore.MouseButtonUp((float)position.X, (float)position.Y, rightMouseButton);
                         mLastRightMousePosition = null;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, rightMouseButton);
+                        });
                     }
                 }
             };
+            Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
+            {
+                mAppCore.CharEnter((short)arg.KeyCode);
+            };
+            Window.Current.CoreWindow.KeyDown += (sender, arg) =>
+            {
+                var modifiers = 0;
+                if (CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Control) == CoreVirtualKeyStates.Down)
+                    modifiers |= 16;
+                if (CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Shift) == CoreVirtualKeyStates.Down)
+                    modifiers |= 8;
+                mAppCore.KeyDown((int)arg.VirtualKey, modifiers);
+            };
+            Window.Current.CoreWindow.KeyUp += (sender, arg) =>
+            {
+                mAppCore.KeyUp((int)arg.VirtualKey, 0);
+            };
         }
+
         void PopulateMenuBar()
         {
+            MenuBar.AllowFocusOnInteraction = false;
+            MenuBar.IsFocusEngagementEnabled = false;
             MenuBar.Visibility = Visibility.Visible;
             var fileItem = new MenuBarItem();
             fileItem.Title = CelestiaAppCore.LocalizedString("File");
@@ -612,7 +653,6 @@ namespace CelestiaUWP
             dialog.Title = CelestiaAppCore.LocalizedString("OpenGL Info");
             await dialog.ShowAsync();
         }
-
         async System.Threading.Tasks.Task<string> GetLocale()
         {
             var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(mLocalePath);

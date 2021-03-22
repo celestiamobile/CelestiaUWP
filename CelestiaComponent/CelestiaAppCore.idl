@@ -30,6 +30,9 @@ namespace CelestiaComponent
         void MouseButtonUp(Single x, Single y, Int32 button);
         void MouseButtonDown(Single x, Single y, Int32 button);
         void CharEnter(Int16 input);
+        void CharEnter(Int16 input, Int32 modifiers);
+        void KeyUp(Int32 key, Int32 modifiers);
+        void KeyDown(Int32 key, Int32 modifiers);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
         void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);

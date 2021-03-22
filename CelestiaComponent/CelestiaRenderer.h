@@ -15,7 +15,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaRenderer : CelestiaRendererT<CelestiaRenderer>
     {
-        CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted, CelestiaComponent::CelestiaRendererFlushTasksHandler const& flushTasks);
+        CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
 
         bool Initialize();
         void Destroy();
@@ -31,6 +31,9 @@ namespace winrt::CelestiaComponent::implementation
         void SetSurface(Windows::UI::Xaml::Controls::SwapChainPanel const& surface, float scale);
         void SetSize(int32_t width, int32_t height);
         void SetCorePointer(int64_t core);
+        void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
+
+        void FlushTasks();
 
         CelestiaCore* core = nullptr;
 
@@ -65,8 +68,9 @@ namespace winrt::CelestiaComponent::implementation
 
         Windows::Foundation::IAsyncAction mRenderLoopWorker{ nullptr };
 
+        std::vector<CelestiaComponent::CelestiaRendererTask> tasks;
+
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
-        CelestiaComponent::CelestiaRendererFlushTasksHandler flushTasks;
     };
 }
 

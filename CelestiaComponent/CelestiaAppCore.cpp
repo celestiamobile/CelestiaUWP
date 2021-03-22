@@ -131,6 +131,77 @@ namespace winrt::CelestiaComponent::implementation
         core->charEntered(input);
     }
 
+    void CelestiaAppCore::CharEnter(int16_t input, int32_t modifiers)
+    {
+        core->charEntered(input, modifiers);
+    }
+
+    static int convert_key_code_to_celestia_key(int key)
+    {
+        int celestiaKey = -1;
+        if (key >= (int)Windows::System::VirtualKey::NumberPad0 && key <= (int)Windows::System::VirtualKey::NumberPad9)
+            celestiaKey = CelestiaCore::Key_NumPad0 + (key - (int)Windows::System::VirtualKey::NumberPad0);
+        else if (key >= (int)Windows::System::VirtualKey::F1 && key <= (int)Windows::System::VirtualKey::F12)
+            celestiaKey = CelestiaCore::Key_F1 + (key - (int)Windows::System::VirtualKey::F1);
+        else if (key >= (int)Windows::System::VirtualKey::A && key <= (int)Windows::System::VirtualKey::Z)
+            celestiaKey = 'A' + (key - (int)Windows::System::VirtualKey::A);
+        else
+            switch (key)
+            {
+            case (int)Windows::System::VirtualKey::Up:
+                celestiaKey = CelestiaCore::Key_Up;
+                break;
+            case (int)Windows::System::VirtualKey::Down:
+                celestiaKey = CelestiaCore::Key_Down;
+                break;
+            case (int)Windows::System::VirtualKey::Left:
+                celestiaKey = CelestiaCore::Key_Left;
+                break;
+            case (int)Windows::System::VirtualKey::Right:
+                celestiaKey = CelestiaCore::Key_Right;
+                break;
+            case (int)Windows::System::VirtualKey::PageUp:
+                celestiaKey = CelestiaCore::Key_PageUp;
+                break;
+            case (int)Windows::System::VirtualKey::PageDown:
+                celestiaKey = CelestiaCore::Key_PageDown;
+                break;
+            case (int)Windows::System::VirtualKey::Home:
+                celestiaKey = CelestiaCore::Key_Home;
+                break;
+            case (int)Windows::System::VirtualKey::End:
+                celestiaKey = CelestiaCore::Key_End;
+                break;
+            case (int)Windows::System::VirtualKey::Insert:
+                celestiaKey = CelestiaCore::Key_Insert;
+                break;
+            case (int)Windows::System::VirtualKey::Back:
+                celestiaKey = celestiaKey;
+                break;
+            case (int)Windows::System::VirtualKey::Delete:
+                celestiaKey = 127;
+                break;
+            default:
+                break;
+            }
+
+        return celestiaKey;
+    }
+
+    void CelestiaAppCore::KeyUp(int32_t key, int32_t modifiers)
+    {
+        int celestiaKey = convert_key_code_to_celestia_key(key);
+        if (celestiaKey < 0) return;
+        core->keyUp(celestiaKey, modifiers);
+    }
+
+    void CelestiaAppCore::KeyDown(int32_t key, int32_t modifiers)
+    {
+        int celestiaKey = convert_key_code_to_celestia_key(key);
+        if (celestiaKey < 0) return;
+        core->keyDown(celestiaKey, modifiers);
+    }
+
     void CelestiaAppCore::SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler)
     {
         auto previousHandler = core->getContextMenuHandler();

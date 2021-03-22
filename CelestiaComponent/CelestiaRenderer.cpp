@@ -30,10 +30,9 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaRenderer::CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted, CelestiaComponent::CelestiaRendererFlushTasksHandler const& flushTasks) :
+    CelestiaRenderer::CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
         CelestiaRendererT<CelestiaRenderer>(),
-        engineStarted(engineStarted),
-        flushTasks(flushTasks)
+        engineStarted(engineStarted)
     {
         InitializeCriticalSection(&msgCritSection);
         InitializeConditionVariable(&resumeCond);
@@ -246,11 +245,12 @@ namespace winrt::CelestiaComponent::implementation
                 {
                     if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
                         renderer->engineStartedCalled = renderer->engineStarted();
-                    if (renderer->engineStartedCalled)
-                        renderer->flushTasks();
 
                     renderer->Lock();
                     renderer->Wait();
+
+                    if (renderer->engineStartedCalled)
+                        renderer->FlushTasks();
 
                     switch (renderer->msg)
                     {
@@ -348,5 +348,19 @@ namespace winrt::CelestiaComponent::implementation
         Lock();
         this->core = reinterpret_cast<CelestiaCore*>(core);
         Unlock();
+    }
+
+    void CelestiaRenderer::EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task)
+    {
+        Lock();
+        tasks.push_back(task);
+        Unlock();
+    }
+
+    void CelestiaRenderer::FlushTasks()
+    {
+        for (auto task : tasks)
+            task();
+        tasks.clear();
     }
 }
