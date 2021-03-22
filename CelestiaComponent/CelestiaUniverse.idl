@@ -7,11 +7,33 @@ import "CelestiaDSOCatalog.idl";
 
 namespace CelestiaComponent
 {
+    enum CelestiaMarkerRepresentation
+    { 
+        diamond = 0,
+        triangle = 1,
+        square = 2,
+        filledSquare = 3,
+        plus = 4,
+        x = 5,
+        leftArrow = 6,
+        rightArrow = 7,
+        upArrow = 8,
+        downArrow = 9,
+        circle = 10,
+        disk = 11,
+        crosshair = 12,
+    };
+
     [default_interface]
     runtimeclass CelestiaUniverse
     {
         CelestiaSelection Find(String name);
         String NameForSelection(CelestiaSelection selection);
+
+        Boolean IsSelectionMarked(CelestiaSelection selection);
+        void MarkSelection(CelestiaSelection selection, CelestiaMarkerRepresentation marker);
+        void UnmarkSelection(CelestiaSelection selection);
+        void UnmarkAll();
 
         CelestiaBrowserItem[] ChildrenForStar(CelestiaStar star, CelestiaBrowserItemChildrenProvider provider);
         CelestiaBrowserItem[] ChildrenForBody(CelestiaBody body, CelestiaBrowserItemChildrenProvider provider);

@@ -11,5 +11,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaBody(Body* body);
 
         hstring Name();
+        com_array<hstring> AlternateSurfaceNames();
     };
 }

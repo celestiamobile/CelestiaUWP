@@ -38,6 +38,26 @@ namespace winrt::CelestiaComponent::implementation
 		}
 	}
 
+	bool CelestiaUniverse::IsSelectionMarked(CelestiaComponent::CelestiaSelection const& selection)
+	{
+		return u->isMarked(*get_self<CelestiaSelection>(selection)->s, 1);
+	}
+
+	void CelestiaUniverse::MarkSelection(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::CelestiaMarkerRepresentation marker)
+	{
+		u->markObject(*get_self<CelestiaSelection>(selection)->s, MarkerRepresentation(MarkerRepresentation::Symbol(marker), 10.0f, Color(0.0f, 1.0f, 0.0f, 0.9f)), 1);
+	}
+
+	void CelestiaUniverse::UnmarkSelection(CelestiaComponent::CelestiaSelection const& selection)
+	{
+		u->unmarkObject(*get_self<CelestiaSelection>(selection)->s, 1);
+	}
+
+	void CelestiaUniverse::UnmarkAll()
+	{
+		u->unmarkAll();
+	}
+
 	com_array<CelestiaComponent::CelestiaBrowserItem> CelestiaUniverse::ChildrenForStar(CelestiaComponent::CelestiaStar const& star, CelestiaComponent::CelestiaBrowserItemChildrenProvider const& provider)
 	{
 		auto s = reinterpret_cast<Star*>(get_self<CelestiaStar>(star)->obj);

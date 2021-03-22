@@ -33,6 +33,12 @@ namespace CelestiaUWP
 
         private string mCurrentPath;
 
+        private readonly string[] mMarkers = new string[]
+        {
+            "Diamond", "Triangle", "Filled Square", "Plus", "X", "Left Arrow", "Right Arrow", "Up Arrow", "Down Arrow",
+            "Circle", "Disk", "Crosshair"
+        };
+
         private string mLocalePath
         {
             get { return mCurrentPath + "\\locale"; }
@@ -124,14 +130,16 @@ namespace CelestiaUWP
                       nameItem.Text = mAppCore.Simulation.Universe.NameForSelection(selection);
                       menu.Items.Add(nameItem);
                       menu.Items.Add(new MenuFlyoutSeparator());
-                      var actions = new (String, short)[] {
-                    ("Go", 103),
-                    ("Follow", 102),
-                    ("Orbit Synchronously", 121),
-                    ("Lock Phase", 58),
-                    ("Chase", 34),
-                    ("Track", 116)
-                  };
+                      var actions = new (String, short)[]
+                      {
+                        ("Go", 103),
+                        ("Follow", 102),
+                        ("Orbit Synchronously", 121),
+                        ("Lock Phase", 58),
+                        ("Chase", 34),
+                        ("Track", 116)
+                      };
+
                       foreach (var action in actions)
                       {
                           var item = new MenuFlyoutItem();
@@ -142,6 +150,64 @@ namespace CelestiaUWP
                               mAppCore.CharEnter(action.Item2);
                           };
                           menu.Items.Add(item);
+                      }
+
+                      if (selection.Object is CelestiaBody)
+                      {
+                          var body = (CelestiaBody)selection.Object;
+                          var surfaces = body.AlternateSurfaceNames;
+                          if (surfaces.Length > 0)
+                          {
+                              menu.Items.Add(new MenuFlyoutSeparator());
+
+                              var altSur = new MenuFlyoutSubItem();
+                              altSur.Text = CelestiaAppCore.LocalizedString("Alternate Surfaces");
+                              AppendSubItem(altSur, CelestiaAppCore.LocalizedString("Default"), (sender, arg) =>
+                              {
+                                  mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = "";
+                              });
+
+                              foreach (var name in surfaces)
+                              {
+                                  AppendSubItem(altSur, name, (sender, arg) =>
+                                  {
+                                      mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = name;
+                                  });
+                              }
+
+                              menu.Items.Add(altSur);
+                          }
+                      }
+
+                      menu.Items.Add(new MenuFlyoutSeparator());
+
+                      if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
+                      {
+                          var action = new MenuFlyoutItem();
+                          action.Text = CelestiaAppCore.LocalizedString("Unmark");
+                          action.Click += (sender, arg) =>
+                          {
+                              mAppCore.Simulation.Universe.UnmarkSelection(selection);
+                          };
+                          menu.Items.Add(action);
+                      }
+                      else
+                      {
+                          var action = new MenuFlyoutSubItem();
+                          action.Text = CelestiaAppCore.LocalizedString("Mark");
+                          for (int i = 0; i < mMarkers.Length; i += 1)
+                          {
+                              int copy = i;
+                              var markerAction = new MenuFlyoutItem();
+                              markerAction.Text = CelestiaAppCore.LocalizedString(mMarkers[i]);
+                              markerAction.Click += (sender, arg) =>
+                              {
+                                  mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
+                                  mAppCore.ShowMarkers = true;
+                              };
+                              action.Items.Add(markerAction);
+                          }
+                          menu.Items.Add(action);
                       }
 
                       menu.ShowAt(GLView, new Point(x / scale, y / scale));

@@ -4,6 +4,7 @@
 #include "CelestiaDestination.h"
 #include "CelestiaEclipse.h"
 #include "CelestiaGotoLocation.h"
+#include "CelestiaObserver.h"
 #include "CelestiaSelection.h"
 #include "CelestiaStarBrowser.h"
 #include "CelestiaUniverse.h"
@@ -22,6 +23,7 @@ namespace winrt::CelestiaComponent::implementation
         void Time(Windows::Foundation::DateTime const& time);
 
         CelestiaComponent::CelestiaUniverse Universe();
+        CelestiaComponent::CelestiaObserver ActiveObserver();
 
         CelestiaComponent::CelestiaSelection Find(hstring const& name);
 

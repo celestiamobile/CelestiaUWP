@@ -41,6 +41,11 @@ namespace winrt::CelestiaComponent::implementation
 		return u;
 	}
 
+    CelestiaComponent::CelestiaObserver CelestiaSimulation::ActiveObserver()
+    {
+        return make<CelestiaObserver>(sim->getActiveObserver());
+    }
+
     CelestiaComponent::CelestiaSelection CelestiaSimulation::Find(hstring const& name)
     {
         return make<CelestiaSelection>(sim->findObject(to_string(name)));

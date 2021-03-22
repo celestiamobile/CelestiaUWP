@@ -6,5 +6,6 @@ namespace CelestiaComponent
     runtimeclass CelestiaBody : CelestiaAstroObject
     {
         String Name{ get; };
+        String[] AlternateSurfaceNames{ get; };
     }
 }

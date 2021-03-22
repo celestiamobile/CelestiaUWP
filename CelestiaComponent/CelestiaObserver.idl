@@ -1,0 +1,8 @@
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaObserver
+    {
+        String DisplayedSurfaceName;
+    }
+}

@@ -1,6 +1,7 @@
 import "CelestiaDestination.idl";
 import "CelestiaEclipse.idl";
 import "CelestiaGotoLocation.idl";
+import "CelestiaObserver.idl";
 import "CelestiaSelection.idl";
 import "CelestiaStarBrowser.idl";
 import "CelestiaUniverse.idl";
@@ -13,6 +14,7 @@ namespace CelestiaComponent
         CelestiaSelection Selection;
         Windows.Foundation.DateTime Time;
         CelestiaUniverse Universe{ get; };
+        CelestiaObserver ActiveObserver{ get; };
 
         CelestiaSelection Find(String name);
         CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type);
