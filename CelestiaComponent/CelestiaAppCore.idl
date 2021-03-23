@@ -139,10 +139,10 @@ namespace CelestiaComponent
         Int32 StarStyle;
         Int32 HudDetail;
         Int32 DateFormat;
-        Double AmbientLightLevel;
-        Double FaintestVisible;
-        Double GalaxyBrightness;
-        Double MinimumFeatureSize;
+        Single AmbientLightLevel;
+        Single FaintestVisible;
+        Single GalaxyBrightness;
+        Single MinimumFeatureSize;
         Single DistanceLimit;
     }
 }

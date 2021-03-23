@@ -223,14 +223,14 @@ namespace winrt::CelestiaComponent::implementation
         void HudDetail(int32_t hudDetail);
         int32_t DateFormat();
         void DateFormat(int32_t dateFormat);
-        double AmbientLightLevel();
-        void AmbientLightLevel(double ambientLightLevel);
-        double FaintestVisible();
-        void FaintestVisible(double faintestVisible);
-        double GalaxyBrightness();
-        void GalaxyBrightness(double galaxyBrightness);
-        double MinimumFeatureSize();
-        void MinimumFeatureSize(double minimumFeatureSize);
+        float AmbientLightLevel();
+        void AmbientLightLevel(float ambientLightLevel);
+        float FaintestVisible();
+        void FaintestVisible(float faintestVisible);
+        float GalaxyBrightness();
+        void GalaxyBrightness(float galaxyBrightness);
+        float MinimumFeatureSize();
+        void MinimumFeatureSize(float minimumFeatureSize);
         float DistanceLimit();
         void DistanceLimit(float distanceLimit);
 

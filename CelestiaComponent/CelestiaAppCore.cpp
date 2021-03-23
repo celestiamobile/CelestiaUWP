@@ -498,17 +498,17 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         core->setDateFormat((astro::Date::Format)dateFormat);
     }
 
-    double CelestiaAppCore::AmbientLightLevel()
+    float CelestiaAppCore::AmbientLightLevel()
     {
         return core->getRenderer()->getAmbientLightLevel();
     }
 
-    void CelestiaAppCore::AmbientLightLevel(double ambientLightLevel)
+    void CelestiaAppCore::AmbientLightLevel(float ambientLightLevel)
     {
-        core->getRenderer()->setAmbientLightLevel((float)ambientLightLevel);
+        core->getRenderer()->setAmbientLightLevel(ambientLightLevel);
     }
 
-    double CelestiaAppCore::FaintestVisible()
+    float CelestiaAppCore::FaintestVisible()
     {
         if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
         {
@@ -520,37 +520,37 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         }
     }
 
-    void CelestiaAppCore::FaintestVisible(double faintestVisible)
+    void CelestiaAppCore::FaintestVisible(float faintestVisible)
     {
         if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
         {
-            core->setFaintest((float)faintestVisible);
+            core->setFaintest(faintestVisible);
         }
         else
         {
-            core->getRenderer()->setFaintestAM45deg((float)faintestVisible);
+            core->getRenderer()->setFaintestAM45deg(faintestVisible);
             core->setFaintestAutoMag();
         }
     }
 
-    double CelestiaAppCore::GalaxyBrightness()
+    float CelestiaAppCore::GalaxyBrightness()
     {
         return Galaxy::getLightGain();
     }
 
-    void CelestiaAppCore::GalaxyBrightness(double galaxyBrightness)
+    void CelestiaAppCore::GalaxyBrightness(float galaxyBrightness)
     {
-        Galaxy::setLightGain((float)galaxyBrightness);
+        Galaxy::setLightGain(galaxyBrightness);
     }
 
-    double CelestiaAppCore::MinimumFeatureSize()
+    float CelestiaAppCore::MinimumFeatureSize()
     {
         return core->getRenderer()->getMinimumFeatureSize();
     }
 
-    void CelestiaAppCore::MinimumFeatureSize(double minimumFeatureSize)
+    void CelestiaAppCore::MinimumFeatureSize(float minimumFeatureSize)
     {
-        core->getRenderer()->setMinimumFeatureSize((float)minimumFeatureSize);
+        core->getRenderer()->setMinimumFeatureSize(minimumFeatureSize);
     }
 
     float CelestiaAppCore::DistanceLimit()

@@ -7,6 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <local:DoubleFloatConverter x:Key="DoubleFloatConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -36,7 +41,7 @@
         </RelativePanel>
         <StackPanel Grid.Row="1" Spacing="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}" Content="Show Label Features"/>
-            <Slider Minimum="1" Maximum="100" Header="Minimum Labeled Feature Size" Value="{x:Bind mAppCore.MinimumFeatureSize, Mode=TwoWay}"></Slider>
+            <Slider Minimum="1" Maximum="100" Header="Minimum Labeled Feature Size" Value="{x:Bind AppCore.MinimumFeatureSize, Mode=TwoWay, Converter={StaticResource DoubleFloatConverter}}"></Slider>
         </StackPanel>
     </Grid>
 </Page>

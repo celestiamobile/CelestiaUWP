@@ -131,7 +131,7 @@
         <RelativePanel Grid.Row="3" Grid.Column="2" Grid.RowSpan="1" Grid.ColumnSpan="1">
             <TextBlock Margin="0, 8, 0, 8" Text="Filter Stars" x:Name="FilterStarsHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
             <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="FilterStarsHint">
-                <Slider Minimum="0" Maximum="10000" Value="{x:Bind mAppCore.DistanceLimit, Mode=TwoWay, Converter={StaticResource FilterStarsConverter}}" x:Name="FilterStarsSlider"></Slider>
+                <Slider Minimum="0" Maximum="10000" Value="{x:Bind AppCore.DistanceLimit, Mode=TwoWay, Converter={StaticResource FilterStarsConverter}}" x:Name="FilterStarsSlider"></Slider>
             </StackPanel>
         </RelativePanel>
     </Grid>
