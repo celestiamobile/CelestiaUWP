@@ -304,6 +304,8 @@ namespace winrt::CelestiaComponent::implementation
     hstring CelestiaAppCore::LocalizedString(hstring const& original)
     {
 #ifdef ENABLE_NLS
+        if (original.empty())
+            return original;
         return to_hstring(dgettext("celestia_ui", to_string(original).c_str()));
 #else
         return original;

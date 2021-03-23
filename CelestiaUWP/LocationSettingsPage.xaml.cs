@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 using CelestiaComponent;
+using Windows.UI.Xaml;
 
 namespace CelestiaUWP
 {
@@ -27,11 +28,42 @@ namespace CelestiaUWP
         public LocationSettingsPage()
         {
             this.InitializeComponent();
+            LocalizeElement(Content);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             AppCore = e.Parameter as CelestiaAppCore;
+        }
+
+        private void LocalizeElement(UIElement element)
+        {
+            if (element is Panel)
+            {
+                foreach (var item in ((Panel)element).Children)
+                {
+                    LocalizeElement(item);
+                }
+            }
+            else if (element is CheckBox)
+            {
+                var checkBox = (CheckBox)element;
+                var content = checkBox.Content;
+                if (content is string)
+                    checkBox.Content = CelestiaAppCore.LocalizedString((string)content);
+            }
+            else if (element is TextBlock)
+            {
+                var textBlock = (TextBlock)element;
+                textBlock.Text = CelestiaAppCore.LocalizedString(textBlock.Text);
+            }
+            else if (element is Slider)
+            {
+                var slider = (Slider)element;
+                var header = slider.Header;
+                if (header is string)
+                    slider.Header = CelestiaAppCore.LocalizedString((string)header);
+            }
         }
     }
 }
