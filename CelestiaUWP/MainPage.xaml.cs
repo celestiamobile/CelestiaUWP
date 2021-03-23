@@ -658,32 +658,30 @@ namespace CelestiaUWP
             }
         }
 
-        async void ShowViewOptions()
+        void ShowViewOptions()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(ViewOptionsPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
+            OverlayBackground.Visibility = Visibility.Visible;
+            OverlayBackground.PointerPressed += (sender, arg) =>
             {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
+                OverlayBackground.Visibility = Visibility.Collapsed;
+                OverlayContainer.Content = null;
             };
+            OverlayContainer.Width = 580;
+            OverlayContainer.Height = 670;
+            OverlayContainer.Navigate(typeof(ViewOptionsPage), mAppCore);
         }
 
-        async void ShowLocationSettings()
+        void ShowLocationSettings()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(LocationSettingsPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
+            OverlayBackground.Visibility = Visibility.Visible;
+            OverlayBackground.PointerPressed += (sender, arg) =>
             {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
+                OverlayBackground.Visibility = Visibility.Collapsed;
+                OverlayContainer.Content = null;
             };
+            OverlayContainer.Width = 400;
+            OverlayContainer.Height = 350;
+            OverlayContainer.Navigate(typeof(LocationSettingsPage), mAppCore);
         }
 
         async void ShowBookmarkOrganizer()

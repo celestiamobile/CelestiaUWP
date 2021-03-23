@@ -6,8 +6,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -16,22 +15,22 @@
     </Page.Resources>
     <Grid Margin="16" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
             <RowDefinition Height="6*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <RelativePanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <TextBlock Margin="0, 8, 0, 8" Text="Show" x:Name="ShowHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
             <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="ShowHint">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="9*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
                     <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}" Content="Show Galaxies"/>
