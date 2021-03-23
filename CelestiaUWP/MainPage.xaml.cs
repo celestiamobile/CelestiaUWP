@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
 using CelestiaComponent;
 using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Hosting;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Json;
+using Newtonsoft.Json;
+using Windows.UI.ViewManagement;
+using Windows.ApplicationModel;
 
 namespace CelestiaUWP
 {
-    public sealed partial class MainPage : Page, INotifyPropertyChanged
+    public sealed partial class MainPage : Page
     {
         private CelestiaAppCore mAppCore;
         private CelestiaRenderer mRenderer;
@@ -32,6 +30,8 @@ namespace CelestiaUWP
         private Point? mLastRightMousePosition = null;
 
         private string mCurrentPath;
+
+        private Dictionary<string, object> mSettings;
 
         private readonly string[] mMarkers = new string[]
         {
@@ -106,6 +106,9 @@ namespace CelestiaUWP
                     mRenderer.SetSize((int)GLView.Width, (int)GLView.Height);
                 });
 
+                mSettings = ReadSettings().Result;
+                ApplySettings(mSettings);
+
                 mAppCore.Start();
                 return true;
             });
@@ -120,6 +123,11 @@ namespace CelestiaUWP
 
         void SetUpGLViewInteractions()
         {
+            Window.Current.VisibilityChanged += (sender, args) =>
+            {
+                SaveSettings(GetCurrentSettings().Result);
+            };
+
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -748,17 +756,77 @@ namespace CelestiaUWP
             return "";
         }
 
-        async void ReadSettings()
+        private async System.Threading.Tasks.Task<Dictionary<string, object>> ReadSettings()
         {
+            var installedFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            var settingsObject = new Dictionary<string, object>();
+            try
+            {
+                var serializer = new JsonSerializer();
+                using (var st = await installedFolder.OpenStreamForReadAsync("defaults.json"))
+                using (var sr = new StreamReader(st))
+                using (var jsonTextReader = new JsonTextReader(sr))
+                {
+                    settingsObject = serializer.Deserialize<Dictionary<string, object>>(jsonTextReader);
+                }
+            }
+            catch { }
+            var newSettings = new Dictionary<string, object>();
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            foreach (var kvp in settingsObject)
+            {
+                var propInfo = typeof(CelestiaAppCore).GetProperty(kvp.Key);
+                if (propInfo == null) continue;
 
+                var def = kvp.Value;
+                var saved = localSettings.Values[kvp.Key];
+                if (saved != null)
+                {
+                    newSettings[kvp.Key] = saved;
+                }
+                else if (propInfo.PropertyType == typeof(Boolean))
+                {
+                    newSettings[kvp.Key] = (long)def != 0;
+                }
+                else if (propInfo.PropertyType == typeof(Double) || propInfo.PropertyType == typeof(Single))
+                {
+                    newSettings[kvp.Key] = (float)((double)def);
+                }
+                else if (propInfo.PropertyType == typeof(Int64) || propInfo.PropertyType == typeof(Int32) || propInfo.PropertyType == typeof(Int16))
+                {
+                    newSettings[kvp.Key] = (int)((long)def);
+                }
+            }
+            return newSettings;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
+        private async System.Threading.Tasks.Task<Dictionary<string, object>> GetCurrentSettings()
         {
-            if (PropertyChanged != null)
+            var newSettings = new Dictionary<string, object>();
+            foreach (var kvp in mSettings)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                var propInfo = typeof(CelestiaAppCore).GetProperty(kvp.Key);
+                if (propInfo == null) continue;
+
+                newSettings[kvp.Key] = mAppCore.GetType().GetProperty(kvp.Key).GetValue(mAppCore);
+            }
+            return newSettings;
+        }
+
+        private void ApplySettings(Dictionary<string, object> settings)
+        {
+            foreach (var kvp in settings)
+            {
+                mAppCore.GetType().GetProperty(kvp.Key).SetValue(mAppCore, kvp.Value);
+            }
+        }
+
+        private void SaveSettings(Dictionary<string, object> settings)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            foreach (var kvp in settings)
+            {
+                localSettings.Values[kvp.Key] = kvp.Value;
             }
         }
     }

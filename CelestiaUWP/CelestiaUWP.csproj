@@ -234,6 +234,9 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.0-prerelease.210315002</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CelestiaComponent\CelestiaComponent.vcxproj">
