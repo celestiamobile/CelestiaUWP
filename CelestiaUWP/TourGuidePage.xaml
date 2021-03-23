@@ -6,8 +6,7 @@
     xmlns:celestia="using:CelestiaComponent"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <RelativePanel>
         <TextBlock x:Name="TitleText" Text="Select your destination:" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" FontSize="20" Margin="16"></TextBlock>

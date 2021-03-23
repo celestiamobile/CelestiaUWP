@@ -6,8 +6,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <RelativePanel Margin="16">
         <RelativePanel x:Name="NewNameContainer" Margin="0, 0, 0, 16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  RelativePanel.AlignTopWithPanel="True" >

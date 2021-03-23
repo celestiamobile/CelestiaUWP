@@ -24,7 +24,6 @@ namespace CelestiaUWP
         private async void CreateNewFolder()
         {
             var dialog = new TextInputDialog(CelestiaAppCore.LocalizedString("Folder name"));
-            dialog.XamlRoot = XamlRoot;
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {

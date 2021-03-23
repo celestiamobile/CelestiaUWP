@@ -309,7 +309,10 @@ namespace CelestiaUWP
             GLView.PointerWheelChanged += (sender, arg) =>
             {
                 var delta = arg.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
-                mAppCore.MouseWheel(delta > 0 ? 1 : -1, 0);
+                mRenderer.EnqueueTask(() =>
+                {
+                    mAppCore.MouseWheel(delta > 0 ? 1 : -1, 0);
+                });
             };
             Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
             {
@@ -571,18 +574,9 @@ namespace CelestiaUWP
             if (file != null)
                 mAppCore.RunScript(file.Path);
         }
-        async void ShowTourGuide()
+        void ShowTourGuide()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(TourGuidePage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
-            {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
-            };
+            ShowPage(typeof(TourGuidePage), new Size(400, 0), mAppCore);
         }
         async void ShowSelectObject()
         {
@@ -632,32 +626,14 @@ namespace CelestiaUWP
             }
         }
 
-        async void ShowBrowser()
+        void ShowBrowser()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(BrowserPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
-            {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
-            };
+            ShowPage(typeof(BrowserPage), new Size(500, 0), mAppCore);
         }
 
-        async void ShowEclipseFinder()
+        void ShowEclipseFinder()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(EclipseFinderPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
-            {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
-            };
+            ShowPage(typeof(EclipseFinderPage), new Size(400, 0), mAppCore);
         }
 
         async void ShowTimeSetting()
@@ -673,56 +649,44 @@ namespace CelestiaUWP
 
         void ShowViewOptions()
         {
-            OverlayBackground.Visibility = Visibility.Visible;
-            OverlayBackground.PointerPressed += (sender, arg) =>
-            {
-                OverlayBackground.Visibility = Visibility.Collapsed;
-                OverlayContainer.Content = null;
-            };
-            OverlayContainer.Width = 580;
-            OverlayContainer.Height = 670;
-            OverlayContainer.Navigate(typeof(ViewOptionsPage), mAppCore);
+            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), mAppCore);
         }
 
         void ShowLocationSettings()
         {
+            ShowPage(typeof(LocationSettingsPage), new Size(400, 350), mAppCore);
+        }
+
+        void ShowPage(Type pageType, Size size, object parameter)
+        {
             OverlayBackground.Visibility = Visibility.Visible;
             OverlayBackground.PointerPressed += (sender, arg) =>
             {
                 OverlayBackground.Visibility = Visibility.Collapsed;
                 OverlayContainer.Content = null;
             };
-            OverlayContainer.Width = 400;
-            OverlayContainer.Height = 350;
-            OverlayContainer.Navigate(typeof(LocationSettingsPage), mAppCore);
+            OverlayContainer.Width = size.Width;
+            if (size.Height <= 1)
+            {
+                OverlayContainer.Height = OverlayBackground.Height;
+                RelativePanel.SetAlignBottomWithPanel(OverlayContainer, true);
+            }
+            else
+            {
+                OverlayContainer.Height = size.Height;
+                RelativePanel.SetAlignBottomWithPanel(OverlayContainer, false);
+            }
+            OverlayContainer.Navigate(pageType, parameter);
         }
 
-        async void ShowBookmarkOrganizer()
+        void ShowBookmarkOrganizer()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(BookmarkOrganizerPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
-            {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
-            };
+            ShowPage(typeof(BookmarkOrganizerPage), new Size(400, 0), mAppCore);
         }
 
-        async void ShowNewBookmark()
+        void ShowNewBookmark()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(NewBookmarkPage), mAppCore);
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
-            appWindow.Closed += delegate
-            {
-                appWindowContentFrame.Content = null;
-                appWindow = null;
-            };
+            ShowPage(typeof(NewBookmarkPage), new Size(400, 0), mAppCore);
         }
         async void ShowOpenGLInfo()
         {
