@@ -1,4 +1,4 @@
-﻿<Page
+﻿<local:BookmarkBasePage
     x:Class="CelestiaUWP.BookmarkOrganizerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -25,4 +25,4 @@
             <Button Content="Go" x:Name="GoButton" Click="GoButton_Click" HorizontalAlignment="Center" Width="100"></Button>
         </StackPanel>
     </RelativePanel>
-</Page>
+</local:BookmarkBasePage>

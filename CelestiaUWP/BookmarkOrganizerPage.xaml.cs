@@ -1,79 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 using CelestiaComponent;
-using System.Runtime.Serialization.Json;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 namespace CelestiaUWP
 {
-    public sealed partial class BookmarkOrganizerPage : Page, INotifyPropertyChanged
+    public sealed partial class BookmarkOrganizerPage : BookmarkBasePage
     {
-        private CelestiaAppCore mAppCore;
-
-        private ObservableCollection<BookmarkNode> Bookmarks = new ObservableCollection<BookmarkNode>();
         public BookmarkOrganizerPage()
         {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            mAppCore = e.Parameter as CelestiaAppCore;
-            readBookmarks();
-        }
-        async private void readBookmarks()
-        {
-            ObservableCollection<BookmarkNode> bookmarks;
-            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            try
-            {
-                var path = localFolder.Path;
-                var bookmarkStream = await localFolder.OpenStreamForReadAsync("bookmarks.json");
-                var jsonSerializer = new DataContractJsonSerializer(typeof(ObservableCollection<BookmarkNode>));
-                bookmarks = (ObservableCollection<BookmarkNode>)jsonSerializer.ReadObject(bookmarkStream);
-                bookmarkStream.Close();
-            }
-            catch
-            {
-                bookmarks = new ObservableCollection<BookmarkNode>();
-            }
-            Bookmarks = bookmarks;
-        }
-
-        async public void writeBookmarks()
-        {
-            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            try
-            {
-                var bookmarkStream = await localFolder.OpenStreamForWriteAsync("bookmarks.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                var jsonSerializer = new DataContractJsonSerializer(typeof(ObservableCollection<BookmarkNode>));
-                jsonSerializer.WriteObject(bookmarkStream, Bookmarks);
-                bookmarkStream.Close();
-            }
-            catch { }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)
@@ -94,7 +32,7 @@ namespace CelestiaUWP
                 bookmark.Name = dialog.Text;
                 bookmark.Children = new ObservableCollection<BookmarkNode>();
                 Bookmarks.Add(bookmark);
-                writeBookmarks();
+                WriteBookmarks();
             }
         }
 
@@ -122,23 +60,11 @@ namespace CelestiaUWP
                         {
                             bookmark.Name = dialog.Text;
                             parent[i] = bookmark;
-                            writeBookmarks();
+                            WriteBookmarks();
                         }
                     }
                 }
             }
-        }
-
-        private ObservableCollection<BookmarkNode> FindParent(BookmarkNode node, ObservableCollection<BookmarkNode> root)
-        {
-            foreach (var n in root)
-            {
-                if (n == node) return root;
-                var p = FindParent(node, n.Children);
-                if (p != null)
-                    return p;
-            }
-            return null;
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -150,7 +76,7 @@ namespace CelestiaUWP
             if (parent != null)
             {
                 parent.Remove(bookmark);
-                writeBookmarks();
+                WriteBookmarks();
             }
         }
 

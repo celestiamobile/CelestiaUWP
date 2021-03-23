@@ -748,6 +748,11 @@ namespace CelestiaUWP
             return "";
         }
 
+        async void ReadSettings()
+        {
+
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {

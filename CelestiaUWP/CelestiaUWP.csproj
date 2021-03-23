@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookmarkBasePage.cs" />
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
