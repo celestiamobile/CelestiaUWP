@@ -126,6 +126,11 @@ namespace winrt::CelestiaComponent::implementation
         core->mouseButtonDown(x, y, button);
     }
 
+    void CelestiaAppCore::MouseWheel(float motion, int32_t modifiers)
+    {
+        core->mouseWheel(motion, modifiers);
+    }
+
     void CelestiaAppCore::CharEnter(int16_t input)
     {
         core->charEntered(input);
@@ -298,7 +303,11 @@ namespace winrt::CelestiaComponent::implementation
 
     hstring CelestiaAppCore::LocalizedString(hstring const& original)
     {
+#ifdef ENABLE_NLS
+        return to_hstring(dgettext("celestia_ui", to_string(original).c_str()));
+#else
         return original;
+#endif
     }
 
     com_array<CelestiaComponent::CelestiaScript> CelestiaAppCore::ReadScripts(hstring const& directory, bool deepScan)

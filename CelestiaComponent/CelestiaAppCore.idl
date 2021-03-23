@@ -29,6 +29,7 @@ namespace CelestiaComponent
         void MouseMove(Single x, Single y, Int32 button);
         void MouseButtonUp(Single x, Single y, Int32 button);
         void MouseButtonDown(Single x, Single y, Int32 button);
+        void MouseWheel(Single motion, Int32 modifiers);
         void CharEnter(Int16 input);
         void CharEnter(Int16 input, Int32 modifiers);
         void KeyUp(Int32 key, Int32 modifiers);

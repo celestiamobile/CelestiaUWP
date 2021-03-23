@@ -22,6 +22,7 @@ namespace winrt::CelestiaComponent::implementation
         void MouseMove(float x, float y, int32_t button);
         void MouseButtonUp(float x, float y, int32_t button);
         void MouseButtonDown(float x, float y, int32_t button);
+        void MouseWheel(float motion, int32_t modifiers);
         void CharEnter(int16_t input);
         void CharEnter(int16_t input, int32_t modifiers);
         void KeyUp(int32_t key, int32_t modifiers);

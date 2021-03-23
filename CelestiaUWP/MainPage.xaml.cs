@@ -306,6 +306,11 @@ namespace CelestiaUWP
                     }
                 }
             };
+            GLView.PointerWheelChanged += (sender, arg) =>
+            {
+                var delta = arg.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
+                mAppCore.MouseWheel(delta > 0 ? 1 : -1, 0);
+            };
             Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
             {
                 mAppCore.CharEnter((short)arg.KeyCode);

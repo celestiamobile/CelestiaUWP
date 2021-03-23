@@ -164,6 +164,19 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\CelestiaResources\**\*.*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Link>CelestiaResources\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+    </Content>
+    <Content Include="Resources\lua.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Link>lua.dll</Link>
+    </Content>
+    <Content Include="defaults.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -258,7 +271,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "$(ProjectDir)..\$(PlatformName)\$(ConfigurationName)\CelestiaComponent\lua.dll" "AppX"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /d "$(ProjectDir)..\$(PlatformName)\$(ConfigurationName)\CelestiaComponent\lua.dll" "$(ProjectDir)Resources"
+call "$(ProjectDir)copy_general_data.bat" "$(ProjectDir)" "$(ProjectDir)Resources"
+call "$(ProjectDir)convert_po.bat" "$(ProjectDir)" "$(ProjectDir)Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
