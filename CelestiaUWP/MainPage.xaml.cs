@@ -156,7 +156,7 @@ namespace CelestiaUWP
                       {
                           var body = (CelestiaBody)selection.Object;
                           var surfaces = body.AlternateSurfaceNames;
-                          if (surfaces.Length > 0)
+                          if (surfaces != null && surfaces.Length > 0)
                           {
                               menu.Items.Add(new MenuFlyoutSeparator());
 

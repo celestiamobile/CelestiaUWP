@@ -10,13 +10,11 @@
 
     <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <RelativePanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <TextBlock Margin="0, 8, 0, 8" Text="Show" x:Name="FeaturesHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+            <TextBlock Margin="0, 8, 0, 8" Text="Show Features" x:Name="FeaturesHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
             <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="FeaturesHint">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -37,6 +35,9 @@
                 </StackPanel>
             </Grid>
         </RelativePanel>
-        <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}" Content="Label Features"/>
+        <StackPanel Grid.Row="1" Spacing="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}" Content="Show Label Features"/>
+            <Slider Minimum="1" Maximum="100" Header="Minimum Labeled Feature Size" Value="{x:Bind mAppCore.MinimumFeatureSize, Mode=TwoWay}"></Slider>
+        </StackPanel>
     </Grid>
 </Page>

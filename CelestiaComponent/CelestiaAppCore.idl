@@ -71,6 +71,7 @@ namespace CelestiaComponent
         Boolean ShowPlanetRings;
         Boolean ShowMarkers;
         Boolean ShowOrbits;
+        Boolean ShowEcliptic;
         Boolean ShowPartialTrajectories;
         Boolean ShowSmoothLines;
         Boolean ShowEclipseShadows;
@@ -142,5 +143,6 @@ namespace CelestiaComponent
         Double FaintestVisible;
         Double GalaxyBrightness;
         Double MinimumFeatureSize;
+        Single DistanceLimit;
     }
 }

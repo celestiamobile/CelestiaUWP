@@ -18,6 +18,18 @@ using System.ComponentModel;
 
 namespace CelestiaUWP
 {
+    public class FilterStarsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return (double)MathF.Log((float)value, 1000000f) * 10000;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return (float)MathF.Pow(1000000f, (float)((double)value) / 10000f);
+        }
+    }
     public sealed partial class ViewOptionsPage : Page, INotifyPropertyChanged
     {
         private string[] InfoDescriptions = new string[]

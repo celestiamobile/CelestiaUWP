@@ -85,6 +85,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowMarkers(bool showMarkers);
         bool ShowOrbits();
         void ShowOrbits(bool showOrbits);
+        bool ShowEcliptic();
+        void ShowEcliptic(bool showEcliptic);
         bool ShowPartialTrajectories();
         void ShowPartialTrajectories(bool showPartialTrajectories);
         bool ShowSmoothLines();
@@ -229,6 +231,8 @@ namespace winrt::CelestiaComponent::implementation
         void GalaxyBrightness(double galaxyBrightness);
         double MinimumFeatureSize();
         void MinimumFeatureSize(double minimumFeatureSize);
+        float DistanceLimit();
+        void DistanceLimit(float distanceLimit);
 
     private:
         CelestiaCore* core;

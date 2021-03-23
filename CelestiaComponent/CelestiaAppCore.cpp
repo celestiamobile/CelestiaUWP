@@ -351,6 +351,7 @@ void CelestiaAppCore::Show##flag(bool value) \
     RENDERMETHODS(PlanetRings)
     RENDERMETHODS(Markers)
     RENDERMETHODS(Orbits)
+    RENDERMETHODS(Ecliptic)
     RENDERMETHODS(PartialTrajectories)
     RENDERMETHODS(SmoothLines)
     RENDERMETHODS(EclipseShadows)
@@ -550,5 +551,15 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::MinimumFeatureSize(double minimumFeatureSize)
     {
         core->getRenderer()->setMinimumFeatureSize((float)minimumFeatureSize);
+    }
+
+    float CelestiaAppCore::DistanceLimit()
+    {
+        return core->getRenderer()->getDistanceLimit();
+    }
+
+    void CelestiaAppCore::DistanceLimit(float distanceLimit)
+    {
+        core->getRenderer()->setDistanceLimit(distanceLimit);
     }
 }
