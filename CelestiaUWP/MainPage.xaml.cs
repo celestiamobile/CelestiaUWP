@@ -125,7 +125,7 @@ namespace CelestiaUWP
         {
             Window.Current.VisibilityChanged += (sender, args) =>
             {
-                SaveSettings(GetCurrentSettings().Result);
+                SaveSettings(GetCurrentSettings());
             };
 
             mAppCore.SetContextMenuHandler((x, y, selection) =>
@@ -184,6 +184,22 @@ namespace CelestiaUWP
                               }
 
                               menu.Items.Add(altSur);
+                          }
+                      }
+
+                      var browserMenuItems = new List<MenuFlyoutItemBase>();
+                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren);
+                      foreach (var child in browserItem.Children)
+                      {
+                          browserMenuItems.Add(CreateMenuItem(child));
+                      }
+
+                      if (browserMenuItems.Count > 0)
+                      {
+                          menu.Items.Add(new MenuFlyoutSeparator());
+                          foreach (var browserMenuItem in browserMenuItems)
+                          {
+                              menu.Items.Add(browserMenuItem);
                           }
                       }
 
@@ -769,7 +785,7 @@ namespace CelestiaUWP
             return newSettings;
         }
 
-        private async System.Threading.Tasks.Task<Dictionary<string, object>> GetCurrentSettings()
+        private Dictionary<string, object> GetCurrentSettings()
         {
             var newSettings = new Dictionary<string, object>();
             foreach (var kvp in mSettings)
@@ -797,6 +813,56 @@ namespace CelestiaUWP
             {
                 localSettings.Values[kvp.Key] = kvp.Value;
             }
+        }
+
+        private MenuFlyoutItemBase CreateMenuItem(CelestiaBrowserItem item)
+        {
+            var children = new List<MenuFlyoutItemBase>();
+            var obj = item.Object;
+            if (obj != null)
+            {
+                var selectItem = new MenuFlyoutItem();
+                selectItem.Text = CelestiaAppCore.LocalizedString("Select");
+                selectItem.Click += (sender, arg) =>
+                {
+                    mAppCore.Simulation.Selection = new CelestiaSelection(obj);
+                };
+                children.Add(selectItem);
+            }
+            if (item.Children != null)
+            {
+                if (children.Count > 0)
+                    children.Add(new MenuFlyoutSeparator());
+
+                foreach (var child in item.Children)
+                {
+                    children.Add(CreateMenuItem(child));
+                }
+            }
+            if (children.Count == 0)
+            {
+                var menuItem = new MenuFlyoutItem();
+                menuItem.Text = item.Name;
+                return menuItem;
+            }
+            var menu = new MenuFlyoutSubItem();
+            menu.Text = item.Name;
+            foreach (var child in children)
+            {
+                menu.Items.Add(child);
+            }
+            return menu;
+        }
+        private CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item)
+        {
+            var obj = item.Object;
+            if (obj == null)
+                return new CelestiaBrowserItem[] { };
+            if (obj is CelestiaStar)
+                return mAppCore.Simulation.Universe.ChildrenForStar((CelestiaStar)obj, GetChildren);
+            if (obj is CelestiaBody)
+                return mAppCore.Simulation.Universe.ChildrenForBody((CelestiaBody)obj, GetChildren);
+            return new CelestiaBrowserItem[] { };
         }
     }
 }
