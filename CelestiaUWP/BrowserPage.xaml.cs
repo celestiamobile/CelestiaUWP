@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using CelestiaComponent;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace CelestiaUWP
 {
+    public class NavigationViewItem
+    {
+        public string Name;
+        public string Tag;
+
+        public NavigationViewItem(string Name, string Tag)
+        {
+            this.Name = Name;
+            this.Tag = Tag;
+        }
+    }
     public sealed partial class BrowserPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
@@ -26,6 +26,12 @@ namespace CelestiaUWP
         private CelestiaBrowserItem[] mStarRoot;
         private CelestiaBrowserItem[] mDSORoot;
 
+        private NavigationViewItem[] NavigationItems = new NavigationViewItem[]
+        {
+            new NavigationViewItem(CelestiaAppCore.LocalizedString("Solar System"), "sol"),
+            new NavigationViewItem(CelestiaAppCore.LocalizedString("Stars"), "star"),
+            new NavigationViewItem(CelestiaAppCore.LocalizedString("DSOs"), "dso"),
+        };
         private CelestiaBrowserItem[] mRoot
         {
             get { return root;  }
@@ -157,6 +163,7 @@ namespace CelestiaUWP
                 };
                 ButtonStack.Children.Add(button);
             }
+            Nav.SelectedItem = NavigationItems[0];
         }
 
         private CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item)
@@ -171,20 +178,20 @@ namespace CelestiaUWP
             return new CelestiaBrowserItem[] { };
         }
 
-        private void TabRoot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (mSolRoot == null)
                 return;
 
-            switch (TabRoot.SelectedIndex)
+            switch (((NavigationViewItem)args.SelectedItem).Tag)
             {
-                case 0:
+                case "sol":
                     mRoot = mSolRoot;
                     break;
-                case 1:
+                case "star":
                     mRoot = mStarRoot;
                     break;
-                case 2:
+                case "dso":
                     mRoot = mDSORoot;
                     break;
                 default:
