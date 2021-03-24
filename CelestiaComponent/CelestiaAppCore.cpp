@@ -241,6 +241,11 @@ namespace winrt::CelestiaComponent::implementation
         core->goToUrl(to_string(url));
     }
 
+    bool CelestiaAppCore::SaveScreenshot(hstring const& filePath)
+    {
+        return core->saveScreenShot(to_string(filePath), Content_PNG);
+    }
+
     com_array<CelestiaComponent::CelestiaDestination> CelestiaAppCore::Destinations()
     {
         auto destinations = core->getDestinations();

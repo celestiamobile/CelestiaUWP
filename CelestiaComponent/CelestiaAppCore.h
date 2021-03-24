@@ -33,6 +33,7 @@ namespace winrt::CelestiaComponent::implementation
         void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
         void RunScript(hstring const& path);
         void GoToURL(hstring const& url);
+        bool SaveScreenshot(hstring const& filePath);
         com_array<CelestiaComponent::CelestiaDestination> Destinations();
         CelestiaComponent::CelestiaSimulation Simulation();
         hstring CurrentURL();

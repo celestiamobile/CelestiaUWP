@@ -40,6 +40,7 @@ namespace CelestiaComponent
         void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);
         void RunScript(String path);
         void GoToURL(String url);
+        Boolean SaveScreenshot(String filePath);
         CelestiaDestination[] Destinations{ get; };
         CelestiaSimulation Simulation{ get; };
         String CurrentURL{ get; };

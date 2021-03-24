@@ -376,6 +376,14 @@ namespace CelestiaUWP
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
+            AppendItem(fileItem, CelestiaAppCore.LocalizedString("Capture Image"), (sender, arg) =>
+            {
+                CaptureImage();
+            });
+
+            fileItem.Items.Add(new MenuFlyoutSeparator());
+
+
             AppendItem(fileItem, CelestiaAppCore.LocalizedString("Exit"), (sender, arg) =>
             {
                 Application.Current.Exit();
@@ -863,6 +871,63 @@ namespace CelestiaUWP
             if (obj is CelestiaBody)
                 return mAppCore.Simulation.Universe.ChildrenForBody((CelestiaBody)obj, GetChildren);
             return new CelestiaBrowserItem[] { };
+        }
+
+        private void CaptureImage()
+        {
+            var tempFolder = Windows.Storage.ApplicationData.Current.TemporaryFolder;
+            var path = tempFolder.Path + "\\" + GuidHelper.CreateNewGuid().ToString() + ".png";
+            mRenderer.EnqueueTask(() =>
+            {
+                mAppCore.Draw();
+                if (mAppCore.SaveScreenshot(path))
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                      {
+                          SaveScreenshot(path);
+                      });
+                }
+                else
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ShowScreenshotFailure();
+                    });
+                }
+            });
+        }
+
+        private async void ShowScreenshotFailure()
+        {
+            var alert = new ContentDialog();
+            alert.Title = CelestiaAppCore.LocalizedString("Failed in capturing screenshot.");
+            alert.PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
+            await alert.ShowAsync();
+        }
+
+        private async void SaveScreenshot(string path)
+        {
+            try
+            {
+                var originalFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                if (originalFile == null) return;
+
+                var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+                savePicker.SuggestedStartLocation =
+                    Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+                // Dropdown of file types the user can save the file as
+                savePicker.FileTypeChoices.Add(CelestiaAppCore.LocalizedString("Image"), new List<string>() { ".png" });
+                // Default file name if the user does not type one in or select a file to replace
+                savePicker.SuggestedFileName = CelestiaAppCore.LocalizedString("Celestia Screenshot");
+                Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+                if (file == null) return;
+
+                await originalFile.CopyAndReplaceAsync(file);
+            }
+            catch (Exception e)
+            {
+                ShowScreenshotFailure();
+            }
         }
     }
 }
