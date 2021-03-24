@@ -1,9 +1,0 @@
-namespace WinRTHelper
-{
-    [default_interface]
-    runtimeclass Helper
-    {
-        static void PropertySetAddSize(Windows.Foundation.Collections.PropertySet propertySet, String key, Windows.Foundation.Size value);
-        static void PropertySetAddSingle(Windows.Foundation.Collections.PropertySet propertySet, String key, Single value);
-    }
-}
