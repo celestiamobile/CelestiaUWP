@@ -1,13 +1,9 @@
-﻿using System;
+﻿using CelestiaComponent;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.IO;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
-using System.Runtime.Serialization.Json;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 
 namespace CelestiaUWP
 {
@@ -35,11 +31,13 @@ namespace CelestiaUWP
             Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             try
             {
-                var path = localFolder.Path;
-                var bookmarkStream = await localFolder.OpenStreamForReadAsync("bookmarks.json");
-                var jsonSerializer = new DataContractJsonSerializer(typeof(ObservableCollection<BookmarkNode>));
-                bookmarks = (ObservableCollection<BookmarkNode>)jsonSerializer.ReadObject(bookmarkStream);
-                bookmarkStream.Close();
+                var serializer = new JsonSerializer();
+                using (var bookmarkStream = await localFolder.OpenStreamForReadAsync("bookmarks.json"))
+                using (var sr = new StreamReader(bookmarkStream))
+                using (var jsonTextReader = new JsonTextReader(sr))
+                {
+                    bookmarks = serializer.Deserialize<ObservableCollection<BookmarkNode>>(jsonTextReader);
+                }
             }
             catch
             {
@@ -53,10 +51,13 @@ namespace CelestiaUWP
             Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             try
             {
-                var bookmarkStream = await localFolder.OpenStreamForWriteAsync("bookmarks.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                var jsonSerializer = new DataContractJsonSerializer(typeof(ObservableCollection<BookmarkNode>));
-                jsonSerializer.WriteObject(bookmarkStream, Bookmarks);
-                bookmarkStream.Close();
+                var serializer = new JsonSerializer();
+                using (var bookmarkStream = await localFolder.OpenStreamForWriteAsync("bookmarks.json", Windows.Storage.CreationCollisionOption.ReplaceExisting))
+                using (var sr = new StreamWriter(bookmarkStream))
+                using (var jsonTextWriter = new JsonTextWriter(sr))
+                {
+                    serializer.Serialize(jsonTextWriter, Bookmarks);
+                }
             }
             catch { }
         }

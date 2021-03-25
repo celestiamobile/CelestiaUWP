@@ -116,6 +116,22 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Addon\InstalledItemListPage.xaml.cs">
+      <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Addon\RequestResult.cs" />
+    <Compile Include="Addon\ResourceCategoryListPage.xaml.cs">
+      <DependentUpon>ResourceCategoryListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Addon\ResourceConstants.cs" />
+    <Compile Include="Addon\ResourceItem.cs" />
+    <Compile Include="Addon\ResourceItemListPage.xaml.cs">
+      <DependentUpon>ResourceItemListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Addon\ResourceItemPage.xaml.cs">
+      <DependentUpon>ResourceItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Addon\ResourceManager.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -123,6 +139,12 @@
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Addon\ResourceCategory.cs" />
+    <Compile Include="Helper\DoubleFloatConverter.cs" />
+    <Compile Include="Helper\NavigationViewItem.cs" />
+    <Compile Include="Helper\TimeConverter.cs" />
+    <Compile Include="Helper\ContentDialogHelper.cs" />
+    <Compile Include="Helper\LocalizationHelper.cs" />
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
@@ -145,6 +167,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Addon\ResourceManagerPage.xaml.cs">
+      <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
@@ -165,15 +190,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\CelestiaResources\**\*.*">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>CelestiaResources\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>CelestiaResources\%(RecursiveDir)\%(Filename)%(Extension)</Link>
     </Content>
     <Content Include="Resources\lua.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Link>lua.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>lua.dll</Link>
     </Content>
     <Content Include="defaults.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +216,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Addon\InstalledItemListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Addon\ResourceCategoryListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Addon\ResourceItemListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Addon\ResourceItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BookmarkOrganizerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -222,6 +263,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Addon\ResourceManagerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TextInputDialog.xaml">
       <SubType>Designer</SubType>
@@ -258,6 +303,52 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CelestiaResources\data\" />
+    <Folder Include="CelestiaResources\extras-standard\cassini\data\" />
+    <Folder Include="CelestiaResources\extras-standard\cassini\models\" />
+    <Folder Include="CelestiaResources\extras-standard\galileo\data\" />
+    <Folder Include="CelestiaResources\extras-standard\galileo\models\" />
+    <Folder Include="CelestiaResources\extras-standard\hubble\models\" />
+    <Folder Include="CelestiaResources\extras-standard\iss\models\" />
+    <Folder Include="CelestiaResources\extras-standard\iss\textures\medres\" />
+    <Folder Include="CelestiaResources\extras-standard\mir\models\" />
+    <Folder Include="CelestiaResources\extras\" />
+    <Folder Include="CelestiaResources\fonts\" />
+    <Folder Include="CelestiaResources\images\" />
+    <Folder Include="CelestiaResources\locale\ar\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\be\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\bg\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\de\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\el\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\en\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\es\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\fr\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\gl\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\hu\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\it\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\ja\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\ko\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\lt\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\lv\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\nl\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\no\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\pl\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\pt\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\pt_BR\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\ro\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\ru\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\sk\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\sv\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\tr\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\uk\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\zh_CN\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\zh_TW\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\models\" />
+    <Folder Include="CelestiaResources\scripts\overlay\" />
+    <Folder Include="CelestiaResources\shaders\" />
+    <Folder Include="CelestiaResources\textures\hires\" />
+    <Folder Include="CelestiaResources\textures\lores\" />
+    <Folder Include="CelestiaResources\textures\medres\" />
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>

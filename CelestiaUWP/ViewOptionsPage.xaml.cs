@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
+using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
-using Windows.UI.Xaml;
 
 namespace CelestiaUWP
 {
@@ -24,7 +24,9 @@ namespace CelestiaUWP
     {
         private string[] InfoDescriptions = new string[]
         {
-            "None", "Terse", "Verbose"
+            LocalizationHelper.Localize("None"),
+            LocalizationHelper.Localize("Terse"),
+            LocalizationHelper.Localize("Verbose")
         };
 
         private CelestiaAppCore AppCore;
@@ -54,19 +56,19 @@ namespace CelestiaUWP
                 var checkBox = (CheckBox)element;
                 var content = checkBox.Content;
                 if (content is string)
-                    checkBox.Content = CelestiaAppCore.LocalizedString((string)content);
+                    checkBox.Content = LocalizationHelper.Localize((string)content);
             }
             else if (element is TextBlock)
             {
                 var textBlock = (TextBlock)element;
-                textBlock.Text = CelestiaAppCore.LocalizedString(textBlock.Text);
+                textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
             }
             else if (element is Slider)
             {
                 var slider = (Slider)element;
                 var header = slider.Header;
                 if (header is string)
-                    slider.Header = CelestiaAppCore.LocalizedString((string)header);
+                    slider.Header = LocalizationHelper.Localize((string)header);
             }
         }
     }

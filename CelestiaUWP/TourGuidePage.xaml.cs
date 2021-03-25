@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
-using System.Collections.ObjectModel;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace CelestiaUWP
 {
@@ -28,8 +15,8 @@ namespace CelestiaUWP
         public TourGuidePage()
         {
             this.InitializeComponent();
-            TitleText.Text = CelestiaAppCore.LocalizedString("Select your destination:");
-            GoButton.Content = CelestiaAppCore.LocalizedString("Go");
+            TitleText.Text = LocalizationHelper.Localize("Select your destination:");
+            GoButton.Content = LocalizationHelper.Localize("Go");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

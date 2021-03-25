@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="CelestiaUWP.Addon.ResourceItemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP.Addon"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <local:ImageConverter x:Key="ImageConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
+    <RelativePanel>
+        <ScrollViewer RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Above="ActionContainer">
+            <StackPanel Orientation="Vertical" Margin="16" Spacing="4">
+                <TextBlock Text="{x:Bind Item.name, Mode=OneWay}" FontWeight="Bold" FontSize="30" Margin="0, 0, 0, 8" x:Name="Title" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Bind Item.AuthorListDescription, Mode=OneWay}" FontSize="14" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Bind Item.ReleaseTimeDescription, Mode=OneWay}" FontSize="12" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Bind Item.description, Mode=OneWay}" FontSize="13" TextWrapping="Wrap"/>
+                <Image Source="{x:Bind Item.image, Converter={StaticResource ImageConverter}, Mode=OneWay}" Margin="0, 8, 0, 0"/>
+            </StackPanel>
+        </ScrollViewer>
+        <RelativePanel Margin="16" x:Name="ActionContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <TextBlock x:Name="ProgressText" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="Install" x:Name="ActionButton" Click="ActionButton_Click" RelativePanel.AlignRightWithPanel="True"/>
+        </RelativePanel>
+    </RelativePanel>
+</Page>

@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
+using System;
+using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using System.Globalization;
-
-using CelestiaComponent;
-using System.ComponentModel;
 
 namespace CelestiaUWP
 {
@@ -59,10 +47,10 @@ namespace CelestiaUWP
         public TimeSettingDialog(DateTimeOffset original)
         {
             this.InitializeComponent();
-            Title = CelestiaAppCore.LocalizedString("Set Simulation Time");
-            PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
-            SecondaryButtonText = CelestiaAppCore.LocalizedString("Cancel");
-            CurrentTimeButton.Content = CelestiaAppCore.LocalizedString("Set to Current Time");
+            Title = LocalizationHelper.Localize("Set Simulation Time");
+            PrimaryButtonText = LocalizationHelper.Localize("OK");
+            SecondaryButtonText = LocalizationHelper.Localize("Cancel");
+            CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");
             DisplayDate = original;
         }
 

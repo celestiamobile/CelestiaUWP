@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using CelestiaUWP.Helper;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
 
 namespace CelestiaUWP
 {
@@ -25,8 +11,8 @@ namespace CelestiaUWP
         {
             this.InitializeComponent();
             Title = title;
-            PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
-            SecondaryButtonText = CelestiaAppCore.LocalizedString("Cancel");
+            PrimaryButtonText = LocalizationHelper.Localize("OK");
+            SecondaryButtonText = LocalizationHelper.Localize("Cancel");
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

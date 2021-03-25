@@ -1,40 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
+using System;
+using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
-using System.ComponentModel;
 
 namespace CelestiaUWP
 {
-    public class TimeConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value == null)
-                return null;
-            return new DateTimeOffset(((DateTime)value).ToUniversalTime());
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            if (value == null)
-                return null;
-            return ((DateTimeOffset)value).DateTime;
-        }
-    }
-
     public sealed partial class EclipseFinderPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
@@ -64,13 +37,13 @@ namespace CelestiaUWP
         public EclipseFinderPage()
         {
             this.InitializeComponent();
-            GoButton.Content = CelestiaAppCore.LocalizedString("Set Date and Go to Planet");
-            ComputeButton.Content = CelestiaAppCore.LocalizedString("Compute");
-            StartTimeHint.Text = CelestiaAppCore.LocalizedString("Start time:");
-            EndTimeHint.Text = CelestiaAppCore.LocalizedString("End time:");
-            ObjectHint.Text = CelestiaAppCore.LocalizedString("Object:");
-            SolarEclipseButton.Content = CelestiaAppCore.LocalizedString("Solar");
-            SolarEclipseButton.Content = CelestiaAppCore.LocalizedString("Lunar");
+            GoButton.Content = LocalizationHelper.Localize("Set Date and Go to Planet");
+            ComputeButton.Content = LocalizationHelper.Localize("Compute");
+            StartTimeHint.Text = LocalizationHelper.Localize("Start time:");
+            EndTimeHint.Text = LocalizationHelper.Localize("End time:");
+            ObjectHint.Text = LocalizationHelper.Localize("Object:");
+            SolarEclipseButton.Content = LocalizationHelper.Localize("Solar");
+            SolarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

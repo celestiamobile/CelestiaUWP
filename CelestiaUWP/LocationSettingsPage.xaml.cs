@@ -1,26 +1,11 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public class DoubleFloatConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            return (double)((float)value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            return (float)((double)value);
-        }
-    }
-
     public sealed partial class LocationSettingsPage : Page
     {
         private CelestiaAppCore AppCore;
@@ -50,19 +35,19 @@ namespace CelestiaUWP
                 var checkBox = (CheckBox)element;
                 var content = checkBox.Content;
                 if (content is string)
-                    checkBox.Content = CelestiaAppCore.LocalizedString((string)content);
+                    checkBox.Content = LocalizationHelper.Localize((string)content);
             }
             else if (element is TextBlock)
             {
                 var textBlock = (TextBlock)element;
-                textBlock.Text = CelestiaAppCore.LocalizedString(textBlock.Text);
+                textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
             }
             else if (element is Slider)
             {
                 var slider = (Slider)element;
                 var header = slider.Header;
                 if (header is string)
-                    slider.Header = CelestiaAppCore.LocalizedString((string)header);
+                    slider.Header = LocalizationHelper.Localize((string)header);
             }
         }
     }

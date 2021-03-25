@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-using CelestiaComponent;
+﻿using CelestiaUWP.Helper;
+using System;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
 {
@@ -71,17 +58,17 @@ namespace CelestiaUWP
         public int Unit = 0;
 
         ObservableCollection<String> Units = new ObservableCollection<String>(new String[] {
-            CelestiaAppCore.LocalizedString("km"),
-            CelestiaAppCore.LocalizedString("radii"),
-            CelestiaAppCore.LocalizedString("au")
+            LocalizationHelper.Localize("km"),
+            LocalizationHelper.Localize("radii"),
+            LocalizationHelper.Localize("au")
         });
 
         public GotoObjectDialog()
         {
             this.InitializeComponent();
-            Title = CelestiaAppCore.LocalizedString("Go to Object");
-            PrimaryButtonText = CelestiaAppCore.LocalizedString("OK");
-            SecondaryButtonText = CelestiaAppCore.LocalizedString("Cancel");
+            Title = LocalizationHelper.Localize("Go to Object");
+            PrimaryButtonText = LocalizationHelper.Localize("OK");
+            SecondaryButtonText = LocalizationHelper.Localize("Cancel");
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

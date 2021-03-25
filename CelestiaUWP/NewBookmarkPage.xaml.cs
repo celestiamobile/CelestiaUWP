@@ -1,9 +1,8 @@
-﻿using System;
+﻿using CelestiaUWP.Helper;
+using System;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
-using CelestiaComponent;
-using System.Collections.ObjectModel;
 
 namespace CelestiaUWP
 {
@@ -23,7 +22,7 @@ namespace CelestiaUWP
 
         private async void CreateNewFolder()
         {
-            var dialog = new TextInputDialog(CelestiaAppCore.LocalizedString("Folder name"));
+            var dialog = new TextInputDialog(LocalizationHelper.Localize("Folder name"));
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
@@ -47,7 +46,7 @@ namespace CelestiaUWP
 
         private async void RenameItem(BookmarkNode bookmark)
         {
-            var dialog = new TextInputDialog(CelestiaAppCore.LocalizedString("New name"));
+            var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
             dialog.XamlRoot = XamlRoot;
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)

@@ -1,24 +1,13 @@
-﻿using System;
+﻿using CelestiaComponent;
+using CelestiaUWP.Helper;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-using CelestiaComponent;
-using System.ComponentModel;
-
 namespace CelestiaUWP
 {
-    public class NavigationViewItem
-    {
-        public string Name;
-        public string Tag;
-
-        public NavigationViewItem(string Name, string Tag)
-        {
-            this.Name = Name;
-            this.Tag = Tag;
-        }
-    }
     public sealed partial class BrowserPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore mAppCore;
@@ -26,11 +15,11 @@ namespace CelestiaUWP
         private CelestiaBrowserItem[] mStarRoot;
         private CelestiaBrowserItem[] mDSORoot;
 
-        private NavigationViewItem[] NavigationItems = new NavigationViewItem[]
+        private Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
         {
-            new NavigationViewItem(CelestiaAppCore.LocalizedString("Solar System"), "sol"),
-            new NavigationViewItem(CelestiaAppCore.LocalizedString("Stars"), "star"),
-            new NavigationViewItem(CelestiaAppCore.LocalizedString("DSOs"), "dso"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Solar System"), "sol"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Stars"), "star"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("DSOs"), "dso"),
         };
         private CelestiaBrowserItem[] mRoot
         {
@@ -76,9 +65,9 @@ namespace CelestiaUWP
             }
             mStarRoot = new CelestiaBrowserItem[]
             {
-                new CelestiaBrowserItem(CelestiaAppCore.LocalizedString("Nearest Stars"), s1.ToArray()),
-                new CelestiaBrowserItem(CelestiaAppCore.LocalizedString("Brightest Stars"), s2.ToArray()),
-                new CelestiaBrowserItem(CelestiaAppCore.LocalizedString("Stars with Planets"), s3.ToArray()),
+                new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray()),
+                new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s2.ToArray()),
+                new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray()),
             };
 
             var typeMap = new String[]
@@ -99,14 +88,14 @@ namespace CelestiaUWP
             }
             var categoryNames = new String[]
             {
-                CelestiaAppCore.LocalizedString("Galaxies (Barred Spiral)"),
-                CelestiaAppCore.LocalizedString("Galaxies (Spiral)"),
-                CelestiaAppCore.LocalizedString("Galaxies (Elliptical)"),
-                CelestiaAppCore.LocalizedString("Galaxies (Irregular)"),
-                CelestiaAppCore.LocalizedString("Nebulae"),
-                CelestiaAppCore.LocalizedString("Globulars"),
-                CelestiaAppCore.LocalizedString("Open Clusters"),
-                CelestiaAppCore.LocalizedString("Unknown"),
+                LocalizationHelper.Localize("Galaxies (Barred Spiral)"),
+                LocalizationHelper.Localize("Galaxies (Spiral)"),
+                LocalizationHelper.Localize("Galaxies (Elliptical)"),
+                LocalizationHelper.Localize("Galaxies (Irregular)"),
+                LocalizationHelper.Localize("Nebulae"),
+                LocalizationHelper.Localize("Globulars"),
+                LocalizationHelper.Localize("Open Clusters"),
+                LocalizationHelper.Localize("Unknown"),
             };
             var dsoCatalog = mAppCore.Simulation.Universe.DSOCatalog;
             for (int i = 0; i < dsoCatalog.Count; i++)
@@ -147,7 +136,7 @@ namespace CelestiaUWP
             foreach (var action in actions)
             {
                 var button = new Button();
-                button.Content = CelestiaAppCore.LocalizedString(action.Item1);
+                button.Content = LocalizationHelper.Localize(action.Item1);
                 button.Click += (sender, arg) =>
                 {
                     var selectedItem = Tree.SelectedItem;
@@ -183,7 +172,7 @@ namespace CelestiaUWP
             if (mSolRoot == null)
                 return;
 
-            switch (((NavigationViewItem)args.SelectedItem).Tag)
+            switch (((Helper.NavigationViewItem)args.SelectedItem).Tag)
             {
                 case "sol":
                     mRoot = mSolRoot;
