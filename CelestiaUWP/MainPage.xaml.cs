@@ -414,22 +414,28 @@ namespace CelestiaUWP
             var scriptsItem = new MenuFlyoutSubItem();
             scriptsItem.Text = LocalizationHelper.Localize("Scripts");
             var scripts = CelestiaAppCore.ReadScripts(mCurrentPath + "\\scripts", true);
-            foreach (var script in scripts)
+            if (scripts != null)
             {
-                AppendSubItem(scriptsItem, script.Title, (sender, arg) =>
-                {
-                    mAppCore.RunScript(script.Filename);
-                });
-            }
-            if (mExtraScriptFolder != null)
-            {
-                var extraScripts = CelestiaAppCore.ReadScripts(mExtraScriptFolder, true);
-                foreach (var script in extraScripts)
+                foreach (var script in scripts)
                 {
                     AppendSubItem(scriptsItem, script.Title, (sender, arg) =>
                     {
                         mAppCore.RunScript(script.Filename);
                     });
+                }
+            }
+            if (mExtraScriptFolder != null)
+            {
+                var extraScripts = CelestiaAppCore.ReadScripts(mExtraScriptFolder, true);
+                if (extraScripts != null)
+                {
+                    foreach (var script in extraScripts)
+                    {
+                        AppendSubItem(scriptsItem, script.Title, (sender, arg) =>
+                        {
+                            mAppCore.RunScript(script.Filename);
+                        });
+                    }
                 }
             }
             fileItem.Items.Add(scriptsItem);

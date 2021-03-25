@@ -246,10 +246,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>defaults.json</Link>
     </Content>
-    <Content Include="Resources\lua.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>lua.dll</Link>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -414,8 +410,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "$(ProjectDir)..\$(PlatformName)\$(ConfigurationName)\CelestiaComponent\lua.dll" "$(ProjectDir)Resources"
-call "$(ProjectDir)copy_general_data.bat" "$(ProjectDir)" "$(ProjectDir)Resources"
+    <PostBuildEvent>call "$(ProjectDir)copy_general_data.bat" "$(ProjectDir)" "$(ProjectDir)Resources"
 call "$(ProjectDir)convert_po.bat" "$(ProjectDir)" "$(ProjectDir)Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -512,6 +512,8 @@
     <ClCompile Include="libintl\internal\libintl.cpp">
       <Filter>libintl</Filter>
     </ClCompile>
+    <ClCompile Include="CelestiaObserver.cpp" />
+    <ClCompile Include="CelestiaRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
