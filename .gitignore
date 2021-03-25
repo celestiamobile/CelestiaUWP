@@ -6,3 +6,4 @@ packages
 Generated Files
 x64
 CelestiaUWP/Resources
+*.user

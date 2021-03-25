@@ -1,0 +1,18 @@
+﻿<ContentDialog
+    x:Class="CelestiaUWP.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonText=""
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <StackPanel Orientation="Vertical">
+        <TextBlock FontSize="15" x:Name="VersionLabel"/>
+        <HyperlinkButton Content="https://celestia.space" NavigateUri="https://celestia.space"/>
+        <TextBlock FontSize="13" x:Name="AuthorTitleLabel"/>
+        <TextBlock FontSize="13" x:Name="AuthorLabel" TextWrapping="Wrap"/>
+    </StackPanel>
+</ContentDialog>
