@@ -116,6 +116,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Addon\InstalledItemListPage.xaml.cs">
       <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
     </Compile>
@@ -140,6 +143,7 @@
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Addon\ResourceCategory.cs" />
+    <Compile Include="Helper\CelestiaAppHelper.cs" />
     <Compile Include="Helper\DoubleFloatConverter.cs" />
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
@@ -193,12 +197,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>CelestiaResources\%(RecursiveDir)\%(Filename)%(Extension)</Link>
     </Content>
+    <Content Include="defaults.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>defaults.json</Link>
+    </Content>
     <Content Include="Resources\lua.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>lua.dll</Link>
-    </Content>
-    <Content Include="defaults.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Addon\InstalledItemListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

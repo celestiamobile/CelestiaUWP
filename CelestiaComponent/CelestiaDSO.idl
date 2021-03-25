@@ -6,5 +6,6 @@ namespace CelestiaComponent
     unsealed runtimeclass CelestiaDSO : CelestiaAstroObject
     {
         String Type{ get; };
+        String InfoURL{ get; };
     }
 }

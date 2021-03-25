@@ -12,5 +12,6 @@ namespace winrt::CelestiaComponent::implementation
 
         hstring Name();
         com_array<hstring> AlternateSurfaceNames();
+        hstring InfoURL();
     };
 }

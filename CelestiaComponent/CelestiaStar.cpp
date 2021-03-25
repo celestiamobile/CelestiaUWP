@@ -11,4 +11,9 @@ namespace winrt::CelestiaComponent::implementation
 	CelestiaStar::CelestiaStar(Star* star) : CelestiaStarT<CelestiaStar, CelestiaAstroObject>(star)
 	{
 	}
+
+	hstring CelestiaStar::InfoURL()
+	{
+		return to_hstring(static_cast<Star*>(obj)->getInfoURL());
+	}
 }

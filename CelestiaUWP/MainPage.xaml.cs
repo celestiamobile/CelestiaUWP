@@ -225,6 +225,19 @@ namespace CelestiaUWP
                           }
                       }
 
+                      var url = CelestiaAppHelper.GetInfoURL(selection);
+                      if (!string.IsNullOrEmpty(url))
+                      {
+                          menu.Items.Add(new MenuFlyoutSeparator());
+                          var webInfoItem = new MenuFlyoutItem();
+                          webInfoItem.Text = LocalizationHelper.Localize("Web Info");
+                          webInfoItem.Click += (sender, arg) =>
+                          {
+                              _ = Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+                          };
+                          menu.Items.Add(webInfoItem);
+                      }
+
                       menu.Items.Add(new MenuFlyoutSeparator());
 
                       if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
@@ -613,6 +626,11 @@ namespace CelestiaUWP
             {
                 ShowAddons();
             });
+            helpItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(helpItem, LocalizationHelper.Localize("About Celestia..."), (sender, arg) =>
+            {
+                ShowAboutDialog();
+            });
 
             MenuBar.Items.Add(fileItem);
             MenuBar.Items.Add(navigationItem);
@@ -777,6 +795,12 @@ namespace CelestiaUWP
         void ShowAddons()
         {
             ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), mExtraAddonFolder);
+        }
+
+        async void ShowAboutDialog()
+        {
+            var dialog = new AboutDialog();
+            await dialog.ShowAsync();
         }
 
         async System.Threading.Tasks.Task<string> GetLocale()

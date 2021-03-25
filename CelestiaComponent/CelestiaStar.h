@@ -9,5 +9,6 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaStar : CelestiaStarT<CelestiaStar, CelestiaAstroObject>
     {
         CelestiaStar(Star* star);
+        hstring InfoURL();
     };
 }

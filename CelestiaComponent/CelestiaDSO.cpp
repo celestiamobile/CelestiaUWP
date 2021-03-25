@@ -16,4 +16,9 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		return to_hstring(reinterpret_cast<DeepSkyObject*>(obj)->getType());
 	}
+
+	hstring CelestiaDSO::InfoURL()
+	{
+		return to_hstring(static_cast<DeepSkyObject*>(obj)->getInfoURL());
+	}
 }

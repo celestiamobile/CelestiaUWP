@@ -10,5 +10,6 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaDSO(DeepSkyObject* dso);
         hstring Type();
+        hstring InfoURL();
     };
 }

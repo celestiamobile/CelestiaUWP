@@ -7,5 +7,6 @@ namespace CelestiaComponent
     {
         String Name{ get; };
         String[] AlternateSurfaceNames{ get; };
+        String InfoURL{ get; };
     }
 }
