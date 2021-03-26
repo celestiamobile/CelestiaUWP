@@ -31,6 +31,7 @@ namespace CelestiaUWP
         private Dictionary<string, object> mSettings;
 
         private Windows.Storage.StorageFile ScriptFileToOpen;
+        private Uri URLToOpen;
         private bool ReadyForInput = false;
 
         private readonly string[] mMarkers = new string[]
@@ -137,12 +138,12 @@ namespace CelestiaUWP
         private async void OpenFileOrURL()
         {
             var scriptFile = ScriptFileToOpen;
+            var url = URLToOpen;
             if (scriptFile != null)
             {
                 ScriptFileToOpen = null;
                 var fileExtension = scriptFile.FileType;
                 var tempFolder = Windows.Storage.ApplicationData.Current.TemporaryFolder;
-                var path = tempFolder.Path + "\\" + GuidHelper.CreateNewGuid().ToString() + fileExtension;
                 try
                 {
                     var copiedFile = await scriptFile.CopyAsync(tempFolder, GuidHelper.CreateNewGuid().ToString() + fileExtension, Windows.Storage.NameCollisionOption.ReplaceExisting);
@@ -153,11 +154,26 @@ namespace CelestiaUWP
                 }
                 catch { }
             }
+            if (url != null)
+            {
+                URLToOpen = null;
+                if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?")))
+                {
+                    mAppCore.GoToURL(url.AbsoluteUri);
+                }
+            }
         }
 
         public void OpenFileIfReady(Windows.Storage.StorageFile scriptFileToOpen)
         {
             ScriptFileToOpen = scriptFileToOpen;
+            if (ReadyForInput)
+                OpenFileOrURL();
+        }
+
+        public void OpenURLIfReady(Uri URL)
+        {
+            URLToOpen = URL;
             if (ReadyForInput)
                 OpenFileOrURL();
         }

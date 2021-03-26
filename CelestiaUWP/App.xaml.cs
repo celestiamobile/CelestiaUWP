@@ -34,15 +34,20 @@ namespace CelestiaUWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Launch(e, null);
+            Launch(e, null, null);
         }
 
         protected override void OnFileActivated(FileActivatedEventArgs e)
         {
-            Launch(null, e);
+            Launch(null, e, null);
         }
 
-        private void Launch(LaunchActivatedEventArgs launchEvent, FileActivatedEventArgs fileEvent)
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            Launch(null, null, e);
+        }
+
+        private void Launch(LaunchActivatedEventArgs launchEvent, FileActivatedEventArgs fileEvent, IActivatedEventArgs urlEvent)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -79,6 +84,12 @@ namespace CelestiaUWP
                         var p = rootFrame.Content as MainPage;
                         p.OpenFileIfReady((Windows.Storage.StorageFile)file);
                     }
+                }
+                else if (urlEvent != null && urlEvent.Kind == ActivationKind.Protocol)
+                {
+                    var e = urlEvent as ProtocolActivatedEventArgs;
+                    var p = rootFrame.Content as MainPage;
+                    p.OpenURLIfReady(e.Uri);
                 }
 
                 // Ensure the current window is active
