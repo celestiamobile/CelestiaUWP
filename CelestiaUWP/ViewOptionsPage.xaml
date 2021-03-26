@@ -129,9 +129,10 @@
             </StackPanel>
         </RelativePanel>
         <RelativePanel Grid.Row="3" Grid.Column="2" Grid.RowSpan="1" Grid.ColumnSpan="1">
-            <TextBlock Margin="0, 8, 0, 8" Text="Filter Stars" x:Name="FilterStarsHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
-            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="FilterStarsHint">
-                <Slider Minimum="0" Maximum="10000" Value="{x:Bind AppCore.DistanceLimit, Mode=TwoWay, Converter={StaticResource FilterStarsConverter}}" x:Name="FilterStarsSlider"></Slider>
+            <StackPanel Orientation="Vertical" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                <Slider Minimum="0" Maximum="10000" Value="{x:Bind AppCore.DistanceLimit, Mode=TwoWay, Converter={StaticResource FilterStarsConverter}}" Header="Filter Stars" x:Name="FilterStarsSlider"></Slider>
+                <CheckBox IsChecked="{x:Bind AppSettings.UseFullDPI, Mode=TwoWay}" Content="HiDPI"/>
+                <CheckBox IsChecked="{x:Bind AppSettings.EnableMSAA, Mode=TwoWay}" Content="Anti-aliasing"/>
             </StackPanel>
         </RelativePanel>
     </Grid>

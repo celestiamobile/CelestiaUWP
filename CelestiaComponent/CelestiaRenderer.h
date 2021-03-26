@@ -15,7 +15,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaRenderer : CelestiaRendererT<CelestiaRenderer>
     {
-        CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
+        CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
 
         bool Initialize();
         void Destroy();
@@ -71,6 +71,7 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<CelestiaComponent::CelestiaRendererTask> tasks;
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
+        bool enableMSAA;
     };
 }
 

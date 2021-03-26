@@ -6,7 +6,7 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaRenderer
     {
-        CelestiaRenderer(CelestiaRendererEngineStartedHandler engineStarted);
+        CelestiaRenderer(Boolean enableMultisample, CelestiaRendererEngineStartedHandler engineStarted);
         void Start();
         void Stop();
         void Pause();

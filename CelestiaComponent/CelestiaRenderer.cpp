@@ -30,9 +30,10 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaRenderer::CelestiaRenderer(CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
+    CelestiaRenderer::CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
         CelestiaRendererT<CelestiaRenderer>(),
-        engineStarted(engineStarted)
+        engineStarted(engineStarted),
+        enableMultisample(enableMultisample)
     {
         InitializeCriticalSection(&msgCritSection);
         InitializeConditionVariable(&resumeCond);
@@ -44,14 +45,25 @@ namespace winrt::CelestiaComponent::implementation
         {
             printf("Initializing context");
 
+            const EGLint multisampleAttribs[] =
+            {
+                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                EGL_BLUE_SIZE, 8,
+                EGL_GREEN_SIZE, 8,
+                EGL_RED_SIZE, 8,
+                EGL_DEPTH_SIZE, 16,
+                EGL_SAMPLES, 4,
+                EGL_SAMPLE_BUFFERS, 1,
+                EGL_NONE
+            };
             const EGLint attribs[] =
             {
-                    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-                    EGL_BLUE_SIZE, 8,
-                    EGL_GREEN_SIZE, 8,
-                    EGL_RED_SIZE, 8,
-                    EGL_DEPTH_SIZE, 16,
-                    EGL_NONE
+                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                EGL_BLUE_SIZE, 8,
+                EGL_GREEN_SIZE, 8,
+                EGL_RED_SIZE, 8,
+                EGL_DEPTH_SIZE, 16,
+                EGL_NONE
             };
 
             const EGLint defaultDisplayAttributes[] =
@@ -132,11 +144,22 @@ namespace winrt::CelestiaComponent::implementation
                 }
             }
 
-            if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
-            {
-                printf("eglChooseConfig() returned error %d", eglGetError());
-                Destroy();
-                return false;
+            if (enableMultisample) {
+                // Try to enable multisample but fallback if not available
+                if (!eglChooseConfig(display, multisampleAttribs, &config, 1, &numConfigs) && !eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                {
+                    printf("eglChooseConfig() returned error %d", eglGetError());
+                    Destroy();
+                    return false;
+                }
+            }
+            else {
+                if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                {
+                    printf("eglChooseConfig() returned error %d", eglGetError());
+                    Destroy();
+                    return false;
+                }
             }
 
             if (!eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format))

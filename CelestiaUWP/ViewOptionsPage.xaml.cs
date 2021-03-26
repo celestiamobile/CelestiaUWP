@@ -30,6 +30,7 @@ namespace CelestiaUWP
         };
 
         private CelestiaAppCore AppCore;
+        private AppSettings AppSettings = AppSettings.Shared;
 
         public ViewOptionsPage()
         {

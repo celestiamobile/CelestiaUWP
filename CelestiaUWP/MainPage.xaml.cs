@@ -35,6 +35,8 @@ namespace CelestiaUWP
         private Uri URLToOpen;
         private bool ReadyForInput = false;
 
+        private AppSettings AppSettings = AppSettings.Shared;
+
         private readonly string[] mMarkers = new string[]
         {
             "Diamond", "Triangle", "Filled Square", "Plus", "X", "Left Arrow", "Right Arrow", "Up Arrow", "Down Arrow",
@@ -54,7 +56,7 @@ namespace CelestiaUWP
 
             InitializeComponent();
 
-            scale = ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f;
+            scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
 
             string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
             mCurrentPath = installedPath + "\\CelestiaResources";
@@ -65,7 +67,7 @@ namespace CelestiaUWP
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            mRenderer = new CelestiaRenderer(() => {
+            mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
                 LocalizationHelper.Locale = GetLocale().Result;
                 CelestiaAppCore.SetLocaleDirectory(mLocalePath, LocalizationHelper.Locale);
 
@@ -203,6 +205,7 @@ namespace CelestiaUWP
         {
             Window.Current.VisibilityChanged += (sender, args) =>
             {
+                AppSettings.Save();
                 SaveSettings(GetCurrentSettings());
             };
 
