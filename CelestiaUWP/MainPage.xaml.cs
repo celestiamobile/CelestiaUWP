@@ -270,9 +270,12 @@ namespace CelestiaUWP
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
                       var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren);
-                      foreach (var child in browserItem.Children)
+                      if (browserItem.Children != null)
                       {
-                          browserMenuItems.Add(CreateMenuItem(child));
+                          foreach (var child in browserItem.Children)
+                          {
+                              browserMenuItems.Add(CreateMenuItem(child));
+                          }
                       }
 
                       if (browserMenuItems.Count > 0)
