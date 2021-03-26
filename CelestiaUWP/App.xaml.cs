@@ -32,12 +32,17 @@ namespace CelestiaUWP
             this.Suspending += OnSuspending;
         }
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            Launch(e, null);
+        }
+
+        protected override void OnFileActivated(FileActivatedEventArgs e)
+        {
+            Launch(null, e);
+        }
+
+        private void Launch(LaunchActivatedEventArgs launchEvent, FileActivatedEventArgs fileEvent)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -49,25 +54,33 @@ namespace CelestiaUWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (launchEvent == null || launchEvent.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    if (launchEvent != null)
+                        rootFrame.Navigate(typeof(MainPage), launchEvent.Arguments);
+                    else
+                        rootFrame.Navigate(typeof(MainPage));
                 }
+
+                if (fileEvent != null && fileEvent.Files != null && fileEvent.Files.Count > 0)
+                {
+                    var file = fileEvent.Files[0];
+                    if (file is Windows.Storage.StorageFile)
+                    {
+                        var p = rootFrame.Content as MainPage;
+                        p.OpenFileIfReady((Windows.Storage.StorageFile)file);
+                    }
+                }
+
                 // Ensure the current window is active
                 Window.Current.Activate();
             }

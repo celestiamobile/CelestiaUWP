@@ -30,6 +30,9 @@ namespace CelestiaUWP
 
         private Dictionary<string, object> mSettings;
 
+        private Windows.Storage.StorageFile ScriptFileToOpen;
+        private bool ReadyForInput = false;
+
         private readonly string[] mMarkers = new string[]
         {
             "Diamond", "Triangle", "Filled Square", "Plus", "X", "Left Arrow", "Right Arrow", "Up Arrow", "Down Arrow",
@@ -112,6 +115,14 @@ namespace CelestiaUWP
                 ApplySettings(mSettings);
 
                 mAppCore.Start();
+
+                ReadyForInput = true;
+
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    OpenFileOrURL();
+                });
+
                 return true;
             });
             mRenderer.SetCorePointer(mAppCore.Pointer);
@@ -121,6 +132,34 @@ namespace CelestiaUWP
                 mRenderer.SetSize((int)arg.NewSize.Width, (int)arg.NewSize.Height);
             };
             mRenderer.Start();
+        }
+
+        private async void OpenFileOrURL()
+        {
+            var scriptFile = ScriptFileToOpen;
+            if (scriptFile != null)
+            {
+                ScriptFileToOpen = null;
+                var fileExtension = scriptFile.FileType;
+                var tempFolder = Windows.Storage.ApplicationData.Current.TemporaryFolder;
+                var path = tempFolder.Path + "\\" + GuidHelper.CreateNewGuid().ToString() + fileExtension;
+                try
+                {
+                    var copiedFile = await scriptFile.CopyAsync(tempFolder, GuidHelper.CreateNewGuid().ToString() + fileExtension, Windows.Storage.NameCollisionOption.ReplaceExisting);
+                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?")))
+                    {
+                        mAppCore.RunScript(copiedFile.Path);
+                    }
+                }
+                catch { }
+            }
+        }
+
+        public void OpenFileIfReady(Windows.Storage.StorageFile scriptFileToOpen)
+        {
+            ScriptFileToOpen = scriptFileToOpen;
+            if (ReadyForInput)
+                OpenFileOrURL();
         }
 
         void CreateExtraFolders()
@@ -533,7 +572,6 @@ namespace CelestiaUWP
                 ShowTimeSetting();
             });
 
-
             var renderItem = new MenuBarItem();
             renderItem.Title = LocalizationHelper.Localize("Render");
 
@@ -672,7 +710,7 @@ namespace CelestiaUWP
             picker.FileTypeFilter.Add(".celx");
             var file = await picker.PickSingleFileAsync();
             if (file != null)
-                mAppCore.RunScript(file.Path);
+                OpenFileIfReady(file);
         }
         void ShowTourGuide()
         {

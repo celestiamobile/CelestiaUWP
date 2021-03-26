@@ -8,7 +8,7 @@
 
   <Identity
     Name="c2a28613-5410-4379-87a6-b86ebbba3dc2"
-    Publisher="CN=Levin Li"
+    Publisher="CN=DFAB6BEB-215D-4D28-AB17-B4B02709A980"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="c2a28613-5410-4379-87a6-b86ebbba3dc2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
@@ -40,6 +40,24 @@
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cel">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.cel</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Celestia Script</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="celx">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.celx</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Celestia Script</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 
