@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -500,6 +501,25 @@ namespace CelestiaUWP
             AppendItem(fileItem, LocalizationHelper.Localize("Capture Image"), (sender, arg) =>
             {
                 CaptureImage();
+            });
+
+            fileItem.Items.Add(new MenuFlyoutSeparator());
+
+            AppendItem(fileItem, LocalizationHelper.Localize("Copy URL"), (sender, arg) =>
+            {
+                DataPackage dataPackage = new DataPackage();
+                dataPackage.RequestedOperation = DataPackageOperation.Copy;
+                dataPackage.SetText(mAppCore.CurrentURL);
+                Clipboard.SetContent(dataPackage);
+            });
+            AppendItem(fileItem, LocalizationHelper.Localize("Paste URL"), async (sender, arg) =>
+            {
+                DataPackageView dataPackageView = Clipboard.GetContent();
+                if (dataPackageView.Contains(StandardDataFormats.Text))
+                {
+                    string text = await dataPackageView.GetTextAsync();
+                    mAppCore.GoToURL(text);
+                }
             });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
