@@ -291,7 +291,7 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
 #ifdef ENABLE_NLS
-        _putenv_s("LANGUAGE", to_string(locale).c_str());
+        _putenv_s("LANG", to_string(locale).c_str());
         std::string dir = to_string(localeDirectory);
         // Gettext integration
         setlocale(LC_ALL, "");
@@ -306,12 +306,12 @@ namespace winrt::CelestiaComponent::implementation
 #endif
     }
 
-    hstring CelestiaAppCore::LocalizedString(hstring const& original)
+    hstring CelestiaAppCore::LocalizedString(hstring const& original, hstring const& domain)
     {
 #ifdef ENABLE_NLS
         if (original.empty())
             return original;
-        return to_hstring(dgettext("celestia_ui", to_string(original).c_str()));
+        return to_hstring(dgettext(to_string(domain).c_str(), to_string(original).c_str()));
 #else
         return original;
 #endif

@@ -49,7 +49,7 @@ namespace CelestiaComponent
 
         static void InitGL();
         static void SetLocaleDirectory(String localeDirectory, String locale);
-        static String LocalizedString(String original);
+        static String LocalizedString(String original, String domain);
         static CelestiaScript[] ReadScripts(String directory, Boolean deepScan);
 
         Boolean ShowStars;

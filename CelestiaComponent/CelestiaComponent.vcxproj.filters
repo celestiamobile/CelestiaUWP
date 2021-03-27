@@ -47,9 +47,6 @@
     <Filter Include="Celestia\celscript\lua">
       <UniqueIdentifier>{d60a15a7-d2d7-4998-925d-4c1ce41e18c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="libintl">
-      <UniqueIdentifier>{a8c6c164-71b2-4ad2-8360-95940cbd22ac}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -509,9 +506,6 @@
     <ClCompile Include="CelestiaGotoLocation.cpp" />
     <ClCompile Include="CelestiaDestination.cpp" />
     <ClCompile Include="CelestiaDSOCatalog.cpp" />
-    <ClCompile Include="libintl\internal\libintl.cpp">
-      <Filter>libintl</Filter>
-    </ClCompile>
     <ClCompile Include="CelestiaObserver.cpp" />
     <ClCompile Include="CelestiaRenderer.cpp" />
   </ItemGroup>
@@ -1084,15 +1078,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\view.h">
       <Filter>Celestia\celestia</Filter>
-    </ClInclude>
-    <ClInclude Include="libintl\internal\MessageCatalog.hpp">
-      <Filter>libintl</Filter>
-    </ClInclude>
-    <ClInclude Include="libintl\internal\Util.hpp">
-      <Filter>libintl</Filter>
-    </ClInclude>
-    <ClInclude Include="libintl\libintl.h">
-      <Filter>libintl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

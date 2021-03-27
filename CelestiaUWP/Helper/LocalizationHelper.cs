@@ -9,7 +9,7 @@ namespace CelestiaUWP.Helper
         public static string Locale = "en";
         public static string Localize(string original)
         {
-            return CelestiaAppCore.LocalizedString(original);
+            return CelestiaAppCore.LocalizedString(original, "celestia_ui");
         }
     }
 }

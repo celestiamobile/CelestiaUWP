@@ -68,8 +68,9 @@ namespace CelestiaUWP
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
-                LocalizationHelper.Locale = GetLocale().Result;
-                CelestiaAppCore.SetLocaleDirectory(mLocalePath, LocalizationHelper.Locale);
+                var locale = GetLocale().Result;
+                CelestiaAppCore.SetLocaleDirectory(mLocalePath, locale);
+                LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
 
                 CelestiaAppCore.InitGL();
 
