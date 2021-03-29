@@ -2,6 +2,7 @@
 using CelestiaUWP.Helper;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -20,6 +21,8 @@ namespace CelestiaUWP
 
         private int mSelectedObjectIndex = 0;
         private string[] mAvailableObjects = new string[] { "Earth", "Jupiter" };
+
+        private CelestiaEclipseFinder Finder;
         private CelestiaEclipse[] mEclipses
         {
             get { return eclipses; }
@@ -51,8 +54,15 @@ namespace CelestiaUWP
             mAppCore = e.Parameter as CelestiaAppCore;
         }
 
-        private void ComputeButton_Click(object sender, RoutedEventArgs e)
+        private async void ComputeButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Finder != null)
+            {
+                Finder.Abort();
+                Finder = null;
+                ComputeButton.Content = LocalizationHelper.Localize("Compute");
+                return;
+            }
             if (mStartTime == null || mEndTime == null)
                 return;
             var startTime = (DateTime)mStartTime;
@@ -75,9 +85,20 @@ namespace CelestiaUWP
             if (body == null || !(body is CelestiaBody))
                 return;
 
-            var eclipseFinder = new CelestiaEclipseFinder((CelestiaBody)body);
-            var eclipses = eclipseFinder.Search(kind, startTime, endTime);
+            var eclipses = await Compute((CelestiaBody)body, kind, startTime, endTime);
             mEclipses = eclipses;
+        }
+
+        private async Task<CelestiaEclipse[]> Compute(CelestiaBody body, CelestiaEclipseKind kind, DateTime startTime, DateTime endTime)
+        {
+            var eclipseFinder = new CelestiaEclipseFinder((CelestiaBody)body);
+            Finder = eclipseFinder;
+            ComputeButton.Content = LocalizationHelper.Localize("Cancel");
+            return await Task.Run<CelestiaEclipse[]>(() =>
+            {
+                var eclipses = eclipseFinder.Search(kind, startTime, endTime);
+                return eclipses == null ? new CelestiaEclipse[] { } : eclipses;
+            });
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
