@@ -10,6 +10,7 @@ using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace CelestiaUWP
 {
@@ -462,6 +463,7 @@ namespace CelestiaUWP
             Window.Current.CoreWindow.KeyUp += (sender, arg) =>
             {
                 if (OverlayContainer.Content != null) return;
+
                 mRenderer.EnqueueTask(() =>
                 {
                     mAppCore.KeyUp((int)arg.VirtualKey, 0);
@@ -750,8 +752,8 @@ namespace CelestiaUWP
         {
             var item = new MenuFlyoutItem();
             item.Text = text;
-            if (accelerator != null)
-                item.KeyboardAccelerators.Add(accelerator);
+            // if (accelerator != null)
+            //    item.KeyboardAccelerators.Add(accelerator);
             item.Click += click;
             parent.Items.Add(item);
         }
@@ -1026,40 +1028,41 @@ namespace CelestiaUWP
 
         private MenuFlyoutItemBase CreateMenuItem(CelestiaBrowserItem item)
         {
-            var children = new List<MenuFlyoutItemBase>();
-            var obj = item.Object;
-            if (obj != null)
-            {
-                var selectItem = new MenuFlyoutItem();
-                selectItem.Text = LocalizationHelper.Localize("Select");
-                selectItem.Click += (sender, arg) =>
-                {
-                    mAppCore.Simulation.Selection = new CelestiaSelection(obj);
-                };
-                children.Add(selectItem);
-            }
-            if (item.Children != null)
-            {
-                if (children.Count > 0)
-                    children.Add(new MenuFlyoutSeparator());
-
-                foreach (var child in item.Children)
-                {
-                    children.Add(CreateMenuItem(child));
-                }
-            }
-            if (children.Count == 0)
-            {
-                var menuItem = new MenuFlyoutItem();
-                menuItem.Text = item.Name;
-                return menuItem;
-            }
             var menu = new MenuFlyoutSubItem();
             menu.Text = item.Name;
-            foreach (var child in children)
+
+            menu.Loaded += (sender, args) =>
             {
-                menu.Items.Add(child);
-            }
+                var senderMenu = (MenuFlyoutSubItem)sender;
+                if (senderMenu.Items.Count > 0) return;
+
+                var children = new List<MenuFlyoutItemBase>();
+                var obj = item.Object;
+                if (obj != null)
+                {
+                    var selectItem = new MenuFlyoutItem();
+                    selectItem.Text = LocalizationHelper.Localize("Select");
+                    selectItem.Click += (newSender, newArgs) =>
+                    {
+                        mAppCore.Simulation.Selection = new CelestiaSelection(obj);
+                    };
+                    children.Add(selectItem);
+                }
+                if (item.Children != null)
+                {
+                    if (children.Count > 0)
+                        children.Add(new MenuFlyoutSeparator());
+
+                    foreach (var child in item.Children)
+                    {
+                        children.Add(CreateMenuItem(child));
+                    }
+                }
+                foreach (var child in children)
+                {
+                    senderMenu.Items.Add(child);
+                }
+            };
             return menu;
         }
         private CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item)
