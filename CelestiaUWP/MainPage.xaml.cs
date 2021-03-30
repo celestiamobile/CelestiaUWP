@@ -217,10 +217,7 @@ namespace CelestiaUWP
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                   {
                       var menu = new MenuFlyout();
-                      var nameItem = new MenuFlyoutItem();
-                      nameItem.IsEnabled = false;
-                      nameItem.Text = mAppCore.Simulation.Universe.NameForSelection(selection);
-                      menu.Items.Add(nameItem);
+                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
                       var actions = new (string, short)[]
                       {
@@ -231,14 +228,11 @@ namespace CelestiaUWP
 
                       foreach (var action in actions)
                       {
-                          var item = new MenuFlyoutItem();
-                          item.Text = LocalizationHelper.Localize(action.Item1);
-                          item.Click += (sender, arg) =>
+                          AppendItem(menu, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                           {
                               mAppCore.Simulation.Selection = selection;
                               mAppCore.CharEnter(action.Item2);
-                          };
-                          menu.Items.Add(item);
+                          });
                       }
 
                       if (selection.Object is CelestiaBody)
@@ -266,6 +260,30 @@ namespace CelestiaUWP
 
                               menu.Items.Add(altSur);
                           }
+
+                          menu.Items.Add(new MenuFlyoutSeparator());
+                          var refMarkMenu = new MenuFlyoutSubItem();
+                          refMarkMenu.Text = LocalizationHelper.Localize("Reference Marks");
+
+                          var refMarkMenuActions = new (string, string)[]
+                          {
+                              ("Show Body Axes", "ShowBodyAxes"),
+                              ("Show Frame Axes", "ShowFrameAxes"),
+                              ("Show Sun Direction", "ShowSunDirection"),
+                              ("Show Velocity Vector", "ShowVelocityVector"),
+                              ("Show Planetographic Grid", "ShowPlanetographicGrid"),
+                              ("Show Terminator", "ShowTerminator")
+                          };
+
+                          foreach (var action in refMarkMenuActions)
+                          {
+                              var isEnabled = (bool)mAppCore.GetType().GetProperty(action.Item2).GetValue(mAppCore);
+                              AppendToggleSubItem(refMarkMenu, LocalizationHelper.Localize(action.Item1), isEnabled, (sender, args) =>
+                              {
+                                  mAppCore.GetType().GetProperty(action.Item2).SetValue(mAppCore, !isEnabled);
+                              });
+                          }
+                          menu.Items.Add(refMarkMenu);
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
@@ -291,26 +309,20 @@ namespace CelestiaUWP
                       if (!string.IsNullOrEmpty(url))
                       {
                           menu.Items.Add(new MenuFlyoutSeparator());
-                          var webInfoItem = new MenuFlyoutItem();
-                          webInfoItem.Text = LocalizationHelper.Localize("Web Info");
-                          webInfoItem.Click += (sender, arg) =>
+                          AppendItem(menu, LocalizationHelper.Localize("Info"), (sender, arg) =>
                           {
                               _ = Windows.System.Launcher.LaunchUriAsync(new Uri(url));
-                          };
-                          menu.Items.Add(webInfoItem);
+                          });
                       }
 
                       menu.Items.Add(new MenuFlyoutSeparator());
 
                       if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
                       {
-                          var action = new MenuFlyoutItem();
-                          action.Text = LocalizationHelper.Localize("Unmark");
-                          action.Click += (sender, arg) =>
+                          AppendItem(menu, LocalizationHelper.Localize("Unmark"), (sender, arg) =>
                           {
                               mAppCore.Simulation.Universe.UnmarkSelection(selection);
-                          };
-                          menu.Items.Add(action);
+                          });
                       }
                       else
                       {
@@ -319,14 +331,11 @@ namespace CelestiaUWP
                           for (int i = 0; i < mMarkers.Length; i += 1)
                           {
                               int copy = i;
-                              var markerAction = new MenuFlyoutItem();
-                              markerAction.Text = LocalizationHelper.Localize(mMarkers[i]);
-                              markerAction.Click += (sender, arg) =>
+                              AppendSubItem(action, LocalizationHelper.Localize(mMarkers[i]), (sender, arg) =>
                               {
                                   mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
                                   mAppCore.ShowMarkers = true;
-                              };
-                              action.Items.Add(markerAction);
+                              });
                           }
                           menu.Items.Add(action);
                       }
@@ -726,6 +735,17 @@ namespace CelestiaUWP
             MenuBar.Items.Add(helpItem);
         }
 
+        void AppendItem(MenuFlyout parent, string text, RoutedEventHandler click, Windows.UI.Xaml.Input.KeyboardAccelerator accelerator = null)
+        {
+            var item = new MenuFlyoutItem();
+            item.Text = text;
+            if (accelerator != null)
+                item.KeyboardAccelerators.Add(accelerator);
+            if (click != null)
+                item.Click += click;
+            parent.Items.Add(item);
+        }
+
         void AppendItem(MenuBarItem parent, string text, RoutedEventHandler click, Windows.UI.Xaml.Input.KeyboardAccelerator accelerator = null)
         {
             var item = new MenuFlyoutItem();
@@ -736,9 +756,18 @@ namespace CelestiaUWP
             parent.Items.Add(item);
         }
 
-        void AppendSubItem(MenuFlyoutSubItem parent, String text, RoutedEventHandler click)
+        void AppendSubItem(MenuFlyoutSubItem parent, string text, RoutedEventHandler click)
         {
             var item = new MenuFlyoutItem();
+            item.Text = text;
+            item.Click += click;
+            parent.Items.Add(item);
+        }
+
+        void AppendToggleSubItem(MenuFlyoutSubItem parent, string text, bool isChecked,  RoutedEventHandler click)
+        {
+            var item = new ToggleMenuFlyoutItem();
+            item.IsChecked = isChecked;
             item.Text = text;
             item.Click += click;
             parent.Items.Add(item);

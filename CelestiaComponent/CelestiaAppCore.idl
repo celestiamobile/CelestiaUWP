@@ -146,5 +146,12 @@ namespace CelestiaComponent
         Single GalaxyBrightness;
         Single MinimumFeatureSize;
         Single DistanceLimit;
+
+        Boolean ShowBodyAxes;
+        Boolean ShowFrameAxes;
+        Boolean ShowSunDirection;
+        Boolean ShowVelocityVector;
+        Boolean ShowPlanetographicGrid;
+        Boolean ShowTerminator;
     }
 }

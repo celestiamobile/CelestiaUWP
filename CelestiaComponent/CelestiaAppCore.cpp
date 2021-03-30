@@ -578,4 +578,64 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     {
         core->getRenderer()->setDistanceLimit(distanceLimit);
     }
+
+    bool CelestiaAppCore::ShowBodyAxes()
+    {
+        return core->referenceMarkEnabled("body axes");
+    }
+
+    void CelestiaAppCore::ShowBodyAxes(bool showBodyAxes)
+    {
+        core->toggleReferenceMark("body axes");
+    }
+
+    bool CelestiaAppCore::ShowFrameAxes()
+    {
+        return core->referenceMarkEnabled("frame axes");
+    }
+
+    void CelestiaAppCore::ShowFrameAxes(bool showFrameAxes)
+    {
+        core->toggleReferenceMark("frame axes");
+    }
+
+    bool CelestiaAppCore::ShowSunDirection()
+    {
+        return core->referenceMarkEnabled("sun direction");
+    }
+
+    void CelestiaAppCore::ShowSunDirection(bool showSunDirection)
+    {
+        core->toggleReferenceMark("sun direction");
+    }
+
+    bool CelestiaAppCore::ShowVelocityVector()
+    {
+        return core->referenceMarkEnabled("velocity vector");
+    }
+
+    void CelestiaAppCore::ShowVelocityVector(bool showVelocityVector)
+    {
+        core->toggleReferenceMark("velocity vecto");
+    }
+
+    bool CelestiaAppCore::ShowPlanetographicGrid()
+    {
+        return core->referenceMarkEnabled("planetographic grid");
+    }
+
+    void CelestiaAppCore::ShowPlanetographicGrid(bool showPlanetographicGrid)
+    {
+        core->toggleReferenceMark("planetographic grid");
+    }
+
+    bool CelestiaAppCore::ShowTerminator()
+    {
+        return core->referenceMarkEnabled("terminator");
+    }
+
+    void CelestiaAppCore::ShowTerminator(bool showTerminator)
+    {
+        core->toggleReferenceMark("terminator");
+    }
 }

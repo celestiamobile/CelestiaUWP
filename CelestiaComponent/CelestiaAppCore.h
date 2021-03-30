@@ -236,6 +236,19 @@ namespace winrt::CelestiaComponent::implementation
         float DistanceLimit();
         void DistanceLimit(float distanceLimit);
 
+        bool ShowBodyAxes();
+        void ShowBodyAxes(bool showBodyAxes);
+        bool ShowFrameAxes();
+        void ShowFrameAxes(bool showFrameAxes);
+        bool ShowSunDirection();
+        void ShowSunDirection(bool showSunDirection);
+        bool ShowVelocityVector();
+        void ShowVelocityVector(bool showVelocityVector);
+        bool ShowPlanetographicGrid();
+        void ShowPlanetographicGrid(bool showPlanetographicGrid);
+        bool ShowTerminator();
+        void ShowTerminator(bool showTerminator);
+
     private:
         CelestiaCore* core;
         CelestiaComponent::CelestiaSimulation sim;
