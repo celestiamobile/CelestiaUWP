@@ -103,10 +103,12 @@ namespace CelestiaUWP
                 var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
                 var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
 
-                mAppCore.SetFont(mCurrentPath + "\\fonts\\" + font.Item1, font.Item2, 9);
-                mAppCore.SetTitleFont(mCurrentPath + "\\fonts\\" + font.Item3, font.Item4, 15);
-                mAppCore.SetRenderFont(mCurrentPath + "\\fonts\\" + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
-                mAppCore.SetRenderFont(mCurrentPath + "\\fonts\\" + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
+                var pathPrefix = mCurrentPath + "\\fonts\\";
+
+                mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
+                mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
+                mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
+                mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
