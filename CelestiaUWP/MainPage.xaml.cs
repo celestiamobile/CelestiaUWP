@@ -11,6 +11,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 namespace CelestiaUWP
 {
@@ -346,6 +347,9 @@ namespace CelestiaUWP
             });
             GLView.PointerPressed += (sender, args) =>
             {
+                if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -371,6 +375,9 @@ namespace CelestiaUWP
             };
             GLView.PointerMoved += (sender, args) =>
             {
+                if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -406,6 +413,9 @@ namespace CelestiaUWP
             };
             GLView.PointerReleased += (sender, args) =>
             {
+                if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -431,6 +441,9 @@ namespace CelestiaUWP
             };
             GLView.PointerWheelChanged += (sender, arg) =>
             {
+                if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
                 var delta = arg.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
                 mRenderer.EnqueueTask(() =>
                 {
@@ -440,6 +453,8 @@ namespace CelestiaUWP
             Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
             {
                 if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
                 mRenderer.EnqueueTask(() =>
                 {
                     mAppCore.CharEnter((short)arg.KeyCode);
@@ -448,6 +463,8 @@ namespace CelestiaUWP
             Window.Current.CoreWindow.KeyDown += (sender, arg) =>
             {
                 if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
 
                 var modifiers = 0;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Control) == CoreVirtualKeyStates.Down)
@@ -463,6 +480,7 @@ namespace CelestiaUWP
             Window.Current.CoreWindow.KeyUp += (sender, arg) =>
             {
                 if (OverlayContainer.Content != null) return;
+                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
 
                 mRenderer.EnqueueTask(() =>
                 {
