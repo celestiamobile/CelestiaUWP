@@ -19,6 +19,7 @@ namespace winrt::CelestiaComponent::implementation
         void Resize(int32_t width, int32_t height);
         void Start();
         void SetDPI(int32_t dpi);
+        void SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom);
         void MouseMove(float x, float y, int32_t button);
         void MouseButtonUp(float x, float y, int32_t button);
         void MouseButtonDown(float x, float y, int32_t button);

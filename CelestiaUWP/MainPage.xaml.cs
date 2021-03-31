@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -65,6 +67,19 @@ namespace CelestiaUWP
             Directory.SetCurrentDirectory(mCurrentPath);
 
             Loaded += MainPage_Loaded;
+            SizeChanged += MainPage_SizeChanged;
+
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = false;
+        }
+
+        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!ReadyForInput) return;
+
+            var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
+            mAppCore.SetSafeAreaInsets(0, isFullScreen ? 0 : (int)(MenuBar.Height * scale), 0, 0);
+            MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -117,7 +132,7 @@ namespace CelestiaUWP
                     LoadingText.Visibility = Visibility.Collapsed;
                     SetUpGLViewInteractions();
                     PopulateMenuBar();
-                    mRenderer.SetSize((int)GLView.Width, (int)GLView.Height);
+                    mRenderer.SetSize((int)GLView.ActualWidth, (int)GLView.ActualHeight);
                 });
 
                 mSettings = ReadSettings().Result;
@@ -493,7 +508,11 @@ namespace CelestiaUWP
         {
             MenuBar.AllowFocusOnInteraction = false;
             MenuBar.IsFocusEngagementEnabled = false;
-            MenuBar.Visibility = Visibility.Visible;
+
+            var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
+            mAppCore.SetSafeAreaInsets(0, isFullScreen ? 0 : (int)(MenuBar.Height * scale), 0, 0);
+            MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
+
             var fileItem = new MenuBarItem();
             fileItem.Title = LocalizationHelper.Localize("File");
 
@@ -644,7 +663,6 @@ namespace CelestiaUWP
 
             var renderItem = new MenuBarItem();
             renderItem.Title = LocalizationHelper.Localize("Render");
-
             AppendItem(renderItem, LocalizationHelper.Localize("View Options"), (sender, arg) =>
             {
                 ShowViewOptions();

@@ -26,6 +26,7 @@ namespace CelestiaComponent
         void Resize(Int32 width, Int32 height);
         void Start();
         void SetDPI(Int32 dpi);
+        void SetSafeAreaInsets(Int32 left, Int32 top, Int32 right, Int32 bottom);
         void MouseMove(Single x, Single y, Int32 button);
         void MouseButtonUp(Single x, Single y, Int32 button);
         void MouseButtonDown(Single x, Single y, Int32 button);

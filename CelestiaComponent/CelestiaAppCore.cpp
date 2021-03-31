@@ -111,6 +111,11 @@ namespace winrt::CelestiaComponent::implementation
         core->setScreenDpi(dpi);
     }
 
+    void CelestiaAppCore::SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    {
+        core->setSafeAreaInsets(left, top, right, bottom);
+    }
+
     void CelestiaAppCore::MouseMove(float x, float y, int32_t button)
     {
         core->mouseMove(x, y, button);
