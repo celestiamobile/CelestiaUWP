@@ -47,7 +47,7 @@ namespace CelestiaUWP
         public TimeSettingDialog(DateTimeOffset original)
         {
             this.InitializeComponent();
-            Title = LocalizationHelper.Localize("Set Simulation Time");
+            Title = LocalizationHelper.Localize("Set Time");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");

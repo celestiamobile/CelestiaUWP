@@ -33,21 +33,21 @@
                     <ColumnDefinition Width="9*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}" Content="Show Galaxies"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowGlobulars, Mode=TwoWay}" Content="Show Globulars"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowOpenClusters, Mode=TwoWay}" Content="Show Open Clusters"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowNebulae, Mode=TwoWay}" Content="Show Nebulae"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowStars, Mode=TwoWay}" Content="Show Stars"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowPlanets, Mode=TwoWay}" Content="Show Planets"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}" Content="Galaxies"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowGlobulars, Mode=TwoWay}" Content="Globulars"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowOpenClusters, Mode=TwoWay}" Content="Open Clusters"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowNebulae, Mode=TwoWay}" Content="Nebulae"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowStars, Mode=TwoWay}" Content="Stars"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowPlanets, Mode=TwoWay}" Content="Planets"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="2">
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowAtmospheres, Mode=TwoWay}" Content="Show Atmospheres"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudMaps, Mode=TwoWay}" Content="Show Clouds"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudShadows, Mode=TwoWay}" Content="Show Cloud Shadows"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowRingShadows, Mode=TwoWay}" Content="Show Ring Shadows"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowEclipseShadows, Mode=TwoWay}" Content="Show Eclipse Shadows"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowNightMaps, Mode=TwoWay}" Content="Show Night Side Lights"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}" Content="Show Comet Tails"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowAtmospheres, Mode=TwoWay}" Content="Atmospheres"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudMaps, Mode=TwoWay}" Content="Clouds"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCloudShadows, Mode=TwoWay}" Content="Cloud Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowRingShadows, Mode=TwoWay}" Content="Ring Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowEclipseShadows, Mode=TwoWay}" Content="Eclipse Shadows"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowNightMaps, Mode=TwoWay}" Content="Night Lights"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}" Content="Comet Tails"/>
                 </StackPanel>
             </Grid>
         </RelativePanel>

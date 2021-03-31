@@ -128,7 +128,7 @@ namespace CelestiaUWP
             var actions = new (String, short)[] {
                     ("Go", 103),
                     ("Follow", 102),
-                    ("Orbit Synchronously", 121),
+                    ("Sync Orbit", 121),
                     ("Lock Phase", 58),
                     ("Chase", 34),
                     ("Track", 116)

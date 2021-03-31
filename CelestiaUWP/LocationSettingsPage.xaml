@@ -36,7 +36,7 @@
                     <CheckBox IsChecked="{x:Bind AppCore.ShowCraterLabels, Mode=TwoWay}" Content="Craters"/>
                     <CheckBox IsChecked="{x:Bind AppCore.ShowVallisLabels, Mode=TwoWay}" Content="Valles (Valleys)"/>
                     <CheckBox IsChecked="{x:Bind AppCore.ShowTerraLabels, Mode=TwoWay}" Content="Terrae (Land masses)"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowOtherLabels, Mode=TwoWay}" Content="Other features"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowOtherLabels, Mode=TwoWay}" Content="Other"/>
                 </StackPanel>
             </Grid>
         </RelativePanel>

@@ -223,7 +223,7 @@ namespace CelestiaUWP
                       menu.Items.Add(new MenuFlyoutSeparator());
                       var actions = new (string, short)[]
                       {
-                        ("Goto", 103),
+                        ("Go", 103),
                         ("Follow", 102),
                         ("Sync Orbit", 121),
                       };
@@ -265,7 +265,7 @@ namespace CelestiaUWP
 
                           menu.Items.Add(new MenuFlyoutSeparator());
                           var refMarkMenu = new MenuFlyoutSubItem();
-                          refMarkMenu.Text = LocalizationHelper.Localize("Reference Marks");
+                          refMarkMenu.Text = LocalizationHelper.Localize("Reference Vectors");
 
                           var refMarkMenuActions = new (string, string)[]
                           {
@@ -311,7 +311,7 @@ namespace CelestiaUWP
                       if (!string.IsNullOrEmpty(url))
                       {
                           menu.Items.Add(new MenuFlyoutSeparator());
-                          AppendItem(menu, LocalizationHelper.Localize("Info"), (sender, arg) =>
+                          AppendItem(menu, LocalizationHelper.Localize("Web Info"), (sender, arg) =>
                           {
                               _ = Windows.System.Launcher.LaunchUriAsync(new Uri(url));
                           });
@@ -497,7 +497,7 @@ namespace CelestiaUWP
             var fileItem = new MenuBarItem();
             fileItem.Title = LocalizationHelper.Localize("File");
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Open Script..."), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Run Script…"), (sender, arg) =>
             {
                 PickScript();
             });
@@ -637,7 +637,7 @@ namespace CelestiaUWP
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(timeItem, LocalizationHelper.Localize("Set Time..."), (sender, arg) =>
+            AppendItem(timeItem, LocalizationHelper.Localize("Set Time…"), (sender, arg) =>
             {
                 ShowTimeSetting();
             });
@@ -695,7 +695,7 @@ namespace CelestiaUWP
             renderItem.Items.Add(resolutionItem);
 
             var viewItem = new MenuBarItem();
-            viewItem.Title = LocalizationHelper.Localize("View");
+            viewItem.Title = LocalizationHelper.Localize("Views");
             AppendItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), (sender, arg) =>
             {
                 mAppCore.CharEnter(18);
@@ -708,18 +708,18 @@ namespace CelestiaUWP
             {
                 mAppCore.CharEnter(127);
             }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.Delete, IsEnabled = false });
-            AppendItem(viewItem, LocalizationHelper.Localize("Single View"), (sender, arg) =>
+            AppendItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), (sender, arg) =>
             {
                 mAppCore.CharEnter(4);
             }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.D, IsEnabled = false });
 
             var bookmarkItem = new MenuBarItem();
             bookmarkItem.Title = LocalizationHelper.Localize("Bookmarks");
-            AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmarks"), (sender, arg) =>
+            AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
             {
                 ShowNewBookmark();
             });
-            AppendItem(bookmarkItem, LocalizationHelper.Localize("Organize Bookmarks"), (sender, arg) =>
+            AppendItem(bookmarkItem, LocalizationHelper.Localize("Organize Bookmarks…"), (sender, arg) =>
             {
                 ShowBookmarkOrganizer();
             });
