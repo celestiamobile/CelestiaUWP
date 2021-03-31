@@ -536,7 +536,7 @@ namespace CelestiaUWP
             AppendItem(fileItem, LocalizationHelper.Localize("Capture Image"), (sender, arg) =>
             {
                 CaptureImage();
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.F10 });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.F10 });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -546,7 +546,7 @@ namespace CelestiaUWP
                 dataPackage.RequestedOperation = DataPackageOperation.Copy;
                 dataPackage.SetText(mAppCore.CurrentURL);
                 Clipboard.SetContent(dataPackage);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.C });
+            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.C });
             AppendItem(fileItem, LocalizationHelper.Localize("Paste URL"), async (sender, arg) =>
             {
                 DataPackageView dataPackageView = Clipboard.GetContent();
@@ -555,7 +555,7 @@ namespace CelestiaUWP
                     string text = await dataPackageView.GetTextAsync();
                     mAppCore.GoToURL(text);
                 }
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.P });
+            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.V });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -571,7 +571,7 @@ namespace CelestiaUWP
             AppendItem(navigationItem, LocalizationHelper.Localize("Select Sol"), (sender, arg) =>
             {
                 mAppCore.CharEnter(104);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.H });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.H, IsEnabled = false });
             AppendItem(navigationItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
             {
                 ShowTourGuide();
@@ -587,7 +587,7 @@ namespace CelestiaUWP
 
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
-            var actions = new (String, short)[] {
+            var actions = new (string, short)[] {
                     ("Center Selection", 99),
                     ("Go to Selection", 103),
                     ("Follow Selection", 102),
@@ -599,7 +599,7 @@ namespace CelestiaUWP
                 AppendItem(navigationItem, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                 {
                     mAppCore.CharEnter(action.Item2);
-                }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = (Windows.System.VirtualKey)(action.Item2 - 32) });
+                }, new KeyboardAccelerator() { Key = (Windows.System.VirtualKey)(action.Item2 - 32), IsEnabled = false });
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -617,15 +617,15 @@ namespace CelestiaUWP
             AppendItem(timeItem, LocalizationHelper.Localize("10x Faster"), (sender, arg) =>
             {
                 mAppCore.CharEnter(108);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.L });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.L, IsEnabled = false });
             AppendItem(timeItem, LocalizationHelper.Localize("10x Slower"), (sender, arg) =>
             {
                 mAppCore.CharEnter(107);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.K });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.K, IsEnabled = false });
             AppendItem(timeItem, LocalizationHelper.Localize("Freeze"), (sender, arg) =>
             {
                 mAppCore.CharEnter(32);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.Space });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.Space, IsEnabled = false });
             AppendItem(timeItem, LocalizationHelper.Localize("Real Time"), (sender, arg) =>
             {
                 mAppCore.CharEnter(33);
@@ -633,7 +633,7 @@ namespace CelestiaUWP
             AppendItem(timeItem, LocalizationHelper.Localize("Reverse Time"), (sender, arg) =>
             {
                 mAppCore.CharEnter(106);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.J });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.J, IsEnabled = false });
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -699,19 +699,19 @@ namespace CelestiaUWP
             AppendItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), (sender, arg) =>
             {
                 mAppCore.CharEnter(18);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.R });
+            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.R, IsEnabled = false });
             AppendItem(viewItem, LocalizationHelper.Localize("Split Vertically"), (sender, arg) =>
             {
                 mAppCore.CharEnter(21);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.U });
+            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.U, IsEnabled = false });
             AppendItem(viewItem, LocalizationHelper.Localize("Delete Active View"), (sender, arg) =>
             {
                 mAppCore.CharEnter(127);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Key = Windows.System.VirtualKey.Delete });
+            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.Delete, IsEnabled = false });
             AppendItem(viewItem, LocalizationHelper.Localize("Single View"), (sender, arg) =>
             {
                 mAppCore.CharEnter(4);
-            }, new Windows.UI.Xaml.Input.KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.D });
+            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.D, IsEnabled = false });
 
             var bookmarkItem = new MenuBarItem();
             bookmarkItem.Title = LocalizationHelper.Localize("Bookmarks");
@@ -755,7 +755,7 @@ namespace CelestiaUWP
             MenuBar.Items.Add(helpItem);
         }
 
-        void AppendItem(MenuFlyout parent, string text, RoutedEventHandler click, Windows.UI.Xaml.Input.KeyboardAccelerator accelerator = null)
+        void AppendItem(MenuFlyout parent, string text, RoutedEventHandler click, KeyboardAccelerator accelerator = null)
         {
             var item = new MenuFlyoutItem();
             item.Text = text;
@@ -766,13 +766,14 @@ namespace CelestiaUWP
             parent.Items.Add(item);
         }
 
-        void AppendItem(MenuBarItem parent, string text, RoutedEventHandler click, Windows.UI.Xaml.Input.KeyboardAccelerator accelerator = null)
+        void AppendItem(MenuBarItem parent, string text, RoutedEventHandler click, KeyboardAccelerator accelerator = null)
         {
             var item = new MenuFlyoutItem();
             item.Text = text;
-            // if (accelerator != null)
-            //    item.KeyboardAccelerators.Add(accelerator);
-            item.Click += click;
+            if (accelerator != null)
+                item.KeyboardAccelerators.Add(accelerator);
+            if (click != null)
+                item.Click += click;
             parent.Items.Add(item);
         }
 
@@ -780,7 +781,8 @@ namespace CelestiaUWP
         {
             var item = new MenuFlyoutItem();
             item.Text = text;
-            item.Click += click;
+            if (click != null)
+                item.Click += click;
             parent.Items.Add(item);
         }
 
