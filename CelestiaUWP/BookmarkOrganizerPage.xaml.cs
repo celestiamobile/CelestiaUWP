@@ -11,6 +11,11 @@ namespace CelestiaUWP
         public BookmarkOrganizerPage()
         {
             this.InitializeComponent();
+
+            NewFolderButton.Content = LocalizationHelper.Localize("New Folder");
+            DeleteButton.Content = LocalizationHelper.Localize("Delete");
+            GoButton.Content = LocalizationHelper.Localize("Go");
+            RenameButton.Content = LocalizationHelper.Localize("Rename");
         }
 
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)

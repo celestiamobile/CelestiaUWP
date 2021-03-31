@@ -13,6 +13,11 @@ namespace CelestiaUWP
         public NewBookmarkPage()
         {
             this.InitializeComponent();
+
+            NewFolderButton.Content = LocalizationHelper.Localize("New Folder");
+            DeleteButton.Content = LocalizationHelper.Localize("Delete");
+            ConfirmButton.Content = LocalizationHelper.Localize("OK");
+            RenameButton.Content = LocalizationHelper.Localize("Rename");
         }
 
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)

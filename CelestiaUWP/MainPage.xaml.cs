@@ -741,7 +741,7 @@ namespace CelestiaUWP
                 ShowAddons();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("About Celestia..."), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("About Celestia"), (sender, arg) =>
             {
                 ShowAboutDialog();
             });
