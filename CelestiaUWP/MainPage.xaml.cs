@@ -29,7 +29,6 @@ namespace CelestiaUWP
         private Point? mLastLeftMousePosition = null;
         private Point? mLastRightMousePosition = null;
 
-        private string mCurrentPath;
         private string mExtraAddonFolder;
         private string mExtraScriptFolder;
 
@@ -47,11 +46,6 @@ namespace CelestiaUWP
             "Circle", "Disk", "Crosshair"
         };
 
-        private string mLocalePath
-        {
-            get { return mCurrentPath + "\\locale"; }
-        }
-
         private float scale = 1.0f;
 
         public MainPage()
@@ -59,12 +53,6 @@ namespace CelestiaUWP
             mAppCore = new CelestiaAppCore();
 
             InitializeComponent();
-
-            scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
-
-            string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
-            mCurrentPath = installedPath + "\\CelestiaResources";
-            Directory.SetCurrentDirectory(mCurrentPath);
 
             Loaded += MainPage_Loaded;
             SizeChanged += MainPage_SizeChanged;
@@ -82,13 +70,25 @@ namespace CelestiaUWP
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
-                var locale = GetLocale().Result;
-                CelestiaAppCore.SetLocaleDirectory(mLocalePath, locale);
-                LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
+            scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
 
+            string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
+            var defaultResourcePath = installedPath + "\\CelestiaResources";
+            var defaultConfigFilePath = defaultResourcePath + "\\celestia.cfg";
+
+            var resourcePath = defaultResourcePath;
+            var configPath = defaultConfigFilePath;
+
+            var localePath = defaultResourcePath + "\\locale";
+            var locale = await GetLocale(localePath);
+            CelestiaAppCore.SetLocaleDirectory(localePath, locale);
+            LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
+
+            Directory.SetCurrentDirectory(resourcePath);
+
+            mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
                 CelestiaAppCore.InitGL();
 
                 CreateExtraFolders();
@@ -96,7 +96,7 @@ namespace CelestiaUWP
                 if (mExtraAddonFolder != null)
                     extraPaths.Add(mExtraAddonFolder);
 
-                if (!mAppCore.StartSimulation("celestia.cfg", extraPaths.ToArray(), delegate (string progress)
+                if (!mAppCore.StartSimulation(configPath, extraPaths.ToArray(), delegate (string progress)
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
@@ -120,7 +120,7 @@ namespace CelestiaUWP
                 var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
                 var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
 
-                var pathPrefix = mCurrentPath + "\\fonts\\";
+                var pathPrefix = resourcePath + "\\fonts\\";
 
                 mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
                 mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
@@ -131,7 +131,7 @@ namespace CelestiaUWP
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
                     SetUpGLViewInteractions();
-                    PopulateMenuBar();
+                    PopulateMenuBar(resourcePath);
                     mRenderer.SetSize((int)GLView.ActualWidth, (int)GLView.ActualHeight);
                 });
 
@@ -504,7 +504,7 @@ namespace CelestiaUWP
             };
         }
 
-        void PopulateMenuBar()
+        void PopulateMenuBar(string resourcePath)
         {
             MenuBar.AllowFocusOnInteraction = false;
             MenuBar.IsFocusEngagementEnabled = false;
@@ -523,7 +523,7 @@ namespace CelestiaUWP
 
             var scriptsItem = new MenuFlyoutSubItem();
             scriptsItem.Text = LocalizationHelper.Localize("Scripts");
-            var scripts = CelestiaAppCore.ReadScripts(mCurrentPath + "\\scripts", true);
+            var scripts = CelestiaAppCore.ReadScripts(resourcePath + "\\scripts", true);
             if (scripts != null)
             {
                 foreach (var script in scripts)
@@ -577,7 +577,6 @@ namespace CelestiaUWP
             }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.V });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
-
 
             AppendItem(fileItem, LocalizationHelper.Localize("Exit"), (sender, arg) =>
             {
@@ -959,9 +958,9 @@ namespace CelestiaUWP
             await dialog.ShowAsync();
         }
 
-        async System.Threading.Tasks.Task<string> GetLocale()
+        async System.Threading.Tasks.Task<string> GetLocale(string LocalePath)
         {
-            var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(mLocalePath);
+            var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
             var files = await folder.GetFoldersAsync();
             var availableLocales = new List<string>();
             var preferredLocale = System.Globalization.CultureInfo.CurrentCulture.Name;

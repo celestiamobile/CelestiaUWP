@@ -12,6 +12,8 @@ namespace CelestiaUWP
 
         public bool UseFullDPI;
         public bool EnableMSAA;
+        public string ConfigFileToken;
+        public string DataDirToken;
 
         private AppSettings()
         {
@@ -26,6 +28,14 @@ namespace CelestiaUWP
                 EnableMSAA = true;
             else
                 EnableMSAA = false;
+
+            var configFile = settings.Values["ConfigFile"];
+            if (configFile is string)
+                ConfigFileToken = (string)configFile;
+
+            var dataDir = settings.Values["DataDir"];
+            if (dataDir is string)
+                DataDirToken = (string)dataDir;
         }
 
         public void Save()
@@ -33,6 +43,8 @@ namespace CelestiaUWP
             var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
             settings.Values["FullDPI"] = UseFullDPI;
             settings.Values["EnableMSAA"] = EnableMSAA;
+            settings.Values["ConfigFile"] = ConfigFileToken;
+            settings.Values["DataDir"] = DataDirToken;
         }
     }
 }
