@@ -5,5 +5,10 @@ bin
 packages
 Generated Files
 x64
+ARM64
+ARM
+Win32
 CelestiaUWP/Resources
 *.user
+AppPackages
+BundleArtifacts
