@@ -8,6 +8,7 @@ using System.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -75,11 +76,21 @@ namespace CelestiaUWP
             scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
 
             string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
+
+            Windows.Storage.StorageFolder customDataFolder = null;
+            Windows.Storage.StorageFile customConfigFile = null;
+            try
+            {
+                customDataFolder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync("Override");
+                customConfigFile = await customDataFolder.GetFileAsync("celestia.cfg");
+            }
+            catch { }
+
             var defaultResourcePath = installedPath + "\\CelestiaResources";
             var defaultConfigFilePath = defaultResourcePath + "\\celestia.cfg";
 
-            var resourcePath = defaultResourcePath;
-            var configPath = defaultConfigFilePath;
+            var resourcePath = customDataFolder != null ? customDataFolder.Path : defaultResourcePath;
+            var configPath = customConfigFile != null ? customConfigFile.Path : defaultConfigFilePath;
 
             var localePath = defaultResourcePath + "\\locale";
             var locale = await GetLocale(localePath);
@@ -120,7 +131,7 @@ namespace CelestiaUWP
                 var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
                 var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
 
-                var pathPrefix = resourcePath + "\\fonts\\";
+                var pathPrefix = defaultResourcePath + "\\fonts\\";
 
                 mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
                 mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
@@ -328,7 +339,7 @@ namespace CelestiaUWP
                           menu.Items.Add(new MenuFlyoutSeparator());
                           AppendItem(menu, LocalizationHelper.Localize("Web Info"), (sender, arg) =>
                           {
-                              _ = Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+                              _ = Launcher.LaunchUriAsync(new Uri(url));
                           });
                       }
 
@@ -578,6 +589,13 @@ namespace CelestiaUWP
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
+            AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder"), async (sender, arg) =>
+            {
+                await Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder);
+            });
+
+            fileItem.Items.Add(new MenuFlyoutSeparator());
+
             AppendItem(fileItem, LocalizationHelper.Localize("Exit"), (sender, arg) =>
             {
                 Application.Current.Exit();
@@ -758,6 +776,10 @@ namespace CelestiaUWP
                 ShowAddons();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(helpItem, LocalizationHelper.Localize("User Guide"), (sender, arg) =>
+            {
+                _ = Launcher.LaunchUriAsync(new Uri("https://github.com/levinli303/Celestia/wiki"));
+            });
             AppendItem(helpItem, LocalizationHelper.Localize("About Celestia"), (sender, arg) =>
             {
                 ShowAboutDialog();
