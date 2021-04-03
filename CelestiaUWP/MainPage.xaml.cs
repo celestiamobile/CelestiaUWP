@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -94,33 +95,67 @@ namespace CelestiaUWP
 
             var localePath = defaultResourcePath + "\\locale";
             var locale = await GetLocale(localePath);
-            CelestiaAppCore.SetLocaleDirectory(localePath, locale);
-            LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
 
-            Directory.SetCurrentDirectory(resourcePath);
+            await Task.Run(() => CreateExtraFolders());
 
             mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
                 CelestiaAppCore.InitGL();
 
-                CreateExtraFolders();
                 List<string> extraPaths = new List<string>();
                 if (mExtraAddonFolder != null)
                     extraPaths.Add(mExtraAddonFolder);
 
-                if (!mAppCore.StartSimulation(configPath, extraPaths.ToArray(), delegate (string progress)
+                CelestiaLoadCallback progressCallback = (string progress) =>
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         LoadingText.Text = string.Format(LocalizationHelper.Localize("Loading: %s").Replace("%s", "{0}"), progress);
                     });
-                }))
+                };
+
+                Directory.SetCurrentDirectory(resourcePath);
+                CelestiaAppCore.SetLocaleDirectory(resourcePath + "\\locale", locale);
+                if (!mAppCore.StartSimulation(configPath, extraPaths.ToArray(), progressCallback) && (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath))
                 {
-                    return false;
+                    if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
+                    {
+                        // Try to restore originial settings
+                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration."));
+                        });
+                        Directory.SetCurrentDirectory(defaultResourcePath);
+                        CelestiaAppCore.SetLocaleDirectory(defaultResourcePath + "\\locale", locale);
+                        if (!mAppCore.StartSimulation(defaultConfigFilePath, extraPaths.ToArray(), progressCallback))
+                        {
+                            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                ShowLoadingFailure();
+                            });
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ShowLoadingFailure();
+                        });
+                        return false;
+                    }
                 }
+
                 mAppCore.SetDPI((int)(96 * scale));
                 if (!mAppCore.StartRenderer())
+                {
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ShowLoadingFailure();
+                    });
                     return false;
+                }
 
+                LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
                 var fontMap = new Dictionary<string, (string, int, string, int)>() {
                     { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },
                     { "ko", ("NotoSansCJK-Regular.ttc", 1, "NotoSansCJK-Bold.ttc", 1) },
@@ -169,6 +204,11 @@ namespace CelestiaUWP
             mRenderer.Start();
         }
 
+        private void ShowLoadingFailure()
+        {
+            LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
+        }
+
         private async void OpenFileOrURL()
         {
             var scriptFile = ScriptFileToOpen;
@@ -212,24 +252,17 @@ namespace CelestiaUWP
                 OpenFileOrURL();
         }
 
-        void CreateExtraFolders()
+        private async void CreateExtraFolders()
         {
             var folder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            var addonPath = folder.Path + "\\CelestiaResources\\extras";
-            var scriptsPath = folder.Path + "\\CelestiaResources\\scripts";
-
             try
             {
-                Directory.CreateDirectory(addonPath);
-                mExtraAddonFolder = addonPath;
+                var mainFolder = await folder.CreateFolderAsync("CelestiaResources", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                var addonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                mExtraAddonFolder = addonFolder.Path;
+                var scriptFolder = await mainFolder.CreateFolderAsync("scripts", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                mExtraScriptFolder = scriptFolder.Path;
             } catch { }
-
-            try
-            {
-                Directory.CreateDirectory(scriptsPath);
-                mExtraScriptFolder = scriptsPath;
-            }
-            catch { }
         }
 
         void SetUpGLViewInteractions()

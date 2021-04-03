@@ -267,7 +267,12 @@ namespace winrt::CelestiaComponent::implementation
                 while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
                 {
                     if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
-                        renderer->engineStartedCalled = renderer->engineStarted();
+                    {
+                        bool started = renderer->engineStarted();
+                        if (!started)
+                            break;
+                        renderer->engineStartedCalled = true;
+                    }
 
                     renderer->Lock();
                     renderer->Wait();
