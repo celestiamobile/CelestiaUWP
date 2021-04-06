@@ -1089,12 +1089,12 @@ namespace CelestiaUWP
             await dialog.ShowAsync();
         }
 
-        async System.Threading.Tasks.Task<string> GetLocale(string LocalePath)
+        async Task<string> GetLocale(string LocalePath)
         {
             var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
             var files = await folder.GetFoldersAsync();
             var availableLocales = new List<string>();
-            var preferredLocale = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var preferredLocale = System.Globalization.CultureInfo.CurrentUICulture.Name;
             preferredLocale = preferredLocale.Replace("-", "_");
             foreach (var file in files)
             {
