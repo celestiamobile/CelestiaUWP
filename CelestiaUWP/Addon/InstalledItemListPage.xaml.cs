@@ -24,7 +24,7 @@ namespace CelestiaUWP.Addon
 
         ResourceItem[] Items
         {
-            get { return mItems; }
+            get => mItems;
             set
             {
                 mItems = value;

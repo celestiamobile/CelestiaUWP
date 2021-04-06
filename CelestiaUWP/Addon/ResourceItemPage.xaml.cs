@@ -48,7 +48,7 @@ namespace CelestiaUWP.Addon
         private ResourceItem mItem;
         ResourceItem Item
         {
-            get { return mItem; }
+            get => mItem;
             set
             {
                 mItem = value;

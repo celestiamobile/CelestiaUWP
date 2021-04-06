@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <RelativePanel>
-        <ListView x:Name="ResultList" ItemsSource="{x:Bind mEclipses, Mode=OneWay}" SelectedIndex="{x:Bind mSelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+        <ListView x:Name="ResultList" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="celestia:CelestiaEclipse">
                     <RelativePanel>
@@ -33,11 +33,11 @@
         <StackPanel x:Name="ControlContainer" Spacing="8" Orientation="Vertical" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
             <RelativePanel>
                 <TextBlock Text="Start time:" x:Name="StartTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <CalendarDatePicker Date="{x:Bind mStartTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind StartTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
             </RelativePanel>
             <RelativePanel>
                 <TextBlock Text="End time:" x:Name="EndTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <CalendarDatePicker Date="{x:Bind mEndTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind EndTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
             </RelativePanel>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -47,9 +47,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Object:" x:Name="ObjectHint" Grid.Column="0" VerticalAlignment="Center"/>
-                <ComboBox x:Name="ObjectChooser" ItemsSource="{x:Bind mAvailableObjects}" SelectedIndex="{x:Bind mSelectedObjectIndex, Mode=TwoWay}" Grid.Column="1"/>
-                <CheckBox Content="Solar" IsChecked="{x:Bind mFindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
-                <CheckBox Content="Lunar" IsChecked="{x:Bind mFindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
+                <ComboBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjects}" SelectedIndex="{x:Bind SelectedObjectIndex, Mode=TwoWay}" Grid.Column="1"/>
+                <CheckBox Content="Solar" IsChecked="{x:Bind FindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
+                <CheckBox Content="Lunar" IsChecked="{x:Bind FindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
             </Grid>
             <RelativePanel>
                 <Button Content="Compute" x:Name="ComputeButton" Click="ComputeButton_Click" RelativePanel.AlignLeftWithPanel="True"/>

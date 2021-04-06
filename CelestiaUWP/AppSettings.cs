@@ -24,23 +24,20 @@ namespace CelestiaUWP
         {
             var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
             var fullDPI = settings.Values["FullDPI"];
-            if (fullDPI is bool && !(bool)fullDPI)
+            if (fullDPI is bool boolean && !boolean)
                 UseFullDPI = false;
             else
                 UseFullDPI = true;
             var msaa = settings.Values["EnableMSAA"];
-            if (msaa is bool && (bool)msaa)
-                EnableMSAA = true;
-            else
-                EnableMSAA = false;
+            EnableMSAA = msaa is bool boolean1 && boolean1;
 
             var configFile = settings.Values["ConfigFile"];
-            if (configFile is string)
-                ConfigFileToken = (string)configFile;
+            if (configFile is string configFileValue)
+                ConfigFileToken = configFileValue;
 
             var dataDir = settings.Values["DataDir"];
-            if (dataDir is string)
-                DataDirToken = (string)dataDir;
+            if (dataDir is string dataDirValue)
+                DataDirToken = dataDirValue;
         }
 
         public void Save()

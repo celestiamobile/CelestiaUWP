@@ -34,31 +34,28 @@ namespace CelestiaUWP
 
         private void LocalizeElement(UIElement element)
         {
-            if (element is Panel)
+            if (element is Panel panel)
             {
-                foreach (var item in ((Panel)element).Children)
+                foreach (var item in panel.Children)
                 {
                     LocalizeElement(item);
                 }
             }
-            else if (element is CheckBox)
+            else if (element is CheckBox checkBox)
             {
-                var checkBox = (CheckBox)element;
                 var content = checkBox.Content;
-                if (content is string)
-                    checkBox.Content = LocalizationHelper.Localize((string)content);
+                if (content is string value)
+                    checkBox.Content = LocalizationHelper.Localize(value);
             }
-            else if (element is TextBlock)
+            else if (element is TextBlock textBlock)
             {
-                var textBlock = (TextBlock)element;
                 textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
             }
-            else if (element is Slider)
+            else if (element is Slider slider)
             {
-                var slider = (Slider)element;
                 var header = slider.Header;
-                if (header is string)
-                    slider.Header = LocalizationHelper.Localize((string)header);
+                if (header is string value)
+                    slider.Header = LocalizationHelper.Localize(value);
             }
         }
     }

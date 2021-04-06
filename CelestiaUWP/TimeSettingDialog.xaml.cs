@@ -22,9 +22,7 @@ namespace CelestiaUWP
     {
         public DateTimeOffset DisplayDate
         {
-            get {
-                return Date.Date.AddMinutes(Time.TotalMinutes);
-            }
+            get => Date.Date.AddMinutes(Time.TotalMinutes);
             set
             {
                 Date = value.Date;
@@ -38,7 +36,7 @@ namespace CelestiaUWP
 
         private DateTimeOffset Date
         {
-            get { return mDate; }
+            get => mDate;
             set
             {
                 mDate = value;
@@ -47,7 +45,7 @@ namespace CelestiaUWP
         }
         private TimeSpan Time
         {
-            get { return mTime; }
+            get => mTime;
             set
             {
                 mTime = value;

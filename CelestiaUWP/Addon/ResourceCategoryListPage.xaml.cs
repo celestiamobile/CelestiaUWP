@@ -26,7 +26,7 @@ namespace CelestiaUWP.Addon
 
         ResourceCategory[] Categories
         {
-            get { return mCategories; }
+            get => mCategories;
             set
             {
                 mCategories = value;

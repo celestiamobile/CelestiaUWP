@@ -19,12 +19,12 @@ namespace CelestiaUWP.Helper
         {
             var obj = selection.Object;
             if (obj == null) return null;
-            if (obj is CelestiaStar)
-                return ((CelestiaStar)obj).InfoURL;
-            if (obj is CelestiaBody)
-                return ((CelestiaBody)obj).InfoURL;
-            if (obj is CelestiaDSO)
-                return ((CelestiaDSO)obj).InfoURL;
+            if (obj is CelestiaStar star)
+                return star.InfoURL;
+            if (obj is CelestiaBody body)
+                return body.InfoURL;
+            if (obj is CelestiaDSO DSO)
+                return DSO.InfoURL;
             return null;
         }
     }

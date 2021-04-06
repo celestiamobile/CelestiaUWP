@@ -24,29 +24,29 @@ namespace CelestiaUWP
     {
         private CelestiaAppCore mAppCore;
 
-        private DateTime? mStartTime;
-        private DateTime? mEndTime;
+        private DateTime? StartTime;
+        private DateTime? EndTime;
 
-        private bool mFindSolar = false;
-        private bool mFindLunar = false;
+        private bool FindSolar = false;
+        private bool FindLunar = false;
 
-        private int mSelectedObjectIndex = 0;
-        private string[] mAvailableObjects = new string[] { "Earth", "Jupiter" };
+        private int SelectedObjectIndex = 0;
+        private readonly string[] AvailableObjects = new string[] { "Earth", "Jupiter" };
 
         private CelestiaEclipseFinder Finder;
-        private CelestiaEclipse[] mEclipses
+        private CelestiaEclipse[] Eclipses
         {
-            get { return eclipses; }
+            get => eclipses;
             set
             {
                 eclipses = value;
-                OnPropertyChanged("mEclipses");
+                OnPropertyChanged("Eclipses");
             }
         }
 
         private CelestiaEclipse[] eclipses = new CelestiaEclipse[] { };
 
-        private int mSelectedEclipseIndex = -1;
+        private int SelectedEclipseIndex = -1;
 
         public EclipseFinderPage()
         {
@@ -74,60 +74,57 @@ namespace CelestiaUWP
                 ComputeButton.Content = LocalizationHelper.Localize("Compute");
                 return;
             }
-            if (mStartTime == null || mEndTime == null)
+            if (StartTime == null || EndTime == null)
                 return;
-            var startTime = (DateTime)mStartTime;
-            var endTime = (DateTime)mEndTime;
+            var startTime = (DateTime)StartTime;
+            var endTime = (DateTime)EndTime;
             if (endTime.CompareTo(startTime) <= 0)
                 return;
 
-            if (!mFindLunar && !mFindSolar)
+            if (!FindLunar && !FindSolar)
                 return;
 
             CelestiaEclipseKind kind;
-            if (mFindLunar && mFindSolar)
+            if (FindLunar && FindSolar)
                 kind = CelestiaEclipseKind.solarAndLunar;
-            else if (mFindSolar)
+            else if (FindSolar)
                 kind = CelestiaEclipseKind.solar;
             else
                 kind = CelestiaEclipseKind.lunar;
 
-            var body = mAppCore.Simulation.Find(mAvailableObjects[mSelectedObjectIndex]).Object;
+            var body = mAppCore.Simulation.Find(AvailableObjects[SelectedObjectIndex]).Object;
             if (body == null || !(body is CelestiaBody))
                 return;
 
             var eclipses = await Compute((CelestiaBody)body, kind, startTime, endTime);
-            mEclipses = eclipses;
+            Eclipses = eclipses;
         }
 
         private async Task<CelestiaEclipse[]> Compute(CelestiaBody body, CelestiaEclipseKind kind, DateTime startTime, DateTime endTime)
         {
-            var eclipseFinder = new CelestiaEclipseFinder((CelestiaBody)body);
+            var eclipseFinder = new CelestiaEclipseFinder(body);
             Finder = eclipseFinder;
             ComputeButton.Content = LocalizationHelper.Localize("Cancel");
             return await Task.Run<CelestiaEclipse[]>(() =>
             {
                 var eclipses = eclipseFinder.Search(kind, startTime, endTime);
-                return eclipses == null ? new CelestiaEclipse[] { } : eclipses;
+                return eclipses ?? (new CelestiaEclipse[] { });
             });
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (mSelectedEclipseIndex < 0)
+            if (SelectedEclipseIndex < 0)
                 return;
 
-            var eclipse = mEclipses[mSelectedEclipseIndex];
+            var eclipse = Eclipses[SelectedEclipseIndex];
             mAppCore.Simulation.GoToEclipse(eclipse);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         static public String GetEclipseDescription(CelestiaBody occulter, CelestiaBody receiver)
         {

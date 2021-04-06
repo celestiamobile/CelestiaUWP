@@ -40,11 +40,12 @@ namespace CelestiaUWP
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var text = dialog.Text;
-                var bookmark = new BookmarkNode();
-                bookmark.IsFolder = true;
-                bookmark.Name = dialog.Text;
-                bookmark.Children = new ObservableCollection<BookmarkNode>();
+                var bookmark = new BookmarkNode
+                {
+                    IsFolder = true,
+                    Name = dialog.Text,
+                    Children = new ObservableCollection<BookmarkNode>()
+                };
                 Bookmarks.Add(bookmark);
                 WriteBookmarks();
             }
@@ -61,7 +62,6 @@ namespace CelestiaUWP
         private async void RenameItem(BookmarkNode bookmark)
         {
             var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
-            dialog.XamlRoot = XamlRoot;
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {

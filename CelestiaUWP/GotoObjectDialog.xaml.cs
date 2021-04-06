@@ -25,54 +25,29 @@ namespace CelestiaUWP
 
         public float? Latitude
         {
-            get
-            {
-                float result;
-                if (float.TryParse(LatitudeString, out result))
-                    return result;
-                return null;
-            }
-            set
-            {
-                LatitudeString = value == null ? "" : ((float)value).ToString();
-            }
+            get => float.TryParse(LatitudeString, out float result) ? result : (float?)null;
+            set => LatitudeString = value == null ? "" : ((float)value).ToString();
         }
 
         public float? Longitude
         {
-            get {
-                float result;
-                if (float.TryParse(LongitudeString, out result))
-                    return result;
-                return null;
-            }
-            set {
-                LongitudeString = value == null ? "" : ((float)value).ToString();
-            }
+            get => float.TryParse(LongitudeString, out float result) ? result : (float?)null;
+            set => LongitudeString = value == null ? "" : ((float)value).ToString();
         }
 
         public double? Distance
         {
-            get
-            {
-                double result;
-                if (double.TryParse(DistanceString, out result))
-                    return result;
-                return null;
-            }
-            set
-            {
-                DistanceString = value == null ? "" : ((double)value).ToString();
-            }
+            get => double.TryParse(DistanceString, out double result) ? result : (double?)null;
+            set => DistanceString = value == null ? "" : ((double)value).ToString();
         }
 
         public int Unit = 0;
-
-        ObservableCollection<string> Units = new ObservableCollection<string>(new string[] {
+        private readonly string[] Units = new string[]
+        {
             LocalizationHelper.Localize("km"),
             LocalizationHelper.Localize("radii"),
             LocalizationHelper.Localize("au")
-        });
+        };
 
         public GotoObjectDialog()
         {
@@ -80,6 +55,7 @@ namespace CelestiaUWP
             Title = LocalizationHelper.Localize("Go to Object");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
+            ObjectNameText.PlaceholderText = LocalizationHelper.Localize("Object Name");
             LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude");
             LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude");
             DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance");

@@ -23,7 +23,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0"  Text="{x:Bind Text, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"></TextBox>
+        <TextBox x:Name="ObjectNameText" Grid.Row="0"  Text="{x:Bind Text, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"></TextBox>
         <TextBox x:Name="LatitudeText" Grid.Row="1" Text="{x:Bind LatitudeString, Mode=TwoWay}"></TextBox>
         <TextBox x:Name="LongitudeText" Grid.Row="1" Text="{x:Bind LongitudeString, Mode=TwoWay}" Grid.Column="1"></TextBox>
         <TextBox x:Name="DistanceText" Grid.Row="2" Text="{x:Bind DistanceString, Mode=TwoWay}"></TextBox>

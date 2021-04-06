@@ -54,11 +54,9 @@ namespace CelestiaUWP
 
         private void Launch(LaunchActivatedEventArgs launchEvent, FileActivatedEventArgs fileEvent, IActivatedEventArgs urlEvent)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -84,10 +82,10 @@ namespace CelestiaUWP
                 if (fileEvent != null && fileEvent.Files != null && fileEvent.Files.Count > 0)
                 {
                     var file = fileEvent.Files[0];
-                    if (file is Windows.Storage.StorageFile)
+                    if (file is Windows.Storage.StorageFile file1)
                     {
                         var p = rootFrame.Content as MainPage;
-                        p.OpenFileIfReady((Windows.Storage.StorageFile)file);
+                        p.OpenFileIfReady(file1);
                     }
                 }
                 else if (urlEvent != null && urlEvent.Kind == ActivationKind.Protocol)

@@ -26,19 +26,19 @@ namespace CelestiaUWP
         private CelestiaBrowserItem[] mStarRoot;
         private CelestiaBrowserItem[] mDSORoot;
 
-        private Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
+        private readonly Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
         {
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Solar System"), "sol"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Stars"), "star"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("DSOs"), "dso"),
         };
-        private CelestiaBrowserItem[] mRoot
+        private CelestiaBrowserItem[] Root
         {
-            get { return root;  }
+            get => root;
             set
             {
                 root = value;
-                OnPropertyChanged("mRoot");
+                OnPropertyChanged("Root");
             }
         }
 
@@ -81,7 +81,7 @@ namespace CelestiaUWP
                 new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray()),
             };
 
-            var typeMap = new String[]
+            var typeMap = new string[]
             {
                 "SB",
                 "S",
@@ -97,7 +97,7 @@ namespace CelestiaUWP
             {
                 results.Add(new List<CelestiaBrowserItem>());
             }
-            var categoryNames = new String[]
+            var categoryNames = new string[]
             {
                 LocalizationHelper.Localize("Galaxies (Barred Spiral)"),
                 LocalizationHelper.Localize("Galaxies (Spiral)"),
@@ -134,7 +134,7 @@ namespace CelestiaUWP
             }
             mDSORoot = dsoCategories.ToArray();
 
-            mRoot = mSolRoot;
+            Root = mSolRoot;
 
             var actions = new (String, short)[] {
                     ("Go", 103),
@@ -146,14 +146,16 @@ namespace CelestiaUWP
                 };
             foreach (var action in actions)
             {
-                var button = new Button();
-                button.Content = LocalizationHelper.Localize(action.Item1);
+                var button = new Button
+                {
+                    Content = LocalizationHelper.Localize(action.Item1)
+                };
                 button.Click += (sender, arg) =>
                 {
                     var selectedItem = Tree.SelectedItem;
-                    if (selectedItem is CelestiaBrowserItem)
+                    if (selectedItem is CelestiaBrowserItem item)
                     {
-                        var obj = ((CelestiaBrowserItem)selectedItem).Object;
+                        var obj = item.Object;
                         if (obj != null)
                         {
                             mAppCore.Simulation.Selection = new CelestiaSelection(obj);
@@ -171,10 +173,10 @@ namespace CelestiaUWP
             var obj = item.Object;
             if (obj == null)
                 return new CelestiaBrowserItem[] { };
-            if (obj is CelestiaStar)
-                return mAppCore.Simulation.Universe.ChildrenForStar((CelestiaStar)obj, GetChildren);
-            if (obj is CelestiaBody)
-                return mAppCore.Simulation.Universe.ChildrenForBody((CelestiaBody)obj, GetChildren);
+            if (obj is CelestiaStar star)
+                return mAppCore.Simulation.Universe.ChildrenForStar(star, GetChildren);
+            if (obj is CelestiaBody body)
+                return mAppCore.Simulation.Universe.ChildrenForBody(body, GetChildren);
             return new CelestiaBrowserItem[] { };
         }
 
@@ -186,13 +188,13 @@ namespace CelestiaUWP
             switch (((Helper.NavigationViewItem)args.SelectedItem).Tag)
             {
                 case "sol":
-                    mRoot = mSolRoot;
+                    Root = mSolRoot;
                     break;
                 case "star":
-                    mRoot = mStarRoot;
+                    Root = mStarRoot;
                     break;
                 case "dso":
-                    mRoot = mDSORoot;
+                    Root = mDSORoot;
                     break;
                 default:
                     break;
@@ -202,10 +204,7 @@ namespace CelestiaUWP
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
