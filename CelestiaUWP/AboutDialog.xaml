@@ -11,7 +11,7 @@
 
     <StackPanel Orientation="Vertical">
         <TextBlock FontSize="15" x:Name="VersionLabel"/>
-        <HyperlinkButton Content="https://celestia.space" NavigateUri="https://celestia.mobi"/>
+        <HyperlinkButton Content="https://celestia.mobi" NavigateUri="https://celestia.mobi"/>
         <TextBlock FontSize="13" x:Name="AuthorTitleLabel"/>
         <TextBlock FontSize="13" x:Name="AuthorLabel" TextWrapping="Wrap"/>
     </StackPanel>
