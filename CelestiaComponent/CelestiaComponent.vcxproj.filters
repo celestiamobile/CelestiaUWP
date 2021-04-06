@@ -49,7 +49,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
