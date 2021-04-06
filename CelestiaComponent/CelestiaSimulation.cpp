@@ -116,7 +116,7 @@ namespace winrt::CelestiaComponent::implementation
         Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
         if (loc->longitude && loc->latitude)
         {
-            sim->gotoSelectionLongLat(5, distance, (float)loc->longitude.Value() * M_PI / 180.0, (float)loc->latitude.Value() * M_PI / 180.0, up);
+            sim->gotoSelectionLongLat(5, distance, loc->longitude.Value() * (float)M_PI / 180.0f, loc->latitude.Value() * (float)M_PI / 180.0f, up);
         }
         else
         {

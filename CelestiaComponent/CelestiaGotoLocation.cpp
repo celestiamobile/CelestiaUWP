@@ -17,7 +17,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaGotoLocation::CelestiaGotoLocation(CelestiaComponent::CelestiaSelection const& selection, Windows::Foundation::IReference<double> latitude, Windows::Foundation::IReference<double> longitude, Windows::Foundation::IReference<double> distance, Windows::Foundation::IReference<CelestiaComponent::CelestiaGotoLocationDistanceUnit> unit) :
+	CelestiaGotoLocation::CelestiaGotoLocation(CelestiaComponent::CelestiaSelection const& selection, Windows::Foundation::IReference<float> latitude, Windows::Foundation::IReference<float> longitude, Windows::Foundation::IReference<double> distance, Windows::Foundation::IReference<CelestiaComponent::CelestiaGotoLocationDistanceUnit> unit) :
 		CelestiaGotoLocationT<CelestiaGotoLocation>(),
 		selection(selection),
 		latitude(latitude),

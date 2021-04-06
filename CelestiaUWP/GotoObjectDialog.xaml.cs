@@ -23,31 +23,31 @@ namespace CelestiaUWP
         public string LatitudeString = "";
         public string DistanceString = "";
 
-        public double? Latitude
+        public float? Latitude
         {
             get
             {
-                double result;
-                if (double.TryParse(LatitudeString, out result))
+                float result;
+                if (float.TryParse(LatitudeString, out result))
                     return result;
                 return null;
             }
             set
             {
-                LatitudeString = value == null ? "" : ((double)value).ToString();
+                LatitudeString = value == null ? "" : ((float)value).ToString();
             }
         }
 
-        public double? Longitude
+        public float? Longitude
         {
             get {
-                double result;
-                if (double.TryParse(LongitudeString, out result))
+                float result;
+                if (float.TryParse(LongitudeString, out result))
                     return result;
                 return null;
             }
             set {
-                LongitudeString = value == null ? "" : ((double)value).ToString();
+                LongitudeString = value == null ? "" : ((float)value).ToString();
             }
         }
 
@@ -68,7 +68,7 @@ namespace CelestiaUWP
 
         public int Unit = 0;
 
-        ObservableCollection<String> Units = new ObservableCollection<String>(new String[] {
+        ObservableCollection<string> Units = new ObservableCollection<string>(new string[] {
             LocalizationHelper.Localize("km"),
             LocalizationHelper.Localize("radii"),
             LocalizationHelper.Localize("au")
@@ -80,6 +80,9 @@ namespace CelestiaUWP
             Title = LocalizationHelper.Localize("Go to Object");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
+            LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude");
+            LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude");
+            DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance");
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

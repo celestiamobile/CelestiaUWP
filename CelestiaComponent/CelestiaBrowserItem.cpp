@@ -25,9 +25,9 @@ namespace winrt::CelestiaComponent::implementation
     CelestiaBrowserItem::CelestiaBrowserItem(hstring name, array_view<CelestiaComponent::CelestiaBrowserItem const> children) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(nullptr), provider(nullptr), name(name)
     {
         std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
-        for (size_t i = 0; i < children.size(); i++)
+        for (const auto& child : children)
         {
-            vec.push_back(children[i]);
+            vec.push_back(child);
         }
         this->children = vec;
         areChildrenLoaded = true;
@@ -60,9 +60,9 @@ namespace winrt::CelestiaComponent::implementation
             CelestiaComponent::CelestiaBrowserItem item = *this;
             auto arr = provider(item);
             std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
-            for (size_t i = 0; i < arr.size(); i++)
+            for (const auto& child : arr)
             {
-                vec.push_back(arr[i]);
+                vec.push_back(child);
             }
             children = vec;
             areChildrenLoaded = true;

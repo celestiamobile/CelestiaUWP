@@ -147,12 +147,12 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::CharEnter(int16_t input)
     {
-        core->charEntered(input);
+        core->charEntered((char)input);
     }
 
     void CelestiaAppCore::CharEnter(int16_t input, int32_t modifiers)
     {
-        core->charEntered(input, modifiers);
+        core->charEntered((char)input, modifiers);
     }
 
     static int convert_key_code_to_celestia_key(int key)

@@ -21,7 +21,7 @@ namespace CelestiaComponent
     };
 
     delegate void CelestiaLoadCallback(String status);
-    delegate void CelestiaContextMenuCallback(Int32 x, Int32 y, CelestiaSelection selection);
+    delegate void CelestiaContextMenuCallback(Single x, Single y, CelestiaSelection selection);
 
     [default_interface]
     runtimeclass CelestiaAppCore

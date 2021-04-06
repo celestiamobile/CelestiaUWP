@@ -249,7 +249,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         if (currentWindowHeight != windowHeight || currentWindowWidth != windowWidth)
         {
-            core->resize(windowWidth * windowScale, windowHeight * windowScale);
+            core->resize((GLsizei)(windowWidth * windowScale), (GLsizei)(windowHeight * windowScale));
             currentWindowWidth = windowWidth;
             currentWindowHeight = windowHeight;
         }

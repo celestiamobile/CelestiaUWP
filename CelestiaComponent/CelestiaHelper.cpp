@@ -58,7 +58,7 @@ namespace winrt::CelestiaComponent::implementation
 		c.Day(astroDate.day);
 		c.Hour(astroDate.hour);
 		c.Minute(astroDate.minute);
-		c.Second(floor(astroDate.seconds));
+		c.Second((int32_t)floor(astroDate.seconds));
 		return c.GetDateTime();
 	}
 }

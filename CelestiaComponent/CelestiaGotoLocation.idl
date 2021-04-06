@@ -21,6 +21,6 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaGotoLocation
     {
-        CelestiaGotoLocation(CelestiaSelection selection, Windows.Foundation.IReference<Double> latitude, Windows.Foundation.IReference<Double> longitude, Windows.Foundation.IReference<Double> distance, Windows.Foundation.IReference<CelestiaGotoLocationDistanceUnit> unit);
+        CelestiaGotoLocation(CelestiaSelection selection, Windows.Foundation.IReference<Single> latitude, Windows.Foundation.IReference<Single> longitude, Windows.Foundation.IReference<Double> distance, Windows.Foundation.IReference<CelestiaGotoLocationDistanceUnit> unit);
     }
 }

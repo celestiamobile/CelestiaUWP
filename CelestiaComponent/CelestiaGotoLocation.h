@@ -16,11 +16,11 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaGotoLocation : CelestiaGotoLocationT<CelestiaGotoLocation>
     {
-        CelestiaGotoLocation(CelestiaComponent::CelestiaSelection const& selection, Windows::Foundation::IReference<double> latitude, Windows::Foundation::IReference<double> longitude, Windows::Foundation::IReference<double> distance, Windows::Foundation::IReference<CelestiaComponent::CelestiaGotoLocationDistanceUnit> unit);
+        CelestiaGotoLocation(CelestiaComponent::CelestiaSelection const& selection, Windows::Foundation::IReference<float> latitude, Windows::Foundation::IReference<float> longitude, Windows::Foundation::IReference<double> distance, Windows::Foundation::IReference<CelestiaComponent::CelestiaGotoLocationDistanceUnit> unit);
 
         CelestiaComponent::CelestiaSelection selection;
-        Windows::Foundation::IReference<double> longitude;
-        Windows::Foundation::IReference<double> latitude;
+        Windows::Foundation::IReference<float> longitude;
+        Windows::Foundation::IReference<float> latitude;
         Windows::Foundation::IReference<double> distance;
         Windows::Foundation::IReference<CelestiaComponent::CelestiaGotoLocationDistanceUnit> unit;
     };
