@@ -57,7 +57,7 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaSelection CelestiaSimulation::Find(hstring const& name)
     {
-        return make<CelestiaSelection>(sim->findObject(to_string(name)));
+        return make<CelestiaSelection>(sim->findObject(to_string(name), true));
     }
 
     CelestiaComponent::CelestiaStarBrowser CelestiaSimulation::StarBrowser(CelestiaComponent::CelestiaStarBrowserType type)

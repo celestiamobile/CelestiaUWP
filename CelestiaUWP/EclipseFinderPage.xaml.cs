@@ -24,14 +24,14 @@ namespace CelestiaUWP
     {
         private CelestiaAppCore mAppCore;
 
-        private DateTime? StartTime;
-        private DateTime? EndTime;
+        private DateTime? StartTime = DateTime.Now;
+        private DateTime? EndTime = DateTime.Now;
 
-        private bool FindSolar = false;
-        private bool FindLunar = false;
+        private bool FindSolar = true;
+        private bool FindLunar = true;
 
         private int SelectedObjectIndex = 0;
-        private readonly string[] AvailableObjects = new string[] { "Earth", "Jupiter" };
+        private readonly string[] AvailableObjects = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia"), CelestiaAppCore.LocalizedString("Jupiter", "celestia") };
 
         private CelestiaEclipseFinder Finder;
         private CelestiaEclipse[] Eclipses
@@ -57,7 +57,7 @@ namespace CelestiaUWP
             EndTimeHint.Text = LocalizationHelper.Localize("End time:");
             ObjectHint.Text = LocalizationHelper.Localize("Object:");
             SolarEclipseButton.Content = LocalizationHelper.Localize("Solar");
-            SolarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
+            LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
