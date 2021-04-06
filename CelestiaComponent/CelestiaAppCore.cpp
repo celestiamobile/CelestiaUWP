@@ -125,19 +125,19 @@ namespace winrt::CelestiaComponent::implementation
         core->setSafeAreaInsets(left, top, right, bottom);
     }
 
-    void CelestiaAppCore::MouseMove(float x, float y, int32_t button)
+    void CelestiaAppCore::MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseMove(x, y, button);
+        core->mouseMove(x, y, (int)button);
     }
 
-    void CelestiaAppCore::MouseButtonUp(float x, float y, int32_t button)
+    void CelestiaAppCore::MouseButtonUp(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseButtonUp(x, y, button);
+        core->mouseButtonUp(x, y, (int)button);
     }
 
-    void CelestiaAppCore::MouseButtonDown(float x, float y, int32_t button)
+    void CelestiaAppCore::MouseButtonDown(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseButtonDown(x, y, button);
+        core->mouseButtonDown(x, y, (int)button);
     }
 
     void CelestiaAppCore::MouseWheel(float motion, int32_t modifiers)

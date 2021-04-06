@@ -35,12 +35,9 @@ namespace CelestiaUWP
         private readonly CelestiaAppCore mAppCore;
         private CelestiaRenderer mRenderer;
 
-        private static readonly int leftMouseButton = 1;
-        private static readonly int middleMouseButton = 2;
-        private static readonly int rightMouseButton = 4;
-
         private Point? mLastLeftMousePosition = null;
         private Point? mLastRightMousePosition = null;
+        private Point? mLastMiddleMousePosition = null;
 
         private string mExtraAddonFolder;
         private string mExtraScriptFolder;
@@ -435,7 +432,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, leftMouseButton);
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.left);
                         });
                     }
                     if (properties.IsRightButtonPressed)
@@ -443,7 +440,15 @@ namespace CelestiaUWP
                         mLastRightMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, rightMouseButton);
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.right);
+                        });
+                    }
+                    if (properties.IsMiddleButtonPressed)
+                    {
+                        mLastMiddleMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.middle);
                         });
                     }
                 }
@@ -468,7 +473,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseMove((float)x, (float)y, leftMouseButton);
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.left);
                         });
                     }
                     if (properties.IsRightButtonPressed && mLastRightMousePosition != null)
@@ -481,7 +486,20 @@ namespace CelestiaUWP
                         mLastRightMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseMove((float)x, (float)y, rightMouseButton);
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.right);
+                        });
+                    }
+                    if (properties.IsMiddleButtonPressed && mLastMiddleMousePosition != null)
+                    {
+                        var lastPos = mLastMiddleMousePosition;
+                        var oldPos = (Point)lastPos;
+
+                        var x = position.X - oldPos.X;
+                        var y = position.Y - oldPos.Y;
+                        mLastMiddleMousePosition = position;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.middle);
                         });
                     }
                 }
@@ -501,7 +519,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = null;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, leftMouseButton);
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.left);
                         });
                     }
                     if (mLastRightMousePosition != null && !properties.IsRightButtonPressed)
@@ -509,7 +527,15 @@ namespace CelestiaUWP
                         mLastRightMousePosition = null;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, rightMouseButton);
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.right);
+                        });
+                    }
+                    if (mLastMiddleMousePosition != null && !properties.IsMiddleButtonPressed)
+                    {
+                        mLastMiddleMousePosition = null;
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.middle);
                         });
                     }
                 }

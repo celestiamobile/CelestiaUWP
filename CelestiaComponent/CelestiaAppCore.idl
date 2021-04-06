@@ -20,6 +20,13 @@ namespace CelestiaComponent
         large = 1
     };
 
+    enum CelestiaMouseButton
+    {
+        left = 1,
+        middle = 2,
+        right = 4
+    };
+
     delegate void CelestiaLoadCallback(String status);
     delegate void CelestiaContextMenuCallback(Single x, Single y, CelestiaSelection selection);
 
@@ -36,9 +43,9 @@ namespace CelestiaComponent
         void Start();
         void SetDPI(Int32 dpi);
         void SetSafeAreaInsets(Int32 left, Int32 top, Int32 right, Int32 bottom);
-        void MouseMove(Single x, Single y, Int32 button);
-        void MouseButtonUp(Single x, Single y, Int32 button);
-        void MouseButtonDown(Single x, Single y, Int32 button);
+        void MouseMove(Single x, Single y, CelestiaMouseButton button);
+        void MouseButtonUp(Single x, Single y, CelestiaMouseButton button);
+        void MouseButtonDown(Single x, Single y, CelestiaMouseButton button);
         void MouseWheel(Single motion, Int32 modifiers);
         void CharEnter(Int16 input);
         void CharEnter(Int16 input, Int32 modifiers);

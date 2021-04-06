@@ -29,9 +29,9 @@ namespace winrt::CelestiaComponent::implementation
         void Start();
         void SetDPI(int32_t dpi);
         void SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom);
-        void MouseMove(float x, float y, int32_t button);
-        void MouseButtonUp(float x, float y, int32_t button);
-        void MouseButtonDown(float x, float y, int32_t button);
+        void MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button);
+        void MouseButtonUp(float x, float y, CelestiaComponent::CelestiaMouseButton button);
+        void MouseButtonDown(float x, float y, CelestiaComponent::CelestiaMouseButton button);
         void MouseWheel(float motion, int32_t modifiers);
         void CharEnter(int16_t input);
         void CharEnter(int16_t input, int32_t modifiers);
