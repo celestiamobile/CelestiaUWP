@@ -652,4 +652,14 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     {
         core->toggleReferenceMark("terminator");
     }
+
+    int32_t CelestiaAppCore::TimeZone()
+    {
+        return core->getTimeZoneBias() == 0 ? 1 : 0;
+    }
+
+    void CelestiaAppCore::TimeZone(int32_t timeZone)
+    {
+        core->setTimeZoneBias(0 == timeZone ? 1 : 0);
+    }
 }

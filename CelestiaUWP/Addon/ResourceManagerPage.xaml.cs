@@ -51,7 +51,7 @@ namespace CelestiaUWP.Addon
     public sealed partial class ResourceManagerPage : Page, INotifyPropertyChanged
     {
         private Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
-{
+        {
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Installed"), "installed"),
         };
 
@@ -93,7 +93,6 @@ namespace CelestiaUWP.Addon
                 ShowItem(item);
             }));
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)

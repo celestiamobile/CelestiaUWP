@@ -762,13 +762,9 @@ namespace CelestiaUWP
             });
 
             var renderItem = CreateMenuBarItem(LocalizationHelper.Localize("Render"));
-            AppendItem(renderItem, LocalizationHelper.Localize("View Options"), (sender, arg) =>
+            AppendItem(renderItem, LocalizationHelper.Localize("Settings"), (sender, arg) =>
             {
                 ShowViewOptions();
-            });
-            AppendItem(renderItem, LocalizationHelper.Localize("Locations"), (sender, arg) =>
-            {
-                ShowLocationSettings();
             });
             renderItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(renderItem, LocalizationHelper.Localize("More Stars Visible"), (sender, arg) =>
@@ -1013,11 +1009,6 @@ namespace CelestiaUWP
         void ShowViewOptions()
         {
             ShowPage(typeof(ViewOptionsPage), new Size(500, 670), mAppCore);
-        }
-
-        void ShowLocationSettings()
-        {
-            ShowPage(typeof(LocationSettingsPage), new Size(400, 350), mAppCore);
         }
 
         void ShowPage(Type pageType, Size size, object parameter)

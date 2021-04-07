@@ -174,15 +174,25 @@
     <Compile Include="GotoObjectDialog.xaml.cs">
       <DependentUpon>GotoObjectDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LocationSettingsPage.xaml.cs">
-      <DependentUpon>LocationSettingsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Addon\ResourceManagerPage.xaml.cs">
       <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\GuidesSettingsPage.xaml.cs">
+      <DependentUpon>GuidesSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\LabelsSettingsPage.xaml.cs">
+      <DependentUpon>LabelsSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\RendererSettingsPage.xaml.cs">
+      <DependentUpon>RendererSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsBasePage.cs" />
+    <Compile Include="Settings\GeneralSettingsPage.xaml.cs">
+      <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
@@ -317,15 +327,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LocationSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Addon\ResourceManagerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\GeneralSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\GuidesSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\LabelsSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\RendererSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

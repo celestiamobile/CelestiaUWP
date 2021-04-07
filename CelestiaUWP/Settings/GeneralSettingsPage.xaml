@@ -1,0 +1,82 @@
+﻿<local:SettingsBasePage
+    x:Class="CelestiaUWP.Settings.GeneralSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid Margin="16" ColumnSpacing="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+            <TextBlock Margin="0, 8, 0, 8" Text="Display" x:Name="DisplayHint" FontWeight="Bold"/>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowStars, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Stars"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowPlanets, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Planets"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowDwarfPlanets, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Dwarf Planets"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowMoons, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Moons"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowMinorMoons, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Minor Moons"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowAsteroids, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Asteroids"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowComets, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Comets"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowSpacecrafts, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Spacecraft"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowGalaxies, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Galaxies"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowNebulae, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Nebulae"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowGlobulars, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Globulars"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowOpenClusters, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Open Clusters"/>
+            </CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <TextBlock Margin="0, 8, 0, 8" Text="Features" x:Name="FeaturesHint" FontWeight="Bold"/>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowCloudMaps, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Clouds"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowAtmospheres, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Atmospheres"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Comet Tails"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowPlanetRings, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Planet Rings"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowRingShadows, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Ring Shadows"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowEclipseShadows, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Eclipse Shadows"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowCloudShadows, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Cloud Shadows"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowNightMaps, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Night Lights"/>
+            </CheckBox>
+        </StackPanel>
+    </Grid>
+</local:SettingsBasePage>

@@ -11,33 +11,21 @@
 
 using CelestiaComponent;
 using CelestiaUWP.Helper;
-using System;
-using Windows.UI.Xaml;
+using CelestiaUWP.Settings;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public class FilterStarsConverter : IValueConverter
+    public sealed partial class ViewOptionsPage : Page, INotifyPropertyChanged
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        private Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
         {
-            return (double)MathF.Log((float)value, 1000000f) * 10000;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            return (float)MathF.Pow(1000000f, (float)((double)value) / 10000f);
-        }
-    }
-    public sealed partial class ViewOptionsPage : Page
-    {
-        private readonly string[] InfoDescriptions = new string[]
-        {
-            LocalizationHelper.Localize("None"),
-            LocalizationHelper.Localize("Terse"),
-            LocalizationHelper.Localize("Verbose")
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("General"), "general"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Guides"), "guides"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Labels"), "labels"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Renderer"), "renderer"),
         };
 
         private CelestiaAppCore AppCore;
@@ -46,40 +34,44 @@ namespace CelestiaUWP
         public ViewOptionsPage()
         {
             this.InitializeComponent();
-            LocalizeElement(Content);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             AppCore = e.Parameter as CelestiaAppCore;
+            Nav.SelectedItem = NavigationItems[0];
         }
 
-        private void LocalizeElement(UIElement element)
+        private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            if (element is Panel panel)
+            if (args.SelectedItem == null) return;
+
+            var item = (Helper.NavigationViewItem)args.SelectedItem;
+
+            if (item.Tag == "general")
             {
-                foreach (var item in panel.Children)
-                {
-                    LocalizeElement(item);
-                }
+                Container.Navigate(typeof(GeneralSettingsPage), AppCore);
             }
-            else if (element is CheckBox checkBox)
+            else if (item.Tag == "guides")
             {
-                var content = checkBox.Content;
-                if (content is string value)
-                    checkBox.Content = LocalizationHelper.Localize(value);
-                else if (content is TextBlock textBlock)
-                    textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
+                Container.Navigate(typeof(GuidesSettingsPage), AppCore);
             }
-            else if (element is TextBlock textBlock)
+            else if (item.Tag == "labels")
             {
-                textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
+                Container.Navigate(typeof(LabelsSettingsPage), AppCore);
             }
-            else if (element is Slider slider)
+            else if (item.Tag == "renderer")
             {
-                var header = slider.Header;
-                if (header is string value)
-                    slider.Header = LocalizationHelper.Localize(value);
+                Container.Navigate(typeof(RendererSettingsPage), AppCore);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }

@@ -170,5 +170,7 @@ namespace CelestiaComponent
         Boolean ShowVelocityVector;
         Boolean ShowPlanetographicGrid;
         Boolean ShowTerminator;
+
+        Int32 TimeZone;
     }
 }

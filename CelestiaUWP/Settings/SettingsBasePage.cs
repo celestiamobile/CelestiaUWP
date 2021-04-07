@@ -1,5 +1,5 @@
 ﻿//
-// LocationSettingsPage.xaml.cs
+// SettingsBasePage.cs
 //
 // Copyright © 2021 Celestia Development Team. All rights reserved.
 //
@@ -15,24 +15,17 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace CelestiaUWP
+namespace CelestiaUWP.Settings
 {
-    public sealed partial class LocationSettingsPage : Page
+    public class SettingsBasePage : Page
     {
-        private CelestiaAppCore AppCore;
-
-        public LocationSettingsPage()
-        {
-            this.InitializeComponent();
-            LocalizeElement(Content);
-        }
-
+        protected CelestiaAppCore AppCore;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             AppCore = e.Parameter as CelestiaAppCore;
         }
 
-        private void LocalizeElement(UIElement element)
+        protected void LocalizeElement(UIElement element)
         {
             if (element is Panel panel)
             {

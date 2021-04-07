@@ -259,6 +259,9 @@ namespace winrt::CelestiaComponent::implementation
         bool ShowTerminator();
         void ShowTerminator(bool showTerminator);
 
+        int32_t TimeZone();
+        void TimeZone(int32_t timeZone);
+
     private:
         CelestiaCore* core;
         CelestiaComponent::CelestiaSimulation sim;
