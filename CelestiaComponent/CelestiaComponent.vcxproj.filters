@@ -507,6 +507,15 @@
     <ClCompile Include="CelestiaDSOCatalog.cpp" />
     <ClCompile Include="CelestiaObserver.cpp" />
     <ClCompile Include="CelestiaRenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\spiceinterface.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\spiceorbit.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1077,6 +1086,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\view.h">
       <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\spiceinterface.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\spiceorbit.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\spicerotation.h">
+      <Filter>Celestia\celephem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
