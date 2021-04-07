@@ -592,17 +592,21 @@ namespace CelestiaUWP
 
         void PopulateMenuBar(string resourcePath)
         {
-            MenuBar.AllowFocusOnInteraction = false;
-            MenuBar.IsFocusEngagementEnabled = false;
+            MenuBarItem CreateMenuBarItem(string name)
+            {
+                return new MenuBarItem
+                {
+                    Title = name,
+                    IsTabStop = false,
+                    AllowFocusOnInteraction = false
+                };
+            }
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
             mAppCore.SetSafeAreaInsets(0, isFullScreen ? 0 : (int)(MenuBar.Height * scale), 0, 0);
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
 
-            var fileItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("File")
-            };
+            var fileItem = CreateMenuBarItem(LocalizationHelper.Localize("File"));
 
             AppendItem(fileItem, LocalizationHelper.Localize("Run Script…"), (sender, arg) =>
             {
@@ -682,10 +686,7 @@ namespace CelestiaUWP
                 Application.Current.Exit();
             });
 
-            var navigationItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Navigation")
-            };
+            var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
 
             AppendItem(navigationItem, LocalizationHelper.Localize("Select Sol"), (sender, arg) =>
             {
@@ -731,10 +732,7 @@ namespace CelestiaUWP
                 ShowEclipseFinder();
             });
 
-            var timeItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Time")
-            };
+            var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
             AppendItem(timeItem, LocalizationHelper.Localize("10x Faster"), (sender, arg) =>
             {
                 mAppCore.CharEnter(108);
@@ -763,10 +761,7 @@ namespace CelestiaUWP
                 ShowTimeSetting();
             });
 
-            var renderItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Render")
-            };
+            var renderItem = CreateMenuBarItem(LocalizationHelper.Localize("Render"));
             AppendItem(renderItem, LocalizationHelper.Localize("View Options"), (sender, arg) =>
             {
                 ShowViewOptions();
@@ -820,10 +815,7 @@ namespace CelestiaUWP
             });
             renderItem.Items.Add(resolutionItem);
 
-            var viewItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Views")
-            };
+            var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
             AppendItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), (sender, arg) =>
             {
                 mAppCore.CharEnter(18);
@@ -841,10 +833,7 @@ namespace CelestiaUWP
                 mAppCore.CharEnter(4);
             }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.D, IsEnabled = false });
 
-            var bookmarkItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Bookmarks")
-            };
+            var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
             AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
             {
                 ShowNewBookmark();
@@ -854,10 +843,7 @@ namespace CelestiaUWP
                 ShowBookmarkOrganizer();
             });
 
-            var helpItem = new MenuBarItem
-            {
-                Title = LocalizationHelper.Localize("Help")
-            };
+            var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help"));
             AppendItem(helpItem, LocalizationHelper.Localize("Run Demo"), (sender, arg) =>
             {
                 mAppCore.CharEnter(100);
