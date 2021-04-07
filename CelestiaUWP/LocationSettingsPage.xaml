@@ -26,22 +26,22 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2">
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowCityLabels, Mode=TwoWay}" Content="Cities"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowObservatoryLabels, Mode=TwoWay}" Content="Observatories"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowLandingSiteLabels, Mode=TwoWay}" Content="Landing Sites"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowMonsLabels, Mode=TwoWay}" Content="Montes (Mountains)"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowMareLabels, Mode=TwoWay}" Content="Maria (Seas)"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCityLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Cities"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowObservatoryLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Observatories"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowLandingSiteLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Landing Sites"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMonsLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Montes (Mountains)"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowMareLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Maria (Seas)"/></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="2">
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowCraterLabels, Mode=TwoWay}" Content="Craters"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowVallisLabels, Mode=TwoWay}" Content="Valles (Valleys)"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowTerraLabels, Mode=TwoWay}" Content="Terrae (Land masses)"/>
-                    <CheckBox IsChecked="{x:Bind AppCore.ShowOtherLabels, Mode=TwoWay}" Content="Other"/>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowCraterLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Craters"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowVallisLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Valles (Valleys)"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowTerraLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Terrae (Land masses)"/></CheckBox>
+                    <CheckBox IsChecked="{x:Bind AppCore.ShowOtherLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Other"/></CheckBox>
                 </StackPanel>
             </Grid>
         </RelativePanel>
         <StackPanel Grid.Row="1" Spacing="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}" Content="Show Label Features"/>
+            <CheckBox Grid.Row="2"  IsChecked="{x:Bind AppCore.ShowLocationLabels, Mode=TwoWay}"><TextBlock TextTrimming="CharacterEllipsis" Text="Show Label Features"/></CheckBox>
             <Slider Minimum="1" Maximum="100" Header="Minimum Labeled Feature Size" Value="{x:Bind AppCore.MinimumFeatureSize, Mode=TwoWay, Converter={StaticResource DoubleFloatConverter}}"></Slider>
         </StackPanel>
     </Grid>

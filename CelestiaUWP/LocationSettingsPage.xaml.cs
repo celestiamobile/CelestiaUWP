@@ -46,6 +46,8 @@ namespace CelestiaUWP
                 var content = checkBox.Content;
                 if (content is string value)
                     checkBox.Content = LocalizationHelper.Localize(value);
+                else if (content is TextBlock textBlock)
+                    textBlock.Text = LocalizationHelper.Localize(textBlock.Text);
             }
             else if (element is TextBlock textBlock)
             {
