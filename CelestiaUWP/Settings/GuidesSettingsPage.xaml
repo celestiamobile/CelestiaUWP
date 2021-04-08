@@ -17,6 +17,12 @@
             <CheckBox IsChecked="{x:Bind AppCore.ShowOrbits, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Show Orbits"/>
             </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowFadingOrbits, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Fading Orbits"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowPartialTrajectories, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Partial Trajectories"/>
+            </CheckBox>
             <CheckBox IsChecked="{x:Bind AppCore.ShowStellarOrbits, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Stars"/>
             </CheckBox>
@@ -40,11 +46,6 @@
             </CheckBox>
             <CheckBox IsChecked="{x:Bind AppCore.ShowSpacecraftOrbits, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Spacecraft"/>
-            </CheckBox>
-
-            <TextBlock Margin="0, 8, 0, 8" Text="Markers" x:Name="MarkersHint"/>
-            <CheckBox IsChecked="{x:Bind AppCore.ShowMarkers, Mode=TwoWay}">
-                <TextBlock TextTrimming="CharacterEllipsis" Text="Show Markers"/>
             </CheckBox>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="1">
@@ -73,6 +74,14 @@
             </CheckBox>
             <CheckBox IsChecked="{x:Bind AppCore.ShowGalacticGrid, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Galactic"/>
+            </CheckBox>
+
+            <TextBlock Margin="0, 8, 0, 8" Text="Miscellaneous" x:Name="MiscellaneousHint" FontWeight="Bold"/>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowMarkers, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Markers"/>
+            </CheckBox>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowEcliptic, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Ecliptic Line"/>
             </CheckBox>
         </StackPanel>
     </Grid>

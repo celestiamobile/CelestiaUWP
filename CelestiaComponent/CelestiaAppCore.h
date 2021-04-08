@@ -97,6 +97,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowMarkers(bool showMarkers);
         bool ShowOrbits();
         void ShowOrbits(bool showOrbits);
+        bool ShowFadingOrbits();
+        void ShowFadingOrbits(bool showFadingOrbits);
         bool ShowEcliptic();
         void ShowEcliptic(bool showEcliptic);
         bool ShowPartialTrajectories();
@@ -119,6 +121,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowHorizonGrid(bool showHorizonGrid);
         bool ShowGalacticGrid();
         void ShowGalacticGrid(bool showGalacticGrid);
+        bool ShowTintedIllumination();
+        void ShowTintedIllumination(bool showTintedIllumination);
         bool ShowStarLabels();
         void ShowStarLabels(bool showStarLabels);
         bool ShowPlanetLabels();

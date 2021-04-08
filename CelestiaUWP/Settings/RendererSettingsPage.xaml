@@ -40,6 +40,9 @@
             </CheckBox>
 
             <Slider Margin="0, 8, 0, 8" Minimum="0.0" Maximum="0.99" StepFrequency="0.01" Header="Ambient Light" Value="{x:Bind AppCore.AmbientLightLevel, Mode=TwoWay, Converter={StaticResource DoubleFloatConverter}}"></Slider>
+            <CheckBox IsChecked="{x:Bind AppCore.ShowTintedIllumination, Mode=TwoWay}">
+                <TextBlock TextTrimming="CharacterEllipsis" Text="Tinted Illumination"/>
+            </CheckBox>
 
             <Grid Margin="0, 8, 0, 8">
                 <Grid.ColumnDefinitions>

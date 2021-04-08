@@ -381,6 +381,7 @@ void CelestiaAppCore::Show##flag(bool value) \
     RENDERMETHODS(PlanetRings)
     RENDERMETHODS(Markers)
     RENDERMETHODS(Orbits)
+    RENDERMETHODS(FadingOrbits)
     RENDERMETHODS(Ecliptic)
     RENDERMETHODS(PartialTrajectories)
     RENDERMETHODS(SmoothLines)
@@ -392,6 +393,7 @@ void CelestiaAppCore::Show##flag(bool value) \
     RENDERMETHODS(EclipticGrid)
     RENDERMETHODS(HorizonGrid)
     RENDERMETHODS(GalacticGrid)
+    RENDERMETHODS(TintedIllumination)
 
 #define LABELMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Labels() \
