@@ -231,7 +231,10 @@ namespace CelestiaUWP
                     var copiedFile = await scriptFile.CopyAsync(tempFolder, GuidHelper.CreateNewGuid().ToString() + fileExtension, Windows.Storage.NameCollisionOption.ReplaceExisting);
                     if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?")))
                     {
-                        mAppCore.RunScript(copiedFile.Path);
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.RunScript(copiedFile.Path);
+                        });
                     }
                 }
                 catch { }
@@ -241,7 +244,10 @@ namespace CelestiaUWP
                 URLToOpen = null;
                 if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?")))
                 {
-                    mAppCore.GoToURL(url.AbsoluteUri);
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.GoToURL(url.AbsoluteUri);
+                    });
                 }
             }
         }
@@ -299,8 +305,12 @@ namespace CelestiaUWP
                       {
                           AppendItem(menu, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                           {
-                              mAppCore.Simulation.Selection = selection;
-                              mAppCore.CharEnter(action.Item2);
+
+                              mRenderer.EnqueueTask(() =>
+                              {
+                                  mAppCore.Simulation.Selection = selection;
+                                  mAppCore.CharEnter(action.Item2);
+                              });
                           });
                       }
 
@@ -317,14 +327,20 @@ namespace CelestiaUWP
                               };
                               AppendSubItem(altSur, LocalizationHelper.Localize("Default"), (sender, arg) =>
                               {
-                                  mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = "";
+                                  mRenderer.EnqueueTask(() =>
+                                  {
+                                      mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = "";
+                                  });
                               });
 
                               foreach (var name in surfaces)
                               {
                                   AppendSubItem(altSur, name, (sender, arg) =>
                                   {
-                                      mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = name;
+                                      mRenderer.EnqueueTask(() =>
+                                      {
+                                          mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = name;
+                                      });
                                   });
                               }
 
@@ -352,7 +368,10 @@ namespace CelestiaUWP
                               var isEnabled = (bool)mAppCore.GetType().GetProperty(action.Item2).GetValue(mAppCore);
                               AppendToggleSubItem(refMarkMenu, LocalizationHelper.Localize(action.Item1), isEnabled, (sender, args) =>
                               {
-                                  mAppCore.GetType().GetProperty(action.Item2).SetValue(mAppCore, !isEnabled);
+                                  mRenderer.EnqueueTask(() =>
+                                  {
+                                      mAppCore.GetType().GetProperty(action.Item2).SetValue(mAppCore, !isEnabled);
+                                  });
                               });
                           }
                           menu.Items.Add(refMarkMenu);
@@ -393,7 +412,10 @@ namespace CelestiaUWP
                       {
                           AppendItem(menu, LocalizationHelper.Localize("Unmark"), (sender, arg) =>
                           {
-                              mAppCore.Simulation.Universe.UnmarkSelection(selection);
+                              mRenderer.EnqueueTask(() =>
+                              {
+                                  mAppCore.Simulation.Universe.UnmarkSelection(selection);
+                              });
                           });
                       }
                       else
@@ -407,8 +429,11 @@ namespace CelestiaUWP
                               int copy = i;
                               AppendSubItem(action, LocalizationHelper.Localize(Markers[i]), (sender, arg) =>
                               {
-                                  mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
-                                  mAppCore.ShowMarkers = true;
+                                  mRenderer.EnqueueTask(() =>
+                                  {
+                                      mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
+                                      mAppCore.ShowMarkers = true;
+                                  });
                               });
                           }
                           menu.Items.Add(action);
@@ -568,9 +593,9 @@ namespace CelestiaUWP
 
 
                 var modifiers = 0;
-                if (CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Control) == CoreVirtualKeyStates.Down)
+                if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control) == CoreVirtualKeyStates.Down)
                     modifiers |= 16;
-                if (CoreWindow.GetForCurrentThread().GetKeyState(Windows.System.VirtualKey.Shift) == CoreVirtualKeyStates.Down)
+                if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift) == CoreVirtualKeyStates.Down)
                     modifiers |= 8;
 
                 mRenderer.EnqueueTask(() =>
@@ -649,7 +674,7 @@ namespace CelestiaUWP
             AppendItem(fileItem, LocalizationHelper.Localize("Capture Image"), (sender, arg) =>
             {
                 CaptureImage();
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.F10 });
+            }, new KeyboardAccelerator() { Key = VirtualKey.F10 });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -661,16 +686,19 @@ namespace CelestiaUWP
                 };
                 dataPackage.SetText(mAppCore.CurrentURL);
                 Clipboard.SetContent(dataPackage);
-            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.C });
+            }, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.C });
             AppendItem(fileItem, LocalizationHelper.Localize("Paste URL"), async (sender, arg) =>
             {
                 DataPackageView dataPackageView = Clipboard.GetContent();
                 if (dataPackageView.Contains(StandardDataFormats.Text))
                 {
                     string text = await dataPackageView.GetTextAsync();
-                    mAppCore.GoToURL(text);
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.GoToURL(text);
+                    });
                 }
-            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.V });
+            }, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.V });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -686,12 +714,20 @@ namespace CelestiaUWP
                 Application.Current.Exit();
             });
 
+            void AppendCharEnterItem(MenuBarItem item, string title, short input, KeyboardAccelerator keyboardAccelerator = null)
+            {
+                AppendItem(item, title, (sender, arg) =>
+                {
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.CharEnter(input);
+                    });
+                }, keyboardAccelerator);
+            }
+
             var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
 
-            AppendItem(navigationItem, LocalizationHelper.Localize("Select Sol"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(104);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.H, IsEnabled = false });
+            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H, IsEnabled = false });
             AppendItem(navigationItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
             {
                 ShowTourGuide();
@@ -718,8 +754,11 @@ namespace CelestiaUWP
             {
                 AppendItem(navigationItem, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                 {
-                    mAppCore.CharEnter(action.Item2);
-                }, new KeyboardAccelerator() { Key = (Windows.System.VirtualKey)(action.Item2 - 32), IsEnabled = false });
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.CharEnter(action.Item2);
+                    });
+                }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32), IsEnabled = false });
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -733,26 +772,11 @@ namespace CelestiaUWP
             });
 
             var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
-            AppendItem(timeItem, LocalizationHelper.Localize("10x Faster"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(108);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.L, IsEnabled = false });
-            AppendItem(timeItem, LocalizationHelper.Localize("10x Slower"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(107);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.K, IsEnabled = false });
-            AppendItem(timeItem, LocalizationHelper.Localize("Freeze"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(32);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.Space, IsEnabled = false });
-            AppendItem(timeItem, LocalizationHelper.Localize("Real Time"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(33);
-            });
-            AppendItem(timeItem, LocalizationHelper.Localize("Reverse Time"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(106);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.J, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Real Time"), 33);
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J, IsEnabled = false });
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -767,67 +791,14 @@ namespace CelestiaUWP
                 ShowViewOptions();
             });
             renderItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(renderItem, LocalizationHelper.Localize("More Stars Visible"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(93);
-            });
-            AppendItem(renderItem, LocalizationHelper.Localize("Fewer Stars Visible"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(91);
-            });
-            var starStyleItem = new MenuFlyoutSubItem
-            {
-                Text = LocalizationHelper.Localize("Star Style")
-            };
-            AppendSubItem(starStyleItem, LocalizationHelper.Localize("Fuzzy Points"), (sender, arg) =>
-            {
-                mAppCore.StarStyle = 0;
-            });
-            AppendSubItem(starStyleItem, LocalizationHelper.Localize("Points"), (sender, arg) =>
-            {
-                mAppCore.StarStyle = 1;
-            });
-            AppendSubItem(starStyleItem, LocalizationHelper.Localize("Scaled Discs"), (sender, arg) =>
-            {
-                mAppCore.StarStyle = 2;
-            });
-            renderItem.Items.Add(starStyleItem);
-            renderItem.Items.Add(new MenuFlyoutSeparator());
-            var resolutionItem = new MenuFlyoutSubItem
-            {
-                Text = LocalizationHelper.Localize("Texture Resolution")
-            };
-            AppendSubItem(resolutionItem, LocalizationHelper.Localize("Low"), (sender, arg) =>
-            {
-                mAppCore.Resolution = 0;
-            });
-            AppendSubItem(resolutionItem, LocalizationHelper.Localize("Medium"), (sender, arg) =>
-            {
-                mAppCore.Resolution = 1;
-            });
-            AppendSubItem(resolutionItem, LocalizationHelper.Localize("High"), (sender, arg) =>
-            {
-                mAppCore.Resolution = 2;
-            });
-            renderItem.Items.Add(resolutionItem);
+            AppendCharEnterItem(renderItem, LocalizationHelper.Localize("More Stars Visible"), 93);
+            AppendCharEnterItem(renderItem, LocalizationHelper.Localize("Fewer Stars Visible"), 91);
 
             var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
-            AppendItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(18);
-            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.R, IsEnabled = false });
-            AppendItem(viewItem, LocalizationHelper.Localize("Split Vertically"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(21);
-            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.U, IsEnabled = false });
-            AppendItem(viewItem, LocalizationHelper.Localize("Delete Active View"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(127);
-            }, new KeyboardAccelerator() { Key = Windows.System.VirtualKey.Delete, IsEnabled = false });
-            AppendItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(4);
-            }, new KeyboardAccelerator() { Modifiers = Windows.System.VirtualKeyModifiers.Control, Key = Windows.System.VirtualKey.D, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D, IsEnabled = false });
 
             var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
             AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
@@ -840,10 +811,7 @@ namespace CelestiaUWP
             });
 
             var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help"));
-            AppendItem(helpItem, LocalizationHelper.Localize("Run Demo"), (sender, arg) =>
-            {
-                mAppCore.CharEnter(100);
-            });
+            AppendCharEnterItem(helpItem, LocalizationHelper.Localize("Run Demo"), 100);
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info"), (sender, arg) =>
             {
@@ -936,7 +904,7 @@ namespace CelestiaUWP
         }
         void ShowTourGuide()
         {
-            ShowPage(typeof(TourGuidePage), new Size(400, 0), mAppCore);
+            ShowPage(typeof(TourGuidePage), new Size(400, 0), (mAppCore, mRenderer));
         }
         async void ShowSelectObject()
         {
@@ -952,7 +920,10 @@ namespace CelestiaUWP
                 }
                 else
                 {
-                    mAppCore.Simulation.Selection = selection;
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.Simulation.Selection = selection;
+                    });
                 }
             }
         }
@@ -975,7 +946,10 @@ namespace CelestiaUWP
                 else
                 {
                     var location = new CelestiaGotoLocation(selection, latitude, longitude, distance, unit);
-                    mAppCore.Simulation.GoToLocation(location);
+                    mRenderer.EnqueueTask(() =>
+                    {
+                        mAppCore.Simulation.GoToLocation(location);
+                    });
                 }
             }
         }
@@ -987,12 +961,12 @@ namespace CelestiaUWP
 
         void ShowBrowser()
         {
-            ShowPage(typeof(BrowserPage), new Size(500, 0), mAppCore);
+            ShowPage(typeof(BrowserPage), new Size(500, 0), (mAppCore, mRenderer));
         }
 
         void ShowEclipseFinder()
         {
-            ShowPage(typeof(EclipseFinderPage), new Size(400, 0), mAppCore);
+            ShowPage(typeof(EclipseFinderPage), new Size(400, 0), (mAppCore, mRenderer));
         }
 
         async void ShowTimeSetting()
@@ -1002,7 +976,10 @@ namespace CelestiaUWP
             if (result == ContentDialogResult.Primary)
             {
                 var date = dialog.DisplayDate;
-                mAppCore.Simulation.Time = date;
+                mRenderer.EnqueueTask(() =>
+                {
+                    mAppCore.Simulation.Time = date;
+                });
             }
         }
 
@@ -1039,12 +1016,12 @@ namespace CelestiaUWP
 
         void ShowBookmarkOrganizer()
         {
-            ShowPage(typeof(BookmarkOrganizerPage), new Size(400, 0), mAppCore);
+            ShowPage(typeof(BookmarkOrganizerPage), new Size(400, 0), (mAppCore, mRenderer));
         }
 
         void ShowNewBookmark()
         {
-            ShowPage(typeof(NewBookmarkPage), new Size(400, 0), mAppCore);
+            ShowPage(typeof(NewBookmarkPage), new Size(400, 0), (mAppCore, mRenderer));
         }
         async void ShowOpenGLInfo()
         {
@@ -1193,7 +1170,10 @@ namespace CelestiaUWP
                     };
                     selectItem.Click += (newSender, newArgs) =>
                     {
-                        mAppCore.Simulation.Selection = new CelestiaSelection(obj);
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.Simulation.Selection = new CelestiaSelection(obj);
+                        });
                     };
                     children.Add(selectItem);
                 }

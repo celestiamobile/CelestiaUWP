@@ -20,7 +20,8 @@ namespace CelestiaUWP
 {
     public sealed partial class TourGuidePage : Page
     {
-        private CelestiaAppCore mAppCore;
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
         ObservableCollection<CelestiaDestination> mDestinations = new ObservableCollection<CelestiaDestination>();
 
         public TourGuidePage()
@@ -32,15 +33,21 @@ namespace CelestiaUWP
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            mAppCore = e.Parameter as CelestiaAppCore;
-            mDestinations = new ObservableCollection<CelestiaDestination>(mAppCore.Destinations);
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            mDestinations = new ObservableCollection<CelestiaDestination>(AppCore.Destinations);
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
             int index = DestinationSelection.SelectedIndex;
             if (index < 0) return;
-            mAppCore.Simulation.GoToDestination(mDestinations[index]);
+
+            Renderer.EnqueueTask(() =>
+            {
+                AppCore.Simulation.GoToDestination(mDestinations[index]);
+            });
         }
     }
 }

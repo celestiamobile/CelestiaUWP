@@ -28,11 +28,15 @@ namespace CelestiaUWP
 
     public class BookmarkBasePage : Page
     {
-        protected CelestiaAppCore mAppCore;
+        protected CelestiaAppCore AppCore;
+        protected CelestiaRenderer Renderer;
+
         protected ObservableCollection<BookmarkNode> Bookmarks = new ObservableCollection<BookmarkNode>();
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            mAppCore = e.Parameter as CelestiaAppCore;
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
             ReadBookmarks();
         }
 

@@ -99,7 +99,12 @@ namespace CelestiaUWP
             if (Tree.SelectedItem == null) return;
             var bookmark = (BookmarkNode)Tree.SelectedItem;
             if (bookmark.URL != null)
-                mAppCore.GoToURL(bookmark.URL);
+            {
+                Renderer.EnqueueTask(() =>
+                {
+                    AppCore.GoToURL(bookmark.URL);
+                });
+            }
         }
     }
 }

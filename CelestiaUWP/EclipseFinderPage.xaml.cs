@@ -22,7 +22,8 @@ namespace CelestiaUWP
 {
     public sealed partial class EclipseFinderPage : Page, INotifyPropertyChanged
     {
-        private CelestiaAppCore mAppCore;
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
 
         private DateTime? StartTime = DateTime.Now;
         private DateTime? EndTime = DateTime.Now;
@@ -62,7 +63,9 @@ namespace CelestiaUWP
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            mAppCore = e.Parameter as CelestiaAppCore;
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
         }
 
         private async void ComputeButton_Click(object sender, RoutedEventArgs e)
@@ -92,12 +95,14 @@ namespace CelestiaUWP
             else
                 kind = CelestiaEclipseKind.lunar;
 
-            var body = mAppCore.Simulation.Find(AvailableObjects[SelectedObjectIndex]).Object;
+            var body = AppCore.Simulation.Find(AvailableObjects[SelectedObjectIndex]).Object;
             if (body == null || !(body is CelestiaBody))
                 return;
 
             var eclipses = await Compute((CelestiaBody)body, kind, startTime, endTime);
             Eclipses = eclipses;
+
+            ComputeButton.Content = LocalizationHelper.Localize("Compute");
         }
 
         private async Task<CelestiaEclipse[]> Compute(CelestiaBody body, CelestiaEclipseKind kind, DateTime startTime, DateTime endTime)
@@ -105,7 +110,7 @@ namespace CelestiaUWP
             var eclipseFinder = new CelestiaEclipseFinder(body);
             Finder = eclipseFinder;
             ComputeButton.Content = LocalizationHelper.Localize("Cancel");
-            return await Task.Run<CelestiaEclipse[]>(() =>
+            return await Task.Run(() =>
             {
                 var eclipses = eclipseFinder.Search(kind, startTime, endTime);
                 return eclipses ?? (new CelestiaEclipse[] { });
@@ -117,8 +122,11 @@ namespace CelestiaUWP
             if (SelectedEclipseIndex < 0)
                 return;
 
-            var eclipse = Eclipses[SelectedEclipseIndex];
-            mAppCore.Simulation.GoToEclipse(eclipse);
+            Renderer.EnqueueTask(() =>
+            {
+                var eclipse = Eclipses[SelectedEclipseIndex];
+                AppCore.Simulation.GoToEclipse(eclipse);
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -11,7 +11,6 @@
 
 using CelestiaComponent;
 using CelestiaUWP.Helper;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
@@ -21,7 +20,8 @@ namespace CelestiaUWP
 {
     public sealed partial class BrowserPage : Page, INotifyPropertyChanged
     {
-        private CelestiaAppCore mAppCore;
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
         private CelestiaBrowserItem[] mSolRoot;
         private CelestiaBrowserItem[] mStarRoot;
         private CelestiaBrowserItem[] mDSORoot;
@@ -51,28 +51,30 @@ namespace CelestiaUWP
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            mAppCore = e.Parameter as CelestiaAppCore;
-            var sol = mAppCore.Simulation.Find("Sol").Object as CelestiaStar;
-            mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(mAppCore.Simulation.Universe.StarCatalog.StarName(sol), sol, GetChildren) };
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            var sol = AppCore.Simulation.Find("Sol").Object as CelestiaStar;
+            mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(sol), sol, GetChildren) };
 
-            var nearest = mAppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest).Stars;
-            var brightest = mAppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest).Stars;
-            var hasPlanets = mAppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants).Stars;
+            var nearest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest).Stars;
+            var brightest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest).Stars;
+            var hasPlanets = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants).Stars;
 
             var s1 = new List<CelestiaBrowserItem>();
             var s2 = new List<CelestiaBrowserItem>();
             var s3 = new List<CelestiaBrowserItem>();
             foreach (var star in nearest)
             {
-                s1.Add(new CelestiaBrowserItem(mAppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
+                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
             }
             foreach (var star in brightest)
             {
-                s2.Add(new CelestiaBrowserItem(mAppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
+                s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
             }
             foreach (var star in hasPlanets)
             {
-                s3.Add(new CelestiaBrowserItem(mAppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
+                s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
             }
             mStarRoot = new CelestiaBrowserItem[]
             {
@@ -108,7 +110,7 @@ namespace CelestiaUWP
                 LocalizationHelper.Localize("Open Clusters"),
                 LocalizationHelper.Localize("Unknown"),
             };
-            var dsoCatalog = mAppCore.Simulation.Universe.DSOCatalog;
+            var dsoCatalog = AppCore.Simulation.Universe.DSOCatalog;
             for (int i = 0; i < dsoCatalog.Count; i++)
             {
                 var dso = dsoCatalog.DSOAt(i);
@@ -136,7 +138,7 @@ namespace CelestiaUWP
 
             Root = mSolRoot;
 
-            var actions = new (String, short)[] {
+            var actions = new (string, short)[] {
                     ("Go", 103),
                     ("Follow", 102),
                     ("Sync Orbit", 121),
@@ -158,8 +160,11 @@ namespace CelestiaUWP
                         var obj = item.Object;
                         if (obj != null)
                         {
-                            mAppCore.Simulation.Selection = new CelestiaSelection(obj);
-                            mAppCore.CharEnter(action.Item2);
+                            Renderer.EnqueueTask(() =>
+                            {
+                                AppCore.Simulation.Selection = new CelestiaSelection(obj);
+                                AppCore.CharEnter(action.Item2);
+                            });
                         }
                     }
                 };
@@ -174,9 +179,9 @@ namespace CelestiaUWP
             if (obj == null)
                 return new CelestiaBrowserItem[] { };
             if (obj is CelestiaStar star)
-                return mAppCore.Simulation.Universe.ChildrenForStar(star, GetChildren);
+                return AppCore.Simulation.Universe.ChildrenForStar(star, GetChildren);
             if (obj is CelestiaBody body)
-                return mAppCore.Simulation.Universe.ChildrenForBody(body, GetChildren);
+                return AppCore.Simulation.Universe.ChildrenForBody(body, GetChildren);
             return new CelestiaBrowserItem[] { };
         }
 

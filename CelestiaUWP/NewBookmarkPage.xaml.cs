@@ -103,7 +103,7 @@ namespace CelestiaUWP
             {
                 IsFolder = false,
                 Name = NameText,
-                URL = mAppCore.CurrentURL,
+                URL = AppCore.CurrentURL,
                 Children = new ObservableCollection<BookmarkNode>()
             };
             var parent = Tree.SelectedItem;
