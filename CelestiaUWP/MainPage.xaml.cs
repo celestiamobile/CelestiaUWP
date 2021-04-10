@@ -164,7 +164,8 @@ namespace CelestiaUWP
                 }
 
                 LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
-                var fontMap = new Dictionary<string, (string, int, string, int)>() {
+                var fontMap = new Dictionary<string, (string, int, string, int)>()
+                {
                     { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },
                     { "ko", ("NotoSansCJK-Regular.ttc", 1, "NotoSansCJK-Bold.ttc", 1) },
                     { "zh_CN", ("NotoSansCJK-Regular.ttc", 2, "NotoSansCJK-Bold.ttc", 2) },
@@ -581,9 +582,11 @@ namespace CelestiaUWP
                 if (OverlayContainer.Content != null) return;
                 if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
 
+                short key = (short)arg.KeyCode;
+
                 mRenderer.EnqueueTask(() =>
                 {
-                    mAppCore.CharEnter((short)arg.KeyCode);
+                    mAppCore.CharEnter(key);
                 });
             };
             Window.Current.CoreWindow.KeyDown += (sender, arg) =>
@@ -591,16 +594,17 @@ namespace CelestiaUWP
                 if (OverlayContainer.Content != null) return;
                 if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
 
-
                 var modifiers = 0;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control) == CoreVirtualKeyStates.Down)
                     modifiers |= 16;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift) == CoreVirtualKeyStates.Down)
                     modifiers |= 8;
 
+                int key = (int)arg.VirtualKey;
+
                 mRenderer.EnqueueTask(() =>
                 {
-                    mAppCore.KeyDown((int)arg.VirtualKey, modifiers);
+                    mAppCore.KeyDown(key, modifiers);
                 });
             };
             Window.Current.CoreWindow.KeyUp += (sender, arg) =>
@@ -608,9 +612,11 @@ namespace CelestiaUWP
                 if (OverlayContainer.Content != null) return;
                 if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
 
+                int key = (int)arg.VirtualKey;
+
                 mRenderer.EnqueueTask(() =>
                 {
-                    mAppCore.KeyUp((int)arg.VirtualKey, 0);
+                    mAppCore.KeyUp(key, 0);
                 });
             };
         }
