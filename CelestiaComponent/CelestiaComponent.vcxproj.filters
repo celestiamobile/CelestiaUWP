@@ -47,6 +47,9 @@
     <Filter Include="Celestia\celscript\lua">
       <UniqueIdentifier>{d60a15a7-d2d7-4998-925d-4c1ce41e18c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Celestia\celimage">
+      <UniqueIdentifier>{a8663d31-684e-4e51-a129-1f70813a98e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
@@ -157,9 +160,6 @@
     <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\dds_decompress.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -197,9 +197,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\dds.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp">
@@ -516,6 +513,21 @@
     <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\bmp.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\dds.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\dds_decompress.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\jpeg.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\png.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -752,9 +764,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\dds_decompress.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h">
@@ -1095,6 +1104,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\spicerotation.h">
       <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h">
+      <Filter>Celestia\celimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h">
+      <Filter>Celestia\celimage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
