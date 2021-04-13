@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
@@ -49,6 +48,8 @@ namespace CelestiaUWP
         private bool ReadyForInput = false;
 
         private readonly AppSettings AppSettings = AppSettings.Shared;
+
+        private string[] AvailableLanguagues;
 
         private readonly string[] Markers = new string[]
         {
@@ -102,7 +103,10 @@ namespace CelestiaUWP
             var configPath = customConfigFile != null ? customConfigFile.Path : defaultConfigFilePath;
 
             var localePath = defaultResourcePath + "\\locale";
-            var locale = await GetLocale(localePath);
+            var systemLocale = await GetLocale(localePath);
+            var locale = AppSettings.LanguageOverride;
+            if (locale == null)
+                locale = systemLocale;
 
             await Task.Run(() => CreateExtraFolders());
 
@@ -991,7 +995,7 @@ namespace CelestiaUWP
 
         void ShowViewOptions()
         {
-            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), mAppCore);
+            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), (mAppCore, AppSettings, AvailableLanguagues));
         }
 
         void ShowPage(Type pageType, Size size, object parameter)
@@ -1051,36 +1055,50 @@ namespace CelestiaUWP
 
         async Task<string> GetLocale(string LocalePath)
         {
-            var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
-            var files = await folder.GetFoldersAsync();
-            var availableLocales = new List<string>();
-            var preferredLocale = System.Globalization.CultureInfo.CurrentUICulture.Name;
-            preferredLocale = preferredLocale.Replace("-", "_");
-            foreach (var file in files)
+            if (AvailableLanguagues == null)
             {
-                availableLocales.Add(file.Name);
-            }
-            if (availableLocales.Contains(preferredLocale))
-                return preferredLocale;
-            var components = new List<string>(preferredLocale.Split("_"));
-            if (components.Count() == 3)
-                components.RemoveAt(1);
-            if (components.Count() == 2)
-                components[1] = components[1].ToUpper();
-            preferredLocale = string.Join("_", components);
-            if (availableLocales.Contains(preferredLocale))
-                return preferredLocale;
+                var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
+                var files = await folder.GetFoldersAsync();
+                var availableLocales = new List<string>();
+                foreach (var file in files)
+                {
+                    availableLocales.Add(file.Name);
+                }
 
-            foreach (var lang in availableLocales)
-            {
-                if (lang == components[0] || lang.StartsWith(components[0] + "_"))
-                    return lang;
+                AvailableLanguagues = availableLocales.ToArray();
             }
 
-            return "";
+            var culture = System.Globalization.CultureInfo.CurrentUICulture;
+            var lang = culture.TwoLetterISOLanguageName;
+            var region = new System.Globalization.RegionInfo(culture.LCID);
+            var country = region.TwoLetterISORegionName;
+            if (lang == "zh")
+            {
+                // Special handling for Chinese script
+                // Basically mapping zh_CN => zh_Hans
+                //                   zh_TW => zh_Hant
+                if (culture.Name.Contains("Hans"))
+                    country = "CN";
+                else if (culture.Name.Contains("Hant"))
+                    country = "TW";
+                // Is it possible for script to be empty?
+                // Singapore uses Hans, Hong Kong, Macao uses Hant
+                else if (country == "SG")
+                    country = "CN";
+                else if (country == "HK" || country == "MO")
+                    country = "TW";
+            }
+            var preferredLocale = lang + "_" + country;
+
+            if (Array.Exists(AvailableLanguagues, element => element == preferredLocale))
+                return preferredLocale;
+            preferredLocale = lang;
+            if (Array.Exists(AvailableLanguagues, element => element == preferredLocale))
+                return preferredLocale;
+            return "en";
         }
 
-        private async System.Threading.Tasks.Task<Dictionary<string, object>> ReadSettings()
+        private async Task<Dictionary<string, object>> ReadSettings()
         {
             var installedFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
             var settingsObject = new Dictionary<string, object>();

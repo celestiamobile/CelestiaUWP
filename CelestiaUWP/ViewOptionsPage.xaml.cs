@@ -29,7 +29,8 @@ namespace CelestiaUWP
         };
 
         private CelestiaAppCore AppCore;
-        private readonly AppSettings AppSettings = AppSettings.Shared;
+        private AppSettings AppSettings;
+        private string[] AvailableLanguages;
 
         public ViewOptionsPage()
         {
@@ -38,7 +39,11 @@ namespace CelestiaUWP
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            AppCore = e.Parameter as CelestiaAppCore;
+            var args = ((CelestiaAppCore, AppSettings, string[]))(e.Parameter);
+            AppCore = args.Item1;
+            AppSettings = args.Item2;
+            AvailableLanguages = args.Item3;
+
             Nav.SelectedItem = NavigationItems[0];
         }
 
@@ -50,19 +55,19 @@ namespace CelestiaUWP
 
             if (item.Tag == "general")
             {
-                Container.Navigate(typeof(GeneralSettingsPage), AppCore);
+                Container.Navigate(typeof(GeneralSettingsPage), new SettingsArgs() { AppCore = AppCore, Object = (AppSettings, AvailableLanguages) });
             }
             else if (item.Tag == "guides")
             {
-                Container.Navigate(typeof(GuidesSettingsPage), AppCore);
+                Container.Navigate(typeof(GuidesSettingsPage), new SettingsArgs() { AppCore = AppCore });
             }
             else if (item.Tag == "labels")
             {
-                Container.Navigate(typeof(LabelsSettingsPage), AppCore);
+                Container.Navigate(typeof(LabelsSettingsPage), new SettingsArgs() { AppCore = AppCore });
             }
             else if (item.Tag == "renderer")
             {
-                Container.Navigate(typeof(RendererSettingsPage), AppCore);
+                Container.Navigate(typeof(RendererSettingsPage), new SettingsArgs() { AppCore = AppCore, Object = AppSettings });
             }
         }
 

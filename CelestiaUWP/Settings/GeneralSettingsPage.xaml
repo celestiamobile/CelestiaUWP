@@ -77,6 +77,15 @@
             <CheckBox IsChecked="{x:Bind AppCore.ShowNightMaps, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Night Lights"/>
             </CheckBox>
+
+            <Grid Margin="0, 24, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Language:" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                <ComboBox x:Name="LanguageComboBox" Grid.Column="1" SelectionChanged="LanguageComboBox_SelectionChanged" VerticalAlignment="Center"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </local:SettingsBasePage>

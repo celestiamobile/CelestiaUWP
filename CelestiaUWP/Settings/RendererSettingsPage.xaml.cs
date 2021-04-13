@@ -15,7 +15,7 @@ namespace CelestiaUWP.Settings
 {
     public sealed partial class RendererSettingsPage : SettingsBasePage
     {
-        private readonly AppSettings AppSettings = AppSettings.Shared;
+        private AppSettings AppSettings;
 
         private readonly string[] InfoDescriptions = new string[]
         {
@@ -51,6 +51,12 @@ namespace CelestiaUWP.Settings
         {
             this.InitializeComponent();
             LocalizeElement(Content);
+        }
+
+        protected override void OnNavigatedTo(SettingsArgs args)
+        {
+            base.OnNavigatedTo(args);
+            AppSettings = (AppSettings)args.Object;
         }
     }
 }

@@ -17,12 +17,24 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Settings
 {
+    public class SettingsArgs
+    {
+        public CelestiaAppCore AppCore;
+        public object Object;
+    }
+
     public class SettingsBasePage : Page
     {
         protected CelestiaAppCore AppCore;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            AppCore = e.Parameter as CelestiaAppCore;
+            var args = e.Parameter as SettingsArgs;
+            OnNavigatedTo(args);
+        }
+
+        protected virtual void OnNavigatedTo(SettingsArgs args)
+        {
+            AppCore = args.AppCore;
         }
 
         protected void LocalizeElement(UIElement element)
