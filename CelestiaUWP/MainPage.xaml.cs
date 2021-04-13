@@ -49,7 +49,7 @@ namespace CelestiaUWP
 
         private readonly AppSettings AppSettings = AppSettings.Shared;
 
-        private string[] AvailableLanguagues;
+        private string[] AvailableLanguages;
 
         private readonly string[] Markers = new string[]
         {
@@ -995,7 +995,7 @@ namespace CelestiaUWP
 
         void ShowViewOptions()
         {
-            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), (mAppCore, AppSettings, AvailableLanguagues));
+            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), (mAppCore, AppSettings, AvailableLanguages));
         }
 
         void ShowPage(Type pageType, Size size, object parameter)
@@ -1055,7 +1055,7 @@ namespace CelestiaUWP
 
         async Task<string> GetLocale(string LocalePath)
         {
-            if (AvailableLanguagues == null)
+            if (AvailableLanguages == null)
             {
                 var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
                 var files = await folder.GetFoldersAsync();
@@ -1065,7 +1065,8 @@ namespace CelestiaUWP
                     availableLocales.Add(file.Name);
                 }
 
-                AvailableLanguagues = availableLocales.ToArray();
+                availableLocales.Sort();
+                AvailableLanguages = availableLocales.ToArray();
             }
 
             var culture = System.Globalization.CultureInfo.CurrentUICulture;
@@ -1090,10 +1091,10 @@ namespace CelestiaUWP
             }
             var preferredLocale = lang + "_" + country;
 
-            if (Array.Exists(AvailableLanguagues, element => element == preferredLocale))
+            if (Array.Exists(AvailableLanguages, element => element == preferredLocale))
                 return preferredLocale;
             preferredLocale = lang;
-            if (Array.Exists(AvailableLanguagues, element => element == preferredLocale))
+            if (Array.Exists(AvailableLanguages, element => element == preferredLocale))
                 return preferredLocale;
             return "en";
         }
