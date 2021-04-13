@@ -578,7 +578,7 @@ namespace CelestiaUWP
                 var delta = arg.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
                 mRenderer.EnqueueTask(() =>
                 {
-                    mAppCore.MouseWheel(delta > 0 ? 1 : -1, 0);
+                    mAppCore.MouseWheel(delta > 0 ? -1 : 1, 0);
                 });
             };
             Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
