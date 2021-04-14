@@ -1071,8 +1071,12 @@ namespace CelestiaUWP
 
             var culture = System.Globalization.CultureInfo.CurrentUICulture;
             var lang = culture.TwoLetterISOLanguageName;
-            var region = new System.Globalization.RegionInfo(culture.LCID);
-            var country = region.TwoLetterISORegionName;
+            var country = "";
+            if (!culture.IsNeutralCulture)
+            {
+                var region = new System.Globalization.RegionInfo(culture.LCID);
+                country = region.TwoLetterISORegionName;
+            }
             if (lang == "zh")
             {
                 // Special handling for Chinese script
