@@ -85,7 +85,7 @@ namespace CelestiaUWP
         {
             scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
 
-            string installedPath = Windows.ApplicationModel.Package.Current.InstalledPath;
+            string installedPath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
 
             Windows.Storage.StorageFolder customDataFolder = null;
             Windows.Storage.StorageFile customConfigFile = null;
