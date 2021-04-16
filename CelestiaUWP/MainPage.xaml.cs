@@ -288,8 +288,11 @@ namespace CelestiaUWP
         {
             Window.Current.VisibilityChanged += (sender, args) =>
             {
-                AppSettings.Save();
-                SaveSettings(GetCurrentSettings());
+                if (mSettings != null)
+                {
+                    AppSettings.Save();
+                    SaveSettings(GetCurrentSettings());
+                }
             };
 
             mAppCore.SetContextMenuHandler((x, y, selection) =>
