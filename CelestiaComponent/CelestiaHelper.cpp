@@ -23,7 +23,7 @@ namespace winrt::CelestiaComponent::implementation
 		Windows::Globalization::Calendar c;
 		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
 		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
-		c.ChangeTimeZone(L"GMT");
+		c.ChangeTimeZone(L"UTC");
 		c.SetDateTime(dateTime);
 		int era = c.Era();
 		int year = c.Year();
@@ -37,12 +37,10 @@ namespace winrt::CelestiaComponent::implementation
 
 	Windows::Foundation::DateTime CelestiaHelper::DateTimeFromJulianDay(double julianDay)
 	{
-		std::vector<hstring> lang;
-		lang.push_back(to_hstring("en"));
 		Windows::Globalization::Calendar c;
 		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
 		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
-		c.ChangeTimeZone(L"GMT");
+		c.ChangeTimeZone(L"UTC");
 		astro::Date astroDate(julianDay);
 		int year = astroDate.year;
 
