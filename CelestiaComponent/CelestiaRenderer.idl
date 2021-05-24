@@ -24,5 +24,6 @@ namespace CelestiaComponent
         void SetSize(Int32 width, Int32 height);
         void SetCorePointer(Int64 core);
         void EnqueueTask(CelestiaRendererTask task);
+        void MakeContextCurrent();
     }
 }

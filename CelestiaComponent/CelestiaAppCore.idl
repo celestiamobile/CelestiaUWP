@@ -55,6 +55,7 @@ namespace CelestiaComponent
         void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);
+        void ClearFonts();
         void RunScript(String path);
         void GoToURL(String url);
         Boolean SaveScreenshot(String filePath);

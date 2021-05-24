@@ -400,4 +400,9 @@ namespace winrt::CelestiaComponent::implementation
             task();
         tasks.clear();
     }
+
+    void CelestiaRenderer::MakeContextCurrent()
+    {
+        eglMakeCurrent(display, surface, surface, context);
+    }
 }

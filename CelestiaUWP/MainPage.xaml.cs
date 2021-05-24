@@ -49,6 +49,21 @@ namespace CelestiaUWP
 
         private readonly AppSettings AppSettings = AppSettings.Shared;
 
+        private string defaultParentPath
+        {
+            get { return Windows.ApplicationModel.Package.Current.InstalledLocation.Path; }
+        }
+
+        private string defaultResourcePath
+        {
+            get { return defaultParentPath + "\\CelestiaResources"; }
+        }
+
+        private string defaultConfigFilePath
+        {
+            get { return defaultResourcePath + "\\celestia.cfg"; }
+        }
+
         private string[] AvailableLanguages;
 
         private readonly string[] Markers = new string[]
@@ -77,15 +92,17 @@ namespace CelestiaUWP
             if (!ReadyForInput) return;
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
-            mAppCore.SetSafeAreaInsets(0, isFullScreen ? 0 : (int)(MenuBar.Height * scale), 0, 0);
+            var top = isFullScreen ? 0 : (int)(MenuBar.Height * scale);
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
+            mRenderer.EnqueueTask(() =>
+            {
+                mAppCore.SetSafeAreaInsets(0, top, 0, 0);
+            });
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
-
-            string installedPath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
 
             Windows.Storage.StorageFolder customDataFolder = null;
             Windows.Storage.StorageFile customConfigFile = null;
@@ -95,9 +112,6 @@ namespace CelestiaUWP
                 customConfigFile = await customDataFolder.GetFileAsync("celestia.cfg");
             }
             catch { }
-
-            var defaultResourcePath = installedPath + "\\CelestiaResources";
-            var defaultConfigFilePath = defaultResourcePath + "\\celestia.cfg";
 
             var resourcePath = customDataFolder != null ? customDataFolder.Path : defaultResourcePath;
             var configPath = customConfigFile != null ? customConfigFile.Path : defaultConfigFilePath;
@@ -157,7 +171,6 @@ namespace CelestiaUWP
                     }
                 }
 
-                mAppCore.SetDPI((int)(96 * scale));
                 if (!mAppCore.StartRenderer())
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -168,23 +181,7 @@ namespace CelestiaUWP
                 }
 
                 LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
-                var fontMap = new Dictionary<string, (string, int, string, int)>()
-                {
-                    { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },
-                    { "ko", ("NotoSansCJK-Regular.ttc", 1, "NotoSansCJK-Bold.ttc", 1) },
-                    { "zh_CN", ("NotoSansCJK-Regular.ttc", 2, "NotoSansCJK-Bold.ttc", 2) },
-                    { "zh_TW", ("NotoSansCJK-Regular.ttc", 3, "NotoSansCJK-Bold.ttc", 3) },
-                    { "ar", ("NotoSansArabic-Regular.ttf", 0, "NotoSansArabic-Bold.ttf", 0) },
-                };
-                var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
-                var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
-
-                var pathPrefix = defaultResourcePath + "\\fonts\\";
-
-                mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
-                mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
-                mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
-                mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
+                UpdateScale();
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -215,6 +212,28 @@ namespace CelestiaUWP
                 mRenderer.SetSize((int)arg.NewSize.Width, (int)arg.NewSize.Height);
             };
             mRenderer.Start();
+        }
+
+        private void UpdateScale()
+        {
+            mAppCore.SetDPI((int)(96 * scale));
+            var fontMap = new Dictionary<string, (string, int, string, int)>()
+                {
+                    { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },
+                    { "ko", ("NotoSansCJK-Regular.ttc", 1, "NotoSansCJK-Bold.ttc", 1) },
+                    { "zh_CN", ("NotoSansCJK-Regular.ttc", 2, "NotoSansCJK-Bold.ttc", 2) },
+                    { "zh_TW", ("NotoSansCJK-Regular.ttc", 3, "NotoSansCJK-Bold.ttc", 3) },
+                    { "ar", ("NotoSansArabic-Regular.ttf", 0, "NotoSansArabic-Bold.ttf", 0) },
+                };
+            var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
+            var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
+
+            var pathPrefix = defaultResourcePath + "\\fonts\\";
+            mAppCore.ClearFonts();
+            mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
+            mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
+            mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
+            mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
         }
 
         private void ShowLoadingFailure()

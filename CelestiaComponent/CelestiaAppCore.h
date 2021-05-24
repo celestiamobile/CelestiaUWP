@@ -41,6 +41,7 @@ namespace winrt::CelestiaComponent::implementation
         void SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
+        void ClearFonts();
         void RunScript(hstring const& path);
         void GoToURL(hstring const& url);
         bool SaveScreenshot(hstring const& filePath);

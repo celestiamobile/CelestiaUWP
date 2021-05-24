@@ -41,8 +41,9 @@ namespace winrt::CelestiaComponent::implementation
         void SetSize(int32_t width, int32_t height);
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
-
         void FlushTasks();
+
+        void MakeContextCurrent();
 
         CelestiaCore* core = nullptr;
 

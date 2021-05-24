@@ -245,6 +245,11 @@ namespace winrt::CelestiaComponent::implementation
         core->setRendererFont(to_string(fontPath), collectionIndex, fontSize, (Renderer::FontStyle)fontStyle);
     }
 
+    void CelestiaAppCore::ClearFonts()
+    {
+        core->clearFonts();
+    }
+
     void CelestiaAppCore::RunScript(hstring const& path)
     {
         core->runScript(to_string(path));
