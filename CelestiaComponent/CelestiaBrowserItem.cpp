@@ -18,10 +18,17 @@
 #include "CelestiaDSO.h"
 #include "CelestiaLocation.h"
 
+#include <stringapiset.h>
+
 using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
+    bool CompareBrowserItems(const CelestiaComponent::CelestiaBrowserItem& lhs, const CelestiaComponent::CelestiaBrowserItem& rhs)
+    {
+        return CompareStringEx(nullptr, SORT_DIGITSASNUMBERS, lhs.Name().c_str(), lhs.Name().size(), rhs.Name().c_str(), rhs.Name().size(), nullptr, nullptr, 0) == CSTR_LESS_THAN;
+    }
+
     CelestiaBrowserItem::CelestiaBrowserItem(hstring name, array_view<CelestiaComponent::CelestiaBrowserItem const> children) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(nullptr), provider(nullptr), name(name)
     {
         std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
@@ -29,6 +36,7 @@ namespace winrt::CelestiaComponent::implementation
         {
             vec.push_back(child);
         }
+        std::sort(vec.begin(), vec.end(), CompareBrowserItems);
         this->children = vec;
         areChildrenLoaded = true;
     }
@@ -64,6 +72,7 @@ namespace winrt::CelestiaComponent::implementation
             {
                 vec.push_back(child);
             }
+            std::sort(vec.begin(), vec.end(), CompareBrowserItems);
             children = vec;
             areChildrenLoaded = true;
         }
