@@ -8,14 +8,45 @@
 //
 
 import "CelestiaAstroObject.idl";
+import "CelestiaOrbit.idl";
+import "CelestiaPlanetarySystem.idl";
+import "CelestiaRotationModel.idl";
 
 namespace CelestiaComponent
 {
+    enum CelestiaBodyType
+    {
+        planet = 0x01,
+        moon = 0x02,
+        asteroid = 0x04,
+        comet = 0x08,
+        spacecraft = 0x10,
+        invisible = 0x20,
+        barycenter = 0x40,           // Not used (invisible is used instead)
+        smallBody = 0x80,            // Not used
+        dwarfPlanet = 0x100,
+        stellar = 0x200,             // only used for orbit mask
+        surfaceFeature = 0x400,
+        component = 0x800,
+        minorMoon = 0x1000,
+        diffuse = 0x2000,
+        unknown = 0x10000,
+    };
+
     [default_interface]
     runtimeclass CelestiaBody : CelestiaAstroObject
     {
         String Name{ get; };
+        CelestiaBodyType Type{ get; };
         String[] AlternateSurfaceNames{ get; };
         String InfoURL{ get; };
+        CelestiaPlanetarySystem System{ get; };
+        Boolean HasRings{ get; };
+        Boolean HasAtmosphere{ get; };
+        Boolean IsEllipsoid{ get; };
+        Single Radius{ get; };
+
+        CelestiaOrbit OrbitAtTime(Windows.Foundation.DateTime time);
+        CelestiaRotationModel RotationModelAtTime(Windows.Foundation.DateTime time);
     }
 }

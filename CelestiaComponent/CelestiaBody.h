@@ -11,7 +11,15 @@
 
 #include <celengine/body.h>
 #include "CelestiaAstroObject.h"
+#include "CelestiaOrbit.h"
+#include "CelestiaRotationModel.h"
+
 #include "CelestiaBody.g.h"
+
+namespace CelestiaComponent
+{
+    struct CelestiaPlanetarySystem;
+}
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -20,7 +28,19 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaBody(Body* body);
 
         hstring Name();
+        CelestiaComponent::CelestiaBodyType Type();
         com_array<hstring> AlternateSurfaceNames();
         hstring InfoURL();
+
+        bool HasRings();
+        bool HasAtmosphere();
+        bool IsEllipsoid();
+        float Radius();
+
+        CelestiaComponent::CelestiaPlanetarySystem System();
+        CelestiaComponent::CelestiaOrbit OrbitAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaRotationModel RotationModelAtTime(Windows::Foundation::DateTime const& time);
+
+        CelestiaComponent::CelestiaPlanetarySystem p {nullptr};
     };
 }

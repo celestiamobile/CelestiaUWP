@@ -735,6 +735,20 @@
     <ClCompile Include="CelestiaSimulation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaUniversalCoord.h">
+      <DependentUpon>CelestiaUniversalCoord.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaUniversalCoord.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaUniversalCoord.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaUniversalCoord.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaUniverse.h">
       <DependentUpon>CelestiaUniverse.cpp</DependentUpon>
     </ClInclude>
@@ -746,6 +760,76 @@
     <Midl Include="CelestiaUniverse.idl">
       <SubType>Code</SubType>
       <DependentUpon>CelestiaUniverse.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaOrbit.h">
+      <DependentUpon>CelestiaOrbit.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaOrbit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaOrbit.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaOrbit.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaVector.h">
+      <DependentUpon>CelestiaVector.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaVector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaVector.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaVector.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaDMS.h">
+      <DependentUpon>CelestiaDMS.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaDMS.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaDMS.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaDMS.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaRotationModel.h">
+      <DependentUpon>CelestiaRotationModel.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaRotationModel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaRotationModel.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaRotationModel.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaPlanetarySystem.h">
+      <DependentUpon>CelestiaPlanetarySystem.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaPlanetarySystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaPlanetarySystem.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaPlanetarySystem.cpp</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>

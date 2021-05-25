@@ -13,6 +13,11 @@
 #include "CelestiaAstroObject.h"
 #include "CelestiaDSO.g.h"
 
+namespace CelestiaComponent
+{
+    struct CelestiaVector;
+}
+
 namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaDSO : CelestiaDSOT<CelestiaDSO, CelestiaAstroObject>
@@ -20,5 +25,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaDSO(DeepSkyObject* dso);
         hstring Type();
         hstring InfoURL();
+        CelestiaComponent::CelestiaVector Position();
     };
 }

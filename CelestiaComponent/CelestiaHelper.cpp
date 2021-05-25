@@ -10,6 +10,7 @@
 #include "pch.h"
 #include <celengine/astro.h>
 #include "CelestiaHelper.h"
+#include "CelestiaVector.h"
 #if __has_include("CelestiaHelper.g.cpp")
 #include "CelestiaHelper.g.cpp"
 #endif
@@ -59,4 +60,44 @@ namespace winrt::CelestiaComponent::implementation
 		c.Second((int32_t)floor(astroDate.seconds));
 		return c.GetDateTime();
 	}
+
+    CelestiaComponent::CelestiaVector CelestiaHelper::CelToJ2000Ecliptic(CelestiaComponent::CelestiaVector const& cel)
+    {
+        auto obj = get_self<CelestiaVector>(cel);
+        auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
+        return make<CelestiaVector>(v.x(), -v.z(), v.y());
+    }
+
+    CelestiaComponent::CelestiaVector CelestiaHelper::EclipticToEquatorial(CelestiaComponent::CelestiaVector const& ecliptic)
+    {
+        auto obj = get_self<CelestiaVector>(ecliptic);
+        auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
+        auto transformed = astro::eclipticToEquatorial(v);
+        return make<CelestiaVector>(transformed.x(), transformed.y(), transformed.z());
+    }
+
+    CelestiaComponent::CelestiaVector CelestiaHelper::EquatorialToGalactic(CelestiaComponent::CelestiaVector const& equatorial)
+    {
+        auto obj = get_self<CelestiaVector>(equatorial);
+        auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
+        auto transformed = astro::equatorialToGalactic(v);
+        return make<CelestiaVector>(transformed.x(), transformed.y(), transformed.z());
+    }
+
+    CelestiaComponent::CelestiaVector CelestiaHelper::RectToSpherical(CelestiaComponent::CelestiaVector const& rect)
+    {
+        auto obj = get_self<CelestiaVector>(rect);
+        auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
+        double r = v.norm();
+        double theta = atan2(v.y(), v.x());
+        if (theta < 0)
+            theta = theta + 2 * PI;
+        double phi = asin(v.z() / r);
+        return make<CelestiaVector>(theta, phi, r);
+    }
+
+    double CelestiaHelper::AUToKilometers(double au)
+    {
+        return astro::AUtoKilometers(au);
+    }
 }

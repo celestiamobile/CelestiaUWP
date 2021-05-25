@@ -9,6 +9,7 @@
 
 #include "pch.h"
 #include "CelestiaDSO.h"
+#include "CelestiaVector.h"
 #if __has_include("CelestiaDSO.g.cpp")
 #include "CelestiaDSO.g.cpp"
 #endif
@@ -30,4 +31,10 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		return to_hstring(static_cast<DeepSkyObject*>(obj)->getInfoURL());
 	}
+
+    CelestiaComponent::CelestiaVector CelestiaDSO::Position()
+    {
+        auto pos = static_cast<DeepSkyObject*>(obj)->getPosition();
+        return make<CelestiaVector>(pos.x(), pos.y(), pos.z());
+    }
 }

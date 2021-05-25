@@ -9,21 +9,24 @@
 
 #pragma once
 
-#include <celengine/star.h>
-#include "CelestiaAstroObject.h"
-#include "CelestiaStar.g.h"
+#include <celengine/body.h>
+#include "CelestiaPlanetarySystem.g.h"
 
 namespace CelestiaComponent
 {
-    struct CelestiaUniversalCoord;
+    struct CelestiaBody;
+    struct CelestiaStar;
 }
 
 namespace winrt::CelestiaComponent::implementation
 {
-    struct CelestiaStar : CelestiaStarT<CelestiaStar, CelestiaAstroObject>
+    struct CelestiaPlanetarySystem : CelestiaPlanetarySystemT<CelestiaPlanetarySystem>
     {
-        CelestiaStar(Star* star);
-        hstring InfoURL();
-        CelestiaComponent::CelestiaUniversalCoord PositionAtTime(Windows::Foundation::DateTime const& time);
+
+        CelestiaPlanetarySystem(PlanetarySystem* p);
+        PlanetarySystem* p;
+
+        CelestiaComponent::CelestiaBody PrimaryObject();
+        CelestiaComponent::CelestiaStar Star();
     };
 }

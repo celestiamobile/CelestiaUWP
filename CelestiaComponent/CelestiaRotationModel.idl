@@ -7,16 +7,20 @@
 // of the License, or (at your option) any later version.
 //
 
-import "CelestiaAstroObject.idl";
 import "CelestiaVector.idl";
 
 namespace CelestiaComponent
 {
     [default_interface]
-    unsealed runtimeclass CelestiaDSO : CelestiaAstroObject
+    runtimeclass CelestiaRotationModel
     {
-        String Type{ get; };
-        String InfoURL{ get; };
-        CelestiaVector Position{ get; };
+        Boolean IsPeriodic{ get; };
+        Double Period{ get; };
+        Double ValidBeginTime{ get; };
+        Double ValidEndTime{ get; };
+
+        CelestiaVector AngularVelocityAtTime(Windows.Foundation.DateTime time);
+        CelestiaVector EquatorOrientationAtTime(Windows.Foundation.DateTime time);
+        CelestiaVector SpinAtTime(Windows.Foundation.DateTime time);
     }
 }

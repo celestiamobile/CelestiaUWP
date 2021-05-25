@@ -7,15 +7,15 @@
 // of the License, or (at your option) any later version.
 //
 
-import "CelestiaAstroObject.idl";
-import "CelestiaUniversalCoord.idl";
+import "CelestiaBody.idl";
+import "CelestiaStar.idl";
 
 namespace CelestiaComponent
 {
     [default_interface]
-    runtimeclass CelestiaStar : CelestiaAstroObject
+    runtimeclass CelestiaPlanetarySystem
     {
-        String InfoURL{ get; };
-        CelestiaUniversalCoord PositionAtTime(Windows.Foundation.DateTime time);
+        CelestiaBody PrimaryObject{ get; };
+        CelestiaStar Star{ get; };
     }
 }

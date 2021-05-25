@@ -7,15 +7,20 @@
 // of the License, or (at your option) any later version.
 //
 
-import "CelestiaAstroObject.idl";
-import "CelestiaUniversalCoord.idl";
+import "CelestiaVector.idl";
 
 namespace CelestiaComponent
 {
     [default_interface]
-    runtimeclass CelestiaStar : CelestiaAstroObject
+    runtimeclass CelestiaOrbit
     {
-        String InfoURL{ get; };
-        CelestiaUniversalCoord PositionAtTime(Windows.Foundation.DateTime time);
+        Boolean IsPeriodic{ get; };
+        Double Period{ get; };
+        Double BoundingRadius{ get; };
+        Double ValidBeginTime{ get; };
+        Double ValidEndTime{ get; };
+
+        CelestiaVector VelocityAtTime(Windows.Foundation.DateTime time);
+        CelestiaVector PositionAtTime(Windows.Foundation.DateTime time);
     }
 }

@@ -8,7 +8,9 @@
 //
 
 #include "pch.h"
+#include "CelestiaHelper.h"
 #include "CelestiaStar.h"
+#include "CelestiaUniversalCoord.h"
 #if __has_include("CelestiaStar.g.cpp")
 #include "CelestiaStar.g.cpp"
 #endif
@@ -25,4 +27,9 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		return to_hstring(static_cast<Star*>(obj)->getInfoURL());
 	}
+
+    CelestiaComponent::CelestiaUniversalCoord CelestiaStar::PositionAtTime(Windows::Foundation::DateTime const& time)
+    {
+        return make<CelestiaUniversalCoord>(static_cast<Star*>(obj)->getPosition(CelestiaHelper::JulianDayFromDateTime(time)));
+    }
 }

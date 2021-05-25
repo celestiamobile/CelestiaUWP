@@ -9,6 +9,8 @@
 
 #include "pch.h"
 #include "CelestiaBody.h"
+#include "CelestiaHelper.h"
+#include "CelestiaPlanetarySystem.h"
 #if __has_include("CelestiaBody.g.cpp")
 #include "CelestiaBody.g.cpp"
 #endif
@@ -25,6 +27,11 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		return to_hstring(static_cast<Body*>(obj)->getName(true));
 	}
+
+    CelestiaComponent::CelestiaBodyType CelestiaBody::Type()
+    {
+        return (CelestiaComponent::CelestiaBodyType)(static_cast<Body*>(obj)->getClassification());
+    }
 
 	com_array<hstring> CelestiaBody::AlternateSurfaceNames()
 	{
@@ -48,4 +55,41 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		return to_hstring(static_cast<Body*>(obj)->getInfoURL());
 	}
+
+    CelestiaComponent::CelestiaPlanetarySystem CelestiaBody::System()
+    {
+        if (p == nullptr)
+            p = make<CelestiaPlanetarySystem>(static_cast<Body*>(obj)->getSystem());
+        return p;
+    }
+
+    CelestiaComponent::CelestiaOrbit CelestiaBody::OrbitAtTime(Windows::Foundation::DateTime const& time)
+    {
+        return make<CelestiaOrbit>((Orbit*)static_cast<Body*>(obj)->getOrbit(CelestiaHelper::JulianDayFromDateTime(time)));
+    }
+
+    CelestiaComponent::CelestiaRotationModel CelestiaBody::RotationModelAtTime(Windows::Foundation::DateTime const& time)
+    {
+        return make<CelestiaRotationModel>((RotationModel*)static_cast<Body*>(obj)->getRotationModel(CelestiaHelper::JulianDayFromDateTime(time)));
+    }
+
+    bool CelestiaBody::HasRings()
+    {
+        return static_cast<Body*>(obj)->getRings();
+    }
+
+    bool CelestiaBody::HasAtmosphere()
+    {
+        return static_cast<Body*>(obj)->getAtmosphere();
+    }
+
+    bool CelestiaBody::IsEllipsoid()
+    {
+        return static_cast<Body*>(obj)->isEllipsoid();
+    }
+
+    float CelestiaBody::Radius()
+    {
+        return static_cast<Body*>(obj)->getRadius();
+    }
 }
