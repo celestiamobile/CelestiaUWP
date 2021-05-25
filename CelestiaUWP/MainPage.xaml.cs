@@ -961,7 +961,7 @@ namespace CelestiaUWP
         }
         async void ShowGotoObject()
         {
-            var dialog = new GotoObjectDialog();
+            var dialog = new GotoObjectDialog(mAppCore);
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {

@@ -42,6 +42,8 @@ namespace winrt::CelestiaComponent::implementation
         void GoToLocation(CelestiaComponent::CelestiaGotoLocation const& location);
         void GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse);
 
+        com_array<hstring> GetCompletion(hstring const& name);
+
         Simulation* sim;
         CelestiaComponent::CelestiaUniverse u;
     };

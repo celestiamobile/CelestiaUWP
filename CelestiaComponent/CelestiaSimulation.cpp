@@ -147,4 +147,13 @@ namespace winrt::CelestiaComponent::implementation
             celmath::YRotation(-0.5 * PI) * celmath::XRotation(-0.5 * PI),
             2.5);
     }
+
+    com_array<hstring> CelestiaSimulation::GetCompletion(hstring const& name)
+    {
+        std::vector<hstring> vec;
+        auto names = sim->getObjectCompletion(to_string(name), true);
+        for (const auto& name : names)
+            vec.push_back(to_hstring(name));
+        return com_array<hstring>(vec);
+    }
 }

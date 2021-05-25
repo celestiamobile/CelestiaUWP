@@ -134,7 +134,7 @@ namespace CelestiaUWP
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        static public String GetEclipseDescription(CelestiaBody occulter, CelestiaBody receiver)
+        static public string GetEclipseDescription(CelestiaBody occulter, CelestiaBody receiver)
         {
             return occulter.Name + " - " + receiver.Name;
         }

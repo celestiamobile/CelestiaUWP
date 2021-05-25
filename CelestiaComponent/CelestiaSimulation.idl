@@ -30,5 +30,7 @@ namespace CelestiaComponent
         void GoToDestination(CelestiaDestination destination);
         void GoToLocation(CelestiaGotoLocation location);
         void GoToEclipse(CelestiaEclipse eclipse);
+
+        String[] GetCompletion(String name);
     }
 }

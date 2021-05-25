@@ -9,19 +9,24 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaComponent;
 using CelestiaUWP.Helper;
-using System;
-using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
 {
     public sealed partial class GotoObjectDialog : ContentDialog
     {
-        public string Text = "";
+        public string Text
+        {
+            get => ObjectNameText.Text;
+        }
         public string LongitudeString = "";
         public string LatitudeString = "";
         public string DistanceString = "";
+
+        private CelestiaAppCore Core;
 
         public float? Latitude
         {
@@ -49,8 +54,9 @@ namespace CelestiaUWP
             LocalizationHelper.Localize("au")
         };
 
-        public GotoObjectDialog()
+        public GotoObjectDialog(CelestiaAppCore core)
         {
+            Core = core;
             this.InitializeComponent();
             Title = LocalizationHelper.Localize("Go to Object");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
@@ -67,6 +73,33 @@ namespace CelestiaUWP
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+        }
+
+        private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+
+            var text = sender.Text;
+            if (text == "")
+            {
+                sender.ItemsSource = new string[] { };
+                return;
+            }
+
+            var results = await GetCompletion(sender.Text);
+
+            if (ObjectNameText.Text != text) return;
+
+            sender.ItemsSource = results;
+        }
+
+        private async Task<string[]> GetCompletion(string key)
+        {
+            var simulation = Core.Simulation;
+            return await Task.Run(() =>
+            {
+                return simulation.GetCompletion(key) ?? (new string[] { });
+            });
         }
     }
 }
