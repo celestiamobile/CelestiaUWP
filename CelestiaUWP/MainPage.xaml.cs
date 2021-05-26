@@ -423,15 +423,11 @@ namespace CelestiaUWP
                           }
                       }
 
-                      var url = CelestiaAppHelper.GetInfoURL(selection);
-                      if (!string.IsNullOrEmpty(url))
+                      menu.Items.Add(new MenuFlyoutSeparator());
+                      AppendItem(menu, LocalizationHelper.Localize("Info"), (sender, arg) =>
                       {
-                          menu.Items.Add(new MenuFlyoutSeparator());
-                          AppendItem(menu, LocalizationHelper.Localize("Web Info"), (sender, arg) =>
-                          {
-                              _ = Launcher.LaunchUriAsync(new Uri(url));
-                          });
-                      }
+                          ShowInfo(selection);
+                      });
 
                       menu.Items.Add(new MenuFlyoutSeparator());
 
@@ -938,6 +934,12 @@ namespace CelestiaUWP
         {
             ShowPage(typeof(TourGuidePage), new Size(400, 0), (mAppCore, mRenderer));
         }
+
+        void ShowInfo(CelestiaSelection selection)
+        {
+            ShowPage(typeof(InfoPage), new Size(400, 0), (mAppCore, selection));
+        }
+
         async void ShowSelectObject()
         {
             var dialog = new TextInputDialog(LocalizationHelper.Localize("Object name:"));
