@@ -29,16 +29,16 @@ steps:
 - checkout: self
   submodules: true
 
-- task: CmdLine@2
-  inputs:
-    script: |
-      .\vcpkg\bootstrap-vcpkg.bat -disable-metrics
-      echo "test1"
-      .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-      echo "test2"
-      .\vcpkg\vcpkg.exe --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-      echo "test3"
-      .\vcpkg\vcpkg integrate install
+
+- script: |
+    .\vcpkg\bootstrap-vcpkg.bat
+    echo "test1"
+    .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+    echo "test2"
+    .\vcpkg\vcpkg.exe --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+    echo "test3"
+    .\vcpkg\vcpkg integrate install
+  displayName: 'Install Windows dependencies'
 
 - task: NuGetToolInstaller@1
 
