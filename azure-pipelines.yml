@@ -36,7 +36,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: custom
-    arguments: 'install vcpkg-export-20210528-185002.1.0.0 -source ${Agent.BuildDirectory}\vcpkg-prebuilt'
+    arguments: 'install vcpkg-export-20210528-185002.1.0.0 -source $(Agent.BuildDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
 
 - task: NuGetCommand@2
   inputs:
@@ -47,7 +47,7 @@ steps:
     platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)\Celestia.msix /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)/Celestia.msix /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false'
 
 - task: DownloadSecureFile@1
   inputs:
