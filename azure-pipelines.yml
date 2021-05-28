@@ -41,6 +41,10 @@ steps:
   displayName: 'Install Prebuilt Libraries'
 
 - script: |
+    dir .\vcpkg\installed
+  displayName: 'Install Prebuilt Libraries'
+
+- script: |
     .\vcpkg\vcpkg.exe integrate install
   displayName: 'Integrate VCPKG'
 
