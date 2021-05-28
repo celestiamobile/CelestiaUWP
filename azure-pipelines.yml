@@ -31,6 +31,11 @@ steps:
 - checkout: self
   submodules: true
 
+- script: |
+    cd CelestiaUWP
+    git cherry-pick nupkg-dependencies
+  displayName: 'Cherry-Pick Pre-built Nuget Changes'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
