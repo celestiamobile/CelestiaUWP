@@ -33,7 +33,7 @@ steps:
 
 - script: |
     cd CelestiaUWP
-    git cherry-pick nupkg-dependencies
+    git cherry-pick origin/nupkg-dependencies
   displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
 - task: NuGetToolInstaller@1
