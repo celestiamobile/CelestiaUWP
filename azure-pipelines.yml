@@ -19,6 +19,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'x64|ARM64'
   buildConfiguration: 'Release'
+  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
 - checkout: vcpkg-prebuilt
@@ -35,6 +36,7 @@ steps:
   displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
 - task: NuGetToolInstaller@1
+  displayName: 'Install Nuget'
 
 - task: NuGetCommand@2
   inputs:
@@ -47,23 +49,34 @@ steps:
     restoreSolution: '$(solution)'
   displayName: 'Restore Solution'
 
+- task: DownloadSecureFile@1
+  name: signingCert
+  displayName: 'Download CA certificate'
+  inputs:
+    secureFile: '3d.pfx'
+
 - task: VSBuild@1
   inputs:
     platform: 'x64'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)/Celestia.msix /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                  /p:AppxPackageDir="$(appxPackageDir)" 
+                  /p:AppxBundle=Always 
+                  /p:UapAppxPackageBuildMode=StoreUpload 
+                  /p:AppxPackageSigningEnabled=true
+                  /p:PackageCertificateThumbprint="" 
+                  /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
   displayName: 'Build'
 
-- task: DownloadSecureFile@1
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    secureFile: '3d.pfx'
-  displayName: 'Download Secure PFX File'
-
-- script: '"C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x86\signtool"
-    sign /fd SHA256 /f $(Agent.TempDirectory)/3d.pfx /p secret $(
-    Build.ArtifactStagingDirectory)/Celestia.msix'
-  displayName: 'Sign MSIX Package'
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
