@@ -32,13 +32,19 @@ steps:
 
 - script: |
     .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
-    echo "test1"
+  displayName: 'Install VCPKG'
+
+- script: |
     .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-    echo "test2"
+  displayName: 'Install x64 Dependencies'
+
+- script: |
     .\vcpkg\vcpkg.exe --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-    echo "test3"
+  displayName: 'Install ARM64 Dependencies'
+
+- script: |
     .\vcpkg\vcpkg integrate install
-  displayName: 'Install Windows dependencies'
+  displayName: 'Integrate VCPKG'
 
 - task: NuGetToolInstaller@1
 
