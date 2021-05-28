@@ -25,7 +25,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- checkout: vcpkg
 - checkout: vcpkg-prebuilt
 - checkout: Celestia
   submodules: true
@@ -33,20 +32,8 @@ steps:
   submodules: true
 
 - script: |
-    .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
-  displayName: 'Install VCPKG'
-
-- script: |
-    xcopy ".\vcpkg-prebuilt\*" ".\vcpkg\" /H /Y /E /I /S
+    .\vcpkg-prebuilt\scripts\buildsystems\msbuild\applocal.ps1
   displayName: 'Install Prebuilt Libraries'
-
-- script: |
-    dir .\vcpkg\installed
-  displayName: 'Install Prebuilt Libraries'
-
-- script: |
-    .\vcpkg\vcpkg.exe integrate install
-  displayName: 'Integrate VCPKG'
 
 - task: NuGetToolInstaller@1
 
