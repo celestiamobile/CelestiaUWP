@@ -18,9 +18,8 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  buildPlatform: 'x86|x64|ARM'
+  buildPlatform: 'x64|ARM64'
   buildConfiguration: 'Release'
-  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
 - checkout: vcpkg
@@ -28,7 +27,6 @@ steps:
   submodules: true
 - checkout: self
   submodules: true
-
 
 - script: |
     .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
@@ -57,4 +55,17 @@ steps:
     platform: 'x86'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)\Celestia.msix /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false'
+
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: '3d.pfx'
+  displayName: 'Download Secure PFX File'
+
+- script: '"C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x86\signtool"
+    sign /fd SHA256 /f $(Agent.TempDirectory)/3d.pfx /p secret $(
+    Build.ArtifactStagingDirectory)/MsixDesktopApp.msix'
+  displayName: 'Sign MSIX Package'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
