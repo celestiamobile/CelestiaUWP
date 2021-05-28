@@ -528,6 +528,12 @@
     <ClCompile Include="..\..\Celestia\src\celimage\png.cpp">
       <Filter>Celestia\celimage</Filter>
     </ClCompile>
+    <ClCompile Include="CelestiaUniversalCoord.cpp" />
+    <ClCompile Include="CelestiaOrbit.cpp" />
+    <ClCompile Include="CelestiaVector.cpp" />
+    <ClCompile Include="CelestiaDMS.cpp" />
+    <ClCompile Include="CelestiaRotationModel.cpp" />
+    <ClCompile Include="CelestiaPlanetarySystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
