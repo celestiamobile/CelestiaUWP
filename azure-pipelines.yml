@@ -33,15 +33,19 @@ steps:
   displayName: 'Install VCPKG'
 
 - script: |
-    .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+    vcpkg --triplet=x64-uwp install angle
+  displayName: 'VCPKG Test'
+
+- script: |
+    .\vcpkg\vcpkg.exe --triplet=x64-uwp install libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
   displayName: 'Install x64 Dependencies'
 
 - script: |
-    .\vcpkg\vcpkg.exe --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+    .\vcpkg\vcpkg.exe --triplet=arm64-uwp install libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
   displayName: 'Install ARM64 Dependencies'
 
 - script: |
-    .\vcpkg\vcpkg integrate install
+    .\vcpkg\vcpkg.exe integrate install
   displayName: 'Integrate VCPKG'
 
 - task: NuGetToolInstaller@1
