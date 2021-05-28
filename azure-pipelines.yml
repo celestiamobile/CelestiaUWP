@@ -39,7 +39,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: custom
-    arguments: 'install vcpkg-export-20210528-185002 -source $(Agent.BuildDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
+    arguments: 'install vcpkg-export-20210528-185002 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
   displayName: 'Install Pre-built Nuget Packages'
 
 - task: NuGetCommand@2
