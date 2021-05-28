@@ -28,15 +28,19 @@ steps:
   submodules: true
 - checkout: self
   submodules: true
-- task: NuGetToolInstaller@1
 
 - task: CmdLine@2
   inputs:
     script: |
       .\vcpkg\bootstrap-vcpkg.bat
-      .\vcpkg\vcpkg --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-      .\vcpkg\vcpkg --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+      echo "test1"
+      .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+      echo "test2"
+      .\vcpkg\vcpkg.exe --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+      echo "test3"
       .\vcpkg\vcpkg integrate install
+
+- task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   inputs:
