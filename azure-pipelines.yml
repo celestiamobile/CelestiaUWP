@@ -9,6 +9,9 @@ resources:
     type: github
     endpoint: GithubAuth
     name: levinli303/vcpkg
+  - repository: vcpkg-prebuilt
+    type: git
+    name: vcpkg-prebuilt
 
 trigger:
 - main
@@ -23,6 +26,7 @@ variables:
 
 steps:
 - checkout: vcpkg
+- checkout: vcpkg-prebuilt
 - checkout: Celestia
   submodules: true
 - checkout: self
@@ -33,16 +37,8 @@ steps:
   displayName: 'Install VCPKG'
 
 - script: |
-    vcpkg --triplet=x64-uwp install angle
-  displayName: 'VCPKG Test'
-
-- script: |
-    .\vcpkg\vcpkg.exe --triplet=x64-uwp install libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-  displayName: 'Install x64 Dependencies'
-
-- script: |
-    .\vcpkg\vcpkg.exe --triplet=arm64-uwp install libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
-  displayName: 'Install ARM64 Dependencies'
+    xcopy ".\vcpkg-prebuilt\*" ".\vcpkg\" /K /D /H /Y
+  displayName: 'Install Prebuilt Libraries'
 
 - script: |
     .\vcpkg\vcpkg.exe integrate install
