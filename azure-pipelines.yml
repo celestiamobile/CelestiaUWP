@@ -37,7 +37,7 @@ steps:
   displayName: 'Install VCPKG'
 
 - script: |
-    xcopy ".\vcpkg-prebuilt\*" ".\vcpkg\" /K /D /H /Y
+    xcopy ".\vcpkg-prebuilt\*" ".\vcpkg\" /H /Y /E /I /S
   displayName: 'Install Prebuilt Libraries'
 
 - script: |
