@@ -31,7 +31,7 @@ steps:
 
 
 - script: |
-    .\vcpkg\bootstrap-vcpkg.bat
+    .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
     echo "test1"
     .\vcpkg\vcpkg.exe --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
     echo "test2"
