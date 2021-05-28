@@ -5,10 +5,6 @@ resources:
     ref: angle
     endpoint: GithubAuth
     name: levinli303/Celestia
-  - repository: vcpkg
-    type: github
-    endpoint: GithubAuth
-    name: levinli303/vcpkg
   - repository: vcpkg-prebuilt
     type: git
     name: vcpkg-prebuilt
@@ -33,6 +29,8 @@ steps:
 
 - script: |
     cd CelestiaUWP
+    git config --global user.email "name@name.com"
+    git config --global user.name "Name Name"
     git cherry-pick origin/nupkg-dependencies
   displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
@@ -42,10 +40,12 @@ steps:
   inputs:
     command: custom
     arguments: 'install vcpkg-export-20210528-185002 -source $(Agent.BuildDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
+  displayName: 'Install Pre-built Nuget Packages'
 
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+  displayName: 'Restore Solution'
 
 - task: VSBuild@1
   inputs:
@@ -53,6 +53,7 @@ steps:
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)/Celestia.msix /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:AppxPackageSigningEnabled=false'
+  displayName: 'Build'
 
 - task: DownloadSecureFile@1
   inputs:
