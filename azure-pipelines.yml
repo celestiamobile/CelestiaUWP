@@ -5,6 +5,10 @@ resources:
     ref: angle
     endpoint: GithubAuth
     name: levinli303/Celestia
+  - repository: vcpkg
+    type: github
+    endpoint: GithubAuth
+    name: levinli303/vcpkg
 
 trigger:
 - main
@@ -19,9 +23,20 @@ variables:
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
+- checkout: vcpkg
 - checkout: Celestia
+  submodules: true
 - checkout: self
+  submodules: true
 - task: NuGetToolInstaller@1
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      .\vcpkg\bootstrap-vcpkg.bat
+      .\vcpkg\vcpkg --triplet=x64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+      .\vcpkg\vcpkg --triplet=arm64-uwp install --recurse libpng libjpeg-turbo gettext lua fmt eigen3 freetype cspice angle
+      .\vcpkg\vcpkg integrate install
 
 - task: NuGetCommand@2
   inputs:
