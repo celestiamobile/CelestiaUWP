@@ -39,6 +39,11 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
+    command: custom
+    arguments: 'install ..\vcpkg-prebuilt\vcpkg-export-20210528-185002.1.0.0.nupkg'
+
+- task: NuGetCommand@2
+  inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
