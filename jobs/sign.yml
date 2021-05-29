@@ -14,3 +14,25 @@ jobs:
     displayName: 'Download Build Artifacts ARM64'
     inputs:
       artifactName: Celestia-ARM64.msix
+
+  - script: |
+      "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86\makeappx.exe" bundle /d $(System.ArtifactsDirectory) /p $(build.artifactstagingdirectory)\Celestia.msixbundle
+    displayName: 'Creating Bundle'
+
+  - task: DownloadSecureFile@1
+    name: signingCert
+    inputs:
+      secureFile: '3d.pfx'
+    displayName: 'Download Secure PFX File'
+
+  - script: |
+      "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86\signtool" sign /fd SHA256 /f $(signingCert.secureFilePath) /p secret $(build.artifactstagingdirectory)\Celestia.msixbundle
+    displayName: 'Sign'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Celestia.msixbundle'
+      ArtifactName: Celestia.msixbundle
+      publishLocation: Container
+
