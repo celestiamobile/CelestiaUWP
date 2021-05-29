@@ -45,28 +45,29 @@ jobs:
       restoreSolution: '$(solution)'
     displayName: 'Restore Solution'
 
+  - task: DownloadSecureFile@1
+    name: signingCert
+    displayName: 'Download CA certificate'
+    inputs:
+      secureFile: '3d.pfx'
+
   - task: VSBuild@1
     inputs:
       platform: $(buildPlatform)
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
       msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
-                    /p:AppxPackageOutput=$(Build.ArtifactStagingDirectory)\Celestia-$(buildPlatform).msix
-                    /p:AppxBundle=Never
+                    /p:AppxPackageDir="$(build.artifactStagingDirectory)"
+                    /p:AppxBundle=Always
                     /p:UapAppxPackageBuildMode=StoreUpload
-                    /p:AppxPackageSigningEnabled=false'
+                    /p:AppxPackageSigningEnabled=true
+                    /p:PackageCertificateThumbprint=""
+                    /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
     displayName: 'Build'
-
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)'
-      Contents: '**\bin\$(BuildConfiguration)\**'
-      TargetFolder: '$(build.artifactstagingdirectory)'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Celestia-$(buildPlatform).msix'
-      ArtifactName: Celestia-$(buildPlatform).msix
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: $(buildPlatform)
       publishLocation: Container

@@ -27,8 +27,9 @@ stages:
     parameters:
       platform: ARM64
 - stage: Sign
+  displayName: 'Publish'
   dependsOn:
   - Build_x64
   - Build_ARM64
   jobs:
-  - template: jobs/sign.yml
+  - template: jobs/publish.yml

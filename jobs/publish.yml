@@ -1,0 +1,16 @@
+jobs:
+- job: Publish
+  displayName: 'Publish'
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts X64'
+    inputs:
+      artifactName: x64
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts ARM64'
+    inputs:
+      artifactName: ARM64
