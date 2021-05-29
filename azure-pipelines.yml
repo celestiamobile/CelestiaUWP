@@ -2,7 +2,6 @@ resources:
  repositories:
   - repository: Celestia
     type: github
-    ref: angle
     endpoint: GithubAuth
     name: levinli303/Celestia
   - repository: vcpkg-prebuilt

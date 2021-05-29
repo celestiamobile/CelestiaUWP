@@ -12,9 +12,14 @@ jobs:
   steps:
   - checkout: vcpkg-prebuilt
   - checkout: Celestia
-    submodules: true
   - checkout: self
     submodules: true
+
+  - script: |
+      cd Celestia
+      git checkout origin/angle
+      git submodule update --init
+    displayName: 'Checkout Branch'
 
   - script: |
       cd CelestiaUWP
