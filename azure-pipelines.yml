@@ -36,11 +36,11 @@ steps:
   displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
 - script: |
-    call "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\Resources"
+    call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
   displayName: 'Copy General Data'
 
 - script: |
-    call "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\convert_po.bat" "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)CelestiaUWP\CelestiaUWP\Resources"
+    call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\convert_po.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
   displayName: 'Convert POs'
 
 - task: NuGetToolInstaller@1
