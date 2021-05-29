@@ -4,13 +4,23 @@ jobs:
   pool:
     vmImage: 'windows-latest'
 
+  variables:
+    platform: ${{ parameters.platform }}
+
   steps:
   - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts X64'
+    displayName: 'Download Build Artifacts'
     inputs:
-      artifactName: x64
+      artifactName: $(platform)
 
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts ARM64'
+  - task: AppCenterDistribute@3
+    displayName: 'Publish to App Center'
     inputs:
-      artifactName: ARM64
+      serverEndpoint: 'UWPCelestiaAppCenter'
+      appSlug: 'CelestiaProject/Celestia-4'
+      appFile: '$(System.ArtifactsDirectory)\$(platform)\**\*.msixupload'
+      symbolsOption: 'UWP'
+      appxsymPath: '$(System.ArtifactsDirectory)\$(platform)\**\*.appxsym'
+      releaseNotesOption: 'input'
+      releaseNotesInput: 'Internal testing only.'
+      destinationType: 'groups'
