@@ -24,3 +24,20 @@ jobs:
       releaseNotesOption: 'input'
       releaseNotesInput: 'Internal testing only.'
       destinationType: 'groups'
+
+  - task: ArchiveFiles@2
+    displayName: 'Create Archive for Sideloading'
+    inputs:
+      rootFolderOrFile: $(System.ArtifactsDirectory)\$(platform)\CelestiaUWP_2.0.7.0_Test
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)\CelestiaSL-$(platform).zip'
+      replaceExistingArchive: true
+      verbose: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\CelestiaSL-$(platform).zip'
+      ArtifactName: CelestiaSL-$(platform).zip
+      publishLocation: Container
