@@ -1,0 +1,16 @@
+jobs:
+- job: Sign
+  displayName: 'Sign'
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts X64'
+    inputs:
+      artifactName: Celestia-x64.msix
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts ARM64'
+    inputs:
+      artifactName: Celestia-ARM64.msix
