@@ -1,0 +1,78 @@
+jobs:
+- job: Build
+  displayName: 'Build'
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: ${{ parameters.platform }}
+    buildConfiguration: 'Release'
+
+  steps:
+  - checkout: vcpkg-prebuilt
+  - checkout: Celestia
+  - checkout: self
+    submodules: true
+
+  - script: |
+      cd Celestia
+      git checkout origin/angle
+      git submodule update --init
+    displayName: 'Checkout Branch'
+
+  - script: |
+      cd CelestiaUWP
+      git config --global user.email "name@name.com"
+      git config --global user.name "Name Name"
+      git cherry-pick origin/nupkg-dependencies
+    displayName: 'Cherry-Pick Pre-built Nuget Changes'
+
+  - script: |
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
+    displayName: 'Copy General Data'
+
+  - script: |
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\convert_po.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
+    displayName: 'Convert POs'
+
+  - task: NuGetToolInstaller@1
+    displayName: 'Install Nuget'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: custom
+      arguments: 'install vcpkg-export-20210528-210617 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
+    displayName: 'Install Pre-built Nuget Packages'
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+    displayName: 'Restore Solution'
+
+  - task: DownloadSecureFile@1
+    name: signingCert
+    displayName: 'Download CA certificate'
+    inputs:
+      secureFile: '3d.pfx'
+
+  - task: VSBuild@1
+    inputs:
+      platform: $(buildPlatform)
+      solution: '$(solution)'
+      configuration: '$(buildConfiguration)'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                    /p:AppxPackageDir="$(build.artifactStagingDirectory)"
+                    /p:AppxBundle=Always
+                    /p:UapAppxPackageBuildMode=StoreUpload
+                    /p:AppxPackageSigningEnabled=true
+                    /p:PackageCertificateThumbprint=""
+                    /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
+    displayName: 'Build'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: $(buildPlatform)
+      publishLocation: Container

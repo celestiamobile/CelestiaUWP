@@ -1,0 +1,47 @@
+jobs:
+- job: Publish
+  displayName: 'Publish'
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    platform: ${{ parameters.platform }}
+
+  steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: $(platform)
+
+  - task: AppCenterDistribute@3
+    displayName: 'Publish to App Center'
+    inputs:
+      serverEndpoint: 'UWPCelestiaAppCenter'
+      appSlug: 'CelestiaProject/Celestia-4'
+      appFile: '$(System.ArtifactsDirectory)\$(platform)\**\*.msixupload'
+      symbolsOption: 'UWP'
+      appxsymPath: '$(System.ArtifactsDirectory)\$(platform)\**\*.appxsym'
+      releaseNotesOption: 'input'
+      releaseNotesInput: 'Internal testing only.'
+      destinationType: 'groups'
+
+  - script: |
+      del $(System.ArtifactsDirectory)\$(platform)\*.msixupload
+    displayName: 'Remove .msixupload'
+
+  - task: ArchiveFiles@2
+    displayName: 'Create Archive for Sideloading'
+    inputs:
+      rootFolderOrFile: $(System.ArtifactsDirectory)\$(platform)
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)\CelestiaSL-$(platform).zip'
+      replaceExistingArchive: true
+      verbose: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\CelestiaSL-$(platform).zip'
+      ArtifactName: CelestiaSL-$(platform).zip
+      publishLocation: Container

@@ -1,0 +1,43 @@
+resources:
+ repositories:
+  - repository: Celestia
+    type: github
+    endpoint: GithubAuth
+    name: levinli303/Celestia
+  - repository: vcpkg-prebuilt
+    type: git
+    name: vcpkg-prebuilt
+
+trigger:
+- main
+
+stages:
+- stage: Build_x64
+  displayName: 'Build x64'
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      platform: x64
+- stage: Build_ARM64
+  displayName: 'Build ARM64'
+  dependsOn: []
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      platform: ARM64
+- stage: Publish_x64
+  displayName: 'Publish x64'
+  dependsOn:
+  - Build_x64
+  jobs:
+  - template: jobs/publish.yml
+    parameters:
+      platform: x64
+- stage: Publish_ARM64
+  displayName: 'Publish ARM64'
+  dependsOn:
+  - Build_ARM64
+  jobs:
+  - template: jobs/publish.yml
+    parameters:
+      platform: ARM64
