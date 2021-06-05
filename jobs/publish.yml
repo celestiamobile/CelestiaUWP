@@ -23,8 +23,8 @@ jobs:
       destinationType: 'groups'
 
   - script: |
-      del $(System.ArtifactsDirectory)\Universal\*.msixupload
-      del $(System.ArtifactsDirectory)\Universal\*.appxsym /s /q
+      DEL $(System.ArtifactsDirectory)\Universal\*.msixupload
+      DEL $(System.ArtifactsDirectory)\Universal\*.appxsym /S /Q
     displayName: 'Remove .msixupload, .appxsym'
 
   - task: PublishBuildArtifacts@1

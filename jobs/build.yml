@@ -46,8 +46,8 @@ jobs:
 
   - script: |
       RD vcpkg-prebuilt /S /Q
-      RD CelestiaUWP/packages/vcpkg-export-20210528-210617.1.0.0/installed/x64-uwp/debug
-      RD CelestiaUWP/packages/vcpkg-export-20210528-210617.1.0.0/installed/arm64-uwp/debug
+      RD CelestiaUWP\packages\vcpkg-export-20210528-210617.1.0.0\installed\x64-uwp\debug /S /Q
+      RD CelestiaUWP\packages\vcpkg-export-20210528-210617.1.0.0\installed\arm64-uwp\debug /S /Q
     displayName: 'Remove Unneeded Files'
 
   - task: NuGetCommand@2
