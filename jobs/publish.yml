@@ -10,6 +10,21 @@ jobs:
     inputs:
       artifactName: 'Universal'
 
+  - script: |
+      MKDIR Symbols
+      FOR /R $(System.ArtifactsDirectory)\Universal %f in (*.appxsym) DO @COPY "%f" Symbols /Y
+    displayName: 'Create Symbols Directory'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive Symbols'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)\Symbols'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(System.DefaultWorkingDirectory)\Symbols.zip'
+      replaceExistingArchive: true
+      verbose: true
+
   - task: AppCenterDistribute@3
     displayName: 'Publish to App Center'
     inputs:
@@ -17,7 +32,7 @@ jobs:
       appSlug: 'CelestiaProject/Celestia-4'
       appFile: '$(System.ArtifactsDirectory)\Universal\**\*.msixupload'
       symbolsOption: 'UWP'
-      appxsymPath: '$(System.ArtifactsDirectory)\Universal\**\*.appxsym'
+      appxsymPath: '$(System.DefaultWorkingDirectory)\Symbols.zip'
       releaseNotesOption: 'input'
       releaseNotesInput: 'Internal testing only.'
       destinationType: 'groups'
