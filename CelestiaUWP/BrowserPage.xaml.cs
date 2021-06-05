@@ -54,8 +54,18 @@ namespace CelestiaUWP
             var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
             AppCore = parameter.Item1;
             Renderer = parameter.Item2;
-            var sol = AppCore.Simulation.Find("Sol").Object as CelestiaStar;
-            mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(sol), sol, GetChildren) };
+            var sol = AppCore.Simulation.Find("Sol");
+            if (!sol.IsEmpty)
+            {
+                var solStar = sol.Object;
+                if (solStar is CelestiaStar)
+                {
+                    mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, GetChildren) };
+                }
+            }
+
+            if (mSolRoot == null)
+                mSolRoot = new CelestiaBrowserItem[] { };
 
             var nearest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest).Stars;
             var brightest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest).Stars;
