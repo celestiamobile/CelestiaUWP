@@ -6,7 +6,6 @@ jobs:
 
   variables:
     solution: '**/*.sln'
-    buildPlatform: ${{ parameters.platform }}
     buildConfiguration: 'Release'
 
   steps:
@@ -45,6 +44,12 @@ jobs:
       arguments: 'install vcpkg-export-20210528-210617 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
     displayName: 'Install Pre-built Nuget Packages'
 
+  - script: |
+      RD vcpkg-prebuilt /S /Q
+      RD CelestiaUWP/packages/vcpkg-export-20210528-210617.1.0.0/installed/x64-uwp/debug
+      RD CelestiaUWP/packages/vcpkg-export-20210528-210617.1.0.0/installed/arm64-uwp/debug
+    displayName: 'Remove Unneeded Files'
+
   - task: NuGetCommand@2
     inputs:
       restoreSolution: '$(solution)'
@@ -58,10 +63,10 @@ jobs:
 
   - task: VSBuild@1
     inputs:
-      platform: $(buildPlatform)
+      platform: x64
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+      msbuildArgs: '/p:AppxBundlePlatforms="x64|ARM64"
                     /p:AppxPackageDir="$(build.artifactStagingDirectory)"
                     /p:AppxBundle=Always
                     /p:UapAppxPackageBuildMode=StoreUpload
@@ -74,5 +79,5 @@ jobs:
     displayName: 'Publish Artifact'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: $(buildPlatform)
+      ArtifactName: Universal
       publishLocation: Container
