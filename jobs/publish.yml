@@ -12,7 +12,7 @@ jobs:
 
   - script: |
       MKDIR Symbols
-      FOR /R $(System.ArtifactsDirectory)\Universal %f in (*.appxsym) DO @COPY "%f" Symbols /Y
+      FOR /R $(System.ArtifactsDirectory)\Universal %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
     displayName: 'Create Symbols Directory'
 
   - task: ArchiveFiles@2
