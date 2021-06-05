@@ -12,6 +12,7 @@
 using CelestiaComponent;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -26,7 +27,7 @@ namespace CelestiaUWP
         public ObservableCollection<BookmarkNode> Children;
     }
 
-    public class BookmarkBasePage : Page
+    public class BookmarkBasePage : Page, INotifyPropertyChanged
     {
         protected CelestiaAppCore AppCore;
         protected CelestiaRenderer Renderer;
@@ -59,6 +60,7 @@ namespace CelestiaUWP
                 bookmarks = new ObservableCollection<BookmarkNode>();
             }
             Bookmarks = bookmarks;
+            OnPropertyChanged("Bookmarks");
         }
 
         async public void WriteBookmarks()
@@ -86,6 +88,12 @@ namespace CelestiaUWP
                     return p;
             }
             return null;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
