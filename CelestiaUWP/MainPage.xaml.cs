@@ -76,6 +76,8 @@ namespace CelestiaUWP
 
         public MainPage()
         {
+            CelestiaAppCore.SetUpLocale();
+
             mAppCore = new CelestiaAppCore();
 
             InitializeComponent();

@@ -53,6 +53,7 @@ namespace winrt::CelestiaComponent::implementation
 
         static void InitGL();
         static void SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale);
+        static void SetUpLocale();
         static hstring LocalizedString(hstring const& original, hstring const& domain);
         static com_array<CelestiaComponent::CelestiaScript> ReadScripts(hstring const& directory, bool deepScan);
 

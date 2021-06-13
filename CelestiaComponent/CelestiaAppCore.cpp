@@ -312,9 +312,6 @@ namespace winrt::CelestiaComponent::implementation
 #ifdef ENABLE_NLS
         _putenv_s("LANG", to_string(locale).c_str());
         std::string dir = to_string(localeDirectory);
-        // Gettext integration
-        setlocale(LC_ALL, "");
-        setlocale(LC_NUMERIC, "C");
         bindtextdomain("celestia", dir.c_str());
         bind_textdomain_codeset("celestia", "UTF-8");
         bindtextdomain("celestia_constellations", dir.c_str());
@@ -322,6 +319,14 @@ namespace winrt::CelestiaComponent::implementation
         bindtextdomain("celestia_ui", dir.c_str());
         bind_textdomain_codeset("celestia_ui", "UTF-8");
         textdomain("celestia");
+#endif
+    }
+
+    void CelestiaAppCore::SetUpLocale()
+    {
+#ifdef ENABLE_NLS
+        setlocale(LC_ALL, "");
+        setlocale(LC_NUMERIC, "C");
 #endif
     }
 
