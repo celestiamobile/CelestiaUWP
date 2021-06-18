@@ -469,9 +469,6 @@ namespace CelestiaUWP
             });
             GLView.PointerPressed += (sender, args) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -505,9 +502,6 @@ namespace CelestiaUWP
             };
             GLView.PointerMoved += (sender, args) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -556,9 +550,6 @@ namespace CelestiaUWP
             };
             GLView.PointerReleased += (sender, args) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
@@ -592,9 +583,6 @@ namespace CelestiaUWP
             };
             GLView.PointerWheelChanged += (sender, arg) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
                 var delta = arg.GetCurrentPoint((UIElement)sender).Properties.MouseWheelDelta;
                 mRenderer.EnqueueTask(() =>
                 {
@@ -1027,16 +1015,7 @@ namespace CelestiaUWP
         void ShowPage(Type pageType, Size size, object parameter)
         {
             OverlayBackground.Visibility = Visibility.Visible;
-            OverlayContainer.PointerPressed += (sender, arg) =>
-            {
-                arg.Handled = true;
-            };
-            OverlayBackground.PointerPressed += (sender, arg) =>
-            {
-                OverlayBackground.Visibility = Visibility.Collapsed;
-                OverlayContainer.Content = null;
-            };
-            OverlayContainer.Width = size.Width;
+            OverlayBackground.Width = size.Width;
             if (size.Height <= 1)
             {
                 OverlayContainer.Height = OverlayBackground.Height;
@@ -1315,6 +1294,12 @@ namespace CelestiaUWP
             {
                 ShowScreenshotFailure();
             }
+        }
+
+        private void ClosePanelButton_Click(object sender, RoutedEventArgs e)
+        {
+            OverlayBackground.Visibility = Visibility.Collapsed;
+            OverlayContainer.Content = null;
         }
     }
 }
