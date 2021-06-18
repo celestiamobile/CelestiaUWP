@@ -14,9 +14,14 @@
             <TextBlock x:Name="LoadingText" Foreground="White" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </SwapChainPanel>
         <MenuBar Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
-        <RelativePanel Visibility="Collapsed" Background="#01FFFFFF" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" x:Name="OverlayBackground">
-            <Frame Background="{ThemeResource SystemControlAcrylicElementBrush}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWith="OverlayContainer"/>
-            <Frame RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" x:Name="OverlayContainer"/>
+        <RelativePanel Visibility="Collapsed" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" x:Name="OverlayBackground">
+            <Frame Background="{ThemeResource SystemControlAcrylicElementBrush}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+            <RelativePanel x:Name="OverlayTitle" Background="{ThemeResource NavigationViewTopPaneBackground}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <Button Background="Transparent" x:Name="ClosePanelButton" Click="ClosePanelButton_Click" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8BB;" FontSize="12"/>
+                </Button>
+            </RelativePanel>
+            <Frame RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="OverlayTitle" RelativePanel.AlignRightWithPanel="True" x:Name="OverlayContainer"/>
         </RelativePanel>
     </RelativePanel>
 </Page>
