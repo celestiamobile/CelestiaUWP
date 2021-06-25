@@ -17,7 +17,7 @@
         <RelativePanel Visibility="Collapsed" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" x:Name="OverlayBackground">
             <Frame Background="{ThemeResource SystemControlAcrylicElementBrush}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
             <RelativePanel x:Name="OverlayTitle" Background="{ThemeResource NavigationViewTopPaneBackground}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                <Button Background="Transparent" x:Name="ClosePanelButton" Click="ClosePanelButton_Click" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <Button BorderThickness="0.0" BorderBrush="Transparent" Background="Transparent" x:Name="ClosePanelButton" Click="ClosePanelButton_Click" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8BB;" FontSize="12"/>
                 </Button>
             </RelativePanel>
