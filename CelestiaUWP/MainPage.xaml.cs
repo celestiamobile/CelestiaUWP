@@ -926,6 +926,7 @@ namespace CelestiaUWP
                 var item = new MenuBarItem
                 {
                     Title = name,
+                    Name = name,
                 };
                 return item;
             }
@@ -1001,6 +1002,15 @@ namespace CelestiaUWP
                     });
                 }
             }, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.V });
+
+            for (int i = 0; i < testInfos.Length; i += 1)
+            {
+                int copy = i;
+                AppendItem(fileItem, string.Format("Test {0}", copy), (sender, arg) =>
+                {
+                    ShowTest(testInfos[copy]);
+                });
+            }
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -1180,7 +1190,8 @@ namespace CelestiaUWP
         {
             var item = new MenuFlyoutItem
             {
-                Text = text
+                Text = text,
+                Name = text,
             };
             if (accelerator != null)
                 item.KeyboardAccelerators.Add(accelerator);
@@ -1663,6 +1674,56 @@ namespace CelestiaUWP
             {
                 hasOverlayOpen = false;
             });
+        }
+
+        private void ShowTest(TestInfo testInfo)
+        {
+            mRenderer.EnqueueTask(() =>
+            {
+                mAppCore.GoToURL(testInfo.celURL);
+            });
+
+            if (testInfo.showInfo)
+            {
+                mRenderer.EnqueueTask(() =>
+                {
+                    var selection = mAppCore.Simulation.Selection;
+                    if (!selection.IsEmpty)
+                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ShowPage(typeof(InfoPage), new Size(400, 0), (mAppCore, selection));
+                        });
+                });
+            }
+
+            if (testInfo.addonID != null)
+            {
+                URLToOpen = new Uri(string.Format("celaddon://item?item={0}", testInfo.addonID));
+                OpenFileOrURL();
+            }
+        }
+
+        private TestInfo[] testInfos = new TestInfo[]
+        {
+            new TestInfo("cel://Follow/Sol:Earth/2023-07-02T13:52:59.06554Z?x=gHqIoxcYrv7//////////w&y=JAcLdlkIUQ&z=ySumWO0O/v///////////w&ow=-0.73719114&ox=-0.26776052&oy=-0.6141897&oz=0.087318935&select=Sol:Earth&fov=15.534162&ts=1&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", null, true),
+            new TestInfo("cel://Follow/Sol/2023-06-10T04:01:09.36594Z?x=AADgxNkenTx7Ag&y=AAAAeu5N7SvJAw&z=AABAbpqtfATN+v///////w&ow=-0.1762914&ox=0.039147615&oy=0.9339327&oz=0.30847773&fov=15.497456&ts=1&ltd=0&p=0&rf=71227315&nrf=255&lm=6147&tsrc=0&ver=3", null, false),
+            new TestInfo("cel://SyncOrbit/Sol:Earth/2024-07-30T06:00:31.79943Z?x=5H8ym9O86f///////////w&y=Jx39zwAGIw&z=6bKOqSApDw&ow=0.88020444&ox=-0.3483816&oy=0.18829681&oz=-0.26156196&select=TYC%204123-1214-1&fov=51.175&ts=1&ltd=0&p=1&rf=71235487&nrf=255&lm=15&tsrc=0&ver=3", null, false),
+            new TestInfo("cel://Follow/Westerhout%2051/2023-06-10T03:31:39.13768Z?x=AAAAAABxRUqY3KUS&y=AAAAAAA1xr8Nhgv2/////w&z=AAAAAAC8ueP73lXs/////w&ow=-0.4382953&ox=0.5837729&oy=0.678968&oz=0.07815942&fov=15.497456&ts=1&ltd=0&p=0&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", null, false),
+            new TestInfo("cel://Follow/Sol:Jupiter:Callisto/2023-07-02T11:03:12.01362Z?x=YJG63ya8Sf///////////w&y=k1RN8wszCw&z=ZY4WNWkjGQ&ow=0.7285262&ox=-0.043709736&oy=0.682417&oz=0.0405734&fov=5.30302&ts=10&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", null, false),
+            new TestInfo("cel://Follow/Cygnus%20X-1/2023-07-02T13:52:59.06554Z?x=ACwEriWpVvv//////////w&y=cKpIoLiUl////////////w&z=AOyX+4hMTQg&ow=0.10665737&ox=-0.3053027&oy=-0.0070079123&oz=0.94623744&select=HD%20226868%20A&fov=15.534161&ts=10&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", "87D5FBAB-5722-70A9-6D4C-F4FD22EA87BC", false),
+        };
+    }
+    public class TestInfo
+    {
+        public string celURL;
+        public string addonID;
+        public bool showInfo;
+
+        public TestInfo(string celURL, string addonID, bool showInfo)
+        {
+            this.celURL = celURL;
+            this.addonID = addonID;
+            this.showInfo = showInfo;
         }
     }
 }
