@@ -469,9 +469,6 @@
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celestia\imagecapture.cpp">
-      <Filter>Celestia\celestia</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
@@ -1085,9 +1082,6 @@
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h">
-      <Filter>Celestia\celestia</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celestia\imagecapture.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h">

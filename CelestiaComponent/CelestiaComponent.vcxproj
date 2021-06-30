@@ -440,7 +440,6 @@
     <ClInclude Include="..\..\Celestia\src\celestia\eclipsefinder.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\favorites.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h" />
-    <ClInclude Include="..\..\Celestia\src\celestia\imagecapture.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\url.h" />
@@ -617,7 +616,6 @@
     <ClCompile Include="..\..\Celestia\src\celestia\eclipsefinder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celestia\imagecapture.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\url.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp" />
