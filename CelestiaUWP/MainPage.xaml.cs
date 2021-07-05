@@ -932,6 +932,8 @@ namespace CelestiaUWP
 
         async void ShowSelectObject()
         {
+            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
             var dialog = new TextInputDialog(LocalizationHelper.Localize("Object name:"));
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
@@ -995,6 +997,8 @@ namespace CelestiaUWP
 
         async void ShowTimeSetting()
         {
+            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
             var time = DateTimeOffset.Now;
             try
             {
@@ -1047,6 +1051,8 @@ namespace CelestiaUWP
         }
         async void ShowOpenGLInfo()
         {
+            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
             var dialog = new InfoDialog(mAppCore.RenderInfo)
             {
                 Title = LocalizationHelper.Localize("OpenGL Info")
@@ -1061,6 +1067,8 @@ namespace CelestiaUWP
 
         async void ShowAboutDialog()
         {
+            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
             var dialog = new AboutDialog();
             await dialog.ShowAsync();
         }
