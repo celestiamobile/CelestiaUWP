@@ -995,6 +995,13 @@ namespace CelestiaUWP
 
         async void ShowTimeSetting()
         {
+            var time = DateTimeOffset.Now;
+            try
+            {
+                time = mAppCore.Simulation.Time;
+            }
+            catch (Exception ignored){} // Catch all exceptions
+
             var dialog = new TimeSettingDialog(mAppCore.Simulation.Time);
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
