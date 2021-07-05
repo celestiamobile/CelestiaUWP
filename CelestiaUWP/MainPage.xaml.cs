@@ -932,7 +932,7 @@ namespace CelestiaUWP
 
         async void ShowSelectObject()
         {
-            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+            if (HasContentDialogOpen()) return;
 
             var dialog = new TextInputDialog(LocalizationHelper.Localize("Object name:"));
             var result = await dialog.ShowAsync();
@@ -955,7 +955,7 @@ namespace CelestiaUWP
         }
         async void ShowGotoObject()
         {
-            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+            if (HasContentDialogOpen()) return;
 
             var dialog = new GotoObjectDialog(mAppCore);
             var result = await dialog.ShowAsync();
@@ -982,6 +982,19 @@ namespace CelestiaUWP
             }
         }
 
+        bool HasContentDialogOpen()
+        {
+            var openedpopups = VisualTreeHelper.GetOpenPopups(Window.Current);
+            foreach (var popup in openedpopups)
+            {
+                if (popup.Child is ContentDialog)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void ShowObjectNotFound()
         {
             ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
@@ -999,7 +1012,7 @@ namespace CelestiaUWP
 
         async void ShowTimeSetting()
         {
-            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+            if (HasContentDialogOpen()) return;
 
             var time = DateTimeOffset.Now;
             try
@@ -1053,7 +1066,7 @@ namespace CelestiaUWP
         }
         async void ShowOpenGLInfo()
         {
-            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+            if (HasContentDialogOpen()) return;
 
             var dialog = new InfoDialog(mAppCore.RenderInfo)
             {
@@ -1069,7 +1082,7 @@ namespace CelestiaUWP
 
         async void ShowAboutDialog()
         {
-            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+            if (HasContentDialogOpen()) return;
 
             var dialog = new AboutDialog();
             await dialog.ShowAsync();
