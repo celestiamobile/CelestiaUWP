@@ -92,7 +92,11 @@ namespace CelestiaUWP
                 {
                     var e = urlEvent as ProtocolActivatedEventArgs;
                     var p = rootFrame.Content as MainPage;
-                    p.OpenURLIfReady(e.Uri);
+                    try
+                    {
+                        p.OpenURLIfReady(e.Uri);
+                    }
+                    catch (Exception ignored) { };
                 }
 
                 // Ensure the current window is active
