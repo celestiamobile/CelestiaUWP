@@ -955,6 +955,8 @@ namespace CelestiaUWP
         }
         async void ShowGotoObject()
         {
+            if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
+
             var dialog = new GotoObjectDialog(mAppCore);
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
