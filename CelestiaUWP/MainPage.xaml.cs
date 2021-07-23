@@ -1064,11 +1064,23 @@ namespace CelestiaUWP
         {
             ShowPage(typeof(NewBookmarkPage), new Size(400, 0), (mAppCore, mRenderer));
         }
-        async void ShowOpenGLInfo()
+        void ShowOpenGLInfo()
+        {
+            mRenderer.EnqueueTask(() =>
+            {
+                string info = mAppCore.RenderInfo;
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ShowOpenGLInfo(info);
+                });
+            });
+        }
+
+        async void ShowOpenGLInfo(string Info)
         {
             if (HasContentDialogOpen()) return;
 
-            var dialog = new InfoDialog(mAppCore.RenderInfo)
+            var dialog = new InfoDialog(Info)
             {
                 Title = LocalizationHelper.Localize("OpenGL Info")
             };
