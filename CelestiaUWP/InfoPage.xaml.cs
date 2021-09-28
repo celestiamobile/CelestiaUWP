@@ -55,10 +55,28 @@ namespace CelestiaUWP
         private string GetBodyOverview(CelestiaBody Body, CelestiaAppCore AppCore)
         {
             var str = "";
-            if (Body.IsEllipsoid)
-                str += string.Format(LocalizationHelper.Localize("Equatorial radius: %s").Replace("%s", "{0}"), GetRadiusString(Body.Radius));
+            var radius = Body.Radius;
+            string radiusString;
+            const float oneMiInKm = 1.609344f;
+            const float oneFtInKm = 0.0003048f;
+            if (AppCore.MeasurementSystem == (int)CelestiaMeasurementSystem.imperial)
+            {
+                if (radius >= oneMiInKm)
+                    radiusString = string.Format(LocalizationHelper.Localize("%d mi").Replace("%d", "{0}"), (int)(radius / oneMiInKm));
+                else
+                    radiusString = string.Format(LocalizationHelper.Localize("%d ft").Replace("%d", "{0}"), (int)(radius / oneFtInKm));
+            }
             else
-                str += string.Format(LocalizationHelper.Localize("Size: %s").Replace("%s", "{0}"), GetRadiusString(Body.Radius));
+            {
+                if (radius >= oneMiInKm)
+                    radiusString = string.Format(LocalizationHelper.Localize("%d km").Replace("%d", "{0}"), (int)radius);
+                else
+                    radiusString = string.Format(LocalizationHelper.Localize("%d m").Replace("%d", "{0}"), (int)(radius / 1000.0f));
+            }
+            if (Body.IsEllipsoid)
+                str += string.Format(LocalizationHelper.Localize("Equatorial radius: %s").Replace("%s", "{0}"), radiusString);
+            else
+                str += string.Format(LocalizationHelper.Localize("Size: %s").Replace("%s", "{0}"), radiusString);
             var time = AppCore.Simulation.Time;
             var orbit = Body.OrbitAtTime(time);
             var rotation = Body.RotationModelAtTime(time);
@@ -158,13 +176,6 @@ namespace CelestiaUWP
             str += string.Format(LocalizationHelper.Localize("B: {0}° {1}′ {2:N2}″"), dms.Hours, dms.Minutes, dms.Seconds);
 
             return str;
-        }
-
-        private string GetRadiusString(double radius)
-        {
-            if (radius < 1)
-                return string.Format(LocalizationHelper.Localize("%d m").Replace("%d", "{0:N2}"), (int)(radius * 1000));
-            return string.Format(LocalizationHelper.Localize("%d km").Replace("%d", "{0:N2}"), (int)radius);
         }
     }
 }

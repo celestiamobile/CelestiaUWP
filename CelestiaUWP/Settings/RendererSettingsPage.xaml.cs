@@ -23,6 +23,11 @@ namespace CelestiaUWP.Settings
             LocalizationHelper.Localize("Terse"),
             LocalizationHelper.Localize("Verbose")
         };
+        private readonly string[] MeasurementDescriptions = new string[]
+        {
+            LocalizationHelper.Localize("Metric"),
+            LocalizationHelper.Localize("Imperial")
+        };
         private readonly string[] ResolutionDescriptions = new string[]
         {
             LocalizationHelper.Localize("Low"),

@@ -52,6 +52,14 @@
                 <TextBlock Text="Info Display:" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                 <ComboBox Grid.Column="1" SelectedIndex="{x:Bind AppCore.HudDetail, Mode=TwoWay}" ItemsSource="{x:Bind InfoDescriptions}" VerticalAlignment="Center"/>
             </Grid>
+            <Grid Margin="0, 8, 0, 8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Measure Units:" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="1" SelectedIndex="{x:Bind AppCore.MeasurementSystem, Mode=TwoWay}" ItemsSource="{x:Bind MeasurementDescriptions}" VerticalAlignment="Center"/>
+            </Grid>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="1">
             <TextBlock Margin="0, 8, 0, 8" Text="Star Style" x:Name="StarStylsHint" FontWeight="Bold"/>

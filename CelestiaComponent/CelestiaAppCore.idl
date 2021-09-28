@@ -27,6 +27,31 @@ namespace CelestiaComponent
         right = 4
     };
 
+    enum CelestiaMeasurementSystem
+    {
+        metric = 0,
+        imperial = 1,
+    };
+
+    enum CelestiaJoystickAxis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2,
+    };
+
+    enum CelestiaJoystickButton
+    {
+        Button1 = 0,
+        Button2 = 1,
+        Button3 = 2,
+        Button4 = 3,
+        Button5 = 4,
+        Button6 = 5,
+        Button7 = 6,
+        Button8 = 7,
+    };
+
     delegate void CelestiaLoadCallback(String status);
     delegate void CelestiaContextMenuCallback(Single x, Single y, CelestiaSelection selection);
 
@@ -51,6 +76,9 @@ namespace CelestiaComponent
         void CharEnter(Int16 input, Int32 modifiers);
         void KeyUp(Int32 key, Int32 modifiers);
         void KeyDown(Int32 key, Int32 modifiers);
+        void JoystickButtonDown(CelestiaJoystickButton button);
+        void JoystickButtonUp(CelestiaJoystickButton button);
+        void JoystickAxis(CelestiaJoystickAxis axis, Single amount);
         void SetContextMenuHandler(CelestiaContextMenuCallback handler);
         void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
@@ -176,5 +204,6 @@ namespace CelestiaComponent
         Boolean ShowTerminator;
 
         Int32 TimeZone;
+        Int32 MeasurementSystem;
     }
 }

@@ -37,6 +37,9 @@ namespace winrt::CelestiaComponent::implementation
         void CharEnter(int16_t input, int32_t modifiers);
         void KeyUp(int32_t key, int32_t modifiers);
         void KeyDown(int32_t key, int32_t modifiers);
+        void JoystickButtonDown(CelestiaComponent::CelestiaJoystickButton button);
+        void JoystickButtonUp(CelestiaComponent::CelestiaJoystickButton button);
+        void JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount);
         void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
         void SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
@@ -267,6 +270,9 @@ namespace winrt::CelestiaComponent::implementation
 
         int32_t TimeZone();
         void TimeZone(int32_t timeZone);
+
+        int32_t MeasurementSystem();
+        void MeasurementSystem(int32_t measurementSystem);
 
     private:
         CelestiaCore* core;

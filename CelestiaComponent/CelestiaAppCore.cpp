@@ -221,6 +221,21 @@ namespace winrt::CelestiaComponent::implementation
         core->keyDown(celestiaKey, modifiers);
     }
 
+    void CelestiaAppCore::JoystickButtonDown(CelestiaComponent::CelestiaJoystickButton button)
+    {
+        core->joystickButton((int)button, true);
+    }
+
+    void CelestiaAppCore::JoystickButtonUp(CelestiaComponent::CelestiaJoystickButton button)
+    {
+        core->joystickButton((int)button, false);
+    }
+
+    void CelestiaAppCore::JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount)
+    {
+        core->joystickAxis((int)axis, amount);
+    }
+
     void CelestiaAppCore::SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler)
     {
         auto previousHandler = core->getContextMenuHandler();
@@ -673,5 +688,15 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::TimeZone(int32_t timeZone)
     {
         core->setTimeZoneBias(0 == timeZone ? 1 : 0);
+    }
+
+    int32_t CelestiaAppCore::MeasurementSystem()
+    {
+        return (int32_t)core->getMeasurementSystem();
+    }
+
+    void CelestiaAppCore::MeasurementSystem(int32_t measurementSystem)
+    {
+        core->setMeasurementSystem((CelestiaCore::MeasurementSystem)measurementSystem);
     }
 }
