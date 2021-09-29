@@ -394,11 +394,20 @@ namespace winrt::CelestiaComponent::implementation
         Unlock();
     }
 
+    void CelestiaRenderer::SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task)
+    {
+        Lock();
+        preRenderTask = task;
+        Unlock();
+    }
+
     void CelestiaRenderer::FlushTasks()
     {
         for (auto task : tasks)
             task();
         tasks.clear();
+        if (preRenderTask)
+            preRenderTask();
     }
 
     void CelestiaRenderer::MakeContextCurrent()

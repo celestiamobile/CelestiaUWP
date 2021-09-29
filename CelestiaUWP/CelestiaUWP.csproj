@@ -155,6 +155,7 @@
     <Compile Include="Addon\ResourceCategory.cs" />
     <Compile Include="Helper\CelestiaAppHelper.cs" />
     <Compile Include="Helper\DoubleFloatConverter.cs" />
+    <Compile Include="Helper\GamepadManager.cs" />
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
     <Compile Include="Helper\ContentDialogHelper.cs" />

@@ -74,6 +74,8 @@ namespace CelestiaUWP
 
         private float scale = 1.0f;
 
+        private GamepadManager gamepadManager = null;
+
         public MainPage()
         {
             CelestiaAppCore.SetUpLocale();
@@ -611,7 +613,6 @@ namespace CelestiaUWP
                     modifiers |= 16;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift) == CoreVirtualKeyStates.Down)
                     modifiers |= 8;
-
                 int key = (int)arg.VirtualKey;
 
                 mRenderer.EnqueueTask(() =>
@@ -631,6 +632,12 @@ namespace CelestiaUWP
                     mAppCore.KeyUp(key, 0);
                 });
             };
+
+            gamepadManager = new GamepadManager();
+            mRenderer.SetPreRenderTask(() =>
+            {
+                gamepadManager.PollGamepad(mAppCore);
+            });
         }
 
         void PopulateMenuBar(string resourcePath)

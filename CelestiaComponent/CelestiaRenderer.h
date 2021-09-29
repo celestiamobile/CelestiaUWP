@@ -41,6 +41,7 @@ namespace winrt::CelestiaComponent::implementation
         void SetSize(int32_t width, int32_t height);
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
+        void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
         void FlushTasks();
 
         void MakeContextCurrent();
@@ -79,6 +80,7 @@ namespace winrt::CelestiaComponent::implementation
         Windows::Foundation::IAsyncAction mRenderLoopWorker{ nullptr };
 
         std::vector<CelestiaComponent::CelestiaRendererTask> tasks;
+        CelestiaComponent::CelestiaRendererTask preRenderTask;
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
         bool enableMSAA;
