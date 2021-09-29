@@ -21,7 +21,7 @@ namespace CelestiaUWP.Helper
         private Gamepad _controller;
         private readonly object myLock = new object();
         private bool _isAPressed = false;
-        private bool _isBPressed = false;
+        private bool _isXPressed = false;
         private bool _isLeftTriggerPressed = false;
         private bool _isRightTriggerPressed = false;
 
@@ -41,7 +41,7 @@ namespace CelestiaUWP.Helper
             {
                 var reading = controller.GetCurrentReading();
                 bool isAPressed = (reading.Buttons & GamepadButtons.A) != 0;
-                bool isBPressed = (reading.Buttons & GamepadButtons.B) != 0;
+                bool isXPressed = (reading.Buttons & GamepadButtons.X) != 0;
                 bool isLeftTriggerPressed = reading.LeftTrigger >= 0.5;
                 bool isRightTriggerPressed = reading.RightTrigger >= 0.5;
                 double thumbstickX = reading.LeftThumbstickX + reading.RightThumbstickX;
@@ -51,9 +51,9 @@ namespace CelestiaUWP.Helper
                     _isAPressed = isAPressed;
                     GamepadButtonAction(core, CelestiaJoystickButton.Button1, isAPressed);
                 }
-                if (isBPressed != _isBPressed)
+                if (isXPressed != _isXPressed)
                 {
-                    _isBPressed = isBPressed;
+                    _isXPressed = isXPressed;
                     GamepadButtonAction(core, CelestiaJoystickButton.Button2, isBPressed);
                 }
                 if (isLeftTriggerPressed != _isLeftTriggerPressed)
