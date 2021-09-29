@@ -54,7 +54,7 @@ namespace CelestiaUWP.Helper
                 if (isXPressed != _isXPressed)
                 {
                     _isXPressed = isXPressed;
-                    GamepadButtonAction(core, CelestiaJoystickButton.Button2, isBPressed);
+                    GamepadButtonAction(core, CelestiaJoystickButton.Button2, isXPressed);
                 }
                 if (isLeftTriggerPressed != _isLeftTriggerPressed)
                 {
