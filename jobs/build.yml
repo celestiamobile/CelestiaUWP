@@ -17,7 +17,7 @@ jobs:
 
   - script: |
       cd Celestia
-      git checkout origin/angle
+      git checkout origin/master
       git submodule update --init
     displayName: 'Checkout Branch'
 
@@ -27,6 +27,11 @@ jobs:
       git config --global user.name "Name Name"
       git cherry-pick origin/nupkg-dependencies
     displayName: 'Cherry-Pick Pre-built Nuget Changes'
+
+  - script: |
+      cd Celestia
+      git cherry-pick origin/angle
+    displayName: 'Cherry-Pick ANGLE Commit'
 
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
