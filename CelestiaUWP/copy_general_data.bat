@@ -5,7 +5,9 @@ SET CELESTIA_TEMP_DIR=%TEMP%\celestia
 IF NOT EXIST %CELESTIA_TEMP_DIR% MKDIR %CELESTIA_TEMP_DIR%
 
 SET EXCLUDE_FILE=%CELESTIA_TEMP_DIR%\EXCLUDE.txt
-echo .txt> "%EXCLUDE_FILE%"
+echo CMakeLists.txt>>"%EXCLUDE_FILE%"
+echo well-known-dsonames.txt>>"%EXCLUDE_FILE%"
+echo well-known-starnames.txt>>"%EXCLUDE_FILE%"
 
 SET CELESTIA_ROOT=%OutDir%\CelestiaResources
 SET CELESTIA_REPO_ROOT=%ProjectDir%\..\..\Celestia
