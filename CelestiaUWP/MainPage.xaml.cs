@@ -1028,7 +1028,7 @@ namespace CelestiaUWP
             }
             catch (Exception ignored){} // Catch all exceptions
 
-            var dialog = new TimeSettingDialog(mAppCore.Simulation.Time);
+            var dialog = new TimeSettingDialog(time);
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {

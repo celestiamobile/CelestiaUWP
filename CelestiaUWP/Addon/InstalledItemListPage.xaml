@@ -9,7 +9,7 @@
 
     <RelativePanel>
         <TextBlock FontWeight="Bold" FontSize="30" x:Name="Title" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" TextWrapping="Wrap"/>
-        <ListView x:Name="ItemList" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="Title">
+        <ListView x:Name="ItemList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="Title">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ResourceItem">
                     <TextBlock Text="{x:Bind name}"/>

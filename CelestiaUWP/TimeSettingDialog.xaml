@@ -14,7 +14,7 @@
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
     <StackPanel Spacing="6">
-        <DatePicker Date="{x:Bind mDate, Mode=TwoWay}" CalendarIdentifier="GregorianCalendar"></DatePicker>
+        <DatePicker Date="{x:Bind mDate, Mode=TwoWay}" CalendarIdentifier="GregorianCalendar" x:Name="DatePicker"></DatePicker>
         <TimePicker Time="{x:Bind mTime, Mode=TwoWay}" ClockIdentifier="24HourClock"></TimePicker>
         <Button Content="Set to Current Time" Click="CurrentTimeButton_Click" x:Name="CurrentTimeButton"/>
     </StackPanel>

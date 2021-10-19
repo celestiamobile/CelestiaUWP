@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <RelativePanel>
-        <ListView x:Name="ResultList" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+        <ListView x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="celestia:CelestiaEclipse">
                     <RelativePanel>

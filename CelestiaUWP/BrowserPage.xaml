@@ -16,7 +16,7 @@
     <NavigationView MenuItemsSource="{x:Bind NavigationItems, Mode=OneWay}" MenuItemTemplate="{StaticResource NavigationViewItem}" x:Name="Nav" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged">
         <RelativePanel>
             <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <muxc:TreeView x:Name="Tree" ItemsSource="{x:Bind Root, Mode=OneWay}" Margin="16, 16, 16, 0" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                <muxc:TreeView x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Root, Mode=OneWay}" Margin="16, 16, 16, 0" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="celestia:CelestiaBrowserItem">
                             <muxc:TreeViewItem ItemsSource="{x:Bind Children}"

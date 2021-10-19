@@ -9,7 +9,6 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaComponent;
 using CelestiaUWP.Helper;
 using System;
 using System.ComponentModel;
@@ -40,7 +39,7 @@ namespace CelestiaUWP
             set
             {
                 mDate = value;
-                OnPropertyChanged("Date");
+                OnPropertyChanged("mDate");
             }
         }
         private TimeSpan Time
@@ -49,13 +48,15 @@ namespace CelestiaUWP
             set
             {
                 mTime = value;
-                OnPropertyChanged("Time");
+                OnPropertyChanged("mTime");
             }
         }
 
         public TimeSettingDialog(DateTimeOffset original)
         {
             this.InitializeComponent();
+            DatePicker.MaxYear = new DateTimeOffset(new DateTime(9999, 12, 30));
+            DatePicker.MinYear = new DateTimeOffset(new DateTime(1, 1, 2));
             Title = LocalizationHelper.Localize("Set Time");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
