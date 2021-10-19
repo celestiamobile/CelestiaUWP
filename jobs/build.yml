@@ -12,7 +12,6 @@ jobs:
   - checkout: vcpkg-prebuilt
     fetchDepth: 1
   - checkout: Celestia
-    fetchDepth: 1
   - checkout: self
     submodules: true
 
@@ -55,6 +54,9 @@ jobs:
       RD vcpkg-prebuilt /S /Q
       RD CelestiaUWP\packages\vcpkg-export-20210727-120109.1.0.0\installed\x64-uwp\debug /S /Q
       RD CelestiaUWP\packages\vcpkg-export-20210727-120109.1.0.0\installed\arm64-uwp\debug /S /Q
+      RD Celestia\.git /S /Q
+      RD Celestia\content\.git /S /Q
+      RD CelestiaUWP\.git /S /Q
     displayName: 'Remove Unneeded Files'
 
   - task: NuGetCommand@2
