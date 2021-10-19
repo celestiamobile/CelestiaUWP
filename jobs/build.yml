@@ -56,6 +56,7 @@ jobs:
       RD CelestiaUWP\packages\vcpkg-export-20210727-120109.1.0.0\installed\arm64-uwp\debug /S /Q
       RD Celestia\.git /S /Q
       RD Celestia\thirdparty /S /Q
+      RD Celestia\content /S /Q
       RD CelestiaUWP\.git /S /Q
     displayName: 'Remove Unneeded Files'
 
