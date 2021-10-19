@@ -12,6 +12,7 @@ jobs:
   - checkout: vcpkg-prebuilt
     fetchDepth: 1
   - checkout: Celestia
+    fetchDepth: 1
   - checkout: self
     submodules: true
 
