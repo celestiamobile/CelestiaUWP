@@ -6,45 +6,67 @@ jobs:
 
   steps:
   - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
+    displayName: 'Download X64 Artifacts'
     inputs:
-      artifactName: 'Universal'
+      artifactName: 'X64'
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download ARM64 Artifacts'
+    inputs:
+      artifactName: 'ARM64'
+
+  - task: DownloadSecureFile@1
+    name: signingCert
+    displayName: 'Download CA certificate'
+    inputs:
+      secureFile: '3d.pfx'
 
   - script: |
-      MKDIR Symbols
-      FOR /R $(System.ArtifactsDirectory)\Universal %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
+      MKDIR symbols
+      FOR /R $(System.ArtifactsDirectory) %%f in (*.appxsym) DO @COPY "%%f" symbols /Y
     displayName: 'Create Symbols Directory'
 
   - task: ArchiveFiles@2
     displayName: 'Archive Symbols'
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)\Symbols'
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)\symbols'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: '$(System.DefaultWorkingDirectory)\Symbols.zip'
+      archiveFile: '$(System.DefaultWorkingDirectory)\symbols.zip'
       replaceExistingArchive: true
       verbose: true
+
+  - script: |
+      MKDIR msix
+      FOR /R $(System.ArtifactsDirectory) %%f in (*.msix) DO @COPY "%%f" msix /Y
+      "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64\MakeAppx.exe" bundle /d msix /p Celestia.msixbundle"
+      "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64/SignTool.exe" sign /fd SHA256 /a /f "$(signingCert.secureFilePath)" Celestia.msixbundle
+    displayName: 'Create msixbundle'
+
+  - script: |
+      MKDIR msixupload
+      MKDIR "$(Build.ArtifactStagingDirectory)\msixupload"
+      XCOPY Celestia.msixbundle msixupload
+      FOR /R $(System.ArtifactsDirectory) %%f in (*.appxsym) DO @COPY "%%f" msixupload /Y
+      CD msixupload
+      "C:\Program Files\7-Zip\7z.exe" a -tzip "$(Build.ArtifactStagingDirectory)\msixupload\Celestia.msixupload" *
+    displayName: 'Create msixupload'
 
   - task: AppCenterDistribute@3
     displayName: 'Publish to App Center'
     inputs:
       serverEndpoint: 'UWPCelestiaAppCenter'
       appSlug: 'CelestiaProject/Celestia-4'
-      appFile: '$(System.ArtifactsDirectory)\Universal\**\*.msixupload'
+      appFile: '$(Build.ArtifactStagingDirectory)\msixupload\*.msixupload'
       symbolsOption: 'UWP'
-      appxsymPath: '$(System.DefaultWorkingDirectory)\Symbols.zip'
+      appxsymPath: '$(System.DefaultWorkingDirectory)\symbols.zip'
       releaseNotesOption: 'input'
       releaseNotesInput: 'Internal testing only.'
       destinationType: 'groups'
 
-  - script: |
-      DEL $(System.ArtifactsDirectory)\Universal\*.msixupload
-      DEL $(System.ArtifactsDirectory)\Universal\*.appxsym /S /Q
-    displayName: 'Remove .msixupload, .appxsym'
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Universal'
-      ArtifactName: CelestiaSL
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\msixupload'
+      ArtifactName: MSIXUpload
       publishLocation: Container
