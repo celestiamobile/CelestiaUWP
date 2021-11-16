@@ -7,6 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
+    arch: ${{ parameters.arch }}
 
   steps:
   - checkout: vcpkg-prebuilt
@@ -76,10 +77,10 @@ jobs:
       platform: x64
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x64|ARM64"
+      msbuildArgs: '/p:AppxBundlePlatforms="$(arch)"
                     /p:AppxPackageDir="$(build.artifactStagingDirectory)"
-                    /p:AppxBundle=Always
-                    /p:UapAppxPackageBuildMode=StoreUpload
+                    /p:AppxBundle=Never
+                    /p:UapAppxPackageBuildMode=SideLoadOnly
                     /p:AppxPackageSigningEnabled=true
                     /p:PackageCertificateThumbprint=""
                     /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
@@ -89,5 +90,5 @@ jobs:
     displayName: 'Publish Artifact'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: Universal
+      ArtifactName: '$(arch)'
       publishLocation: Container

@@ -12,13 +12,23 @@ trigger:
 - main
 
 stages:
-- stage: Build_Universal
-  displayName: 'Build Universal'
+- stage: Build_X64
+  displayName: 'Build X64'
   jobs:
   - template: jobs/build.yml
+    parameters:
+      arch: X64
+- stage: Build_ARM64
+  displayName: 'Build ARM64'
+  dependsOn: []
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      arch: ARM64
 - stage: Publish_Universal
   displayName: 'Publish Universal'
   dependsOn:
-  - Build_Universal
+  - Build_X64
+  - Build_ARM64
   jobs:
   - template: jobs/publish.yml
