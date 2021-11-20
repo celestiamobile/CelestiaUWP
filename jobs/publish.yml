@@ -4,15 +4,23 @@ jobs:
   pool:
     vmImage: 'windows-latest'
 
+  variables:
+    pubishType: ${{ parameters.pubishType }}
+
   steps:
   - task: DownloadBuildArtifacts@0
     displayName: 'Download Build Artifacts'
     inputs:
-      artifactName: 'Universal'
+      artifactName: '$(publishType)'
+
+  - script: |
+      "C:\Program Files\7-Zip\7z.exe" x "$(System.ArtifactsDirectory)\$(publishType)\*.msixupload" -o"$(System.ArtifactsDirectory)\$(publishType)"
+    displayName: 'Unzip MSIXUpload'
+    condition: eq( variables['publishType'], 'msixupload' )
 
   - script: |
       MKDIR Symbols
-      FOR /R $(System.ArtifactsDirectory)\Universal %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
+      FOR /R $(System.ArtifactsDirectory)\$(publishType) %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
     displayName: 'Create Symbols Directory'
 
   - task: ArchiveFiles@2
@@ -30,21 +38,23 @@ jobs:
     inputs:
       serverEndpoint: 'UWPCelestiaAppCenter'
       appSlug: 'CelestiaProject/Celestia-4'
-      appFile: '$(System.ArtifactsDirectory)\Universal\**\*.msixupload'
+      appFile: '$(System.ArtifactsDirectory)\$(publishType)\**\*.msixupload'
       symbolsOption: 'UWP'
       appxsymPath: '$(System.DefaultWorkingDirectory)\Symbols.zip'
       releaseNotesOption: 'input'
       releaseNotesInput: 'Internal testing only.'
       destinationType: 'groups'
+    condition: eq( variables['publishType'], 'msixupload' )
 
   - script: |
-      DEL $(System.ArtifactsDirectory)\Universal\*.msixupload
-      DEL $(System.ArtifactsDirectory)\Universal\*.appxsym /S /Q
+      DEL $(System.ArtifactsDirectory)\$(publishType)\*.appxsym /S /Q
     displayName: 'Remove .msixupload, .appxsym'
+    condition: eq( variables['publishType'], 'sideload' )
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Universal'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\$(publishType)'
       ArtifactName: CelestiaSL
       publishLocation: Container
+    condition: eq( variables['publishType'], 'sideload' )
