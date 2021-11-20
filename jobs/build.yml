@@ -18,7 +18,7 @@ jobs:
 
   - script: |
       cd Celestia
-      git checkout origin/master
+      git checkout origin/merge-master-test
       git submodule update --init
     displayName: 'Checkout Branch'
 
