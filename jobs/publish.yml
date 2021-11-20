@@ -4,47 +4,54 @@ jobs:
   pool:
     vmImage: 'windows-latest'
 
+  variables:
+    publishType: ${{ parameters.publishType }}
+
   steps:
   - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
+    displayName: 'Download MSIXUpload Artifacts'
     inputs:
-      artifactName: 'Universal'
+      artifactName: 'msixupload'
+    condition: eq( variables['publishType'], 'msixupload' )
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Sideload Artifacts'
+    inputs:
+      artifactName: 'sideload'
+    condition: eq( variables['publishType'], 'sideload' )
+
+  - script: |
+      "C:\Program Files\7-Zip\7z.exe" x "$(System.ArtifactsDirectory)\$(publishType)\*.msixupload" -o"$(System.ArtifactsDirectory)\$(publishType)"
+    displayName: 'Unzip MSIXUpload'
+    condition: eq( variables['publishType'], 'msixupload' )
 
   - script: |
       MKDIR Symbols
-      FOR /R $(System.ArtifactsDirectory)\Universal %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
+      FOR /R $(System.ArtifactsDirectory)\$(publishType) %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
     displayName: 'Create Symbols Directory'
 
-  - task: ArchiveFiles@2
-    displayName: 'Archive Symbols'
+  - task: NodeTool@0
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)\Symbols'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(System.DefaultWorkingDirectory)\Symbols.zip'
-      replaceExistingArchive: true
-      verbose: true
-
-  - task: AppCenterDistribute@3
-    displayName: 'Publish to App Center'
-    inputs:
-      serverEndpoint: 'UWPCelestiaAppCenter'
-      appSlug: 'CelestiaProject/Celestia-4'
-      appFile: '$(System.ArtifactsDirectory)\Universal\**\*.msixupload'
-      symbolsOption: 'UWP'
-      appxsymPath: '$(System.DefaultWorkingDirectory)\Symbols.zip'
-      releaseNotesOption: 'input'
-      releaseNotesInput: 'Internal testing only.'
-      destinationType: 'groups'
+      versionSpec: '14.9.0'
+    displayName: 'Install Node'
 
   - script: |
-      DEL $(System.ArtifactsDirectory)\Universal\*.msixupload
-      DEL $(System.ArtifactsDirectory)\Universal\*.appxsym /S /Q
-    displayName: 'Remove .msixupload, .appxsym'
+      npm install -g appcenter-cli
+    displayName: 'Install AppCenter-CLI'
+
+  - script: |
+      FOR /R $(System.DefaultWorkingDirectory)\Symbols %%f in (*.appxsym) DO @appcenter crashes upload-symbols --appxsym "%%f" --app CelestiaProject/Celestia-4 --token $(APP_CENTER_TOKEN) --disable-telemetry --debug
+    displayName: 'Upload Symbols'
+
+  - script: |
+      DEL $(System.ArtifactsDirectory)\$(publishType)\*.appxsym /S /Q
+    displayName: 'Remove .appxsym'
+    condition: eq( variables['publishType'], 'sideload' )
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Universal'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\$(publishType)'
       ArtifactName: CelestiaSL
       publishLocation: Container
+    condition: eq( variables['publishType'], 'sideload' )

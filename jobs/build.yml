@@ -7,6 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
+    buildType: ${{ parameters.buildType }}
 
   steps:
   - checkout: vcpkg-prebuilt
@@ -79,15 +80,31 @@ jobs:
       msbuildArgs: '/p:AppxBundlePlatforms="x64|ARM64"
                     /p:AppxPackageDir="$(build.artifactStagingDirectory)"
                     /p:AppxBundle=Always
-                    /p:UapAppxPackageBuildMode=StoreUpload
+                    /p:UapAppxPackageBuildMode=CI
                     /p:AppxPackageSigningEnabled=true
                     /p:PackageCertificateThumbprint=""
                     /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
-    displayName: 'Build'
+    displayName: 'Build MSIXUpload'
+    condition: eq( variables['buildType'], 'msixupload' )
+
+  - task: VSBuild@1
+    inputs:
+      platform: x64
+      solution: '$(solution)'
+      configuration: '$(buildConfiguration)'
+      msbuildArgs: '/p:AppxBundlePlatforms="x64|ARM64"
+                    /p:AppxPackageDir="$(build.artifactStagingDirectory)"
+                    /p:AppxBundle=Always
+                    /p:UapAppxPackageBuildMode=SideLoadOnly
+                    /p:AppxPackageSigningEnabled=true
+                    /p:PackageCertificateThumbprint=""
+                    /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
+    displayName: 'Build Sideload'
+    condition: eq( variables['buildType'], 'sideload' )
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: Universal
+      ArtifactName: '$(buildType)'
       publishLocation: Container

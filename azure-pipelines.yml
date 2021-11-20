@@ -12,13 +12,35 @@ trigger:
 - main
 
 stages:
-- stage: Build_Universal
-  displayName: 'Build Universal'
+- stage: Build_MSIXUpload
+  displayName: 'Build MSIXUpload'
   jobs:
   - template: jobs/build.yml
-- stage: Publish_Universal
-  displayName: 'Publish Universal'
+    parameters:
+      buildType: msixupload
+
+- stage: Build_Sideload
+  displayName: 'Build Sideload'
+  dependsOn: []
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      buildType: sideload
+
+- stage: Publish_MSIXUpload
+  displayName: 'Publish MSIXUpload'
   dependsOn:
-  - Build_Universal
+  - Build_MSIXUpload
   jobs:
   - template: jobs/publish.yml
+    parameters:
+      publishType: msixupload
+
+- stage: Publish_Sideload
+  displayName: 'Publish Sideload'
+  dependsOn:
+  - Build_Sideload
+  jobs:
+  - template: jobs/publish.yml
+    parameters:
+      publishType: sideload
