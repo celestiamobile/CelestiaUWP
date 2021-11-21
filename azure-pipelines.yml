@@ -7,6 +7,7 @@ resources:
   - repository: vcpkg-prebuilt
     type: git
     name: vcpkg-prebuilt
+    ref: 2021-nov
 
 trigger:
 - main

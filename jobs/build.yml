@@ -26,7 +26,7 @@ jobs:
       cd CelestiaUWP
       git config --global user.email "name@name.com"
       git config --global user.name "Name Name"
-      git cherry-pick origin/nupkg-dependencies
+      git cherry-pick origin/nupkg-dependencies-nov
     displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
   - script: |
@@ -48,13 +48,13 @@ jobs:
   - task: NuGetCommand@2
     inputs:
       command: custom
-      arguments: 'install vcpkg-export-20210727-120109 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
+      arguments: 'install vcpkg-export-20211121-092532 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
     displayName: 'Install Pre-built Nuget Packages'
 
   - script: |
       RD vcpkg-prebuilt /S /Q
-      RD CelestiaUWP\packages\vcpkg-export-20210727-120109.1.0.0\installed\x64-uwp\debug /S /Q
-      RD CelestiaUWP\packages\vcpkg-export-20210727-120109.1.0.0\installed\arm64-uwp\debug /S /Q
+      RD CelestiaUWP\packages\vcpkg-export-20211121-092532.1.0.0\installed\x64-uwp\debug /S /Q
+      RD CelestiaUWP\packages\vcpkg-export-20211121-092532.1.0.0\installed\arm64-uwp\debug /S /Q
       RD Celestia\.git /S /Q
       RD Celestia\thirdparty /S /Q
       RD Celestia\content /S /Q
