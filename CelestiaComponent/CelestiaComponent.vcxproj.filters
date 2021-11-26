@@ -118,9 +118,6 @@
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp">
       <Filter>Celestia\celmath</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celmath\perlin.cpp">
-      <Filter>Celestia\celmath</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celephem\customorbit.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
@@ -182,9 +179,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\boundariesrenderer.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\catalogxref.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\category.cpp">
@@ -364,9 +358,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\tokenizer.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -531,6 +522,12 @@
     <ClCompile Include="CelestiaDMS.cpp" />
     <ClCompile Include="CelestiaRotationModel.cpp" />
     <ClCompile Include="CelestiaPlanetarySystem.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\tokenizer.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmath\randutils.cpp">
+      <Filter>Celestia\celmath</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -640,12 +637,6 @@
     <ClInclude Include="..\..\Celestia\src\celmodel\modelfile.h">
       <Filter>Celestia\celmodel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\aabox.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\capsule.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\distance.h">
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
@@ -664,15 +655,6 @@
     <ClInclude Include="..\..\Celestia\src\celmath\mathlib.h">
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\perlin.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\plane.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\quaternion.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\ray.h">
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
@@ -680,9 +662,6 @@
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\sphere.h">
-      <Filter>Celestia\celmath</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celmath\vecmath.h">
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\customorbit.h">
@@ -752,9 +731,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\boundariesrenderer.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\catalogxref.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\category.h">
@@ -967,9 +943,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\tokenizer.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -983,9 +956,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\vertexbuf.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\vertexobject.h">
@@ -1110,6 +1080,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h">
       <Filter>Celestia\celimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\randutils.h">
+      <Filter>Celestia\celmath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
