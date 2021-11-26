@@ -334,7 +334,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\body.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\boundaries.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\boundariesrenderer.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\catalogxref.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\category.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\console.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
@@ -405,13 +404,11 @@
     <ClInclude Include="..\..\Celestia\src\celengine\texture.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timeline.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\tokenizer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\value.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\vertexbuf.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\vertexobject.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
@@ -446,21 +443,16 @@
     <ClInclude Include="..\..\Celestia\src\celestia\view.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\aabox.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\capsule.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\distance.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\ellipsoid.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\frustum.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\geomutil.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\intersect.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\mathlib.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\perlin.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\plane.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\quaternion.h" />
+    <ClInclude Include="..\..\Celestia\src\celmath\randutils.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\ray.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\solve.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\sphere.h" />
-    <ClInclude Include="..\..\Celestia\src\celmath\vecmath.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\material.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\mesh.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\model.h" />
@@ -489,6 +481,8 @@
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bigfix.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\color.h" />
@@ -504,6 +498,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\strnatcmp.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tee.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\timer.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\util.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\watcher.h" />
@@ -524,7 +519,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundariesrenderer.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\catalogxref.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\category.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\console.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
@@ -584,7 +578,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\tokenizer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\univcoord.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp" />
@@ -625,7 +618,7 @@
     <ClCompile Include="..\..\Celestia\src\celimage\jpeg.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\png.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celmath\perlin.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celmath\randutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\material.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp" />
@@ -659,6 +652,7 @@
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\timer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\tokenizer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\utf8.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\winutil.cpp" />

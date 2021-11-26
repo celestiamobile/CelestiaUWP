@@ -8,6 +8,7 @@ jobs:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
     buildType: ${{ parameters.buildType }}
+    arch: ${{ parameters.arch }}
 
   steps:
   - checkout: vcpkg-prebuilt
@@ -92,7 +93,7 @@ jobs:
       platform: x64
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x64|ARM64"
+      msbuildArgs: '/p:AppxBundlePlatforms="x64"
                     /p:AppxPackageDir="$(build.artifactStagingDirectory)"
                     /p:AppxBundle=Always
                     /p:UapAppxPackageBuildMode=SideLoadOnly
