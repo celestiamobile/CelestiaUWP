@@ -22,6 +22,7 @@ namespace winrt::CelestiaComponent::implementation
         ~CelestiaEclipseFinder();
 
         void Abort();
+        void Close();
 
         EclipseFinder* f;
         EclipseFinderWatcher* w;

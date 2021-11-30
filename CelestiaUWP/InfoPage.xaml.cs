@@ -1,4 +1,4 @@
-﻿//
+//
 // InfoPage.xaml.cs
 //
 // Copyright © 2021 Celestia Development Team. All rights reserved.
@@ -38,6 +38,7 @@ namespace CelestiaUWP
                 LinkButton.NavigateUri = new Uri(url);
                 LinkButton.Content = url;
             }
+            Selection.Dispose();
         }
 
         private string GetOverview(CelestiaSelection Selection, CelestiaAppCore AppCore)

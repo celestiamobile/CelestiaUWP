@@ -40,8 +40,17 @@ namespace winrt::CelestiaComponent::implementation
         return com_array<CelestiaComponent::CelestiaStar>(starVec);
 	}
 
+    void CelestiaStarBrowser::Close()
+    {
+        if (sb != nullptr)
+        {
+            delete sb;
+            sb = nullptr;
+        }
+    }
+
 	CelestiaStarBrowser::~CelestiaStarBrowser()
 	{
-		delete sb;
+        Close();
 	}
 }

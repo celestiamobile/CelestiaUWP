@@ -19,7 +19,7 @@ namespace CelestiaComponent
     };
 
     [default_interface]
-    runtimeclass CelestiaStarBrowser
+    runtimeclass CelestiaStarBrowser: Windows.Foundation.IClosable
     {
         CelestiaStar[] Stars{ get; };
     }

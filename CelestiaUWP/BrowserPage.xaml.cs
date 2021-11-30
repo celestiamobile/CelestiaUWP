@@ -1,4 +1,4 @@
-﻿//
+//
 // BrowserPage.xaml.cs
 //
 // Copyright © 2021 Celestia Development Team. All rights reserved.
@@ -67,9 +67,15 @@ namespace CelestiaUWP
             if (mSolRoot == null)
                 mSolRoot = new CelestiaBrowserItem[] { };
 
-            var nearest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest).Stars;
-            var brightest = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest).Stars;
-            var hasPlanets = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants).Stars;
+            var nsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest);
+            var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest);
+            var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants);
+            var nearest = nsb.Stars;
+            var brightest = bsb.Stars;
+            var hasPlanets = hsb.Stars;
+            nsb.Dispose();
+            bsb.Dispose();
+            hsb.Dispose();
 
             var s1 = new List<CelestiaBrowserItem>();
             var s2 = new List<CelestiaBrowserItem>();
@@ -172,8 +178,10 @@ namespace CelestiaUWP
                         {
                             Renderer.EnqueueTask(() =>
                             {
-                                AppCore.Simulation.Selection = new CelestiaSelection(obj);
+                                var selection = new CelestiaSelection(obj);
+                                AppCore.Simulation.Selection = selection;
                                 AppCore.CharEnter(action.Item2);
+                                selection.Dispose();
                             });
                         }
                     }

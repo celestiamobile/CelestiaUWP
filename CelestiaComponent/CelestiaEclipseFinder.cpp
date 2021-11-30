@@ -54,10 +54,23 @@ namespace winrt::CelestiaComponent::implementation
 		return com_array<CelestiaComponent::CelestiaEclipse>(vec);
 	}
 
+    void CelestiaEclipseFinder::Close()
+    {
+        if (w != nullptr)
+        {
+            delete w;
+            w = nullptr;
+        }
+        if (f != nullptr)
+        {
+            delete f;
+            f = nullptr;
+        }
+    }
+
     CelestiaEclipseFinder::~CelestiaEclipseFinder()
     {
-        delete f;
-        delete w;
+        Close();
     }
 
     void CelestiaEclipseFinder::Abort()

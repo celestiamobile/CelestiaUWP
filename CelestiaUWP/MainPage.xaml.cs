@@ -1,4 +1,4 @@
-﻿//
+//
 // MainPage.xaml.cs
 //
 // Copyright © 2021 Celestia Development Team. All rights reserved.
@@ -318,12 +318,12 @@ namespace CelestiaUWP
                 }
             };
 
-            mAppCore.SetContextMenuHandler((x, y, selection) =>
+            mAppCore.SetContextMenuHandler((x, y, original) =>
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                   {
                       var menu = new MenuFlyout();
-                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
+                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(original), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
                       var actions = new (string, short)[]
                       {
@@ -336,16 +336,17 @@ namespace CelestiaUWP
                       {
                           AppendItem(menu, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                           {
-
+                              var selection = original.Clone();
                               mRenderer.EnqueueTask(() =>
                               {
                                   mAppCore.Simulation.Selection = selection;
                                   mAppCore.CharEnter(action.Item2);
+                                  selection.Dispose();
                               });
                           });
                       }
 
-                      if (selection.Object is CelestiaBody body)
+                      if (original.Object is CelestiaBody body)
                       {
                           var surfaces = body.AlternateSurfaceNames;
                           if (surfaces != null && surfaces.Length > 0)
@@ -409,7 +410,7 @@ namespace CelestiaUWP
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren);
+                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(original), original.Object, GetChildren);
                       if (browserItem.Children != null)
                       {
                           foreach (var child in browserItem.Children)
@@ -430,18 +431,21 @@ namespace CelestiaUWP
                       menu.Items.Add(new MenuFlyoutSeparator());
                       AppendItem(menu, LocalizationHelper.Localize("Show Info"), (sender, arg) =>
                       {
+                          var selection = original.Clone();
                           ShowInfo(selection);
                       });
 
                       menu.Items.Add(new MenuFlyoutSeparator());
 
-                      if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
+                      if (mAppCore.Simulation.Universe.IsSelectionMarked(original))
                       {
                           AppendItem(menu, LocalizationHelper.Localize("Unmark"), (sender, arg) =>
                           {
+                              var selection = original.Clone();
                               mRenderer.EnqueueTask(() =>
                               {
                                   mAppCore.Simulation.Universe.UnmarkSelection(selection);
+                                  selection.Dispose();
                               });
                           });
                       }
@@ -456,16 +460,22 @@ namespace CelestiaUWP
                               int copy = i;
                               AppendSubItem(action, LocalizationHelper.Localize(Markers[i]), (sender, arg) =>
                               {
+                                  var selection = original.Clone();
                                   mRenderer.EnqueueTask(() =>
                                   {
                                       mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
                                       mAppCore.ShowMarkers = true;
+                                      selection.Dispose();
                                   });
                               });
                           }
                           menu.Items.Add(action);
                       }
 
+                      menu.Closed += (sender, args) =>
+                      {
+                          original.Dispose();
+                      };
                       menu.ShowAt(GLView, new Point(x / scale, y / scale));
                   });
             });
@@ -950,12 +960,14 @@ namespace CelestiaUWP
                 if (selection.IsEmpty)
                 {
                     ShowObjectNotFound();
+                    selection.Dispose();
                 }
                 else
                 {
                     mRenderer.EnqueueTask(() =>
                     {
                         mAppCore.Simulation.Selection = selection;
+                        selection.Dispose();
                     });
                 }
             }
@@ -1255,7 +1267,9 @@ namespace CelestiaUWP
                     {
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.Simulation.Selection = new CelestiaSelection(obj);
+                            var selection = new CelestiaSelection(obj);
+                            mAppCore.Simulation.Selection = selection;
+                            selection.Dispose();
                         });
                     };
                     children.Add(selectItem);

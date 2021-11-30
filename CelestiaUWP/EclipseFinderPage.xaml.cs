@@ -1,4 +1,4 @@
-﻿//
+//
 // EclipseFinderPage.xaml.cs
 //
 // Copyright © 2021 Celestia Development Team. All rights reserved.
@@ -113,6 +113,8 @@ namespace CelestiaUWP
             return await Task.Run(() =>
             {
                 var eclipses = eclipseFinder.Search(kind, startTime, endTime);
+                eclipseFinder.Dispose();
+                Finder = null;
                 return eclipses ?? (new CelestiaEclipse[] { });
             });
         }

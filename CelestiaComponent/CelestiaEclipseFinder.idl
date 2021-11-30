@@ -13,7 +13,7 @@ import "CelestiaEclipse.idl";
 namespace CelestiaComponent
 {
     [default_interface]
-    runtimeclass CelestiaEclipseFinder
+    runtimeclass CelestiaEclipseFinder: Windows.Foundation.IClosable
     {
         CelestiaEclipseFinder(CelestiaBody body);
         CelestiaEclipse[] Search(CelestiaEclipseKind kind, Windows.Foundation.DateTime startTime, Windows.Foundation.DateTime endTime);

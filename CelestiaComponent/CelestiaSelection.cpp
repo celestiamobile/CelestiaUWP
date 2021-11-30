@@ -62,6 +62,13 @@ namespace winrt::CelestiaComponent::implementation
     {
     }
 
+    CelestiaComponent::CelestiaSelection CelestiaSelection::Clone()
+    {
+        if (s == nullptr)
+            return nullptr;
+        return make<CelestiaSelection>(*s);
+    }
+
     CelestiaComponent::CelestiaAstroObject CelestiaSelection::Object()
     {
         switch (s->getType())
@@ -89,8 +96,17 @@ namespace winrt::CelestiaComponent::implementation
         return s->radius();
     }
 
+    void CelestiaSelection::Close()
+    {
+        if (s != nullptr)
+        {
+            delete s;
+            s = nullptr;
+        }
+    }
+
     CelestiaSelection::~CelestiaSelection()
     {
-        delete s;
+        Close();
     }
 }

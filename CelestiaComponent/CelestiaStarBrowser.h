@@ -20,6 +20,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaStarBrowser(StarBrowser* sb);
         com_array<CelestiaComponent::CelestiaStar> Stars();
 
+        void Close();
         ~CelestiaStarBrowser();
 
     private:
