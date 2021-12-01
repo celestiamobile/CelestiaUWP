@@ -47,6 +47,8 @@ namespace CelestiaUWP
         private Uri URLToOpen;
         private bool ReadyForInput = false;
 
+        private CelestiaSelection contextMenuSelection = null;
+
         private readonly AppSettings AppSettings = AppSettings.Shared;
 
         private string defaultParentPath
@@ -322,6 +324,9 @@ namespace CelestiaUWP
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                   {
+                      if (contextMenuSelection != null)
+                          contextMenuSelection.Dispose();
+                      contextMenuSelection = original;
                       var menu = new MenuFlyout();
                       AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(original), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
@@ -471,11 +476,6 @@ namespace CelestiaUWP
                           }
                           menu.Items.Add(action);
                       }
-
-                      menu.Closed += (sender, args) =>
-                      {
-                          original.Dispose();
-                      };
                       menu.ShowAt(GLView, new Point(x / scale, y / scale));
                   });
             });
