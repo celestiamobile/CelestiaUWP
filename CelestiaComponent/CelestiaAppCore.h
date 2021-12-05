@@ -277,6 +277,7 @@ namespace winrt::CelestiaComponent::implementation
     private:
         CelestiaCore* core;
         CelestiaComponent::CelestiaSimulation sim;
+        static Windows::Globalization::DateTimeFormatting::DateTimeFormatter dateFormatter;
     };
 }
 
