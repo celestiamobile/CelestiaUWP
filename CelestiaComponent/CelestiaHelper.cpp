@@ -42,7 +42,7 @@ namespace winrt::CelestiaComponent::implementation
 		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
 		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
 		c.ChangeTimeZone(L"UTC");
-		astro::Date astroDate(julianDay);
+        astro::Date astroDate = astro::TDBtoUTC(julianDay);
 		int year = astroDate.year;
 
 		int era = 1;
