@@ -316,7 +316,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Celestia\src\cel3ds\3dschunk.h" />
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsmodel.h" />
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsread.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\cc.h" />
@@ -499,8 +498,8 @@
     <ClInclude Include="..\..\Celestia\src\celutil\tee.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\timer.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\tzutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\util.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\watcher.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\winutil.h" />
     <ClInclude Include="config.h" />
@@ -653,8 +652,8 @@
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\timer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\tokenizer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\tzutil.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\utf8.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celutil\util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\winutil.cpp" />
   </ItemGroup>
   <ItemGroup>

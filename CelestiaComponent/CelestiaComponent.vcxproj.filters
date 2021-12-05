@@ -91,9 +91,6 @@
     <ClCompile Include="..\..\Celestia\src\celutil\utf8.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celutil\util.cpp">
-      <Filter>Celestia\celutil</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\winutil.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -528,6 +525,9 @@
     <ClCompile Include="..\..\Celestia\src\celmath\randutils.cpp">
       <Filter>Celestia\celmath</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\tzutil.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -607,17 +607,11 @@
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\util.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\watcher.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\winutil.h">
       <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\cel3ds\3dschunk.h">
-      <Filter>Celestia\cel3ds</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsmodel.h">
       <Filter>Celestia\cel3ds</Filter>
@@ -1092,6 +1086,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\randutils.h">
       <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\tzutil.h">
+      <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
