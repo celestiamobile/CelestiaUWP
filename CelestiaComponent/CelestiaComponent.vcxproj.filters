@@ -64,9 +64,6 @@
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celutil\debug.cpp">
-      <Filter>Celestia\celutil</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -528,6 +525,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\tzutil.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -566,9 +566,6 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\color.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\debug.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\filetype.h">
@@ -1088,6 +1085,9 @@
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\tzutil.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\logger.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>

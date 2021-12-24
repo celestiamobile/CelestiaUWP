@@ -329,8 +329,8 @@ namespace winrt::CelestiaComponent::implementation
         std::string dir = to_string(localeDirectory);
         bindtextdomain("celestia", dir.c_str());
         bind_textdomain_codeset("celestia", "UTF-8");
-        bindtextdomain("celestia_constellations", dir.c_str());
-        bind_textdomain_codeset("celestia_constellations", "UTF-8");
+        bindtextdomain("celestia-data", dir.c_str());
+        bind_textdomain_codeset("celestia-data", "UTF-8");
         bindtextdomain("celestia_ui", dir.c_str());
         bind_textdomain_codeset("celestia_ui", "UTF-8");
         textdomain("celestia");

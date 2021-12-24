@@ -17,7 +17,7 @@ IF NOT EXIST "%CELESTIA_TEMP_DIR%" MKDIR "%CELESTIA_TEMP_DIR%"
 IF NOT EXIST "%LOCALE_ROOT%" MKDIR "%LOCALE_ROOT%"
 
 CALL:CONVERT_PO po celestia
-CALL:CONVERT_PO po2 celestia_constellations
+CALL:CONVERT_PO content\po celestia-data
 CALL:CONVERT_PO po3 celestia_ui
 
 RD "%CELESTIA_TEMP_DIR%" /S /Q

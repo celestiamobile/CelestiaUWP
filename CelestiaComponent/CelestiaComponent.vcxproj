@@ -485,11 +485,11 @@
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\color.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\debug.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\filetype.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\formatnum.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\fsutils.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\memorypool.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h" />
@@ -643,10 +643,10 @@
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celutil\debug.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\memorypool.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />

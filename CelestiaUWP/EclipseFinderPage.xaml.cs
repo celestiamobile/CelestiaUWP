@@ -32,7 +32,7 @@ namespace CelestiaUWP
         private bool FindLunar = true;
 
         private int SelectedObjectIndex = 0;
-        private readonly string[] AvailableObjects = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia"), CelestiaAppCore.LocalizedString("Jupiter", "celestia") };
+        private readonly string[] AvailableObjects = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia-data"), CelestiaAppCore.LocalizedString("Jupiter", "celestia-data") };
 
         private CelestiaEclipseFinder Finder;
         private CelestiaEclipse[] Eclipses
