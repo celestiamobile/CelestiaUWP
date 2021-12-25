@@ -273,6 +273,8 @@ namespace winrt::CelestiaComponent::implementation
 
         int32_t MeasurementSystem();
         void MeasurementSystem(int32_t measurementSystem);
+        int32_t TemperatureScale();
+        void TemperatureScale(int32_t temperatureScale);
 
     private:
         CelestiaCore* core;

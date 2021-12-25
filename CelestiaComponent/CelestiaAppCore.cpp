@@ -746,4 +746,14 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     {
         core->setMeasurementSystem((CelestiaCore::MeasurementSystem)measurementSystem);
     }
+
+    int32_t CelestiaAppCore::TemperatureScale()
+    {
+        return (int32_t)core->getTemperatureScale();
+    }
+
+    void CelestiaAppCore::TemperatureScale(int32_t temperatureScale)
+    {
+        core->setTemperatureScale((CelestiaCore::TemperatureScale)temperatureScale);
+    }
 }

@@ -28,6 +28,12 @@ namespace CelestiaUWP.Settings
             LocalizationHelper.Localize("Metric"),
             LocalizationHelper.Localize("Imperial")
         };
+        private readonly string[] TemperatureScaleDescriptions = new string[]
+        {
+            LocalizationHelper.Localize("Kelvin"),
+            LocalizationHelper.Localize("Celsius"),
+            LocalizationHelper.Localize("Fahrenheit")
+        };
         private readonly string[] ResolutionDescriptions = new string[]
         {
             LocalizationHelper.Localize("Low"),
