@@ -55,9 +55,6 @@
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celcompat\fs.cpp">
-      <Filter>Celestia\celcompat</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -538,15 +535,6 @@
       <Filter>Celestia\celcompat</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h">
-      <Filter>Celestia\celcompat</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celcompat\fs.h">
-      <Filter>Celestia\celcompat</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celcompat\string_view.h">
-      <Filter>Celestia\celcompat</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celcompat\sv.h">
       <Filter>Celestia\celcompat</Filter>
     </ClInclude>
     <ClInclude Include="config.h" />

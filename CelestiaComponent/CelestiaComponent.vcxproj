@@ -321,9 +321,6 @@
     <ClInclude Include="..\..\Celestia\src\celcompat\cc.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\fs.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\string_view.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\sv.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterismrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\astro.h" />
@@ -509,7 +506,6 @@
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsmodel.cpp" />
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celcompat\fs.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterismrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp" />
