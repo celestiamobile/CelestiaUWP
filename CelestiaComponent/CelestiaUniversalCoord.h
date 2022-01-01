@@ -24,7 +24,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaUniversalCoord(UniversalCoord const& uc);
 
         double DistanceFrom(CelestiaComponent::CelestiaUniversalCoord const& other);
-        CelestiaComponent::CelestiaUniversalCoord DifferenceFrom(CelestiaComponent::CelestiaUniversalCoord const& other);
         CelestiaComponent::CelestiaVector OffsetFrom(CelestiaComponent::CelestiaUniversalCoord const& other);
 
         static CelestiaComponent::CelestiaUniversalCoord Zero();

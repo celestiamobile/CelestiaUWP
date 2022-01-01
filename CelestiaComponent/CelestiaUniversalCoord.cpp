@@ -27,11 +27,6 @@ namespace winrt::CelestiaComponent::implementation
         return uc.distanceFromKm(get_self<CelestiaUniversalCoord>(other)->uc);
     }
 
-    CelestiaComponent::CelestiaUniversalCoord CelestiaUniversalCoord::DifferenceFrom(CelestiaComponent::CelestiaUniversalCoord const& other)
-    {
-        return make<CelestiaUniversalCoord>(uc.difference(get_self<CelestiaUniversalCoord>(other)->uc));
-    }
-
     CelestiaComponent::CelestiaVector CelestiaUniversalCoord::OffsetFrom(CelestiaComponent::CelestiaUniversalCoord const& other)
     {
         auto offset = uc.offsetFromKm(get_self<CelestiaUniversalCoord>(other)->uc);

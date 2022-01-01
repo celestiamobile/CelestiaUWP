@@ -91,7 +91,7 @@ namespace winrt::CelestiaComponent::implementation
         double r = v.norm();
         double theta = atan2(v.y(), v.x());
         if (theta < 0)
-            theta = theta + 2 * PI;
+            theta = theta + 2 * celestia::numbers::pi;
         double phi = asin(v.z() / r);
         return make<CelestiaVector>(theta, phi, r);
     }

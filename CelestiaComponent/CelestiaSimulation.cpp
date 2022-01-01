@@ -144,7 +144,7 @@ namespace winrt::CelestiaComponent::implementation
         sim->update(0);
         double distance = target.radius() * 4.0;
         sim->gotoLocation(UniversalCoord::Zero().offsetKm(Eigen::Vector3d::UnitX() * distance),
-            celmath::YRotation(-0.5 * PI) * celmath::XRotation(-0.5 * PI),
+            celmath::YRotation(-0.5 * celestia::numbers::pi) * celmath::XRotation(-0.5 * celestia::numbers::pi),
             2.5);
     }
 

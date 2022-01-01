@@ -15,7 +15,6 @@ namespace CelestiaComponent
     runtimeclass CelestiaUniversalCoord
     {
         Double DistanceFrom(CelestiaUniversalCoord other);
-        CelestiaUniversalCoord DifferenceFrom(CelestiaUniversalCoord other);
         CelestiaVector OffsetFrom(CelestiaUniversalCoord other);
 
         static CelestiaUniversalCoord Zero{ get; };

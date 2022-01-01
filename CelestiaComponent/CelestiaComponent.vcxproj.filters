@@ -52,9 +52,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp">
-      <Filter>Celestia\celcompat</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -68,9 +65,6 @@
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp">
-      <Filter>Celestia\celutil</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celutil\memorypool.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp">
@@ -185,9 +179,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\dispmap.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp">
@@ -350,9 +341,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\univcoord.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp">
@@ -525,12 +513,12 @@
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp">
+      <Filter>Celestia\celcompat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\cc.h">
-      <Filter>Celestia\celcompat</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h">
       <Filter>Celestia\celcompat</Filter>
     </ClInclude>
@@ -566,9 +554,6 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\memorypool.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h">
@@ -725,9 +710,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\dispmap.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h">
@@ -1077,6 +1059,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h">
       <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\numbers.h">
+      <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h">
+      <Filter>Celestia\celcompat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

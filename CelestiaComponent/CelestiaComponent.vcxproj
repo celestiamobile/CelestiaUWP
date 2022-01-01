@@ -318,9 +318,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsmodel.h" />
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsread.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\cc.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h" />
+    <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h" />
+    <ClInclude Include="..\..\Celestia\src\celcompat\numbers.h" />
+    <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterismrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\astro.h" />
@@ -335,7 +337,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\dispmap.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
@@ -487,7 +488,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\fsutils.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\memorypool.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\stringutils.h" />
@@ -505,7 +505,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsmodel.cpp" />
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celcompat\cc.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterismrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp" />
@@ -519,7 +519,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\dispmap.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
@@ -574,7 +573,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\univcoord.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\value.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\vertexobject.cpp" />
@@ -643,7 +641,6 @@
     <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celutil\memorypool.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\timer.cpp" />
