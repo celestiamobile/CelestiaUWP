@@ -30,7 +30,7 @@ namespace winrt::CelestiaComponent::implementation
 
 	void CelestiaSimulation::Selection(CelestiaComponent::CelestiaSelection const& selection)
 	{
-		sim->setSelection(*get_self<CelestiaSelection>(selection)->s);
+		sim->setSelection(get_self<CelestiaSelection>(selection)->AsSelection());
 	}
 
     Windows::Foundation::DateTime CelestiaSimulation::Time()

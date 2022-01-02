@@ -19,16 +19,16 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj);
         CelestiaSelection(Selection const& sel);
-        CelestiaComponent::CelestiaSelection Clone();
 
         CelestiaComponent::CelestiaAstroObject Object();
         bool IsEmpty();
         double Radius();
-        void Close();
 
-        ~CelestiaSelection();
+        Selection AsSelection();
 
-        Selection* s;
+    private:
+        Selection::Type type;
+        CelestiaComponent::CelestiaAstroObject object;
     };
 }
 

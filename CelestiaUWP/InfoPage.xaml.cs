@@ -38,7 +38,6 @@ namespace CelestiaUWP
                 LinkButton.NavigateUri = new Uri(url);
                 LinkButton.Content = url;
             }
-            Selection.Dispose();
         }
 
         private string GetOverview(CelestiaSelection Selection, CelestiaAppCore AppCore)

@@ -47,8 +47,6 @@ namespace CelestiaUWP
         private Uri URLToOpen;
         private bool ReadyForInput = false;
 
-        private CelestiaSelection contextMenuSelection = null;
-
         private readonly AppSettings AppSettings = AppSettings.Shared;
 
         private string defaultParentPath
@@ -320,15 +318,12 @@ namespace CelestiaUWP
                 }
             };
 
-            mAppCore.SetContextMenuHandler((x, y, original) =>
+            mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                   {
-                      if (contextMenuSelection != null)
-                          contextMenuSelection.Dispose();
-                      contextMenuSelection = original;
                       var menu = new MenuFlyout();
-                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(original), null);
+                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
                       var actions = new (string, short)[]
                       {
@@ -341,17 +336,15 @@ namespace CelestiaUWP
                       {
                           AppendItem(menu, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
                           {
-                              var selection = original.Clone();
                               mRenderer.EnqueueTask(() =>
                               {
                                   mAppCore.Simulation.Selection = selection;
                                   mAppCore.CharEnter(action.Item2);
-                                  selection.Dispose();
                               });
                           });
                       }
 
-                      if (original.Object is CelestiaBody body)
+                      if (selection.Object is CelestiaBody body)
                       {
                           var surfaces = body.AlternateSurfaceNames;
                           if (surfaces != null && surfaces.Length > 0)
@@ -415,7 +408,7 @@ namespace CelestiaUWP
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(original), original.Object, GetChildren);
+                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren);
                       if (browserItem.Children != null)
                       {
                           foreach (var child in browserItem.Children)
@@ -436,21 +429,18 @@ namespace CelestiaUWP
                       menu.Items.Add(new MenuFlyoutSeparator());
                       AppendItem(menu, LocalizationHelper.Localize("Show Info"), (sender, arg) =>
                       {
-                          var selection = original.Clone();
                           ShowInfo(selection);
                       });
 
                       menu.Items.Add(new MenuFlyoutSeparator());
 
-                      if (mAppCore.Simulation.Universe.IsSelectionMarked(original))
+                      if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
                       {
                           AppendItem(menu, LocalizationHelper.Localize("Unmark"), (sender, arg) =>
                           {
-                              var selection = original.Clone();
                               mRenderer.EnqueueTask(() =>
                               {
                                   mAppCore.Simulation.Universe.UnmarkSelection(selection);
-                                  selection.Dispose();
                               });
                           });
                       }
@@ -465,12 +455,10 @@ namespace CelestiaUWP
                               int copy = i;
                               AppendSubItem(action, LocalizationHelper.Localize(Markers[i]), (sender, arg) =>
                               {
-                                  var selection = original.Clone();
                                   mRenderer.EnqueueTask(() =>
                                   {
                                       mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
                                       mAppCore.ShowMarkers = true;
-                                      selection.Dispose();
                                   });
                               });
                           }
@@ -960,14 +948,12 @@ namespace CelestiaUWP
                 if (selection.IsEmpty)
                 {
                     ShowObjectNotFound();
-                    selection.Dispose();
                 }
                 else
                 {
                     mRenderer.EnqueueTask(() =>
                     {
                         mAppCore.Simulation.Selection = selection;
-                        selection.Dispose();
                     });
                 }
             }
@@ -1269,7 +1255,6 @@ namespace CelestiaUWP
                         {
                             var selection = new CelestiaSelection(obj);
                             mAppCore.Simulation.Selection = selection;
-                            selection.Dispose();
                         });
                     };
                     children.Add(selectItem);

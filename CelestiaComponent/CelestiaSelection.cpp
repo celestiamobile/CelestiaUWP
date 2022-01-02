@@ -22,91 +22,101 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaSelection::CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj) : CelestiaSelectionT<CelestiaSelection>(), s(nullptr)
+    Selection::Type GetAstroObjectType(CelestiaComponent::CelestiaAstroObject const& obj)
     {
+        if (obj == nullptr)
+        {
+            return Selection::Type_Nil;
+        }
+
         auto interfaces = get_interfaces(obj);
         auto object = get_self<CelestiaAstroObject>(obj)->obj;
 
-        auto &bodyGuid = guid_of<CelestiaBody>();
-        auto &dsoGuid = guid_of<CelestiaDSO>();
-        auto &starGuid = guid_of<CelestiaStar>();
-        auto &locationGuid = guid_of<CelestiaLocation>();
+        auto& bodyGuid = guid_of<CelestiaBody>();
+        auto& dsoGuid = guid_of<CelestiaDSO>();
+        auto& starGuid = guid_of<CelestiaStar>();
+        auto& locationGuid = guid_of<CelestiaLocation>();
 
-        for (auto &interf : interfaces)
+        for (auto& interf : interfaces)
         {
             if (interf == bodyGuid)
             {
-                s = new Selection(reinterpret_cast<Body*>(object));
-                return;
+                return Selection::Type_Body;
             }
             if (interf == starGuid)
             {
-                s = new Selection(reinterpret_cast<Star*>(object));
-                return;
+                return Selection::Type_Star;
             }
             if (interf == dsoGuid)
             {
-                s = new Selection(reinterpret_cast<DeepSkyObject*>(object));
-                return;
+                return Selection::Type_DeepSky;
             }
             if (interf == locationGuid)
             {
-                s = new Selection(reinterpret_cast<Location*>(object));
-                return;
+                return Selection::Type_Location;
             }
         }
-        s = nullptr;
+        return Selection::Type_Location;
     }
 
-    CelestiaSelection::CelestiaSelection(Selection const& sel) : CelestiaSelectionT<CelestiaSelection>(), s(new Selection(sel))
+    CelestiaComponent::CelestiaAstroObject GetAstroObject(Selection const& sel)
     {
-    }
-
-    CelestiaComponent::CelestiaSelection CelestiaSelection::Clone()
-    {
-        if (s == nullptr)
-            return nullptr;
-        return make<CelestiaSelection>(*s);
-    }
-
-    CelestiaComponent::CelestiaAstroObject CelestiaSelection::Object()
-    {
-        switch (s->getType())
+        switch (sel.getType())
         {
         case Selection::Type_Star:
-            return make<CelestiaComponent::implementation::CelestiaStar>(s->star());
+            return make<CelestiaComponent::implementation::CelestiaStar>(sel.star());
         case Selection::Type_DeepSky:
-            return make<CelestiaComponent::implementation::CelestiaDSO>(s->deepsky());
+            return make<CelestiaComponent::implementation::CelestiaDSO>(sel.deepsky());
         case Selection::Type_Body:
-            return make<CelestiaComponent::implementation::CelestiaBody>(s->body());
+            return make<CelestiaComponent::implementation::CelestiaBody>(sel.body());
         case Selection::Type_Location:
-            return make<CelestiaComponent::implementation::CelestiaLocation>(s->location());
+            return make<CelestiaComponent::implementation::CelestiaLocation>(sel.location());
+        case Selection::Type_Generic:
+            return make<CelestiaComponent::implementation::CelestiaAstroObject>(sel.object());
         default:
             return nullptr;
         }
     }
 
+    CelestiaSelection::CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj) : CelestiaSelectionT<CelestiaSelection>(), object(obj), type(GetAstroObjectType(obj))
+    {
+    }
+
+    CelestiaSelection::CelestiaSelection(Selection const& sel) : CelestiaSelectionT<CelestiaSelection>(), object(GetAstroObject(sel)), type(GetAstroObjectType(object))
+    {
+    }
+
+    Selection CelestiaSelection::AsSelection()
+    {
+        switch (type)
+        {
+        case Selection::Type_Star:
+            return Selection(static_cast<Star*>(get_self<CelestiaAstroObject>(object)->obj));
+        case Selection::Type_DeepSky:
+            return Selection(static_cast<DeepSkyObject*>(get_self<CelestiaAstroObject>(object)->obj));
+        case Selection::Type_Body:
+            return Selection(static_cast<Body*>(get_self<CelestiaAstroObject>(object)->obj));
+        case Selection::Type_Location:
+            return Selection(static_cast<Location*>(get_self<CelestiaAstroObject>(object)->obj));
+        case Selection::Type_Generic:
+            return Selection(get_self<CelestiaAstroObject>(object)->obj);
+        default:
+            return Selection();
+        }
+    }
+
+    CelestiaComponent::CelestiaAstroObject CelestiaSelection::Object()
+    {
+        return object;
+    }
+
     bool CelestiaSelection::IsEmpty()
     {
-        return s->empty();
+        return AsSelection().empty();
     }
 
     double CelestiaSelection::Radius()
     {
-        return s->radius();
-    }
-
-    void CelestiaSelection::Close()
-    {
-        if (s != nullptr)
-        {
-            delete s;
-            s = nullptr;
-        }
-    }
-
-    CelestiaSelection::~CelestiaSelection()
-    {
-        Close();
+        return AsSelection().radius();
     }
 }

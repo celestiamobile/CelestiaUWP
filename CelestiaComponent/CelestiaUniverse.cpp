@@ -31,17 +31,17 @@ namespace winrt::CelestiaComponent::implementation
 
 	hstring CelestiaUniverse::NameForSelection(CelestiaComponent::CelestiaSelection const& selection)
 	{
-		Selection *s = get_self<CelestiaSelection>(selection)->s;
-		switch (s->getType())
+		Selection s = get_self<CelestiaSelection>(selection)->AsSelection();
+		switch (s.getType())
 		{
 		case Selection::Type_Star:
-			return get_self<CelestiaStarCatalog>(StarCatalog())->StarName(make<CelestiaStar>(s->star()));
+			return get_self<CelestiaStarCatalog>(StarCatalog())->StarName(make<CelestiaStar>(s.star()));
 		case Selection::Type_Body:
-			return to_hstring(reinterpret_cast<Body*>(s->object())->getName(true));
+			return to_hstring(reinterpret_cast<Body*>(s.object())->getName(true));
 		case Selection::Type_DeepSky:
-			return get_self<CelestiaDSOCatalog>(DSOCatalog())->DSOName(make<CelestiaDSO>(s->deepsky()));
+			return get_self<CelestiaDSOCatalog>(DSOCatalog())->DSOName(make<CelestiaDSO>(s.deepsky()));
 		case Selection::Type_Location:
-			return to_hstring(s->location()->getName(true));
+			return to_hstring(s.location()->getName(true));
 		default:
 			return L"";
 		}
@@ -49,17 +49,17 @@ namespace winrt::CelestiaComponent::implementation
 
 	bool CelestiaUniverse::IsSelectionMarked(CelestiaComponent::CelestiaSelection const& selection)
 	{
-		return u->isMarked(*get_self<CelestiaSelection>(selection)->s, 1);
+		return u->isMarked(get_self<CelestiaSelection>(selection)->AsSelection(), 1);
 	}
 
 	void CelestiaUniverse::MarkSelection(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::CelestiaMarkerRepresentation marker)
 	{
-		u->markObject(*get_self<CelestiaSelection>(selection)->s, celestia::MarkerRepresentation(celestia::MarkerRepresentation::Symbol(marker), 10.0f, Color(0.0f, 1.0f, 0.0f, 0.9f)), 1);
+		u->markObject(get_self<CelestiaSelection>(selection)->AsSelection(), celestia::MarkerRepresentation(celestia::MarkerRepresentation::Symbol(marker), 10.0f, Color(0.0f, 1.0f, 0.0f, 0.9f)), 1);
 	}
 
 	void CelestiaUniverse::UnmarkSelection(CelestiaComponent::CelestiaSelection const& selection)
 	{
-		u->unmarkObject(*get_self<CelestiaSelection>(selection)->s, 1);
+		u->unmarkObject(get_self<CelestiaSelection>(selection)->AsSelection(), 1);
 	}
 
 	void CelestiaUniverse::UnmarkAll()

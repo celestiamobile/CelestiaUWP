@@ -181,7 +181,6 @@ namespace CelestiaUWP
                                 var selection = new CelestiaSelection(obj);
                                 AppCore.Simulation.Selection = selection;
                                 AppCore.CharEnter(action.Item2);
-                                selection.Dispose();
                             });
                         }
                     }

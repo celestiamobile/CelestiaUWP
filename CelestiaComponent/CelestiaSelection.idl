@@ -12,10 +12,9 @@ import "CelestiaAstroObject.idl";
 namespace CelestiaComponent
 {
     [default_interface]
-    runtimeclass CelestiaSelection: Windows.Foundation.IClosable
+    runtimeclass CelestiaSelection
     {
         CelestiaSelection(CelestiaAstroObject object);
-        CelestiaSelection Clone();
         CelestiaAstroObject Object{ get; };
         Boolean IsEmpty{ get; };
         Double Radius{ get; };
