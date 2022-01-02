@@ -24,10 +24,8 @@ namespace winrt::CelestiaComponent::implementation
 {
     Selection::Type GetAstroObjectType(CelestiaComponent::CelestiaAstroObject const& obj)
     {
-        if (obj == nullptr)
-        {
+        if (!obj)
             return Selection::Type_Nil;
-        }
 
         auto interfaces = get_interfaces(obj);
         auto object = get_self<CelestiaAstroObject>(obj)->obj;
@@ -82,8 +80,9 @@ namespace winrt::CelestiaComponent::implementation
     {
     }
 
-    CelestiaSelection::CelestiaSelection(Selection const& sel) : CelestiaSelectionT<CelestiaSelection>(), object(GetAstroObject(sel)), type(GetAstroObjectType(object))
+    CelestiaSelection::CelestiaSelection(Selection const& sel) : CelestiaSelectionT<CelestiaSelection>(), object(GetAstroObject(sel)), type(Selection::Type_Nil)
     {
+        type = GetAstroObjectType(object);
     }
 
     Selection CelestiaSelection::AsSelection()
