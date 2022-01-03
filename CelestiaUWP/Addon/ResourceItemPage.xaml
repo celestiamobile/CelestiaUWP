@@ -17,9 +17,10 @@
             <StackPanel Orientation="Vertical" Margin="16" Spacing="4">
                 <TextBlock Text="{x:Bind Item.name, Mode=OneWay}" FontWeight="Bold" FontSize="30" Margin="0, 0, 0, 8" x:Name="Title" TextWrapping="Wrap"/>
                 <TextBlock Text="{x:Bind Item.AuthorListDescription, Mode=OneWay}" FontSize="14" TextWrapping="Wrap"/>
-                <TextBlock Text="{x:Bind Item.ReleaseTimeDescription, Mode=OneWay}" FontSize="12" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Bind Item.ReleaseTimeDescription, Mode=OneWay}" Visibility="{x:Bind Item.ReleaseTimeVisibility, Mode=OneWay}" FontSize="12" TextWrapping="Wrap"/>
                 <TextBlock Text="{x:Bind Item.description, Mode=OneWay}" FontSize="13" TextWrapping="Wrap"/>
                 <Image Source="{x:Bind Item.image, Converter={StaticResource ImageConverter}, Mode=OneWay}" Margin="0, 8, 0, 0"/>
+                <HyperlinkButton NavigateUri="{x:Bind Item.WebLink, Mode=OneWay}">celestia.mobi</HyperlinkButton>
             </StackPanel>
         </ScrollViewer>
         <RelativePanel Margin="16" x:Name="ActionContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">

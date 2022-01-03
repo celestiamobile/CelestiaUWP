@@ -119,10 +119,14 @@ namespace CelestiaUWP.Addon
         private async void ReloadItem()
         {
             Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
-            Uri requestUri = new Uri(Constants.APIPrefix + "/resource/item?lang=" + LocalizationHelper.Locale + "&item=" + Item.id);
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            queryItems.Add("item", Item.id);
+            var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
+            builder.Query = queryItems.ToString();
             try
             {
-                var httpResponse = await httpClient.GetAsync(requestUri);
+                var httpResponse = await httpClient.GetAsync(builder.Uri);
                 httpResponse.EnsureSuccessStatusCode();
                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
                 var item = JsonConvert.DeserializeObject<RequestResult>(httpResponseBody).Get<ResourceItem>();

@@ -48,10 +48,13 @@ namespace CelestiaUWP.Addon
         private async void LoadCategories()
         {
             Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
-            Uri requestUri = new Uri(Constants.APIPrefix + "/resource/categories?lang=" + LocalizationHelper.Locale);
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/categories");
+            builder.Query = queryItems.ToString();
             try
             {
-                var httpResponse = await httpClient.GetAsync(requestUri);
+                var httpResponse = await httpClient.GetAsync(builder.Uri);
                 httpResponse.EnsureSuccessStatusCode();
                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
                 var categories = JsonConvert.DeserializeObject<RequestResult>(httpResponseBody).Get<ResourceCategory[]>();

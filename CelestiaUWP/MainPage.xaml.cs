@@ -270,12 +270,42 @@ namespace CelestiaUWP
             if (url != null)
             {
                 URLToOpen = null;
-                if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?")))
+                if (url.Scheme == "celaddon")
                 {
-                    mRenderer.EnqueueTask(() =>
+                    if (url.Host == "item" && url.Query != null)
                     {
-                        mAppCore.GoToURL(url.AbsoluteUri);
-                    });
+                        var query = System.Web.HttpUtility.ParseQueryString(url.Query);
+                        var addon = query["item"];
+                        if (addon != null)
+                        {
+                            Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
+                            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                            queryItems.Add("lang", LocalizationHelper.Locale);
+                            queryItems.Add("item", addon);
+                            var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
+                            builder.Query = queryItems.ToString();
+                            try
+                            {
+                                var httpResponse = await httpClient.GetAsync(builder.Uri);
+                                httpResponse.EnsureSuccessStatusCode();
+                                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                                var item = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody).Get<Addon.ResourceItem>();
+                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.ItemParameter(item));
+                            }
+                            catch (Exception ignored)
+                            {}
+                        }
+                    }
+                }
+                else if (url.Scheme == "cel")
+                {
+                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?")))
+                    {
+                        mRenderer.EnqueueTask(() =>
+                        {
+                            mAppCore.GoToURL(url.AbsoluteUri);
+                        });
+                    }
                 }
             }
         }
