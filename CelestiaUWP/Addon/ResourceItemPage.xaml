@@ -24,7 +24,7 @@
             </StackPanel>
         </ScrollViewer>
         <RelativePanel Margin="16" x:Name="ActionContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-            <TextBlock x:Name="ProgressText" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <ProgressBar x:Name="InstallProgressBar" Visibility="Collapsed" Maximum="1.0" Minimum="0.0" Margin="0, 0, 12, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ActionButton"/>
             <Button Content="Install" x:Name="ActionButton" Click="ActionButton_Click" RelativePanel.AlignRightWithPanel="True"/>
         </RelativePanel>
     </RelativePanel>

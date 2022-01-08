@@ -95,7 +95,7 @@ namespace CelestiaUWP.Addon
         private void Shared_ProgressUpdate(ResourceItem item, double progress)
         {
             if (item.id != Item.id) return;
-            ProgressText.Text = String.Format("{0:0.00}%", progress);
+            InstallProgressBar.Value = progress;
         }
 
         private void UpdateState()
@@ -103,14 +103,15 @@ namespace CelestiaUWP.Addon
             switch (State)
             {
                 case ResourceManager.ItemState.Downloading:
+                    InstallProgressBar.Visibility = Visibility.Visible;
                     ActionButton.Content = LocalizationHelper.Localize("Cancel");
                     break;
                 case ResourceManager.ItemState.Installed:
-                    ProgressText.Text = "";
+                    InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Uninstall");
                     break;
                 case ResourceManager.ItemState.None:
-                    ProgressText.Text = "";
+                    InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Install");
                     break;
             }

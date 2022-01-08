@@ -112,7 +112,7 @@ namespace CelestiaUWP.Addon
 
                             if (canReportProgress)
                             {
-                                ((IProgress<double>)progress).Report((totalRead * 1d) / (total * 1d) * 100);
+                                ((IProgress<double>)progress).Report((totalRead * 1d) / (total * 1d));
                             }
                         }
                     } while (isMoreToRead);
