@@ -387,10 +387,10 @@
       <Version>6.2.13</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
-      <Version>7.1.1</Version>
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>7.1.1</Version>
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.0</Version>
@@ -407,14 +407,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CelestiaResources\data\" />
+    <Folder Include="CelestiaResources\extras-standard\apollo\models\" />
     <Folder Include="CelestiaResources\extras-standard\cassini\data\" />
     <Folder Include="CelestiaResources\extras-standard\cassini\models\" />
     <Folder Include="CelestiaResources\extras-standard\galileo\data\" />
     <Folder Include="CelestiaResources\extras-standard\galileo\models\" />
     <Folder Include="CelestiaResources\extras-standard\hubble\models\" />
+    <Folder Include="CelestiaResources\extras-standard\interstellar-objects\data\" />
     <Folder Include="CelestiaResources\extras-standard\iss\models\" />
     <Folder Include="CelestiaResources\extras-standard\iss\textures\medres\" />
     <Folder Include="CelestiaResources\extras-standard\mir\models\" />
+    <Folder Include="CelestiaResources\extras-standard\shroxclassic\models\" />
+    <Folder Include="CelestiaResources\extras-standard\shroxmars\models\" />
+    <Folder Include="CelestiaResources\extras-standard\skylab\models\" />
     <Folder Include="CelestiaResources\extras\" />
     <Folder Include="CelestiaResources\fonts\" />
     <Folder Include="CelestiaResources\images\" />
@@ -452,6 +457,7 @@
     <Folder Include="CelestiaResources\textures\hires\" />
     <Folder Include="CelestiaResources\textures\lores\" />
     <Folder Include="CelestiaResources\textures\medres\" />
+    <Folder Include="CelestiaResources\warp\" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\en-US\Resources.resw" />
