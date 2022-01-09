@@ -516,6 +516,9 @@
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1068,6 +1071,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h">
       <Filter>Celestia\celcompat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\greek.h">
+      <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
