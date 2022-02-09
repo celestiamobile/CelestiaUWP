@@ -29,19 +29,20 @@ namespace winrt::CelestiaComponent::implementation
         return CompareStringEx(nullptr, SORT_DIGITSASNUMBERS, lhs.Name().c_str(), lhs.Name().size(), rhs.Name().c_str(), rhs.Name().size(), nullptr, nullptr, 0) == CSTR_LESS_THAN;
     }
 
-    CelestiaBrowserItem::CelestiaBrowserItem(hstring name, array_view<CelestiaComponent::CelestiaBrowserItem const> children) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(nullptr), provider(nullptr), name(name)
+    CelestiaBrowserItem::CelestiaBrowserItem(hstring name, array_view<CelestiaComponent::CelestiaBrowserItem const> children, bool sorted) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(nullptr), provider(nullptr), name(name), sorted(sorted)
     {
         std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
         for (const auto& child : children)
         {
             vec.push_back(child);
         }
-        std::sort(vec.begin(), vec.end(), CompareBrowserItems);
+        if (!sorted)
+            std::sort(vec.begin(), vec.end(), CompareBrowserItems);
         this->children = vec;
         areChildrenLoaded = true;
     }
 
-    CelestiaBrowserItem::CelestiaBrowserItem(hstring name, CelestiaComponent::CelestiaAstroObject const& obj, CelestiaComponent::CelestiaBrowserItemChildrenProvider const& provider) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(obj), provider(provider), name(name)
+    CelestiaBrowserItem::CelestiaBrowserItem(hstring name, CelestiaComponent::CelestiaAstroObject const& obj, CelestiaComponent::CelestiaBrowserItemChildrenProvider const& provider, bool sorted) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(obj), provider(provider), name(name), sorted(sorted)
     {
         areChildrenLoaded = false;
     }
@@ -72,7 +73,8 @@ namespace winrt::CelestiaComponent::implementation
             {
                 vec.push_back(child);
             }
-            std::sort(vec.begin(), vec.end(), CompareBrowserItems);
+            if (!sorted)
+                std::sort(vec.begin(), vec.end(), CompareBrowserItems);
             children = vec;
             areChildrenLoaded = true;
         }

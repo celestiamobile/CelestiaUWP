@@ -438,7 +438,7 @@ namespace CelestiaUWP
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren);
+                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren, false);
                       if (browserItem.Children != null)
                       {
                           foreach (var child in browserItem.Children)
@@ -815,7 +815,7 @@ namespace CelestiaUWP
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(navigationItem, LocalizationHelper.Localize("Browser"), (sender, arg) =>
+            AppendItem(navigationItem, LocalizationHelper.Localize("Star Browser"), (sender, arg) =>
             {
                 ShowBrowser();
             });

@@ -18,13 +18,33 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
+    public static class CelestiaExtension
+    {
+        public static CelestiaBrowserItem[] GetChildren(this CelestiaAppCore AppCore, CelestiaBrowserItem item)
+        {
+            var obj = item.Object;
+            if (obj == null)
+                return new CelestiaBrowserItem[] { };
+            if (obj is CelestiaStar star)
+                return AppCore.Simulation.Universe.ChildrenForStar(star, AppCore.GetChildren);
+            if (obj is CelestiaBody body)
+                return AppCore.Simulation.Universe.ChildrenForBody(body, AppCore.GetChildren);
+            return new CelestiaBrowserItem[] { };
+        }
+    }
     public sealed partial class BrowserPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore AppCore;
         private CelestiaRenderer Renderer;
-        private CelestiaBrowserItem[] mSolRoot;
-        private CelestiaBrowserItem[] mStarRoot;
-        private CelestiaBrowserItem[] mDSORoot;
+
+        // Static ones, persistent
+        private static CelestiaBrowserItem[] mSolRoot = null;
+        private static CelestiaBrowserItem[] mDSORoot = null;
+        private static CelestiaBrowserItem brightestStars = null;
+        private static CelestiaBrowserItem starsWithPlanets = null;
+
+        // Dynamic ones, updates every time the page is opened
+        private CelestiaBrowserItem[] mStarRoot = null;
 
         private readonly Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
         {
@@ -54,103 +74,131 @@ namespace CelestiaUWP
             var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
             AppCore = parameter.Item1;
             Renderer = parameter.Item2;
-            var sol = AppCore.Simulation.Find("Sol");
-            if (!sol.IsEmpty)
+
+            if (mSolRoot == null)
             {
-                var solStar = sol.Object;
-                if (solStar is CelestiaStar)
+                // Static should just initialize once
+                var sol = AppCore.Simulation.Find("Sol");
+                if (!sol.IsEmpty)
                 {
-                    mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, GetChildren) };
+                    var solStar = sol.Object;
+                    if (solStar is CelestiaStar)
+                    {
+                        mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, AppCore.GetChildren, false) };
+                    }
+                }
+                else
+                {
+                    mSolRoot = new CelestiaBrowserItem[] { };
                 }
             }
 
-            if (mSolRoot == null)
-                mSolRoot = new CelestiaBrowserItem[] { };
+            if (brightestStars == null)
+            {
+                var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest);
+                var brightest = bsb.Stars;
+                bsb.Dispose();
+                var s2 = new List<CelestiaBrowserItem>();
+                foreach (var star in brightest)
+                {
+                    s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, true));
+                }
+                brightestStars = new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s2.ToArray(), true);
+            }
+
+            if (starsWithPlanets == null)
+            {
+                var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants);
+                var hasPlanets = hsb.Stars;
+                hsb.Dispose();
+                var s3 = new List<CelestiaBrowserItem>();
+                foreach (var star in hasPlanets)
+                {
+                    s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
+                }
+                starsWithPlanets = new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), false);
+            }
 
             var nsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest);
-            var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest);
-            var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants);
+            var bsb2 = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brighter);
             var nearest = nsb.Stars;
-            var brightest = bsb.Stars;
-            var hasPlanets = hsb.Stars;
+            var brighter = bsb2.Stars;
             nsb.Dispose();
-            bsb.Dispose();
-            hsb.Dispose();
+            bsb2.Dispose();
 
             var s1 = new List<CelestiaBrowserItem>();
-            var s2 = new List<CelestiaBrowserItem>();
-            var s3 = new List<CelestiaBrowserItem>();
+            var s4 = new List<CelestiaBrowserItem>();
             foreach (var star in nearest)
             {
-                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
+                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
             }
-            foreach (var star in brightest)
+            foreach (var star in brighter)
             {
-                s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
-            }
-            foreach (var star in hasPlanets)
-            {
-                s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, GetChildren));
+                s4.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
             }
             mStarRoot = new CelestiaBrowserItem[]
             {
-                new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray()),
-                new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s2.ToArray()),
-                new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray()),
+                new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray(), true),
+                new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s4.ToArray(), true),
+                brightestStars,
+                starsWithPlanets
             };
 
-            var typeMap = new string[]
+            if (mDSORoot == null)
             {
-                "SB",
-                "S",
-                "E",
-                "Irr",
-                "Neb",
-                "Glob",
-                "Open cluster",
-                "Unknown"
-            };
-            var results = new List<List<CelestiaBrowserItem>>();
-            for (int i = 0; i < typeMap.Length; i++)
-            {
-                results.Add(new List<CelestiaBrowserItem>());
-            }
-            var categoryNames = new string[]
-            {
-                LocalizationHelper.Localize("Galaxies (Barred Spiral)"),
-                LocalizationHelper.Localize("Galaxies (Spiral)"),
-                LocalizationHelper.Localize("Galaxies (Elliptical)"),
-                LocalizationHelper.Localize("Galaxies (Irregular)"),
-                LocalizationHelper.Localize("Nebulae"),
-                LocalizationHelper.Localize("Globulars"),
-                LocalizationHelper.Localize("Open Clusters"),
-                LocalizationHelper.Localize("Unknown"),
-            };
-            var dsoCatalog = AppCore.Simulation.Universe.DSOCatalog;
-            for (int i = 0; i < dsoCatalog.Count; i++)
-            {
-                var dso = dsoCatalog.DSOAt(i);
-                var categoryIndex = typeMap.Length - 1;
-                for (int j = 0; j < typeMap.Length; j++)
+                var typeMap = new string[]
                 {
-                    if (dso.Type.StartsWith(typeMap[j]))
+                    "SB",
+                    "S",
+                    "E",
+                    "Irr",
+                    "Neb",
+                    "Glob",
+                    "Open cluster",
+                    "Unknown"
+                };
+                var results = new List<List<CelestiaBrowserItem>>();
+                for (int i = 0; i < typeMap.Length; i++)
+                {
+                    results.Add(new List<CelestiaBrowserItem>());
+                }
+                var categoryNames = new string[]
+                {
+                    LocalizationHelper.Localize("Galaxies (Barred Spiral)"),
+                    LocalizationHelper.Localize("Galaxies (Spiral)"),
+                    LocalizationHelper.Localize("Galaxies (Elliptical)"),
+                    LocalizationHelper.Localize("Galaxies (Irregular)"),
+                    LocalizationHelper.Localize("Nebulae"),
+                    LocalizationHelper.Localize("Globulars"),
+                    LocalizationHelper.Localize("Open Clusters"),
+                    LocalizationHelper.Localize("Unknown"),
+                };
+                var dsoCatalog = AppCore.Simulation.Universe.DSOCatalog;
+                for (int i = 0; i < dsoCatalog.Count; i++)
+                {
+                    var dso = dsoCatalog.DSOAt(i);
+                    var categoryIndex = typeMap.Length - 1;
+                    for (int j = 0; j < typeMap.Length; j++)
                     {
-                        categoryIndex = j;
-                        break;
+                        if (dso.Type.StartsWith(typeMap[j]))
+                        {
+                            categoryIndex = j;
+                            break;
+                        }
+                    }
+                    var item = new CelestiaBrowserItem(dsoCatalog.DSOName(dso), dso, AppCore.GetChildren, false);
+                    results[categoryIndex].Add(item);
+                }
+                var dsoCategories = new List<CelestiaBrowserItem>();
+                for (var i = 0; i < results.Count; i++)
+                {
+                    if (results[i].Count > 0)
+                    {
+                        dsoCategories.Add(new CelestiaBrowserItem(categoryNames[i], results[i].ToArray(), false));
                     }
                 }
-                var item = new CelestiaBrowserItem(dsoCatalog.DSOName(dso), dso, GetChildren);
-                results[categoryIndex].Add(item);
+                mDSORoot = dsoCategories.ToArray();
             }
-            var dsoCategories = new List<CelestiaBrowserItem>();
-            for (var i = 0; i < results.Count; i++)
-            {
-                if (results[i].Count > 0)
-                {
-                    dsoCategories.Add(new CelestiaBrowserItem(categoryNames[i], results[i].ToArray()));
-                }
-            }
-            mDSORoot = dsoCategories.ToArray();
 
             Root = mSolRoot;
 
@@ -188,18 +236,6 @@ namespace CelestiaUWP
                 ButtonStack.Children.Add(button);
             }
             Nav.SelectedItem = NavigationItems[0];
-        }
-
-        private CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item)
-        {
-            var obj = item.Object;
-            if (obj == null)
-                return new CelestiaBrowserItem[] { };
-            if (obj is CelestiaStar star)
-                return AppCore.Simulation.Universe.ChildrenForStar(star, GetChildren);
-            if (obj is CelestiaBody body)
-                return AppCore.Simulation.Universe.ChildrenForBody(body, GetChildren);
-            return new CelestiaBrowserItem[] { };
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

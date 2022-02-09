@@ -96,7 +96,7 @@ namespace winrt::CelestiaComponent::implementation
             if (name.empty())
                 continue;
 
-			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider);
+			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider, false);
 			int bodyClass = body->getClassification();
 			switch (bodyClass)
 			{
@@ -131,17 +131,17 @@ namespace winrt::CelestiaComponent::implementation
         }
 
 		if (spacecraft.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Spacecraft")), array_view<CelestiaComponent::CelestiaBrowserItem>(spacecraft)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Spacecraft")), array_view<CelestiaComponent::CelestiaBrowserItem>(spacecraft), false));
 		if (comets.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Comets")), array_view<CelestiaComponent::CelestiaBrowserItem>(comets)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Comets")), array_view<CelestiaComponent::CelestiaBrowserItem>(comets), false));
 		if (asteroids.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Asteroids")), array_view<CelestiaComponent::CelestiaBrowserItem>(asteroids)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Asteroids")), array_view<CelestiaComponent::CelestiaBrowserItem>(asteroids), false));
 		if (minorMoons.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Minor Moons")), array_view<CelestiaComponent::CelestiaBrowserItem>(minorMoons)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Minor Moons")), array_view<CelestiaComponent::CelestiaBrowserItem>(minorMoons), false));
 		if (dwarfPlanets.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Dwarf Planets")), array_view<CelestiaComponent::CelestiaBrowserItem>(dwarfPlanets)));
-		if (planets.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Planets")), array_view<CelestiaComponent::CelestiaBrowserItem>(planets)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Dwarf Planets")), array_view<CelestiaComponent::CelestiaBrowserItem>(dwarfPlanets), false));
+        if (planets.size() > 0)
+            direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Planets")), array_view<CelestiaComponent::CelestiaBrowserItem>(planets), false));
 
 		return com_array<CelestiaComponent::CelestiaBrowserItem>(direct);
 	}
@@ -170,7 +170,7 @@ namespace winrt::CelestiaComponent::implementation
 			if (name.empty())
 				continue;
 
-			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider);
+			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider, false);
 			int bodyClass = body->getClassification();
 			if (bodyClass == Body::Asteroid) bodyClass = Body::Moon;
 			switch (bodyClass)
@@ -207,19 +207,19 @@ namespace winrt::CelestiaComponent::implementation
 				if (name.empty())
 					continue;
 
-				auto item = make<CelestiaBrowserItem>(name, make<CelestiaLocation>(*iter), provider);
+				auto item = make<CelestiaBrowserItem>(name, make<CelestiaLocation>(*iter), provider, false);
 				locs.push_back(item);
 			}
 			if (locs.size() > 0)
-				direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Locations")), array_view<CelestiaComponent::CelestiaBrowserItem>(locs)));
+				direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Locations")), array_view<CelestiaComponent::CelestiaBrowserItem>(locs), false));
 		}
 
 		if (spacecraft.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Spacecraft")), array_view<CelestiaComponent::CelestiaBrowserItem>(spacecraft)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Spacecraft")), array_view<CelestiaComponent::CelestiaBrowserItem>(spacecraft), false));
 		if (comets.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Comets")), array_view<CelestiaComponent::CelestiaBrowserItem>(comets)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Comets")), array_view<CelestiaComponent::CelestiaBrowserItem>(comets), false));
 		if (minorMoons.size() > 0)
-			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Minor Moons")), array_view<CelestiaComponent::CelestiaBrowserItem>(minorMoons)));
+			direct.insert(direct.begin(), make<CelestiaBrowserItem>(to_hstring(_("Minor Moons")), array_view<CelestiaComponent::CelestiaBrowserItem>(minorMoons), false));
 
 		return com_array<CelestiaComponent::CelestiaBrowserItem>(direct);
 	}
