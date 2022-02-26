@@ -34,7 +34,7 @@ namespace CelestiaUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            AppCenter.Start("06fcb18f-a477-4b2d-9cd9-f1b37135c16b", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("APPCENTER-APP-ID", typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

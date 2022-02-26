@@ -37,6 +37,13 @@ jobs:
       git cherry-pick origin/angle
     displayName: 'Cherry-Pick ANGLE Commit'
 
+  - pwsh: |
+      (Get-Content CelestiaUWP\App.xaml.cs) -replace 'APPCENTER-APP-ID', '06fcb18f-a477-4b2d-9cd9-f1b37135c16b' | Out-File -encoding UTF8 CelestiaUWP\App.xaml.cs
+      Write-Host "New Content:"
+      Get-Content CelestiaUWP\App.xaml.cs
+    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
+    displayName: 'Replace AppCenter Placeholder'
+
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\Resources"
     displayName: 'Copy General Data'
