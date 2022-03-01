@@ -9,8 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
-using System.ComponentModel;
+using CelestiaComponent;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -48,13 +47,10 @@ namespace CelestiaUWP.Addon
         }
     }
 
-    public sealed partial class ResourceManagerPage : Page, INotifyPropertyChanged
+    public sealed partial class ResourceManagerPage : Page
     {
-        private Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
-        {
-            new Helper.NavigationViewItem(LocalizationHelper.Localize("Installed"), "installed"),
-        };
-
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
         public ResourceManagerPage()
         {
             this.InitializeComponent();
@@ -62,18 +58,11 @@ namespace CelestiaUWP.Addon
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ResourceManager.Shared.AddonFolderPath = e.Parameter as string;
-
-            Container.Navigate(typeof(ResourceCategoryListPage), (ShowCategoryHandler)delegate (ResourceCategory category)
-            {
-                ShowCategory(category);
-            });
-        }
-
-        private void ShowCategory(ResourceCategory category)
-        {
-            Nav.IsBackEnabled = true;
-            Container.Navigate(typeof(ResourceItemListPage), new CategoryParameter(category, (ShowItemHandler)delegate (ResourceItem item)
+            var parameter = ((CelestiaAppCore, CelestiaRenderer, string))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            ResourceManager.Shared.AddonFolderPath = parameter.Item3;
+            Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter((ShowItemHandler)delegate (ResourceItem item)
             {
                 ShowItem(item);
             }));
@@ -82,44 +71,15 @@ namespace CelestiaUWP.Addon
         private void ShowItem(ResourceItem item)
         {
             Nav.IsBackEnabled = true;
-            Container.Navigate(typeof(ResourceItemPage), new ItemParameter(item));
-        }
-
-        private void ShowInstalledItems()
-        {
-            Nav.IsBackEnabled = true;
-            Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter((ShowItemHandler)delegate (ResourceItem item)
-            {
-                ShowItem(item);
-            }));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            Container.Navigate(typeof(ResourceItemPage), (AppCore, Renderer, item));
         }
 
         private void Nav_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             if (!Container.CanGoBack) return;
 
-            if (Container.Content is InstalledItemListPage)
-                Nav.SelectedItem = null;
-
             Container.GoBack();
             Nav.IsBackEnabled = Container.CanGoBack;
-        }
-
-        private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.SelectedItem != null)
-            {
-                ShowInstalledItems();
-            }
         }
     }
 }

@@ -290,7 +290,7 @@ namespace CelestiaUWP
                                 httpResponse.EnsureSuccessStatusCode();
                                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
                                 var item = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody).Get<Addon.ResourceItem>();
-                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.ItemParameter(item));
+                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), (mAppCore, mRenderer, item));
                             }
                             catch (Exception ignored)
                             {}
@@ -871,9 +871,13 @@ namespace CelestiaUWP
                 ShowOpenGLInfo();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Add-ons"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Download Add-ons"), (sender, arg) =>
             {
-                ShowAddons();
+                _ = Launcher.LaunchUriAsync(new Uri("https://celestia.mobi/resources/categories"));
+            });
+            AppendItem(helpItem, LocalizationHelper.Localize("Managed Installed Add-ons"), (sender, arg) =>
+            {
+                ShowAddonManagement();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("User Guide"), (sender, arg) =>
@@ -1122,9 +1126,9 @@ namespace CelestiaUWP
             await dialog.ShowAsync();
         }
 
-        void ShowAddons()
+        void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), mExtraAddonFolder);
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), (mAppCore, mRenderer, mExtraAddonFolder));
         }
 
         async void ShowAboutDialog()
