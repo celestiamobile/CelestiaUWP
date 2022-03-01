@@ -8,11 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <RelativePanel>
-        <TextBlock x:Name="TitleText" Text="Select your destination:" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" FontSize="20" Margin="16"></TextBlock>
-        <ComboBox x:Name="DestinationSelection" ItemsSource="{x:Bind mDestinations}" DisplayMemberPath="Name" RelativePanel.Below="TitleText" RelativePanel.AlignLeftWithPanel="True" Margin="16, 0, 16, 16"></ComboBox>
-        <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" Text="{x:Bind ((celestia:CelestiaDestination)DestinationSelection.SelectedItem).Content, Mode=OneWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="16, 0, 16, 0"/>
-
-        <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="16"></Button>
+    <RelativePanel Margin="16">
+        <TextBlock x:Name="TitleText" Text="Select your destination:" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0, 0, 0, 8"></TextBlock>
+        <ComboBox x:Name="DestinationSelection" ItemsSource="{x:Bind mDestinations}" DisplayMemberPath="Name" RelativePanel.Below="TitleText" RelativePanel.AlignLeftWithPanel="True" Margin="0, 0, 0, 8"></ComboBox>
+        <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" Text="{x:Bind ((celestia:CelestiaDestination)DestinationSelection.SelectedItem).Content, Mode=OneWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="0, 0, 0, 8"/>
+        <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True"></Button>
     </RelativePanel>
 </Page>

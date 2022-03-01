@@ -72,6 +72,7 @@ namespace CelestiaUWP.Addon
         {
             this.InitializeComponent();
             GoButton.Content = LocalizationHelper.Localize("Go");
+            RestartHint.Text = LocalizationHelper.Localize("Note: restarting Celestia is needed to use any new installed add-on.");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

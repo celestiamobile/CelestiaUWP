@@ -5,14 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    PrimaryButtonText=""
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    PrimaryButtonText="">
 
     <StackPanel Orientation="Vertical">
-        <TextBlock FontSize="15" x:Name="VersionLabel"/>
-        <HyperlinkButton Content="https://celestia.mobi" NavigateUri="https://celestia.mobi"/>
-        <TextBlock FontSize="13" x:Name="AuthorTitleLabel"/>
-        <TextBlock FontSize="13" x:Name="AuthorLabel" TextWrapping="Wrap"/>
+        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" x:Name="VersionLabel"/>
+        <HyperlinkButton Content="https://celestia.mobi" Margin="0, 8, 0, 8" Padding="0" NavigateUri="https://celestia.mobi"/>
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}" x:Name="AuthorTitleLabel"/>
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}" x:Name="AuthorLabel" TextWrapping="Wrap"/>
     </StackPanel>
 </ContentDialog>
