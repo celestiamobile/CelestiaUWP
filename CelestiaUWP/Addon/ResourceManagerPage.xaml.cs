@@ -15,19 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Addon
 {
-    public delegate void ShowCategoryHandler(ResourceCategory category);
     public delegate void ShowItemHandler(ResourceItem category);
-
-    public class CategoryParameter
-    {
-        public ResourceCategory Category;
-        public ShowItemHandler Handler;
-        public CategoryParameter(ResourceCategory category, ShowItemHandler handler)
-        {
-            this.Category = category;
-            this.Handler = handler;
-        }
-    }
 
     public class InstalledListParameter
     {
@@ -35,15 +23,6 @@ namespace CelestiaUWP.Addon
         public InstalledListParameter(ShowItemHandler handler)
         {
             this.Handler = handler;
-        }
-    }
-
-    public class ItemParameter
-    {
-        public ResourceItem Item;
-        public ItemParameter(ResourceItem item)
-        {
-            this.Item = item;
         }
     }
 

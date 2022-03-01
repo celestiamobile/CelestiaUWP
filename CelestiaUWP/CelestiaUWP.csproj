@@ -132,14 +132,8 @@
       <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Addon\RequestResult.cs" />
-    <Compile Include="Addon\ResourceCategoryListPage.xaml.cs">
-      <DependentUpon>ResourceCategoryListPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Addon\ResourceConstants.cs" />
     <Compile Include="Addon\ResourceItem.cs" />
-    <Compile Include="Addon\ResourceItemListPage.xaml.cs">
-      <DependentUpon>ResourceItemListPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Addon\ResourceItemPage.xaml.cs">
       <DependentUpon>ResourceItemPage.xaml</DependentUpon>
     </Compile>
@@ -152,7 +146,6 @@
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Addon\ResourceCategory.cs" />
     <Compile Include="Helper\CelestiaAppHelper.cs" />
     <Compile Include="Helper\DoubleFloatConverter.cs" />
     <Compile Include="Helper\GamepadManager.cs" />
@@ -292,14 +285,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Addon\InstalledItemListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Addon\ResourceCategoryListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Addon\ResourceItemListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
