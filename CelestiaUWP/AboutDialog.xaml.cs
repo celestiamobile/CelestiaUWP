@@ -34,14 +34,6 @@ namespace CelestiaUWP
             LoadAuthorTranslator();
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
         private async void LoadAuthorTranslator()
         {
             var current = Directory.GetCurrentDirectory();

@@ -9,6 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaComponent;
 using CelestiaUWP.Helper;
 using Newtonsoft.Json;
 using System;
@@ -45,6 +46,9 @@ namespace CelestiaUWP.Addon
 
     public sealed partial class ResourceItemPage : Page, INotifyPropertyChanged
     {
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
+
         private ResourceItem mItem;
         ResourceItem Item
         {
@@ -67,12 +71,16 @@ namespace CelestiaUWP.Addon
         public ResourceItemPage()
         {
             this.InitializeComponent();
+            GoButton.Content = LocalizationHelper.Localize("Go");
+            RestartHint.Text = LocalizationHelper.Localize("Note: restarting Celestia is needed to use any new installed add-on.");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var param = e.Parameter as ItemParameter;
-            Item = param.Item;
+            var parameter = ((CelestiaAppCore, CelestiaRenderer, ResourceItem))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            Item = parameter.Item3;
 
             ResourceManager.Shared.ProgressUpdate += Shared_ProgressUpdate;
             ResourceManager.Shared.DownloadSuccess += Shared_DownloadSuccess;
@@ -115,6 +123,15 @@ namespace CelestiaUWP.Addon
                     ActionButton.Content = LocalizationHelper.Localize("Install");
                     break;
             }
+
+            if (State == ResourceManager.ItemState.Installed && Item.objectName != null && AppCore.Simulation.Find(Item.objectName).IsEmpty)
+            {
+                GoButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                GoButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void ReloadItem()
@@ -156,6 +173,25 @@ namespace CelestiaUWP.Addon
                     UpdateState();
                     break;
             }
+        }
+
+        private void GoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var objectName = Item.objectName;
+            if (objectName == null) return;
+
+            var selection = AppCore.Simulation.Find(Item.objectName);
+            if (selection.IsEmpty)
+            {
+                ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+                return;
+            }
+
+            Renderer.EnqueueTask(() =>
+            {
+                AppCore.Simulation.Selection = selection;
+                AppCore.CharEnter(103);
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

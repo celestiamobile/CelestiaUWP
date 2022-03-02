@@ -11,7 +11,7 @@
     <RelativePanel>
         <Frame Background="Black" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
         <SwapChainPanel x:Name="GLView" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-            <TextBlock x:Name="LoadingText" Foreground="White" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="LoadingText" Foreground="White" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         </SwapChainPanel>
         <MenuBar Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
         <RelativePanel Visibility="Collapsed" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" x:Name="OverlayBackground">
