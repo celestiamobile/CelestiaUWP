@@ -147,13 +147,13 @@ namespace CelestiaUWP.Addon
                 var httpResponse = await httpClient.GetAsync(builder.Uri);
                 httpResponse.EnsureSuccessStatusCode();
                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                var item = JsonConvert.DeserializeObject<RequestResult>(httpResponseBody).Get<ResourceItem>();
+                var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
+                if (requestResult.status != 0) return;
+                var item = requestResult.Get<Addon.ResourceItem>();
                 Item = item;
             }
-            catch (Exception ex)
-            {
-                ContentDialogHelper.ShowAlert(this, ex.Message);
-            }
+            catch (Exception ignored)
+            {}
         }
 
         private void ActionButton_Click(object sender, RoutedEventArgs e)

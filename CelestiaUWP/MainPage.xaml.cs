@@ -289,7 +289,9 @@ namespace CelestiaUWP
                                 var httpResponse = await httpClient.GetAsync(builder.Uri);
                                 httpResponse.EnsureSuccessStatusCode();
                                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                                var item = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody).Get<Addon.ResourceItem>();
+                                var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
+                                if (requestResult.status != 0) return;
+                                var item = requestResult.Get<Addon.ResourceItem>();
                                 ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), (mAppCore, mRenderer, item));
                             }
                             catch (Exception ignored)
