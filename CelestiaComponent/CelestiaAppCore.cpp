@@ -322,6 +322,18 @@ namespace winrt::CelestiaComponent::implementation
         celestia::gl::init();
     }
 
+    hstring CelestiaAppCore::Language()
+    {
+#ifdef ENABLE_NLS
+        const char* lang = dgettext("celestia", "LANGUAGE");
+        if (strcmp(lang, "LANGUAGE") == 0)
+            return L"en";
+        return to_hstring(lang);
+#else
+        return L"en";
+#endif
+    }
+
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
 #ifdef ENABLE_NLS
@@ -563,10 +575,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
                 try
                 {
                     wchar_t locale[LOCALE_NAME_MAX_LENGTH];
-                    hstring celestiaLang = to_hstring(dgettext("celestia", "LANGUAGE"));
-                    if (celestiaLang.empty() || celestiaLang == L"LANGUAGE")
-                        celestiaLang = L"en-US";
-                    int result = ResolveLocaleName(celestiaLang.c_str(), locale, LOCALE_NAME_MAX_LENGTH);
+                    int result = ResolveLocaleName(CelestiaAppCore::Language().c_str(), locale, LOCALE_NAME_MAX_LENGTH);
                     vector<hstring> locales;
                     auto h = to_hstring(locale);
                     if (result > 0)

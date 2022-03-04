@@ -13,8 +13,6 @@ using CelestiaComponent;
 
 namespace CelestiaUWP.Helper
 {
-
-
     public class LocalizationHelper
     {
         public static string Locale = "en";

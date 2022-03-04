@@ -55,6 +55,7 @@ namespace winrt::CelestiaComponent::implementation
         int64_t Pointer();
 
         static void InitGL();
+        static hstring Language();
         static void SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale);
         static void SetUpLocale();
         static hstring LocalizedString(hstring const& original, hstring const& domain);

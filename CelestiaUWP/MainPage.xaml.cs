@@ -184,7 +184,7 @@ namespace CelestiaUWP
                     return false;
                 }
 
-                LocalizationHelper.Locale = CelestiaAppCore.LocalizedString("LANGUAGE", "celestia");
+                LocalizationHelper.Locale = CelestiaAppCore.Language;
                 UpdateScale();
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
