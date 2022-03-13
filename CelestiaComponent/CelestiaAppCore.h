@@ -14,6 +14,7 @@
 #include "CelestiaScript.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
+#include <winrt/Windows.Globalization.DateTimeFormatting.h>
 
 namespace winrt::CelestiaComponent::implementation
 {
