@@ -877,7 +877,7 @@ namespace CelestiaUWP
             {
                 _ = Launcher.LaunchUriAsync(new Uri("https://celestia.mobi/resources/categories"));
             });
-            AppendItem(helpItem, LocalizationHelper.Localize("Managed Installed Add-ons"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Manage Installed Add-ons"), (sender, arg) =>
             {
                 ShowAddonManagement();
             });
