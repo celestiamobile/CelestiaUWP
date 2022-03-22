@@ -37,10 +37,9 @@ namespace CelestiaUWP.Addon
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = ((CelestiaAppCore, CelestiaRenderer, string))e.Parameter;
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
             AppCore = parameter.Item1;
             Renderer = parameter.Item2;
-            ResourceManager.Shared.AddonFolderPath = parameter.Item3;
             Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter((ShowItemHandler)delegate (ResourceItem item)
             {
                 ShowItem(item);

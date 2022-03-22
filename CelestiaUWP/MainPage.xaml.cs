@@ -190,6 +190,7 @@ namespace CelestiaUWP
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
+                    Addon.ResourceManager.Shared.AddonFolderPath = mExtraAddonFolder;
                     SetUpGLViewInteractions();
                     PopulateMenuBar(resourcePath);
                     mRenderer.SetSize((int)GLView.ActualWidth, (int)GLView.ActualHeight);
@@ -1130,7 +1131,7 @@ namespace CelestiaUWP
 
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), (mAppCore, mRenderer, mExtraAddonFolder));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), (mAppCore, mRenderer));
         }
 
         async void ShowAboutDialog()
