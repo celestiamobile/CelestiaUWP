@@ -876,7 +876,11 @@ namespace CelestiaUWP
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("Download Add-ons"), (sender, arg) =>
             {
-                _ = Launcher.LaunchUriAsync(new Uri("https://celestia.mobi/resources/categories"));
+                var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                queryItems.Add("lang", LocalizationHelper.Locale);
+                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
+                builder.Query = queryItems.ToString();
+                _ = Launcher.LaunchUriAsync(builder.Uri);
             });
             AppendItem(helpItem, LocalizationHelper.Localize("Manage Installed Add-ons"), (sender, arg) =>
             {
