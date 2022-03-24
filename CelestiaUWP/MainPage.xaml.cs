@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -1161,39 +1162,8 @@ namespace CelestiaUWP
                 availableLocales.Sort();
                 AvailableLanguages = availableLocales.ToArray();
             }
-
-            var culture = System.Globalization.CultureInfo.CurrentUICulture;
-            var lang = culture.TwoLetterISOLanguageName;
-            var country = "";
-            if (!culture.IsNeutralCulture)
-            {
-                var region = new System.Globalization.RegionInfo(culture.LCID);
-                country = region.TwoLetterISORegionName;
-            }
-            if (lang == "zh")
-            {
-                // Special handling for Chinese script
-                // Basically mapping zh_CN => zh_Hans
-                //                   zh_TW => zh_Hant
-                if (culture.Name.Contains("Hans"))
-                    country = "CN";
-                else if (culture.Name.Contains("Hant"))
-                    country = "TW";
-                // Is it possible for script to be empty?
-                // Singapore uses Hans, Hong Kong, Macao uses Hant
-                else if (country == "SG")
-                    country = "CN";
-                else if (country == "HK" || country == "MO")
-                    country = "TW";
-            }
-            var preferredLocale = lang + "_" + country;
-
-            if (Array.Exists(AvailableLanguages, element => element == preferredLocale))
-                return preferredLocale;
-            preferredLocale = lang;
-            if (Array.Exists(AvailableLanguages, element => element == preferredLocale))
-                return preferredLocale;
-            return "en";
+            var resourceLoader = ResourceLoader.GetForViewIndependentUse();
+            return resourceLoader.GetString("CelestiaLanguage");
         }
 
         private async Task<Dictionary<string, object>> ReadSettings()

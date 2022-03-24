@@ -24,7 +24,34 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="ar"/>
+    <Resource Language="be"/>
+    <Resource Language="bg"/>
+    <Resource Language="de"/>
+    <Resource Language="el"/>
+    <Resource Language="en"/>
+    <Resource Language="es"/>
+    <Resource Language="fr"/>
+    <Resource Language="gl"/>
+    <Resource Language="hu"/>
+    <Resource Language="it"/>
+    <Resource Language="ja"/>
+    <Resource Language="ko"/>
+    <Resource Language="lt"/>
+    <Resource Language="lv"/>
+    <Resource Language="nl"/>
+    <Resource Language="no"/>
+    <Resource Language="pl"/>
+    <Resource Language="pt"/>
+    <Resource Language="pt-BR"/>
+    <Resource Language="ro"/>
+    <Resource Language="ru"/>
+    <Resource Language="sk"/>
+    <Resource Language="sv"/>
+    <Resource Language="tr"/>
+    <Resource Language="uk"/>
+    <Resource Language="zh-CN"/>
+    <Resource Language="zh-TW"/>
   </Resources>
 
   <Applications>
