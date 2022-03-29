@@ -142,6 +142,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="Settings\SettingsCommonPage.xaml.cs">
+      <DependentUpon>SettingsCommonPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BookmarkBasePage.cs" />
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
@@ -178,19 +181,6 @@
     <Compile Include="Addon\ResourceManagerPage.xaml.cs">
       <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\GuidesSettingsPage.xaml.cs">
-      <DependentUpon>GuidesSettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\LabelsSettingsPage.xaml.cs">
-      <DependentUpon>LabelsSettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\RendererSettingsPage.xaml.cs">
-      <DependentUpon>RendererSettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsBasePage.cs" />
-    <Compile Include="Settings\GeneralSettingsPage.xaml.cs">
-      <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
@@ -200,8 +190,8 @@
     <Compile Include="TourGuidePage.xaml.cs">
       <DependentUpon>TourGuidePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewOptionsPage.xaml.cs">
-      <DependentUpon>ViewOptionsPage.xaml</DependentUpon>
+    <Compile Include="Settings\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +282,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\SettingsCommonPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BookmarkOrganizerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -328,22 +322,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\GeneralSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\GuidesSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\LabelsSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\RendererSettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="TextInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -356,7 +334,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewOptionsPage.xaml">
+    <Page Include="Settings\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

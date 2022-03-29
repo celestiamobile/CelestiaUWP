@@ -759,6 +759,12 @@ namespace CelestiaUWP
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
+            AppendItem(fileItem, LocalizationHelper.Localize("Settings"), (sender, arg) =>
+            {
+                ShowSettings();
+            });
+            fileItem.Items.Add(new MenuFlyoutSeparator());
+
             AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder"), async (sender, arg) =>
             {
                 await Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder);
@@ -842,15 +848,6 @@ namespace CelestiaUWP
                 ShowTimeSetting();
             });
 
-            var renderItem = CreateMenuBarItem(LocalizationHelper.Localize("Render"));
-            AppendItem(renderItem, LocalizationHelper.Localize("Settings"), (sender, arg) =>
-            {
-                ShowViewOptions();
-            });
-            renderItem.Items.Add(new MenuFlyoutSeparator());
-            AppendCharEnterItem(renderItem, LocalizationHelper.Localize("More Stars Visible"), 93);
-            AppendCharEnterItem(renderItem, LocalizationHelper.Localize("Fewer Stars Visible"), 91);
-
             var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
             AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R, IsEnabled = false });
             AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U, IsEnabled = false });
@@ -875,7 +872,7 @@ namespace CelestiaUWP
                 ShowOpenGLInfo();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Download Add-ons"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
             {
                 var queryItems = System.Web.HttpUtility.ParseQueryString("");
                 queryItems.Add("lang", LocalizationHelper.Locale);
@@ -883,7 +880,7 @@ namespace CelestiaUWP
                 builder.Query = queryItems.ToString();
                 _ = Launcher.LaunchUriAsync(builder.Uri);
             });
-            AppendItem(helpItem, LocalizationHelper.Localize("Manage Installed Add-ons"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
             {
                 ShowAddonManagement();
             });
@@ -900,7 +897,6 @@ namespace CelestiaUWP
             MenuBar.Items.Add(fileItem);
             MenuBar.Items.Add(navigationItem);
             MenuBar.Items.Add(timeItem);
-            MenuBar.Items.Add(renderItem);
             MenuBar.Items.Add(viewItem);
             MenuBar.Items.Add(bookmarkItem);
             MenuBar.Items.Add(helpItem);
@@ -1080,9 +1076,9 @@ namespace CelestiaUWP
             }
         }
 
-        void ShowViewOptions()
+        void ShowSettings()
         {
-            ShowPage(typeof(ViewOptionsPage), new Size(500, 670), (mAppCore, AppSettings, AvailableLanguages));
+            ShowPage(typeof(Settings.SettingsPage), new Size(500, 0), (mAppCore, AppSettings, AvailableLanguages));
         }
 
         void ShowPage(Type pageType, Size size, object parameter)
