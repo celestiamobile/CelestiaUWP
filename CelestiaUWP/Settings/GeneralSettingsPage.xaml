@@ -59,7 +59,7 @@
             <CheckBox IsChecked="{x:Bind AppCore.ShowAtmospheres, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Atmospheres"/>
             </CheckBox>
-            <CheckBox IsChecked="{x:Bind AppCore.ShowCometLabels, Mode=TwoWay}">
+            <CheckBox IsChecked="{x:Bind AppCore.ShowCometTails, Mode=TwoWay}">
                 <TextBlock TextTrimming="CharacterEllipsis" Text="Comet Tails"/>
             </CheckBox>
             <CheckBox IsChecked="{x:Bind AppCore.ShowPlanetRings, Mode=TwoWay}">
