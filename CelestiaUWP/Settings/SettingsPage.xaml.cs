@@ -101,8 +101,8 @@ namespace CelestiaUWP.Settings
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Constellations")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Diagrams"), AppCore, "ShowDiagrams"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Constellation Labels"), AppCore, "ShowConstellationLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Constellations in Latin"), AppCore, "ShowLatinConstellationLabels"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels"), AppCore, "ShowConstellationLabels"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels in Latin"), AppCore, "ShowLatinConstellationLabels"),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Boundaries"), AppCore, "ShowBoundaries"),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Grids")),
