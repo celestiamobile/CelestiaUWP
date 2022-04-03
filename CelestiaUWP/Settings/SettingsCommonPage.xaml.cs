@@ -240,7 +240,7 @@ namespace CelestiaUWP.Settings
             set
             {
                 appCore.GetType().GetProperty(key).SetValue(appCore, (float)value);
-                localSettings.Values[key] = value;
+                localSettings.Values[key] = (float)value;
             }
         }
 
