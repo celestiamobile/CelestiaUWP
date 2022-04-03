@@ -32,7 +32,6 @@ namespace CelestiaUWP.Addon
             }
         }
 
-
         public InstalledItemListPage()
         {
             this.InitializeComponent();

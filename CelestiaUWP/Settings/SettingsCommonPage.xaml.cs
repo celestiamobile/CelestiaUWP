@@ -32,6 +32,8 @@ namespace CelestiaUWP.Settings
     {
         private CelestiaAppCore appCore;
         private string key;
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
         public AppCoreBooleanItem(string title, CelestiaAppCore appCore, string key)
         {
             this.title = title;
@@ -39,7 +41,18 @@ namespace CelestiaUWP.Settings
             this.appCore = appCore;
         }
 
-        public override bool value { get => (bool)appCore.GetType().GetProperty(key).GetValue(appCore); set => appCore.GetType().GetProperty(key).SetValue(appCore, value); }
+        public override bool value
+        {
+            get
+            {
+                return (bool)appCore.GetType().GetProperty(key).GetValue(appCore);
+            }
+            set
+            {
+                appCore.GetType().GetProperty(key).SetValue(appCore, value);
+                localSettings.Values[key] = value;
+            }
+        }
     }
 
     public class AppSettingsBooleanItem : SettingsBooleanItem
@@ -53,7 +66,18 @@ namespace CelestiaUWP.Settings
             this.appSettings = appSettings;
         }
 
-        public override bool value { get => (bool)appSettings.GetType().GetField(key).GetValue(appSettings); set => appSettings.GetType().GetField(key).SetValue(appSettings, value); }
+        public override bool value
+        {
+            get
+            {
+                return (bool)appSettings.GetType().GetField(key).GetValue(appSettings);
+            }
+            set
+            {
+                appSettings.GetType().GetField(key).SetValue(appSettings, value);
+                appSettings.Save();
+            }
+        }
     }
 
     public abstract class SettingsIntItem : SettingsCommonItem
@@ -67,6 +91,8 @@ namespace CelestiaUWP.Settings
         private CelestiaAppCore appCore;
         private string key;
         private string[] itemTitles;
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
         public AppCoreIntItem(string title, CelestiaAppCore appCore, string key, string[] itemTitles)
         {
             this.title = title;
@@ -75,7 +101,18 @@ namespace CelestiaUWP.Settings
             this.itemTitles = itemTitles;
         }
 
-        public override int value { get => (int)appCore.GetType().GetProperty(key).GetValue(appCore); set => appCore.GetType().GetProperty(key).SetValue(appCore, value); }
+        public override int value
+        {
+            get
+            {
+                return (int)appCore.GetType().GetProperty(key).GetValue(appCore);
+            }
+            set
+            {
+                appCore.GetType().GetProperty(key).SetValue(appCore, value);
+                localSettings.Values[key] = value;
+            }
+        }
         public override string[] items => itemTitles;
     }
 
@@ -92,7 +129,18 @@ namespace CelestiaUWP.Settings
             this.itemTitles = itemTitles;
         }
 
-        public override int value { get => (int)appSettings.GetType().GetField(key).GetValue(appSettings); set => appSettings.GetType().GetField(key).SetValue(appSettings, value); }
+        public override int value
+        {
+            get
+            {
+                return (int)appSettings.GetType().GetField(key).GetValue(appSettings);
+            }
+            set
+            {
+                appSettings.GetType().GetField(key).SetValue(appSettings, value);
+                appSettings.Save();
+            }
+        }
         public override string[] items => itemTitles;
     }
 
@@ -142,6 +190,7 @@ namespace CelestiaUWP.Settings
                 {
                     appSettings.LanguageOverride = availableLanguages[value - 1];
                 }
+                appSettings.Save();
             }
         }
         public override string[] items => itemTitles;
@@ -169,6 +218,8 @@ namespace CelestiaUWP.Settings
         private float minValue;
         private float maxValue;
         private float stepValue;
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
         public AppCoreFloatItem(string title, CelestiaAppCore appCore, string key, float minValue, float maxValue, float stepValue = 1)
         {
             this.title = title;
@@ -189,6 +240,7 @@ namespace CelestiaUWP.Settings
             set
             {
                 appCore.GetType().GetProperty(key).SetValue(appCore, (float)value);
+                localSettings.Values[key] = value;
             }
         }
 
