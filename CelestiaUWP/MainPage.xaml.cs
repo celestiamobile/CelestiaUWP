@@ -42,8 +42,6 @@ namespace CelestiaUWP
         private string mExtraAddonFolder;
         private string mExtraScriptFolder;
 
-        private Dictionary<string, object> mSettings;
-
         private Windows.Storage.StorageFile ScriptFileToOpen;
         private Uri URLToOpen;
         private bool ReadyForInput = false;
@@ -197,8 +195,7 @@ namespace CelestiaUWP
                     mRenderer.SetSize((int)GLView.ActualWidth, (int)GLView.ActualHeight);
                 });
 
-                mSettings = ReadSettings().Result;
-                ApplySettings(mSettings);
+                ApplySettings(ReadSettings().Result);
 
                 mAppCore.Start();
 
@@ -343,15 +340,6 @@ namespace CelestiaUWP
 
         void SetUpGLViewInteractions()
         {
-            Window.Current.VisibilityChanged += (sender, args) =>
-            {
-                if (mSettings != null)
-                {
-                    AppSettings.Save();
-                    SaveSettings(GetCurrentSettings());
-                }
-            };
-
             mAppCore.SetContextMenuHandler((x, y, selection) =>
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -1206,33 +1194,11 @@ namespace CelestiaUWP
             return newSettings;
         }
 
-        private Dictionary<string, object> GetCurrentSettings()
-        {
-            var newSettings = new Dictionary<string, object>();
-            foreach (var kvp in mSettings)
-            {
-                var propInfo = typeof(CelestiaAppCore).GetProperty(kvp.Key);
-                if (propInfo == null) continue;
-
-                newSettings[kvp.Key] = mAppCore.GetType().GetProperty(kvp.Key).GetValue(mAppCore);
-            }
-            return newSettings;
-        }
-
         private void ApplySettings(Dictionary<string, object> settings)
         {
             foreach (var kvp in settings)
             {
                 mAppCore.GetType().GetProperty(kvp.Key).SetValue(mAppCore, kvp.Value);
-            }
-        }
-
-        private void SaveSettings(Dictionary<string, object> settings)
-        {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            foreach (var kvp in settings)
-            {
-                localSettings.Values[kvp.Key] = kvp.Value;
             }
         }
 
