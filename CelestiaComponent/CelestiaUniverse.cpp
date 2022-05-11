@@ -102,6 +102,7 @@ namespace winrt::CelestiaComponent::implementation
 			{
 			case Body::Invisible:
             case Body::Diffuse:
+            case Body::Component:
 				continue;
 			case Body::Planet:
 				planets.push_back(item);
@@ -178,6 +179,7 @@ namespace winrt::CelestiaComponent::implementation
 			{
 			case Body::Invisible:
             case Body::Diffuse:
+            case Body::Component:
 				continue;
 			case Body::Moon:
 			case Body::MinorMoon:
