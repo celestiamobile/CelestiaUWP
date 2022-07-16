@@ -519,6 +519,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1074,6 +1077,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h">
       <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h">
+      <Filter>Celestia\celestia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
