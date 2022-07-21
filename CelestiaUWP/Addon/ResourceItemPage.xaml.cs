@@ -14,6 +14,7 @@ using CelestiaUWP.Helper;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
+using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -22,6 +23,22 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Addon
 {
+    public delegate void RunScriptHandler(string scriptPath);
+
+    public class AddonPageParameter
+    {
+        public CelestiaAppCore AppCore;
+        public CelestiaRenderer Renderer;
+        public ResourceItem Item;
+        public RunScriptHandler Handler;
+        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item, RunScriptHandler handler)
+        {
+            this.AppCore = appCore;
+            this.Renderer = renderer;
+            this.Item = item;
+            this.Handler = handler;
+        }
+    }
     public class ImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -48,6 +65,7 @@ namespace CelestiaUWP.Addon
     {
         private CelestiaAppCore AppCore;
         private CelestiaRenderer Renderer;
+        private RunScriptHandler ScriptHandler;
 
         private ResourceItem mItem;
         ResourceItem Item
@@ -78,10 +96,11 @@ namespace CelestiaUWP.Addon
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = ((CelestiaAppCore, CelestiaRenderer, ResourceItem))e.Parameter;
-            AppCore = parameter.Item1;
-            Renderer = parameter.Item2;
-            Item = parameter.Item3;
+            var parameter = (AddonPageParameter)e.Parameter;
+            AppCore = parameter.AppCore;
+            Renderer = parameter.Renderer;
+            Item = parameter.Item;
+            ScriptHandler = parameter.Handler;
 
             ResourceManager.Shared.ProgressUpdate += Shared_ProgressUpdate;
             ResourceManager.Shared.DownloadSuccess += Shared_DownloadSuccess;
@@ -109,6 +128,8 @@ namespace CelestiaUWP.Addon
 
         private void UpdateState()
         {
+            GoButton.Content = LocalizationHelper.Localize(Item.type == "script" ? "Run" :"Go");
+
             switch (State)
             {
                 case ResourceManager.ItemState.Downloading:
@@ -125,13 +146,36 @@ namespace CelestiaUWP.Addon
                     break;
             }
 
-            if (State == ResourceManager.ItemState.Installed && Item.objectName != null && AppCore.Simulation.Find(Item.objectName).IsEmpty)
+            if (Item.type == "script")
             {
-                GoButton.Visibility = Visibility.Visible;
+                var mainScriptName = Item.mainScriptName;
+                if (State == ResourceManager.ItemState.Installed && mainScriptName != null)
+                {
+                    var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                    if (File.Exists(path))
+                    {
+                        GoButton.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        GoButton.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    GoButton.Visibility = Visibility.Collapsed;
+                }
             }
             else
             {
-                GoButton.Visibility = Visibility.Collapsed;
+                if (State == ResourceManager.ItemState.Installed && Item.objectName != null && AppCore.Simulation.Find(Item.objectName).IsEmpty)
+                {
+                    GoButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    GoButton.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
@@ -152,6 +196,7 @@ namespace CelestiaUWP.Addon
                 if (requestResult.status != 0) return;
                 var item = requestResult.Get<Addon.ResourceItem>();
                 Item = item;
+                UpdateState();
             }
             catch (Exception ignored)
             {}
@@ -178,6 +223,17 @@ namespace CelestiaUWP.Addon
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Item.type == "script")
+            {
+                var mainScriptName = Item.mainScriptName;
+                if (mainScriptName == null) return;
+                var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                if (File.Exists(path))
+                {
+                    ScriptHandler(path);
+                }
+                return;
+            }
             var objectName = Item.objectName;
             if (objectName == null) return;
 

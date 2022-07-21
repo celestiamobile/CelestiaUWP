@@ -17,7 +17,9 @@ namespace CelestiaUWP.Addon
     public class ResourceItem
     {
         public string name;
+        public string type;
         public string objectName;
+        public string mainScriptName;
         public string description;
         public string id;
         public string image;

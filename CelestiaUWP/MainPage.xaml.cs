@@ -244,6 +244,19 @@ namespace CelestiaUWP
             LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
         }
 
+        private async void RunScriptAtPath(string path)
+        {
+            try
+            {
+                var scriptlFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                if (scriptlFile != null)
+                {
+                    OpenFileIfReady(scriptlFile);
+                }
+            }
+            catch { }
+        }
+
         private async void OpenFileOrURL()
         {
             var scriptFile = ScriptFileToOpen;
@@ -291,7 +304,10 @@ namespace CelestiaUWP
                                 var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
                                 if (requestResult.status != 0) return;
                                 var item = requestResult.Get<Addon.ResourceItem>();
-                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), (mAppCore, mRenderer, item));
+                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item, (scriptPath) =>
+                                {
+                                    RunScriptAtPath(scriptPath);
+                                }));
                             }
                             catch (Exception ignored)
                             {}
