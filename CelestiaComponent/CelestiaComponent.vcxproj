@@ -125,35 +125,35 @@
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <VcpkgTriplet>arm64-uwp</VcpkgTriplet>
@@ -182,7 +182,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -199,7 +199,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -216,7 +216,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -233,7 +233,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -250,7 +250,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -267,7 +267,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -284,7 +284,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -301,7 +301,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -427,6 +427,7 @@
     <ClInclude Include="..\..\Celestia\src\celephem\spicerotation.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\vsop87.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\xyzvbinary.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\audiosession.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\celestiacore.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\celestiastate.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\configfile.h" />
@@ -434,6 +435,7 @@
     <ClInclude Include="..\..\Celestia\src\celestia\eclipsefinder.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\favorites.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h" />
@@ -597,6 +599,7 @@
     <ClCompile Include="..\..\Celestia\src\celephem\spiceorbit.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\audiosession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\celestiacore.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\celestiastate.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\configfile.cpp" />
@@ -604,6 +607,7 @@
     <ClCompile Include="..\..\Celestia\src\celestia\eclipsefinder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\url.cpp" />

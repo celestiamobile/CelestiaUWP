@@ -522,6 +522,12 @@
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\audiosession.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1079,6 +1085,12 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\audiosession.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
   </ItemGroup>
