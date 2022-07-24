@@ -245,17 +245,15 @@ namespace CelestiaUWP
             LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
         }
 
-        private async void RunScriptAtPath(string path)
+        private async void RunScriptAtPathDirectly(string path)
         {
-            try
+            if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?")))
             {
-                var scriptlFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
-                if (scriptlFile != null)
+                mRenderer.EnqueueTask(() =>
                 {
-                    OpenFileIfReady(scriptlFile);
-                }
+                    mAppCore.RunScript(path);
+                });
             }
-            catch { }
         }
 
         internal class GuideItem
@@ -312,7 +310,7 @@ namespace CelestiaUWP
                         var item = requestResult.Get<Addon.ResourceItem>();
                         ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0),new Addon.AddonPageParameter(mAppCore, mRenderer, item, (scriptPath) =>
                         {
-                            RunScriptAtPath(scriptPath);
+                            RunScriptAtPathDirectly(scriptPath);
                         }));
                     }
                     catch { }
@@ -1199,7 +1197,7 @@ namespace CelestiaUWP
         {
             ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, (scriptPath) =>
             {
-                RunScriptAtPath(scriptPath);
+                RunScriptAtPathDirectly(scriptPath);
             }));
         }
 
