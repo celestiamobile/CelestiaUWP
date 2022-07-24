@@ -96,12 +96,7 @@ namespace CelestiaUWP
             if (!ReadyForInput) return;
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
-            var top = isFullScreen ? 0 : (int)(MenuBar.Height * scale);
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
-            mRenderer.EnqueueTask(() =>
-            {
-                mAppCore.SetSafeAreaInsets(0, top, 0, 0);
-            });
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -748,7 +743,6 @@ namespace CelestiaUWP
             }
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
-            mAppCore.SetSafeAreaInsets(0, isFullScreen ? 0 : (int)(MenuBar.Height * scale), 0, 0);
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
 
             var fileItem = CreateMenuBarItem(LocalizationHelper.Localize("File"));
