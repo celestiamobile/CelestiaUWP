@@ -97,7 +97,7 @@ namespace CelestiaUWP
                     {
                         p.OpenURLIfReady(e.Uri);
                     }
-                    catch (Exception ignored) { };
+                    catch { };
                 }
 
                 // Ensure the current window is active

@@ -100,7 +100,7 @@ namespace CelestiaUWP.Addon
             args.Uri = builder.Uri;
             args.MatchingQueryKeys = new string[] { "item" };
             args.ContextDirectory = ResourceManager.Shared.ItemPath(Item);
-            WebContent.Navigate(typeof(CommonWebPage), args);
+            WebContent.Navigate(typeof(SafeWebPage), args);
         }
 
         private void Shared_DownloadFailure(ResourceItem item)
@@ -191,8 +191,7 @@ namespace CelestiaUWP.Addon
                 Item = item;
                 UpdateState();
             }
-            catch (Exception ignored)
-            {}
+            catch { }
         }
 
         private void ActionButton_Click(object sender, RoutedEventArgs e)

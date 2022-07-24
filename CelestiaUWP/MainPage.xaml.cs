@@ -321,7 +321,7 @@ namespace CelestiaUWP
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var guide = query["guide"];
                     if (guide == null) return;
-                    ShowPage(typeof(CommonWebPage), new Size(450, 0), GenerateWebArgsForGuide(guide));
+                    ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForGuide(guide));
                     return;
                 }
                 else if (url.Scheme == "cel")
@@ -363,7 +363,7 @@ namespace CelestiaUWP
                             appSettings.Save();
                         }
                     };
-                    ShowPage(typeof(CommonWebPage), new Size(450, 0), args);
+                    ShowPage(typeof(SafeWebPage), new Size(450, 0), args);
                 }
                 catch { }
             }
@@ -1125,7 +1125,7 @@ namespace CelestiaUWP
             {
                 time = mAppCore.Simulation.Time;
             }
-            catch (Exception ignored){} // Catch all exceptions
+            catch {} // Catch all exceptions
 
             var dialog = new TimeSettingDialog(time);
             var result = await dialog.ShowAsync();

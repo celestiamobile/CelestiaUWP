@@ -1,0 +1,14 @@
+﻿<Page
+    x:Class="CelestiaUWP.Web.SafeWebPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <RelativePanel>
+        <TextBlock Visibility="Collapsed" x:Name="WebViewNotFoundView" Style="{StaticResource BodyTextBlockStyle}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        <Frame Visibility="Collapsed" x:Name="WebContent" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
+    </RelativePanel>
+</Page>
