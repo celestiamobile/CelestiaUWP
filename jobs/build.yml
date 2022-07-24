@@ -23,6 +23,7 @@ jobs:
   - script: |
       cd Celestia
       git checkout origin/master
+      git submodule update --init thirdparty/miniaudio
     displayName: 'Checkout Branch'
 
   - script: |
