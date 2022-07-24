@@ -18,6 +18,7 @@ namespace CelestiaUWP
         public bool UseFullDPI;
         public bool EnableMSAA;
         public string LanguageOverride;
+        public string LastNewsID;
 
         private AppSettings()
         {
@@ -33,6 +34,10 @@ namespace CelestiaUWP
             var lang = settings.Values["LanguageOverride"];
             if (lang is string langValue)
                 LanguageOverride = langValue;
+
+            var lni = settings.Values["LastNewsID"];
+            if (lni is string lniValue)
+                LastNewsID = lniValue;
         }
 
         public void Save()
@@ -41,6 +46,7 @@ namespace CelestiaUWP
             settings.Values["FullDPI"] = UseFullDPI;
             settings.Values["EnableMSAA"] = EnableMSAA;
             settings.Values["LanguageOverride"] = LanguageOverride;
+            settings.Values["LastNewsID"] = LastNewsID;
         }
     }
 }

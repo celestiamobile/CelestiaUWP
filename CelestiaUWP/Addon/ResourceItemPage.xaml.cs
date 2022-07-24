@@ -11,14 +11,13 @@
 
 using CelestiaComponent;
 using CelestiaUWP.Helper;
+using CelestiaUWP.Web;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Addon
@@ -37,27 +36,6 @@ namespace CelestiaUWP.Addon
             this.Renderer = renderer;
             this.Item = item;
             this.Handler = handler;
-        }
-    }
-    public class ImageConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-
-        {
-            if (value == null)
-            {
-                BitmapImage blankimage = new BitmapImage();
-                return blankimage;
-            }
-            else
-            {
-                return new BitmapImage(new Uri(value.ToString()));
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
         }
     }
 
@@ -91,7 +69,6 @@ namespace CelestiaUWP.Addon
             this.InitializeComponent();
             GoButton.Content = LocalizationHelper.Localize("Go");
             ActionButton.Content = LocalizationHelper.Localize("Install");
-            RestartHint.Text = LocalizationHelper.Localize("Note: restarting Celestia is needed to use any new installed add-on.");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -108,6 +85,22 @@ namespace CelestiaUWP.Addon
 
             UpdateState();
             ReloadItem();
+
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            queryItems.Add("item", Item.id);
+            queryItems.Add("platform", "uwp");
+            queryItems.Add("titleVisibility", "visible");
+            queryItems.Add("transparentBackground", "1");
+            var builder = new UriBuilder("https://celestia.mobi/resources/item");
+            builder.Query = queryItems.ToString();
+            var args = new CommonWebArgs();
+            args.Renderer = Renderer;
+            args.AppCore = AppCore;
+            args.Uri = builder.Uri;
+            args.MatchingQueryKeys = new string[] { "item" };
+            args.ContextDirectory = ResourceManager.Shared.ItemPath(Item);
+            WebContent.Navigate(typeof(CommonWebPage), args);
         }
 
         private void Shared_DownloadFailure(ResourceItem item)

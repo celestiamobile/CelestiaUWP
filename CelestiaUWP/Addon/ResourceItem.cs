@@ -37,19 +37,6 @@ namespace CelestiaUWP.Addon
             get { return publishTime == 0 ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible; }
         }
 
-        public Uri WebLink
-        {
-            get
-            {
-                var queryItems = System.Web.HttpUtility.ParseQueryString("");
-                queryItems.Add("lang", LocalizationHelper.Locale);
-                queryItems.Add("item", id);
-                var builder = new UriBuilder("https://celestia.mobi/resources/item");
-                builder.Query = queryItems.ToString();
-                return builder.Uri;
-            }
-        }
-
         public string ReleaseTimeDescription
         {
             get

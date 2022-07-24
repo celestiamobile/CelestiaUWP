@@ -34,6 +34,7 @@ namespace CelestiaUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", "0");
             AppCenter.Start("APPCENTER-APP-ID", typeof(Analytics), typeof(Crashes));
         }
 

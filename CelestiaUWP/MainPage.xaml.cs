@@ -11,6 +11,7 @@
 
 using CelestiaComponent;
 using CelestiaUWP.Helper;
+using CelestiaUWP.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -257,6 +258,12 @@ namespace CelestiaUWP
             catch { }
         }
 
+        internal class GuideItem
+        {
+            public string id;
+            public string title;
+        }
+
         private async void OpenFileOrURL()
         {
             var scriptFile = ScriptFileToOpen;
@@ -278,41 +285,46 @@ namespace CelestiaUWP
                     }
                 }
                 catch { }
+                return;
             }
             if (url != null)
             {
                 URLToOpen = null;
-                if (url.Scheme == "celaddon")
+                if (url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
                 {
-                    if (url.Host == "item" && url.Query != null)
+                    var query = System.Web.HttpUtility.ParseQueryString(url.Query);
+                    var addon = query["item"];
+                    if (addon == null) { return; }
+
+                    Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
+                    var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                    queryItems.Add("lang", LocalizationHelper.Locale);
+                    queryItems.Add("item", addon);
+                    var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
+                    builder.Query = queryItems.ToString();
+                    try
                     {
-                        var query = System.Web.HttpUtility.ParseQueryString(url.Query);
-                        var addon = query["item"];
-                        if (addon != null)
+                        var httpResponse = await httpClient.GetAsync(builder.Uri);
+                        httpResponse.EnsureSuccessStatusCode();
+                        var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                        var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
+                        if (requestResult.status != 0) return;
+                        var item = requestResult.Get<Addon.ResourceItem>();
+                        ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0),new Addon.AddonPageParameter(mAppCore, mRenderer, item, (scriptPath) =>
                         {
-                            Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
-                            var queryItems = System.Web.HttpUtility.ParseQueryString("");
-                            queryItems.Add("lang", LocalizationHelper.Locale);
-                            queryItems.Add("item", addon);
-                            var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
-                            builder.Query = queryItems.ToString();
-                            try
-                            {
-                                var httpResponse = await httpClient.GetAsync(builder.Uri);
-                                httpResponse.EnsureSuccessStatusCode();
-                                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                                var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
-                                if (requestResult.status != 0) return;
-                                var item = requestResult.Get<Addon.ResourceItem>();
-                                ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item, (scriptPath) =>
-                                {
-                                    RunScriptAtPath(scriptPath);
-                                }));
-                            }
-                            catch (Exception ignored)
-                            {}
-                        }
+                            RunScriptAtPath(scriptPath);
+                        }));
                     }
+                    catch { }
+                    return;
+                }
+                else if (url.Scheme == "celguide" && url.Host == "guide" && url.Query != null)
+                {
+                    var query = System.Web.HttpUtility.ParseQueryString(url.Query);
+                    var guide = query["guide"];
+                    if (guide == null) return;
+                    ShowPage(typeof(CommonWebPage), new Size(450, 0), GenerateWebArgsForGuide(guide));
+                    return;
                 }
                 else if (url.Scheme == "cel")
                 {
@@ -323,8 +335,57 @@ namespace CelestiaUWP
                             mAppCore.GoToURL(url.AbsoluteUri);
                         });
                     }
+                    return;
                 }
             }
+            {
+                Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
+                var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                queryItems.Add("lang", LocalizationHelper.Locale);
+                queryItems.Add("type", "news");
+                var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/latest");
+                builder.Query = queryItems.ToString();
+
+                try
+                {
+                    var httpResponse = await httpClient.GetAsync(builder.Uri);
+                    httpResponse.EnsureSuccessStatusCode();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
+                    if (requestResult.status != 0) return;
+                    var item = requestResult.Get<GuideItem>();
+                    var appSettings = AppSettings;
+                    if (item.id == null || appSettings.LastNewsID == item.id) return;
+                    var args = GenerateWebArgsForGuide(item.id);
+                    args.ACKReceiver = (id) =>
+                    {
+                        if (id == item.id)
+                        {
+                            appSettings.LastNewsID = id;
+                            appSettings.Save();
+                        }
+                    };
+                    ShowPage(typeof(CommonWebPage), new Size(450, 0), args);
+                }
+                catch { }
+            }
+        }
+
+        public CommonWebArgs GenerateWebArgsForGuide(string id)
+        {
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            queryItems.Add("guide", id);
+            queryItems.Add("platform", "uwp");
+            queryItems.Add("transparentBackground", "1");
+            var builder = new UriBuilder("https://celestia.mobi/resources/guide");
+            builder.Query = queryItems.ToString();
+            var args = new CommonWebArgs();
+            args.Renderer = mRenderer;
+            args.AppCore = mAppCore;
+            args.Uri = builder.Uri;
+            args.MatchingQueryKeys = new string[] { "guide" };
+            return args;
         }
 
         public void OpenFileIfReady(Windows.Storage.StorageFile scriptFileToOpen)
@@ -1136,7 +1197,10 @@ namespace CelestiaUWP
 
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), (mAppCore, mRenderer));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, (scriptPath) =>
+            {
+                RunScriptAtPath(scriptPath);
+            }));
         }
 
         async void ShowAboutDialog()
