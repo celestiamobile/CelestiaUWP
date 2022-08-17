@@ -468,6 +468,7 @@
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_category.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_celestia.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_frame.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_gl.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_internal.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_misc.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_object.h" />
@@ -476,6 +477,7 @@
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_position.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_rotation.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_vector.h" />
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\glcompat.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h" />
     <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
@@ -633,6 +635,7 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_category.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_celestia.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_frame.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_gl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_misc.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_object.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_observer.cpp" />
@@ -640,6 +643,7 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_position.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_rotation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_vector.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\glcompat.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp" />

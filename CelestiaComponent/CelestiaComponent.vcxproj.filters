@@ -528,6 +528,12 @@
     <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\celx_gl.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celscript\lua\glcompat.cpp">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1092,6 +1098,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h">
       <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\celx_gl.h">
+      <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celscript\lua\glcompat.h">
+      <Filter>Celestia\celscript\lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
