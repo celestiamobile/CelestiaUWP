@@ -488,7 +488,7 @@
     <PRIResource Include="Strings\nl\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\no\Resources.resw" />
+    <PRIResource Include="Strings\nb\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\pl\Resources.resw" />
