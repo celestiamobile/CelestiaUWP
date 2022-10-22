@@ -12,7 +12,6 @@ jobs:
 
   steps:
   - checkout: vcpkg-prebuilt
-    fetchDepth: 1
   - checkout: Celestia
   - checkout: CelestiaContent
     fetchDepth: 1
