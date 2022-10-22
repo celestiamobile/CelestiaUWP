@@ -12,7 +12,6 @@ jobs:
 
   steps:
   - checkout: vcpkg-prebuilt
-    ref: 2022-oct
     fetchDepth: 1
   - checkout: Celestia
   - checkout: CelestiaContent
@@ -38,6 +37,11 @@ jobs:
       cd Celestia
       git cherry-pick origin/angle
     displayName: 'Cherry-Pick ANGLE Commit'
+    
+  - script: |
+      cd vcpkg-prebuilt
+      git checkout 2022-oct
+    displayName: 'Checkout VCPKG Prebuilt Branch'
 
   - pwsh: |
       (Get-Content CelestiaUWP\App.xaml.cs) -replace 'APPCENTER-APP-ID', '06fcb18f-a477-4b2d-9cd9-f1b37135c16b' | Out-File -encoding UTF8 CelestiaUWP\App.xaml.cs
