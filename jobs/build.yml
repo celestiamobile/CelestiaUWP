@@ -39,7 +39,7 @@ jobs:
     
   - script: |
       cd vcpkg-prebuilt
-      git checkout 2022-oct
+      git checkout origin/2022-oct
     displayName: 'Checkout VCPKG Prebuilt Branch'
 
   - pwsh: |
