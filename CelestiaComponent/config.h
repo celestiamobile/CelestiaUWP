@@ -11,3 +11,4 @@
 #define CELX
 #define HAVE_CHARCONV
 #define HAVE_STD_FILESYSTEM
+//#define HAVE_MESHOPTIMIZER
