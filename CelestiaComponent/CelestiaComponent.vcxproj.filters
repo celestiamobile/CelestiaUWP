@@ -50,6 +50,9 @@
     <Filter Include="Celestia\celimage">
       <UniqueIdentifier>{a8663d31-684e-4e51-a129-1f70813a98e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Celestia\celrender">
+      <UniqueIdentifier>{bce64c6e-36d1-4d78-9d8b-b48432f72ae7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp">
@@ -349,9 +352,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\value.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\vertexobject.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -533,6 +533,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celscript\lua\glcompat.cpp">
       <Filter>Celestia\celscript\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\vertexobject.cpp">
+      <Filter>Celestia\celrender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -937,9 +943,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\vertexobject.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -1104,6 +1107,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celscript\lua\glcompat.h">
       <Filter>Celestia\celscript\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\vertexobject.h">
+      <Filter>Celestia\celrender</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
