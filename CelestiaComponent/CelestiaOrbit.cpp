@@ -19,7 +19,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaOrbit::CelestiaOrbit(Orbit* o) : CelestiaOrbitT<CelestiaOrbit>(), o(o)
+    CelestiaOrbit::CelestiaOrbit(celestia::ephem::Orbit* o) : CelestiaOrbitT<CelestiaOrbit>(), o(o)
     {
     }
 

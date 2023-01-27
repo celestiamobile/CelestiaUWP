@@ -65,12 +65,12 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaOrbit CelestiaBody::OrbitAtTime(Windows::Foundation::DateTime const& time)
     {
-        return make<CelestiaOrbit>((Orbit*)static_cast<Body*>(obj)->getOrbit(CelestiaHelper::JulianDayFromDateTime(time)));
+        return make<CelestiaOrbit>((celestia::ephem::Orbit*)static_cast<Body*>(obj)->getOrbit(CelestiaHelper::JulianDayFromDateTime(time)));
     }
 
     CelestiaComponent::CelestiaRotationModel CelestiaBody::RotationModelAtTime(Windows::Foundation::DateTime const& time)
     {
-        return make<CelestiaRotationModel>((RotationModel*)static_cast<Body*>(obj)->getRotationModel(CelestiaHelper::JulianDayFromDateTime(time)));
+        return make<CelestiaRotationModel>((celestia::ephem::RotationModel*)static_cast<Body*>(obj)->getRotationModel(CelestiaHelper::JulianDayFromDateTime(time)));
     }
 
     bool CelestiaBody::HasRings()

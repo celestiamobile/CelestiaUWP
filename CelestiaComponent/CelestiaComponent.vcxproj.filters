@@ -540,6 +540,15 @@
     <ClCompile Include="..\..\Celestia\src\celrender\vertexobject.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\atmosphererenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\cometrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1113,6 +1122,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\vertexobject.h">
       <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\atmosphererenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\cometrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\eclipticlinerenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\customorbittype.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h">
+      <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

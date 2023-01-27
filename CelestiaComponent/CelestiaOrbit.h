@@ -16,7 +16,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaOrbit : CelestiaOrbitT<CelestiaOrbit>
     {
-        CelestiaOrbit(Orbit* o);
+        CelestiaOrbit(celestia::ephem::Orbit* o);
 
         bool IsPeriodic();
         double Period();
@@ -27,6 +27,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaVector VelocityAtTime(Windows::Foundation::DateTime const& time);
         CelestiaComponent::CelestiaVector PositionAtTime(Windows::Foundation::DateTime const& time);
 
-        Orbit* o;
+        celestia::ephem::Orbit* o;
     };
 }

@@ -21,7 +21,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaRotationModel : CelestiaRotationModelT<CelestiaRotationModel>
     {
-        CelestiaRotationModel(RotationModel* r);
+        CelestiaRotationModel(celestia::ephem::RotationModel* r);
 
         bool IsPeriodic();
         double Period();
@@ -32,6 +32,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaVector EquatorOrientationAtTime(Windows::Foundation::DateTime const& time);
         CelestiaComponent::CelestiaVector SpinAtTime(Windows::Foundation::DateTime const& time);
 
-        RotationModel* r;
+        celestia::ephem::RotationModel* r;
     };
 }

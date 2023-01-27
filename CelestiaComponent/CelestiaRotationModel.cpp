@@ -19,7 +19,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaRotationModel::CelestiaRotationModel(RotationModel* r) : CelestiaRotationModelT<CelestiaRotationModel>(), r(r)
+    CelestiaRotationModel::CelestiaRotationModel(celestia::ephem::RotationModel* r) : CelestiaRotationModelT<CelestiaRotationModel>(), r(r)
     {
     }
 

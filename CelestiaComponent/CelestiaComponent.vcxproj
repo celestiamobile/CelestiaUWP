@@ -410,6 +410,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\customorbit.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\customorbittype.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\customrotation.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\jpleph.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\nutation.h" />
@@ -456,6 +457,9 @@
     <ClInclude Include="..\..\Celestia\src\celmodel\mesh.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\model.h" />
     <ClInclude Include="..\..\Celestia\src\celmodel\modelfile.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\atmosphererenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\cometrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\eclipticlinerenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\vertexobject.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\script.h" />
@@ -494,6 +498,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\fsutils.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h" />
@@ -625,6 +630,9 @@
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\atmosphererenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\cometrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\vertexobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp" />
