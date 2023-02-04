@@ -1,0 +1,8 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass CustomPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        CustomPage();
+    }
+}

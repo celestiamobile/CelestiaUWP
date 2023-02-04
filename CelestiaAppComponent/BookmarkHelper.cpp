@@ -55,7 +55,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return single_threaded_observable_vector<CelestiaAppComponent::BookmarkNode>();
     }
 
-    Windows::UI::Xaml::Interop::IBindableObservableVector BookmarkHelper::ConvertToBindable(Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> const& list)
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BookmarkHelper::ConvertToBindable(Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> const& list)
     {
         return make<ObservableVector<CelestiaAppComponent::BookmarkNode>>(list);
     }

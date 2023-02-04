@@ -5,8 +5,8 @@
 #endif
 
 using namespace winrt;
-using namespace Windows::UI::Xaml;
-using namespace Windows::UI::Xaml::Controls;
+using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::UI::Xaml::Controls;
 using namespace Windows::Foundation;
 
 namespace winrt::CelestiaAppComponent::implementation
