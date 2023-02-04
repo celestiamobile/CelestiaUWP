@@ -38,8 +38,8 @@ namespace winrt::CelestiaAppComponent::implementation
         bool IsExpanded();
         void IsExpanded(bool);
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItem> Children();
-        Windows::UI::Xaml::Interop::IBindableObservableVector BindableChildren();
-        static Windows::UI::Xaml::Interop::IBindableObservableVector ConvertToBindable(Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItem> const& list);
+        Microsoft::UI::Xaml::Interop::IBindableObservableVector BindableChildren();
+        static Microsoft::UI::Xaml::Interop::IBindableObservableVector ConvertToBindable(Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItem> const& list);
 
     private:
         CelestiaComponent::CelestiaBrowserItem item;
@@ -47,7 +47,7 @@ namespace winrt::CelestiaAppComponent::implementation
         bool areChildrenLoaded{ false };
         bool areBindableChildrenLoaded{ false };
         bool expanded{ false };
-        Windows::UI::Xaml::Interop::IBindableObservableVector bindableChildren;
+        Microsoft::UI::Xaml::Interop::IBindableObservableVector bindableChildren;
     };
 
     struct BrowserItemTab : BrowserItemTabT<BrowserItemTab>

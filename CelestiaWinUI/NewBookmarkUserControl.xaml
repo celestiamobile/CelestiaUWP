@@ -1,0 +1,17 @@
+<UserControl
+    x:Class="CelestiaWinUI.NewBookmarkUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:CelestiaWinUI"
+    mc:Ignorable="d">
+
+    <RelativePanel>
+        <RelativePanel x:Name="NewNameContainer" Margin="{StaticResource TopHalf}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  RelativePanel.AlignTopWithPanel="True" >
+            <TextBox Text="{x:Bind NameText, Mode=TwoWay}" Margin="{StaticResource RightSpacing}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="ConfirmButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="OK" x:Name="ConfirmButton" Click="ConfirmButton_Click" Width="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
+        <RelativePanel x:Name="OrganizerContainer" RelativePanel.Below="NewNameContainer" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
+    </RelativePanel>
+</UserControl>
