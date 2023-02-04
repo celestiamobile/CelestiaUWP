@@ -1,0 +1,8 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass InfoWindow : Microsoft.UI.Xaml.Window
+    {
+        InfoWindow(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSelection selection);
+    }
+}

@@ -1,0 +1,17 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass SettingsNavigationItemGroup
+    {
+        SettingsNavigationItemGroup(String title, Windows.Foundation.Collections.IObservableVector<Object> items);
+        String Title{ get; };
+        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+    }
+
+    [default_interface]
+    runtimeclass SettingsUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        SettingsUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaAppComponent.AppSettings appSettings, Windows.Storage.ApplicationDataContainer localSettings, Windows.Foundation.Collections.IVector<String> availableLanguages);
+        Windows.Foundation.Collections.IObservableVector<SettingsNavigationItemGroup> ItemGroups{ get; };
+    }
+}
