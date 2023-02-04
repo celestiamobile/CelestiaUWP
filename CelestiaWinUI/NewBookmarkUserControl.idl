@@ -1,0 +1,10 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass NewBookmarkUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        NewBookmarkUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+
+        String NameText;
+    }
+}

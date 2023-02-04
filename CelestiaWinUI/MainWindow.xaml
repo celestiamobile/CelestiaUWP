@@ -1,0 +1,22 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Window
+    x:Class="CelestiaWinUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaWinUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Window.SystemBackdrop>
+        <MicaBackdrop/>
+    </Window.SystemBackdrop>
+    <RelativePanel>
+        <SwapChainPanel FlowDirection="LeftToRight" x:Name="GLView" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <ContentControl x:Name="FocusHelperControl" HorizontalAlignment="Left" Height="0"  VerticalAlignment="Top" Width="0"/>
+        </SwapChainPanel>
+        <TextBlock x:Name="LoadingText" Style="{StaticResource TitleTextBlockStyle}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></TextBlock>
+        <MenuBar Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
+    </RelativePanel>
+</Window>

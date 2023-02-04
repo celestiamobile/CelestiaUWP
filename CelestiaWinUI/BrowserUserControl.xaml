@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="CelestiaWinUI.BrowserUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Visible" IsBackEnabled="False" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged" BackRequested="Nav_BackRequested">
+        <NavigationView.MenuItemTemplate>
+            <DataTemplate x:DataType="app:BrowserItemTab">
+                <NavigationViewItem Content="{x:Bind TabName, Mode=OneTime}"/>
+            </DataTemplate>
+        </NavigationView.MenuItemTemplate>
+        <Frame x:Name="Container">
+            <RelativePanel x:Name="BrowserItemListContainer" Margin="{StaticResource Margin}">
+                <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                    <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                        <TreeView.ItemTemplate>
+                            <DataTemplate x:DataType="app:BrowserItem">
+                                <TreeViewItem ItemsSource="{x:Bind BindableChildren}"
+                               IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
+                               Content="{x:Bind ItemName}"/>
+                            </DataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource HorizontalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+            </RelativePanel>
+        </Frame>
+    </NavigationView>
+</UserControl>

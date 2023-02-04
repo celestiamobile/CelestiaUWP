@@ -378,7 +378,7 @@ namespace winrt::CelestiaComponent::implementation
         }
     }
 
-    void CelestiaRenderer::SetSurface(Windows::UI::Xaml::Controls::SwapChainPanel const& surface, float scale)
+    void CelestiaRenderer::SetSurface(Microsoft::UI::Xaml::Controls::SwapChainPanel const& surface, float scale)
     {
         Lock();
         msg = CelestiaRenderer::MSG_WINDOW_SET;

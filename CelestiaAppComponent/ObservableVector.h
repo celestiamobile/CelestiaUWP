@@ -1,13 +1,13 @@
 #pragma once
 
 #include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.UI.Xaml.Interop.h>
+#include <winrt/Microsoft.UI.Xaml.Interop.h>
 
 namespace winrt::CelestiaAppComponent::implementation
 {
     template <typename T>
     struct ObservableVectorIterator : implements<ObservableVectorIterator<T>,
-        Windows::UI::Xaml::Interop::IBindableIterator>
+        Microsoft::UI::Xaml::Interop::IBindableIterator>
     {
         ObservableVectorIterator(Windows::Foundation::Collections::IIterator<T> const& iterator) : iterator(iterator) {}
 
@@ -32,12 +32,12 @@ namespace winrt::CelestiaAppComponent::implementation
 
     template <typename T>
     struct VectorView : implements<VectorView<T>,
-        Windows::UI::Xaml::Interop::IBindableVectorView,
-        Windows::UI::Xaml::Interop::IBindableIterable>
+        Microsoft::UI::Xaml::Interop::IBindableVectorView,
+        Microsoft::UI::Xaml::Interop::IBindableIterable>
     {
         VectorView(Windows::Foundation::Collections::IVectorView<T> const& store) : store(store) {}
 
-        Windows::UI::Xaml::Interop::IBindableIterator First()
+        Microsoft::UI::Xaml::Interop::IBindableIterator First()
         {
             return make<ObservableVectorIterator<T>>(store.First());
         }
@@ -63,9 +63,9 @@ namespace winrt::CelestiaAppComponent::implementation
 
     template <typename T>
     struct ObservableVector : implements<ObservableVector<T>,
-        Windows::UI::Xaml::Interop::IBindableObservableVector,
-        Windows::UI::Xaml::Interop::IBindableVector,
-        Windows::UI::Xaml::Interop::IBindableIterable>
+        Microsoft::UI::Xaml::Interop::IBindableObservableVector,
+        Microsoft::UI::Xaml::Interop::IBindableVector,
+        Microsoft::UI::Xaml::Interop::IBindableIterable>
     {
         ObservableVector(Windows::Foundation::Collections::IObservableVector<T> const& store) : store(store)
         {
@@ -77,7 +77,7 @@ namespace winrt::CelestiaAppComponent::implementation
                 });
         }
 
-        event_token VectorChanged(Windows::UI::Xaml::Interop::BindableVectorChangedEventHandler const& handler)
+        event_token VectorChanged(Microsoft::UI::Xaml::Interop::BindableVectorChangedEventHandler const& handler)
         {
             return changed.add(handler);
         }
@@ -87,7 +87,7 @@ namespace winrt::CelestiaAppComponent::implementation
             changed.remove(cookie);
         }
 
-        Windows::UI::Xaml::Interop::IBindableIterator First()
+        Microsoft::UI::Xaml::Interop::IBindableIterator First()
         {
             return make<ObservableVectorIterator<T>>(store.First());
         }
@@ -132,7 +132,7 @@ namespace winrt::CelestiaAppComponent::implementation
             return store.IndexOf(value.as<T>(), index);
         }
 
-        Windows::UI::Xaml::Interop::IBindableVectorView GetView()
+        Microsoft::UI::Xaml::Interop::IBindableVectorView GetView()
         {
             return make<VectorView<T>>(store.GetView());
         }
@@ -144,6 +144,6 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         Windows::Foundation::Collections::IObservableVector<T> store;
-        event<Windows::UI::Xaml::Interop::BindableVectorChangedEventHandler> changed;
+        event<Microsoft::UI::Xaml::Interop::BindableVectorChangedEventHandler> changed;
     };
 }
