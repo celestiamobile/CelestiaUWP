@@ -1,0 +1,17 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass InstalledItemListItemSelectedArgs
+    {
+        CelestiaAppComponent.ResourceItem Item{ get; };
+    }
+
+    [default_interface]
+    runtimeclass InstalledItemListUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        InstalledItemListUserControl(CelestiaAppComponent.ResourceManager resourceManager);
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.ResourceItem> Items{ get; };
+
+        event Windows.Foundation.EventHandler<InstalledItemListItemSelectedArgs> ItemSelected;
+    }
+}

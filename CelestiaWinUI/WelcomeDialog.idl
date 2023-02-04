@@ -1,0 +1,9 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass WelcomeDialog : Microsoft.UI.Xaml.Controls.ContentDialog
+    {
+        WelcomeDialog();
+        Boolean ShouldNotShowMessageAgain{ get; };
+    }
+}
