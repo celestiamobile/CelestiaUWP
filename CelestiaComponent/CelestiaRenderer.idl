@@ -20,7 +20,7 @@ namespace CelestiaComponent
         void Stop();
         void Pause();
         void Resume();
-        void SetSurface(Windows.UI.Xaml.Controls.SwapChainPanel surface, Single scale);
+        void SetSurface(Microsoft.UI.Xaml.Controls.SwapChainPanel surface, Single scale);
         void SetCorePointer(Int64 core);
         void EnqueueTask(CelestiaRendererTask task);
         void SetPreRenderTask(CelestiaRendererTask task);

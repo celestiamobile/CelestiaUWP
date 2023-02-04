@@ -1,0 +1,20 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass ObserverModeStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        ObserverModeStringConverter();
+    }
+
+    [default_interface]
+    runtimeclass ObserverModeDialog : Microsoft.UI.Xaml.Controls.ContentDialog, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ObserverModeDialog(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        Windows.Foundation.Collections.IObservableVector<CelestiaComponent.CoordinateSystem> CoordinateSystems{ get; };
+        CelestiaComponent.CoordinateSystem SelectedCoordinateSystem;
+        Microsoft.UI.Xaml.Visibility RefObjectTextBoxVisibility{ get; };
+        Microsoft.UI.Xaml.Visibility TargetObjectTextBoxVisibility{ get; };
+        String ReferenceObjectPath{ get; };
+        String TargetObjectPath{ get; };
+    }
+}
