@@ -111,6 +111,19 @@ namespace winrt::CelestiaComponent::implementation
         return jd;
     }
 
+    Windows::Foundation::DateTime CelestiaHelper::GetMidnight(Windows::Foundation::DateTime const& dateTime)
+    {
+        Windows::Globalization::Calendar c;
+        c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
+        c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
+        c.SetDateTime(dateTime);
+        c.Hour(0);
+        c.Minute(0);
+        c.Second(0);
+        c.Nanosecond(0);
+        return c.GetDateTime();
+    }
+
     CelestiaComponent::CelestiaVector CelestiaHelper::CelToJ2000Ecliptic(CelestiaComponent::CelestiaVector const& cel)
     {
         auto obj = get_self<CelestiaVector>(cel);

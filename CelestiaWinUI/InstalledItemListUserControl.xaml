@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="CelestiaWinUI.InstalledItemListUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Margin="{StaticResource Margin}">
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="Title" Margin="0, 0, 0, 8" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" TextWrapping="Wrap"/>
+        <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.Below="Title">
+            <ListView x:Name="ItemList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Items, Mode=OneWay}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ItemList_ItemClick" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="app:ResourceItem">
+                        <TextBlock Text="{x:Bind Name}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel x:Name="EmptyHint" Visibility="Collapsed" Orientation="Vertical" Spacing="{StaticResource VerticalSpacing}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
+                <TextBlock x:Name="EmptyHintText" HorizontalAlignment="Center"/>
+                <Button x:Name="EmptyHintButton" Content="Get Add-ons" Click="GetAddonButton_Click" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <ProgressRing x:Name="LoadingIndicator" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
+    </RelativePanel>
+</UserControl>

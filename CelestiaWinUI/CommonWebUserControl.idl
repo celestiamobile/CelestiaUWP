@@ -1,0 +1,25 @@
+namespace CelestiaWinUI
+{
+    delegate Microsoft.UI.Xaml.Window WebWindowProvider();
+
+    [default_interface]
+    runtimeclass CommonWebUserControlArgs
+    {
+        CommonWebUserControlArgs(Windows.Foundation.Uri initailUri, Windows.Foundation.Collections.IVector<String> matchingQueryKeys, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, String contextDirectory, CelestiaAppComponent.JavascriptMessageACKCallback ackCallback, WebWindowProvider windowProvider);
+
+        Windows.Foundation.Uri InitialUri{ get; };
+        Windows.Foundation.Collections.IVector<String> MatchingQueryKeys{ get; };
+        CelestiaComponent.CelestiaAppCore AppCore{ get; };
+        CelestiaComponent.CelestiaRenderer Renderer{ get; };
+        String ContextDirectory{ get; };
+        CelestiaAppComponent.JavascriptMessageACKCallback ACKCallback{ get; };
+        WebWindowProvider WindowProvider{ get; };
+    }
+
+    [default_interface]
+    runtimeclass CommonWebUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        CommonWebUserControl(CommonWebUserControlArgs args);
+        void CloseWebViewIfNeeded();
+    }
+}

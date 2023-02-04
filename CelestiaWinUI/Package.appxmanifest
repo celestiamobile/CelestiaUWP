@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="698f54ef-8595-469a-8cfb-f44bc1816f5d"
+    Publisher="CN=linfel"
+    Version="1.0.0.0" />
+
+  <Properties>
+    <DisplayName>Celestia</DisplayName>
+    <PublisherDisplayName>linfel</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+
+<Resources>
+    <Resource Language="ar"/>
+    <Resource Language="be"/>
+    <Resource Language="bg"/>
+    <Resource Language="de"/>
+    <Resource Language="el"/>
+    <Resource Language="en"/>
+    <Resource Language="es"/>
+    <Resource Language="fr"/>
+    <Resource Language="gl"/>
+    <Resource Language="hu"/>
+    <Resource Language="it"/>
+    <Resource Language="ja"/>
+    <Resource Language="ka"/>
+    <Resource Language="ko"/>
+    <Resource Language="lt"/>
+    <Resource Language="lv"/>
+    <Resource Language="nb"/>
+    <Resource Language="nl"/>
+    <Resource Language="pl"/>
+    <Resource Language="pt"/>
+    <Resource Language="pt-BR"/>
+    <Resource Language="ro"/>
+    <Resource Language="ru"/>
+    <Resource Language="sk"/>
+    <Resource Language="sv"/>
+    <Resource Language="tr"/>
+    <Resource Language="uk"/>
+    <Resource Language="zh-CN"/>
+    <Resource Language="zh-TW"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$">
+      <uap:VisualElements
+        DisplayName="Celestia"
+        Description="CelestiaWinUI"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+        <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="cel">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.cel</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Celestia Script</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="celx">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.celx</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>Celestia Script</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="cel">
+            <uap:DisplayName>Celestia URL</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="celaddon">
+            <uap:DisplayName>Celestia Add-on URL</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="celguide">
+            <uap:DisplayName>Celestia Guide URL</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>CelestiaComponent.dll</Path>
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaAppCore" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaAstroObject" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBody" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBrowserItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDestination" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDMS" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDSO" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDSOCatalog" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipse" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipseFinder" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaExtension" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGalaxy" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGotoLocation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaLocation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaObserver" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaOrbit" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaPlanetarySystem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaRenderer" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaRotationModel" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaScript" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaSelection" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaSimulation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaStar" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaStarCatalog" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaTimeline" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaTimelinePhase" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniversalCoord" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniverse" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaVector" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+
+    <Extension Category="windows.activatableClass.inProcessServer">
+        <InProcessServer>
+            <Path>CelestiaAppComponent.dll</Path>
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettings" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkNode" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItemTab" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ContentDialogHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.GamepadManager" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.GuideItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessagePayload" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandlerContext" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.DummyHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunDemoHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunScriptHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ShareURLHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SendACKHandler" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptBridge" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.LocalizationHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.PathHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResultInfo" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SearchObjectEntry" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBaseItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBooleanItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingInt32Item" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingDoubleItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingHeaderItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.OptionPair" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreBooleanItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsBooleanItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreInt32Item" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsInt32Item" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsDoubleItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.LanguageInt32Item" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreSingleItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadProgressArgs" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadSuccessArgs" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadFailureArgs" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManager" ThreadingModel="both" />
+        </InProcessServer>
+    </Extension>
+  </Extensions>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <Capability Name="internetClient"/>
+  </Capabilities>
+</Package>

@@ -50,7 +50,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return children;
     }
 
-    Windows::UI::Xaml::Interop::IBindableObservableVector BrowserItem::BindableChildren()
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BrowserItem::BindableChildren()
     {
         if (!areBindableChildrenLoaded)
         {
@@ -60,7 +60,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return bindableChildren;
     }
 
-    Windows::UI::Xaml::Interop::IBindableObservableVector BrowserItem::ConvertToBindable(Collections::IObservableVector<CelestiaAppComponent::BrowserItem> const& list)
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BrowserItem::ConvertToBindable(Collections::IObservableVector<CelestiaAppComponent::BrowserItem> const& list)
     {
         return make<ObservableVector<CelestiaAppComponent::BrowserItem>>(list);
     }

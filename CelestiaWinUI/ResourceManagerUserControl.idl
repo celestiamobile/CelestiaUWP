@@ -1,0 +1,11 @@
+import "CommonWebUserControl.idl";
+import "InstalledItemListUserControl.idl";
+
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass ResourceManagerUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        ResourceManagerUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.ResourceManager resourceManager, WebWindowProvider windowProvider, GetAddonHandler getAddonHandler);
+    }
+}

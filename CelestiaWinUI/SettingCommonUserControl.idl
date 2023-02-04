@@ -1,0 +1,20 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass SettingTemplateSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
+    {
+        SettingTemplateSelector();
+        Microsoft.UI.Xaml.DataTemplate Toggle;
+        Microsoft.UI.Xaml.DataTemplate Selection;
+        Microsoft.UI.Xaml.DataTemplate Slider;
+        Microsoft.UI.Xaml.DataTemplate Header;
+    }
+
+    [default_interface]
+    runtimeclass SettingCommonUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint);
+        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+        Boolean ShowRestartHint{ get; };
+    }
+}

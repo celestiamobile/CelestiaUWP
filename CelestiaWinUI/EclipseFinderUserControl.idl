@@ -1,0 +1,28 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass DateTimeStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        DateTimeStringConverter();
+    }
+
+    [default_interface]
+    runtimeclass DateTimeReferenceDateTimeConverter : Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        DateTimeReferenceDateTimeConverter();
+    }
+
+    [default_interface]
+    runtimeclass EclipseFinderUserControl : Microsoft.UI.Xaml.Controls.UserControl, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        EclipseFinderUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        Windows.Foundation.DateTime StartTime;
+        Windows.Foundation.DateTime EndTime;
+        Boolean FindLunar;
+        Boolean FindSolar;
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.SearchObjectEntry> AvailableObjects{ get; };
+        Windows.Foundation.Collections.IObservableVector<CelestiaComponent.CelestiaEclipse> Eclipses{ get; };
+
+        static String GetEclipseDescription(CelestiaComponent.CelestiaBody occulter, CelestiaComponent.CelestiaBody received);
+    }
+}

@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml" />
+    <Page Include="AboutDialog.xaml" />
+    <Page Include="GotoObjectDialog.xaml" />
+    <Page Include="TimeSettingDialog.xaml" />
+    <Page Include="TourGuideWindow.xaml" />
+    <Page Include="BrowserUserControl.xaml" />
+    <Page Include="EclipseFinderUserControl.xaml" />
+    <Page Include="BookmarkOrganizerUserControl.xaml" />
+    <Page Include="NewBookmarkUserControl.xaml" />
+    <Page Include="SettingCommonUserControl.xaml" />
+    <Page Include="SettingsUserControl.xaml" />
+    <Page Include="InstalledItemListUserControl.xaml" />
+    <Page Include="ResourceManagerUserControl.xaml" />
+    <Page Include="ResourceItemUserControl.xaml" />
+    <Page Include="CommonWebUserControl.xaml" />
+    <Page Include="SafeWebUserControl.xaml" />
+    <Page Include="CustomPage.xaml" />
+    <Page Include="ObserverModeDialog.xaml" />
+    <Page Include="WelcomeDialog.xaml" />
+    <Page Include="InfoUserControl.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+    <Midl Include="MainWindow.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Utilities\WindowHelper.cpp" />
+    <ClCompile Include="Utilities\EmailHelper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{2d474916-dc15-4f9f-9546-a2a7b80d9727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings">
+      <UniqueIdentifier>{0ccb5f80-1d59-46a4-a031-1516438060cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\zh-CN">
+      <UniqueIdentifier>{887b3645-bbd2-4f10-9b61-36a91bc88ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\zh-TW">
+      <UniqueIdentifier>{25986294-0547-4dd2-a92a-e0862dda3ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ar">
+      <UniqueIdentifier>{e0436864-def7-4ff5-8664-f7dbed89c908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\be">
+      <UniqueIdentifier>{ce6e9887-535f-4454-92a4-1a705b157be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\bg">
+      <UniqueIdentifier>{44940486-4f11-46a8-a1e5-2313310eebf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\de">
+      <UniqueIdentifier>{f972b2d3-e9f3-4c1c-84a6-b9bf4c1f1d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\el">
+      <UniqueIdentifier>{65fb8f64-c5a3-49c1-93a3-4be4205f731c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\en">
+      <UniqueIdentifier>{fc602786-44b5-46d8-9460-d93eec0fd121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\es">
+      <UniqueIdentifier>{a4e27143-76d4-400c-aa8d-1c7b0a5335f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\fr">
+      <UniqueIdentifier>{29477477-37c9-4372-b183-fff9b93bad43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\gl">
+      <UniqueIdentifier>{39c7baf6-c55e-4816-93f6-886d9b628823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\hu">
+      <UniqueIdentifier>{45878d3f-a1eb-4484-b854-a6bcc4a75295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\it">
+      <UniqueIdentifier>{6917164a-2a76-4c16-940b-c95b7440e4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ja">
+      <UniqueIdentifier>{237bf544-5af1-4474-adc3-d0cff113a786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ka">
+      <UniqueIdentifier>{3dea2a5b-05aa-471c-a7a6-ce18ffa3e523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ko">
+      <UniqueIdentifier>{65b68759-b684-4226-945d-a4f517d66daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\lt">
+      <UniqueIdentifier>{2529aaba-7c65-43e8-9066-f7552fe54498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\lv">
+      <UniqueIdentifier>{033a1f1c-765a-4d2a-b5fe-58a338b3246a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\nb">
+      <UniqueIdentifier>{cc98e7b8-64a3-45e3-aad9-ae4bd7e63c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\nl">
+      <UniqueIdentifier>{de923b23-0ceb-4c8e-a73a-57707cd7c7f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\pl">
+      <UniqueIdentifier>{b57e6501-df2c-46cd-b72e-173ae93a255a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\pt">
+      <UniqueIdentifier>{f455e8b9-b275-4b84-a340-f73d9bfa647d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\pt-BR">
+      <UniqueIdentifier>{75f9a6ea-cf6f-45bf-a28e-e53947eb46db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ro">
+      <UniqueIdentifier>{e624d524-5576-49fe-91a2-e27b0d5c88ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\ru">
+      <UniqueIdentifier>{6ffdc530-2aa0-4728-9244-4a6ad4368161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\sk">
+      <UniqueIdentifier>{d7a335be-2094-4af2-a0fb-8ea4328329c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\sv">
+      <UniqueIdentifier>{490bfbd2-c6f5-4054-8f1c-364498346115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\tr">
+      <UniqueIdentifier>{5bfc2b50-7a28-4366-a877-b111dd8ccf8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\uk">
+      <UniqueIdentifier>{6657fe87-f41d-4569-84da-cfb45f4e42b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\ar\Resources.resw">
+      <Filter>Strings\ar</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\be\Resources.resw">
+      <Filter>Strings\be</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\bg\Resources.resw">
+      <Filter>Strings\bg</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\de\Resources.resw">
+      <Filter>Strings\de</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\el\Resources.resw">
+      <Filter>Strings\el</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\en\Resources.resw">
+      <Filter>Strings\en</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\es\Resources.resw">
+      <Filter>Strings\es</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\fr\Resources.resw">
+      <Filter>Strings\fr</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\gl\Resources.resw">
+      <Filter>Strings\gl</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\hu\Resources.resw">
+      <Filter>Strings\hu</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\it\Resources.resw">
+      <Filter>Strings\it</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\ja\Resources.resw">
+      <Filter>Strings\ja</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\ka\Resources.resw">
+      <Filter>Strings\ka</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\ko\Resources.resw">
+      <Filter>Strings\ko</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\lt\Resources.resw">
+      <Filter>Strings\lt</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\lv\Resources.resw">
+      <Filter>Strings\lv</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\nb\Resources.resw">
+      <Filter>Strings\nb</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\nl\Resources.resw">
+      <Filter>Strings\nl</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\pl\Resources.resw">
+      <Filter>Strings\pl</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\pt\Resources.resw">
+      <Filter>Strings\pt</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\pt-BR\Resources.resw">
+      <Filter>Strings\pt-BR</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\ro\Resources.resw">
+      <Filter>Strings\ro</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\ru\Resources.resw">
+      <Filter>Strings\ru</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\sk\Resources.resw">
+      <Filter>Strings\sk</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\sv\Resources.resw">
+      <Filter>Strings\sv</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\tr\Resources.resw">
+      <Filter>Strings\tr</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\uk\Resources.resw">
+      <Filter>Strings\uk</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\Resources.resw">
+      <Filter>Strings\zh-CN</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-TW\Resources.resw">
+      <Filter>Strings\zh-TW</Filter>
+    </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+  </ItemGroup>
+</Project>
