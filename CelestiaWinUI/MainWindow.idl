@@ -1,0 +1,13 @@
+// Copyright (c) Microsoft Corporation and Contributors.
+// Licensed under the MIT License.
+
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+
+        void WillActivate(Windows.ApplicationModel.Activation.IActivatedEventArgs args);
+    }
+}

@@ -1,0 +1,11 @@
+// Copyright (c) Microsoft Corporation and Contributors.
+// Licensed under the MIT License.
+
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass AboutDialog : Microsoft.UI.Xaml.Controls.ContentDialog
+    {
+        AboutDialog(String authorsFilePath, String translatorsFilePath);
+    }
+}

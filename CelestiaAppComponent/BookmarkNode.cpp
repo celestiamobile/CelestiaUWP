@@ -78,7 +78,7 @@ namespace winrt::CelestiaAppComponent::implementation
         url = value;
     }
 
-    Windows::UI::Xaml::Interop::IBindableObservableVector BookmarkNode::BindableChildren()
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BookmarkNode::BindableChildren()
     {
         return bindableChildren;
     }

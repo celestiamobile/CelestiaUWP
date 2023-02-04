@@ -1,0 +1,9 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass TourGuideWindow : Microsoft.UI.Xaml.Window
+    {
+        TourGuideWindow(CelestiaComponent.CelestiaDestination[] destinations, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        Windows.Foundation.Collections.IObservableVector<CelestiaComponent.CelestiaDestination> Destinations{ get; };
+    }
+}

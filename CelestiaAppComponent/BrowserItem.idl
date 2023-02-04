@@ -27,8 +27,8 @@ namespace CelestiaAppComponent
         Boolean IsExpanded;
         CelestiaComponent.CelestiaBrowserItem Item{ get; };
         Windows.Foundation.Collections.IObservableVector<BrowserItem> Children{ get; };
-        Windows.UI.Xaml.Interop.IBindableObservableVector BindableChildren{ get; };
-        static Windows.UI.Xaml.Interop.IBindableObservableVector ConvertToBindable(Windows.Foundation.Collections.IObservableVector<BrowserItem> list);
+        Microsoft.UI.Xaml.Interop.IBindableObservableVector BindableChildren{ get; };
+        static Microsoft.UI.Xaml.Interop.IBindableObservableVector ConvertToBindable(Windows.Foundation.Collections.IObservableVector<BrowserItem> list);
     }
 
     [default_interface]

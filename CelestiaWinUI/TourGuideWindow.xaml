@@ -1,0 +1,21 @@
+<Window
+    x:Class="CelestiaWinUI.TourGuideWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:celestia="using:CelestiaComponent"
+    mc:Ignorable="d">
+    <RelativePanel Margin="{StaticResource Margin}">
+        <TextBlock x:Name="TitleText" Text="Select your destination:" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Style="{StaticResource SubtitleTextBlockStyle}" Margin="{StaticResource BottomSpacing}"></TextBlock>
+        <ComboBox x:Name="DestinationSelection" ItemsSource="{x:Bind Destinations, Mode=OneTime}" SelectionChanged="DestinationSelection_SelectionChanged" RelativePanel.Below="TitleText" RelativePanel.AlignLeftWithPanel="True" Margin="{StaticResource BottomSpacing}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="celestia:CelestiaDestination">
+                    <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock x:Name="DescriptionText" IsTextSelectionEnabled="True" TextWrapping="Wrap" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="{StaticResource BottomSpacing}"/>
+        <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True"></Button>
+    </RelativePanel>
+</Window>

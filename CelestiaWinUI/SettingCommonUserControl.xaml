@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="CelestiaWinUI.SettingCommonUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaWinUI"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <x:Double x:Key="InternalSpacing">4</x:Double>
+        <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+                <CheckBox MinWidth="0" Grid.Column="2" VerticalAlignment="Center" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
+            <Grid RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}"/>
+                <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="2" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+                <ComboBox Grid.Column="2" VerticalAlignment="Center" ItemsSource="{x:Bind Options}" SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HeaderItemTemplate" x:DataType="app:SettingHeaderItem">
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}" Margin="{StaticResource ListItemMargin}"/>
+        </DataTemplate>
+
+        <local:SettingTemplateSelector
+            x:Key="SettingsTemplateSelector"
+            Toggle="{StaticResource ToggleItemTemplate}"
+            Slider="{StaticResource SliderItemTemplate}"
+            Selection="{StaticResource SelectionItemTemplate}"
+            Header="{StaticResource HeaderItemTemplate}"/>
+    </UserControl.Resources>
+    <RelativePanel>
+        <InfoBar x:Name="RestartHint" IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}" IsClosable="False" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
+        <ListView
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="RestartHint"
+            SelectionMode="None"
+            ItemsSource = "{x:Bind Items}"
+            ItemTemplateSelector = "{StaticResource SettingsTemplateSelector}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="IsTabStop" Value="False"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+    </RelativePanel>
+</UserControl>
