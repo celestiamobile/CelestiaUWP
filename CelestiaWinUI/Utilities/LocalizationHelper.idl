@@ -1,0 +1,9 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    unsealed runtimeclass LocalizationHelper
+    {
+        static String Locale;
+        static String Localize(String original);
+    }
+}
