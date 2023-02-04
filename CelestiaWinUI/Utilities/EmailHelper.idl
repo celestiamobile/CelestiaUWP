@@ -1,0 +1,8 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass EmailHelper
+    {
+        static Windows.Foundation.Uri UriForEmail(String recipient, String subject, String body, Windows.Foundation.Collections.IVector<Windows.Storage.StorageFile> attachments);
+    }
+}

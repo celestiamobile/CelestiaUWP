@@ -1,0 +1,16 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass GotoObjectDialog : Microsoft.UI.Xaml.Controls.ContentDialog
+    {
+        GotoObjectDialog(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+
+        String ObjectPath{ get; };
+        Single Latitude{ get; };
+        Single Longitude{ get; };
+        Double Distance{ get; };
+        CelestiaComponent.CelestiaGotoLocationDistanceUnit UnitType{ get; };
+        Windows.Foundation.Collections.IObservableVector<String> Units{ get; };
+        Int32 Unit;
+    }
+}
