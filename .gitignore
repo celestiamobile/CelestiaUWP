@@ -9,6 +9,7 @@ ARM64
 ARM
 Win32
 CelestiaUWP/Resources
+CelestiaWinUI/Resources
 *.user
 AppPackages
 BundleArtifacts

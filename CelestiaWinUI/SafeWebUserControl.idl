@@ -1,0 +1,11 @@
+import "CommonWebUserControl.idl";
+
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass SafeWebUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        SafeWebUserControl(CommonWebParameter args);
+        void CloseWebViewIfNeeded();
+    }
+}

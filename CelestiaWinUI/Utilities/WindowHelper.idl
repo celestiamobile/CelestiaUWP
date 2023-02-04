@@ -1,0 +1,15 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass WindowHelper
+    {
+        static void ShowShareLink(Microsoft.UI.Xaml.Window window, String title, Windows.Foundation.Uri uri);
+        static Microsoft.UI.Windowing.AppWindow GetAppWindow(Microsoft.UI.Xaml.Window window);
+        static Single GetWindowScaleFactor(Microsoft.UI.Xaml.Window window);
+        static void TrackWindow(Microsoft.UI.Xaml.Window window, String key);
+        static Microsoft.UI.Xaml.Window GetTrackedWindow(String key);
+        static void SetWindowIcon(Microsoft.UI.Xaml.Window window);
+        static void SetWindowFlowDirection(Microsoft.UI.Xaml.Window window);
+        static void ResizeWindow(Microsoft.UI.Xaml.Window window, Int32 width, Int32 height);
+    }
+}
