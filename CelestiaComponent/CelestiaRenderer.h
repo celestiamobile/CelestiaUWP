@@ -19,6 +19,7 @@
 #include <thread>
 #include <mutex>
 #include "CelestiaRenderer.g.h"
+#include "winrt/Microsoft.UI.Xaml.Controls.h"
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -37,7 +38,7 @@ namespace winrt::CelestiaComponent::implementation
         void Pause();
         void Resume();
         inline void Wait();
-        void SetSurface(Microsoft::UI::Xaml::Controls::SwapChainPanel const& surface, float scale);
+        void SetSurface(Windows::Foundation::IInspectable const& surface, float scale);
         void SetSize(int32_t width, int32_t height);
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);

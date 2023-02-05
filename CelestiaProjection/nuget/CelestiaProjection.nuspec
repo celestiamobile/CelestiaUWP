@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>CelestiaComponent</id>
+        <version>0.1.0-prerelease</version>
+        <authors>Celestia</authors>
+        <description>Celestia Component</description>
+        <dependencies>
+            <group targetFramework="net6.0-windows10.0.19041.0" />
+            <group targetFramework=".NETCoreApp3.0" />
+            <group targetFramework="UAP10.0" />
+            <group targetFramework=".NETFramework4.6" />
+        </dependencies>
+    </metadata>
+    <files>
+        <!--Support .NET 6, .NET Core 3, UAP, .NET Framework 4.6, C++ -->
+        <!--Architecture-netural assemblies-->
+        <file src="..\nuget\net6.0-windows10.0.19041.0\CelestiaProjection.dll" target="lib\net6.0-windows10.0.19041.0\CelestiaProjection.dll" />
+        <file src="..\..\x64\Release\CelestiaComponent\CelestiaComponent.winmd" target="lib\netcoreapp3.0\CelestiaComponent.winmd" />
+        <file src="..\..\x64\Release\CelestiaComponent\CelestiaComponent.winmd" target="lib\uap10.0\CelestiaComponent.winmd" />
+        <file src="..\..\x64\Release\CelestiaComponent\CelestiaComponent.winmd" target="lib\net46\CelestiaComponent.winmd" />
+        <!--Architecture-specific implementation DLLs should be copied into RID-relative folders-->
+        <file src="..\..\x64\Release\CelestiaComponent\*.dll" target="runtimes\win10-x64\native" />
+        <!--To support x86 and Arm64, build CelestiaComponent for those other architectures and uncomment the entries below.-->
+        <!--<file src="..\..\_build\Win32\Release\CelestiaComponent\bin\CelestiaComponent\CelestiaComponent.dll" target="runtimes\win10-x86\native\CelestiaComponent.dll" />-->
+        <!--<file src="..\..\_build\arm64\Release\CelestiaComponent\bin\CelestiaComponent\CelestiaComponent.dll" target="runtimes\win10-arm64\native\CelestiaComponent.dll" />-->
+    </files>
+</package>

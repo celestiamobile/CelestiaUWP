@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CelestiaWinUICs (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "CelestiaWinUICs (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

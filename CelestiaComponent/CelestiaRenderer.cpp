@@ -363,11 +363,11 @@ namespace winrt::CelestiaComponent::implementation
         }
     }
 
-    void CelestiaRenderer::SetSurface(Microsoft::UI::Xaml::Controls::SwapChainPanel const& surface, float scale)
+    void CelestiaRenderer::SetSurface(Windows::Foundation::IInspectable const& surface, float scale)
     {
         Lock();
         msg = CelestiaRenderer::MSG_WINDOW_SET;
-        window = surface;
+        window = surface.as<Microsoft::UI::Xaml::Controls::SwapChainPanel>();
         windowScale = scale;
         Unlock();
     }
