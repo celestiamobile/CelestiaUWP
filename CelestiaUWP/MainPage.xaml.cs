@@ -121,7 +121,7 @@ namespace CelestiaUWP
             if (locale == null)
                 locale = systemLocale;
 
-            await Task.Run(() => CreateExtraFolders());
+            await CreateExtraFolders();
 
             mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
                 CelestiaAppCore.InitGL();
@@ -1199,7 +1199,7 @@ namespace CelestiaUWP
         {
             if (HasContentDialogOpen()) return;
 
-            var dialog = new AboutDialog();
+            var dialog = new AboutDialog(defaultResourcePath + "\\AUTHORS", defaultResourcePath + "\\TRANSLATORS");
             await dialog.ShowAsync();
         }
 

@@ -20,7 +20,7 @@ namespace CelestiaUWP
 {
     public sealed partial class AboutDialog : ContentDialog
     {
-        public AboutDialog()
+        public AboutDialog(string authorFilePath, string translatorFilePath)
         {
             this.InitializeComponent();
             Title = LocalizationHelper.Localize("About Celestia");
@@ -31,13 +31,11 @@ namespace CelestiaUWP
 
             VersionLabel.Text = string.Format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
 
-            LoadAuthorTranslator();
+            LoadAuthorTranslator(authorFilePath, translatorFilePath);
         }
 
-        private async void LoadAuthorTranslator()
+        private async void LoadAuthorTranslator(string authorFilePath, string translatorFilePath)
         {
-            var current = Directory.GetCurrentDirectory();
-            var authorFilePath = current + "\\AUTHORS";
             try
             {
                 var authorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(authorFilePath);
@@ -47,6 +45,14 @@ namespace CelestiaUWP
                     inputStream.CopyTo(outputStream);
                     AuthorLabel.Text = Encoding.UTF8.GetString(outputStream.GetBuffer());
                     AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
+                }
+                var tanslatorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(translatorFilePath);
+                using (var inputStream = await tanslatorFile.OpenStreamForReadAsync())
+                using (var outputStream = new MemoryStream())
+                {
+                    inputStream.CopyTo(outputStream);
+                    TranslatorLabel.Text = Encoding.UTF8.GetString(outputStream.GetBuffer());
+                    TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
                 }
             }
             catch { };

@@ -68,10 +68,10 @@ namespace CelestiaUWP
             }
             else
             {
-                if (radius >= oneMiInKm)
+                if (radius >= 1.0f)
                     radiusString = string.Format(LocalizationHelper.Localize("%d km").Replace("%d", "{0}"), (int)radius);
                 else
-                    radiusString = string.Format(LocalizationHelper.Localize("%d m").Replace("%d", "{0}"), (int)(radius / 1000.0f));
+                    radiusString = string.Format(LocalizationHelper.Localize("%d m").Replace("%d", "{0}"), (int)(radius * 1000.0f));
             }
             if (Body.IsEllipsoid)
                 str += string.Format(LocalizationHelper.Localize("Equatorial radius: %s").Replace("%s", "{0}"), radiusString);
