@@ -121,7 +121,7 @@ namespace CelestiaUWP
             if (locale == null)
                 locale = systemLocale;
 
-            await CreateExtraFolders();
+            await Task.Run(() => CreateExtraFolders());
 
             mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
                 CelestiaAppCore.InitGL();
