@@ -63,6 +63,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_DEPTH_SIZE, 16,
                 EGL_SAMPLES, 4,
                 EGL_SAMPLE_BUFFERS, 1,
+                EGL_BIND_TO_TEXTURE_RGB, EGL_TRUE,
                 EGL_NONE
             };
             const EGLint attribs[] =
@@ -72,6 +73,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_GREEN_SIZE, 8,
                 EGL_RED_SIZE, 8,
                 EGL_DEPTH_SIZE, 16,
+                EGL_BIND_TO_TEXTURE_RGB, EGL_TRUE,
                 EGL_NONE
             };
 
