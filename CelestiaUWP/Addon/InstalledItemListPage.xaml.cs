@@ -11,7 +11,9 @@
 
 using CelestiaUWP.Helper;
 using System.ComponentModel;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Addon
@@ -58,9 +60,13 @@ namespace CelestiaUWP.Addon
             }
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListView_SelectionChanged(object sender, TappedRoutedEventArgs e)
         {
-            Handler((ResourceItem)ItemList.SelectedItem);
+            var source = e.OriginalSource as FrameworkElement;
+            if (source == null) return;
+            var item = source.DataContext as ResourceItem;
+            if (item == null) return;
+            Handler(item);
         }
     }
 }
