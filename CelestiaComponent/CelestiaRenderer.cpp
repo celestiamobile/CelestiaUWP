@@ -48,6 +48,40 @@ namespace winrt::CelestiaComponent::implementation
         InitializeConditionVariable(&resumeCond);
     }
 
+    // ANGLE by default chooses a non opaque config, which is an issue for Celestia
+    bool ChooseOpaqueConfig(EGLDisplay dpy, const EGLint* attrib_list, EGLConfig* config)
+    {
+        EGLint configCount = 0;
+        // Get config count
+        if (!eglChooseConfig(dpy, attrib_list, nullptr, 0, &configCount) || configCount == 0)
+            return false;
+        auto configs = new EGLConfig[configCount];
+        // Get all the configs
+        EGLint newConfigCount = 0;
+        if (!eglChooseConfig(dpy, attrib_list, configs, configCount, &newConfigCount) || newConfigCount == 0)
+        {
+            delete[] configs;
+            return false;
+        }
+
+        // Find the first config that has an alpha size of 0
+        for (int i = 0; i < newConfigCount; i++)
+        {
+            EGLint alphaSize = -1;
+            if (eglGetConfigAttrib(dpy, configs[i], EGL_ALPHA_SIZE, &alphaSize) && alphaSize == 0)
+            {
+                *config = configs[i];
+                delete[] configs;
+                return true;
+            }
+        }
+
+        // If no config with alpha size of 0 was found, just return the first config
+        *config = configs[0];
+        delete[] configs;
+        return true;
+    }
+
     bool CelestiaRenderer::Initialize()
     {
         if (context == EGL_NO_CONTEXT)
@@ -63,7 +97,6 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_DEPTH_SIZE, 16,
                 EGL_SAMPLES, 4,
                 EGL_SAMPLE_BUFFERS, 1,
-                EGL_BIND_TO_TEXTURE_RGB, EGL_TRUE,
                 EGL_NONE
             };
             const EGLint attribs[] =
@@ -73,7 +106,6 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_GREEN_SIZE, 8,
                 EGL_RED_SIZE, 8,
                 EGL_DEPTH_SIZE, 16,
-                EGL_BIND_TO_TEXTURE_RGB, EGL_TRUE,
                 EGL_NONE
             };
 
@@ -110,8 +142,6 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
                 EGL_NONE,
             };
-
-            EGLint numConfigs;
 
             display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, defaultDisplayAttributes);
             if (display == EGL_NO_DISPLAY)
@@ -157,7 +187,7 @@ namespace winrt::CelestiaComponent::implementation
 
             if (enableMultisample) {
                 // Try to enable multisample but fallback if not available
-                if (!eglChooseConfig(display, multisampleAttribs, &config, 1, &numConfigs) && !eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                if (!ChooseOpaqueConfig(display, multisampleAttribs, &config) && !ChooseOpaqueConfig(display, attribs, &config))
                 {
                     printf("eglChooseConfig() returned error %d", eglGetError());
                     Destroy();
@@ -165,7 +195,7 @@ namespace winrt::CelestiaComponent::implementation
                 }
             }
             else {
-                if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                if (!ChooseOpaqueConfig(display, attribs, &config))
                 {
                     printf("eglChooseConfig() returned error %d", eglGetError());
                     Destroy();
@@ -249,9 +279,14 @@ namespace winrt::CelestiaComponent::implementation
 
     inline void CelestiaRenderer::ResizeIfNeeded()
     {
+        EGLint windowWidth;
+        EGLint windowHeight;
+        if (!eglQuerySurface(display, surface, EGL_WIDTH, &windowWidth) || !eglQuerySurface(display, surface, EGL_HEIGHT, &windowHeight))
+            return;
+
         if (currentWindowHeight != windowHeight || currentWindowWidth != windowWidth)
         {
-            core->resize((GLsizei)(windowWidth * windowScale), (GLsizei)(windowHeight * windowScale));
+            core->resize((GLsizei)windowWidth, (GLsizei)windowHeight);
             currentWindowWidth = windowWidth;
             currentWindowHeight = windowHeight;
         }
@@ -371,14 +406,6 @@ namespace winrt::CelestiaComponent::implementation
         msg = CelestiaRenderer::MSG_WINDOW_SET;
         window = surface;
         windowScale = scale;
-        Unlock();
-    }
-
-    void CelestiaRenderer::SetSize(int32_t width, int32_t height)
-    {
-        Lock();
-        windowWidth = width;
-        windowHeight = height;
         Unlock();
     }
 

@@ -188,7 +188,6 @@ namespace CelestiaUWP
                     Addon.ResourceManager.Shared.AddonFolderPath = mExtraAddonFolder;
                     SetUpGLViewInteractions();
                     PopulateMenuBar(resourcePath);
-                    mRenderer.SetSize((int)GLView.ActualWidth, (int)GLView.ActualHeight);
                 });
 
                 ApplySettings(ReadSettings().Result);
@@ -206,10 +205,6 @@ namespace CelestiaUWP
             });
             mRenderer.SetCorePointer(mAppCore.Pointer);
             mRenderer.SetSurface(GLView, scale);
-            GLView.SizeChanged += (view, arg) =>
-            {
-                mRenderer.SetSize((int)arg.NewSize.Width, (int)arg.NewSize.Height);
-            };
             mRenderer.Start();
         }
 

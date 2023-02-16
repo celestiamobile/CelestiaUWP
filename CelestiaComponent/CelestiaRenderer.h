@@ -38,7 +38,6 @@ namespace winrt::CelestiaComponent::implementation
         void Resume();
         inline void Wait();
         void SetSurface(Windows::UI::Xaml::Controls::SwapChainPanel const& surface, float scale);
-        void SetSize(int32_t width, int32_t height);
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
@@ -69,8 +68,6 @@ namespace winrt::CelestiaComponent::implementation
         CRITICAL_SECTION msgCritSection;
         CONDITION_VARIABLE resumeCond;
 
-        int windowWidth = 0;
-        int windowHeight = 0;
         int currentWindowWidth = 0;
         int currentWindowHeight = 0;
         float windowScale = 1.0f;
