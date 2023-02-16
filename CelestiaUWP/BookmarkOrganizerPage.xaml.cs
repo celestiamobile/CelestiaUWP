@@ -29,6 +29,33 @@ namespace CelestiaUWP
             RenameButton.Content = LocalizationHelper.Localize("Rename");
         }
 
+        public void InsertBookmarkAtSelection(BookmarkNode bookmark)
+        {
+            var (selected, parent) = GetSelectedBookmarkAndParent();
+            if (selected == null)
+            {
+                Bookmarks.Add(bookmark);
+            }
+            else if (selected.IsFolder)
+            {
+                selected.Children.Add(bookmark);
+            }
+            else
+            {
+                var listToAddTo = parent == null ? Bookmarks : parent.Children;
+                var index = listToAddTo.IndexOf(selected);
+                if (index >= 0)
+                {
+                    listToAddTo.Insert(index, bookmark);
+                }
+                else
+                {
+                    listToAddTo.Add(bookmark);
+                }
+            }
+            WriteBookmarks();
+        }
+
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)
         {
             CreateNewFolder();
@@ -46,52 +73,51 @@ namespace CelestiaUWP
                     Name = dialog.Text,
                     Children = new ObservableCollection<BookmarkNode>()
                 };
-                Bookmarks.Add(bookmark);
-                WriteBookmarks();
+                InsertBookmarkAtSelection(bookmark);
             }
         }
-
         private void RenameButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Tree.SelectedItem == null) return;
-            
-            var node = (BookmarkNode)Tree.SelectedItem;
-            RenameItem(node);
+            RenameItem();
+        }
+        private (BookmarkNode, BookmarkNode) GetSelectedBookmarkAndParent()
+        {
+            var selectedNode = Tree.SelectedNode;
+            if (selectedNode == null) return (null, null);
+            var bookmark = (BookmarkNode)selectedNode.Content;
+            var parentNode = selectedNode.Parent;
+            if (parentNode == null) return (bookmark, null);
+            var parent = (BookmarkNode)parentNode.Content;
+            return (bookmark, parent);
         }
 
-        private async void RenameItem(BookmarkNode bookmark)
+        private async void RenameItem()
         {
+            var (bookmark, parent) = GetSelectedBookmarkAndParent();
+            if (bookmark == null) return;
             var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var parent = FindParent(bookmark, Bookmarks);
-                if (parent != null)
+                var children = parent == null ? Bookmarks : parent.Children;
+                var index = children.IndexOf(bookmark);
+                if (index >= 0)
                 {
-                    for (int i = 0; i < parent.Count; i++)
-                    {
-                        if (parent[i] == bookmark)
-                        {
-                            bookmark.Name = dialog.Text;
-                            parent[i] = bookmark;
-                            WriteBookmarks();
-                        }
-                    }
+                    bookmark.Name = dialog.Text;
+                    children[index] = bookmark;
+                    WriteBookmarks();
                 }
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Tree.SelectedItem == null) return;
+            var (bookmark, parent) = GetSelectedBookmarkAndParent();
+            if (bookmark == null) return;
 
-            var bookmark = (BookmarkNode)Tree.SelectedItem;
-            var parent = FindParent(bookmark, Bookmarks);
-            if (parent != null)
-            {
-                parent.Remove(bookmark);
-                WriteBookmarks();
-            }
+            var children = parent == null ? Bookmarks: parent.Children;
+            children.Remove(bookmark);
+            WriteBookmarks();
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)

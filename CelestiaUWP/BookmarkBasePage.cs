@@ -78,17 +78,6 @@ namespace CelestiaUWP
             }
             catch { }
         }
-        protected ObservableCollection<BookmarkNode> FindParent(BookmarkNode node, ObservableCollection<BookmarkNode> root)
-        {
-            foreach (var n in root)
-            {
-                if (n == node) return root;
-                var p = FindParent(node, n.Children);
-                if (p != null)
-                    return p;
-            }
-            return null;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)

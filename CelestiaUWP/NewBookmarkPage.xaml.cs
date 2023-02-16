@@ -9,109 +9,57 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaComponent;
 using CelestiaUWP.Helper;
-using System;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public sealed partial class NewBookmarkPage : BookmarkBasePage
+    public sealed partial class NewBookmarkPage : Page
     {
         private string NameText;
+        private CelestiaAppCore AppCore;
+        private CelestiaRenderer Renderer;
 
         public NewBookmarkPage()
         {
             this.InitializeComponent();
 
-            NewFolderButton.Content = LocalizationHelper.Localize("New Folder");
-            DeleteButton.Content = LocalizationHelper.Localize("Delete");
             ConfirmButton.Content = LocalizationHelper.Localize("OK");
-            RenameButton.Content = LocalizationHelper.Localize("Rename");
         }
 
-        private void NewFolderButton_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            CreateNewFolder();
-        }
-
-        private async void CreateNewFolder()
-        {
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("Folder name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                var bookmark = new BookmarkNode
-                {
-                    IsFolder = true,
-                    Name = dialog.Text,
-                    Children = new ObservableCollection<BookmarkNode>()
-                };
-                Bookmarks.Add(bookmark);
-                WriteBookmarks();
-            }
-        }
-
-        private void RenameButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Tree.SelectedItem == null) return;
-            
-            var node = (BookmarkNode)Tree.SelectedItem;
-            RenameItem(node);
-        }
-
-        private async void RenameItem(BookmarkNode bookmark)
-        {
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                var parent = FindParent(bookmark, Bookmarks);
-                if (parent != null)
-                {
-                    for (int i = 0; i < parent.Count; i++)
-                    {
-                        if (parent[i] == bookmark)
-                        {
-                            bookmark.Name = dialog.Text;
-                            parent[i] = bookmark;
-                            WriteBookmarks();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Tree.SelectedItem == null) return;
-
-            var bookmark = (BookmarkNode)Tree.SelectedItem;
-            var parent = FindParent(bookmark, Bookmarks);
-            if (parent != null)
-            {
-                parent.Remove(bookmark);
-                WriteBookmarks();
-            }
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer= parameter.Item2;
+            Organizer.Navigate(typeof(BookmarkOrganizerPage), parameter);
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NameText == null) return;
-            var bookmark = new BookmarkNode
+            if (NameText == null || Renderer == null || AppCore == null) return;
+            var name = NameText;
+            Renderer.EnqueueTask(() =>
             {
-                IsFolder = false,
-                Name = NameText,
-                URL = AppCore.CurrentURL,
-                Children = new ObservableCollection<BookmarkNode>()
-            };
-            var parent = Tree.SelectedItem;
-            if (parent == null)
-                Bookmarks.Add(bookmark);
-            else
-                ((BookmarkNode)parent).Children.Add(bookmark);
-            WriteBookmarks();
+                var url = AppCore.CurrentURL;
+                _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    var bookmark = new BookmarkNode
+                    {
+                        IsFolder = false,
+                        Name = NameText,
+                        URL = AppCore.CurrentURL,
+                        Children = new ObservableCollection<BookmarkNode>()
+                    };
+                    var organizerPage = Organizer.Content as BookmarkOrganizerPage;
+                    if (organizerPage != null)
+                        organizerPage.InsertBookmarkAtSelection(bookmark);
+                });
+            });
         }
     }
 }
