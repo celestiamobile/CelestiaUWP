@@ -405,8 +405,11 @@ namespace CelestiaUWP
 
         void SetUpGLViewInteractions()
         {
-            mAppCore.SetContextMenuHandler((x, y, selection) =>
+            mAppCore.ShowContextMenu += (_, contextMenuArgs) =>
             {
+                var x = contextMenuArgs.X;
+                var y = contextMenuArgs.Y;
+                var selection = contextMenuArgs.Selection;
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                   {
                       var menu = new MenuFlyout();
@@ -553,7 +556,7 @@ namespace CelestiaUWP
                       }
                       menu.ShowAt(GLView, new Point(x / scale, y / scale));
                   });
-            });
+            };
             GLView.PointerPressed += (sender, args) =>
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)

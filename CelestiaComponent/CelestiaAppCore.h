@@ -12,12 +12,26 @@
 #include "CelestiaDestination.h"
 #include "CelestiaSimulation.h"
 #include "CelestiaScript.h"
+#include "ShowContextMenuArgs.g.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
 
 namespace winrt::CelestiaComponent::implementation
 {
+    struct ShowContextMenuArgs : ShowContextMenuArgsT<ShowContextMenuArgs>
+    {
+        ShowContextMenuArgs(float x, float y, CelestiaComponent::CelestiaSelection const& selection) : x(x), y(y), selection(selection) {}
+        float X() { return x; }
+        float Y() { return y; }
+        CelestiaComponent::CelestiaSelection Selection() { return selection; }
+
+    private:
+        float x;
+        float y;
+        CelestiaComponent::CelestiaSelection selection;
+    };
+
     struct CelestiaAppCore : CelestiaAppCoreT<CelestiaAppCore>
     {
         CelestiaAppCore();
@@ -41,7 +55,6 @@ namespace winrt::CelestiaComponent::implementation
         void JoystickButtonDown(CelestiaComponent::CelestiaJoystickButton button);
         void JoystickButtonUp(CelestiaComponent::CelestiaJoystickButton button);
         void JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount);
-        void SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler);
         void SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
@@ -277,6 +290,11 @@ namespace winrt::CelestiaComponent::implementation
         void MeasurementSystem(int32_t measurementSystem);
         int32_t TemperatureScale();
         void TemperatureScale(int32_t temperatureScale);
+
+        event_token ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const&);
+        void ShowContextMenu(event_token const&);
+
+        event<Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs>> showContextMenuEvent;
 
     private:
         CelestiaCore* core;

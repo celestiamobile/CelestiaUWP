@@ -39,19 +39,23 @@ namespace winrt::CelestiaComponent::implementation
     class AppCoreContextMenuHandler : public CelestiaCore::ContextMenuHandler
     {
     public:
-        AppCoreContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler) : CelestiaCore::ContextMenuHandler(), handler(handler) {};
+        AppCoreContextMenuHandler(weak_ref<CelestiaAppCore> const& weakAppCore) : CelestiaCore::ContextMenuHandler(), weakAppCore(weakAppCore) {};
 
         void requestContextMenu(float x, float y, Selection sel)
         {
-            handler(x, y, make<CelestiaSelection>(sel));
+            auto appCore = weakAppCore.get();
+            if (appCore == nullptr) return;
+
+            appCore->showContextMenuEvent(*appCore, make<ShowContextMenuArgs>(x, y, make<CelestiaSelection>(sel)));
         }
     private:
-        CelestiaComponent::CelestiaContextMenuCallback handler;
+        weak_ref<CelestiaAppCore> weakAppCore;
     };
 
     CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>(), sim(nullptr)
     {
         core = new CelestiaCore;
+        core->setContextMenuHandler(new AppCoreContextMenuHandler(get_weak()));
     }
 
     bool CelestiaAppCore::StartSimulation(hstring const&configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
@@ -234,15 +238,6 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaAppCore::JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount)
     {
         core->joystickAxis((int)axis, amount);
-    }
-
-    void CelestiaAppCore::SetContextMenuHandler(CelestiaComponent::CelestiaContextMenuCallback const& handler)
-    {
-        auto previousHandler = core->getContextMenuHandler();
-        if (previousHandler)
-            delete previousHandler;
-
-        core->setContextMenuHandler(new AppCoreContextMenuHandler(handler));
     }
 
     void CelestiaAppCore::SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
@@ -764,5 +759,15 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::TemperatureScale(int32_t temperatureScale)
     {
         core->setTemperatureScale((CelestiaCore::TemperatureScale)temperatureScale);
+    }
+
+    event_token CelestiaAppCore::ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const& handler)
+    {
+        return showContextMenuEvent.add(handler);
+    }
+
+    void CelestiaAppCore::ShowContextMenu(event_token const& token)
+    {
+        showContextMenuEvent.remove(token);
     }
 }

@@ -53,7 +53,14 @@ namespace CelestiaComponent
     };
 
     delegate void CelestiaLoadCallback(String status);
-    delegate void CelestiaContextMenuCallback(Single x, Single y, CelestiaSelection selection);
+
+    [default_interface]
+    runtimeclass ShowContextMenuArgs
+    {
+        Single X{ get; };
+        Single Y{ get; };
+        CelestiaSelection Selection{ get; };
+    }
 
     [default_interface]
     runtimeclass CelestiaAppCore
@@ -79,7 +86,6 @@ namespace CelestiaComponent
         void JoystickButtonDown(CelestiaJoystickButton button);
         void JoystickButtonUp(CelestiaJoystickButton button);
         void JoystickAxis(CelestiaJoystickAxis axis, Single amount);
-        void SetContextMenuHandler(CelestiaContextMenuCallback handler);
         void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);
@@ -207,5 +213,7 @@ namespace CelestiaComponent
         Int32 TimeZone;
         Int32 MeasurementSystem;
         Int32 TemperatureScale;
+
+        event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
     }
 }
