@@ -30,12 +30,10 @@ namespace CelestiaUWP.Addon
     {
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
-        public RunScriptHandler Handler;
-        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, RunScriptHandler handler)
+        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
-            this.Handler = handler;
         }
     }
 
@@ -43,7 +41,6 @@ namespace CelestiaUWP.Addon
     {
         private CelestiaAppCore AppCore;
         private CelestiaRenderer Renderer;
-        private RunScriptHandler Handler;
         public ResourceManagerPage()
         {
             this.InitializeComponent();
@@ -54,7 +51,6 @@ namespace CelestiaUWP.Addon
             var parameter = (ResourceManagerPageParameter)e.Parameter;
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
-            Handler = parameter.Handler;
             Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter(delegate (ResourceItem item)
             {
                 ShowItem(item);
@@ -64,7 +60,7 @@ namespace CelestiaUWP.Addon
         private void ShowItem(ResourceItem item)
         {
             Nav.IsBackEnabled = true;
-            Container.Navigate(typeof(ResourceItemPage), new AddonPageParameter(AppCore, Renderer, item, Handler));
+            Container.Navigate(typeof(ResourceItemPage), new AddonPageParameter(AppCore, Renderer, item));
         }
 
         private void Nav_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

@@ -22,20 +22,16 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Addon
 {
-    public delegate void RunScriptHandler(string scriptPath);
-
     public class AddonPageParameter
     {
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
         public ResourceItem Item;
-        public RunScriptHandler Handler;
-        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item, RunScriptHandler handler)
+        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
             this.Item = item;
-            this.Handler = handler;
         }
     }
 
@@ -43,7 +39,6 @@ namespace CelestiaUWP.Addon
     {
         private CelestiaAppCore AppCore;
         private CelestiaRenderer Renderer;
-        private RunScriptHandler ScriptHandler;
 
         private ResourceItem mItem;
         ResourceItem Item
@@ -77,7 +72,6 @@ namespace CelestiaUWP.Addon
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
             Item = parameter.Item;
-            ScriptHandler = parameter.Handler;
 
             ResourceManager.Shared.ProgressUpdate += Shared_ProgressUpdate;
             ResourceManager.Shared.DownloadSuccess += Shared_DownloadSuccess;
@@ -222,7 +216,10 @@ namespace CelestiaUWP.Addon
                 var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
                 if (File.Exists(path))
                 {
-                    ScriptHandler(path);
+                    Renderer.EnqueueTask(() =>
+                    {
+                        AppCore.RunScript(path);
+                    });
                 }
                 return;
             }

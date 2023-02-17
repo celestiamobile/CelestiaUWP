@@ -235,17 +235,6 @@ namespace CelestiaUWP
             LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
         }
 
-        private async void RunScriptAtPathDirectly(string path)
-        {
-            if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?")))
-            {
-                mRenderer.EnqueueTask(() =>
-                {
-                    mAppCore.RunScript(path);
-                });
-            }
-        }
-
         internal class GuideItem
         {
             public string id;
@@ -298,10 +287,7 @@ namespace CelestiaUWP
                         var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
                         if (requestResult.status != 0) return;
                         var item = requestResult.Get<Addon.ResourceItem>();
-                        ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0),new Addon.AddonPageParameter(mAppCore, mRenderer, item, (scriptPath) =>
-                        {
-                            RunScriptAtPathDirectly(scriptPath);
-                        }));
+                        ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0),new Addon.AddonPageParameter(mAppCore, mRenderer, item));
                     }
                     catch { }
                     return;
@@ -1187,10 +1173,7 @@ namespace CelestiaUWP
 
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, (scriptPath) =>
-            {
-                RunScriptAtPathDirectly(scriptPath);
-            }));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer));
         }
 
         async void ShowAboutDialog()
