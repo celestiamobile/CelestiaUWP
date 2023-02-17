@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CelestiaUWP</RootNamespace>
     <AssemblyName>CelestiaUWP</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -254,7 +254,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
-    <None Include="priconfig.packaging.xml" />
     <Content Include="Resources\CelestiaResources\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>CelestiaResources\%(RecursiveDir)\%(Filename)%(Extension)</Link>
@@ -534,5 +533,9 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AppxBundleAutoResourcePackageQualifiers>Scale</AppxBundleAutoResourcePackageQualifiers>
+    <AppxDefaultResourceQualifiers>Language=ar;be;bg;de;el;en;es;fr;gl;hu;it;ja;ko;lt;lv;nb;nl;pl;pt;pt-BR;ro;ru;sk;sv;tr;uk;zh-CN;zh-TW</AppxDefaultResourceQualifiers>
   </PropertyGroup>
 </Project>
