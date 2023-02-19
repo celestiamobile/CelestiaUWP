@@ -290,6 +290,8 @@ namespace winrt::CelestiaComponent::implementation
         void MeasurementSystem(int32_t measurementSystem);
         int32_t TemperatureScale();
         void TemperatureScale(int32_t temperatureScale);
+        int32_t ScriptSystemAccessPolicy();
+        void ScriptSystemAccessPolicy(int32_t scriptSystemAccessPolicy);
 
         event_token ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const&);
         void ShowContextMenu(event_token const&);

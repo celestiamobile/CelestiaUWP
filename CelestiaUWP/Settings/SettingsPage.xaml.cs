@@ -26,6 +26,7 @@ namespace CelestiaUWP.Settings
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Labels"), "labels"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Renderer"), "renderer"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Time & Region"), "region"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Advanced"), "advanced"),
         };
 
         private CelestiaAppCore AppCore;
@@ -214,6 +215,20 @@ namespace CelestiaUWP.Settings
                         LocalizationHelper.Localize("Fahrenheit")
                     }),
                     new LanguageIntItem(LocalizationHelper.Localize("Language"), AppSettings, AvailableLanguages),
+                };
+                Container.Navigate(typeof(SettingsCommonPage), items);
+            }
+            else if (item.Tag == "advanced")
+            {
+                var items = new SettingsCommonItem[]
+                {
+                    new SettingsHeaderItem(LocalizationHelper.Localize("Security")),
+                    new AppCoreIntItem(LocalizationHelper.Localize("Script System Access Policy"), AppCore, "ScriptSystemAccessPolicy", new []
+                    {
+                        LocalizationHelper.Localize("Ask"),
+                        LocalizationHelper.Localize("Allow"),
+                        LocalizationHelper.Localize("Deny")
+                    }, LocalizationHelper.Localize("This policy decides whether Lua scripts have access to the files on the system or not.")),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
