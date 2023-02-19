@@ -226,8 +226,8 @@ namespace CelestiaUWP
             mAppCore.ClearFonts();
             mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
             mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
-            mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.normal);
-            mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.large);
+            mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.Normal);
+            mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.Large);
         }
 
         private void ShowLoadingFailure()
@@ -555,7 +555,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.left);
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Left);
                         });
                     }
                     if (properties.IsRightButtonPressed)
@@ -563,7 +563,7 @@ namespace CelestiaUWP
                         mLastRightMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.right);
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Right);
                         });
                     }
                     if (properties.IsMiddleButtonPressed)
@@ -571,7 +571,7 @@ namespace CelestiaUWP
                         mLastMiddleMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.middle);
+                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Middle);
                         });
                     }
                 }
@@ -593,7 +593,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.left);
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Left);
                         });
                     }
                     if (properties.IsRightButtonPressed && mLastRightMousePosition != null)
@@ -606,7 +606,7 @@ namespace CelestiaUWP
                         mLastRightMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.right);
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Right);
                         });
                     }
                     if (properties.IsMiddleButtonPressed && mLastMiddleMousePosition != null)
@@ -619,7 +619,7 @@ namespace CelestiaUWP
                         mLastMiddleMousePosition = position;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.middle);
+                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Middle);
                         });
                     }
                 }
@@ -636,7 +636,7 @@ namespace CelestiaUWP
                         mLastLeftMousePosition = null;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.left);
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Left);
                         });
                     }
                     if (mLastRightMousePosition != null && !properties.IsRightButtonPressed)
@@ -644,7 +644,7 @@ namespace CelestiaUWP
                         mLastRightMousePosition = null;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.right);
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Right);
                         });
                     }
                     if (mLastMiddleMousePosition != null && !properties.IsMiddleButtonPressed)
@@ -652,7 +652,7 @@ namespace CelestiaUWP
                         mLastMiddleMousePosition = null;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.middle);
+                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Middle);
                         });
                     }
                 }

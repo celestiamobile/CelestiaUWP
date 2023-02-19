@@ -13,9 +13,9 @@ namespace CelestiaComponent
 {
     enum CelestiaEclipseKind
     {
-        solar = 1,
-        lunar = 2,
-        solarAndLunar = 3
+        Solar = 1,
+        Lunar = 2,
+        SolarAndLunar = 3
     };
 
     [default_interface]

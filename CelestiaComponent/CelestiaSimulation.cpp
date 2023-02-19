@@ -104,11 +104,11 @@ namespace winrt::CelestiaComponent::implementation
             double distanceValue = loc->distance.Value();
             switch (loc->unit.Value())
             {
-            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::km:
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::KM:
                 distance = distanceValue;
-            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::au:
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::AU:
                 distance = astro::AUtoKilometers(distanceValue);
-            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::radii:
+            case CelestiaComponent::CelestiaGotoLocationDistanceUnit::Radii:
                 distance = radius * distanceValue;
             }
         }

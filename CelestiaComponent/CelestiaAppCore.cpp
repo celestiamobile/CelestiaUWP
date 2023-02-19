@@ -583,7 +583,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
                         dateFormatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"dayofweek.abbreviated day month.abbreviated year hour minute second");
                     }
                 }
-                catch (hresult_error const& ignore) {}
+                catch (hresult_error const&) {}
             }
             if (dateFormatter)
             {

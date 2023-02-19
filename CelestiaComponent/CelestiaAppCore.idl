@@ -16,21 +16,21 @@ namespace CelestiaComponent
 {
     enum CelestiaFontStyle
     {
-        normal = 0,
-        large = 1
+        Normal = 0,
+        Large = 1
     };
 
     enum CelestiaMouseButton
     {
-        left = 1,
-        middle = 2,
-        right = 4
+        Left = 1,
+        Middle = 2,
+        Right = 4
     };
 
     enum CelestiaMeasurementSystem
     {
-        metric = 0,
-        imperial = 1,
+        Metric = 0,
+        Imperial = 1,
     };
 
     enum CelestiaJoystickAxis

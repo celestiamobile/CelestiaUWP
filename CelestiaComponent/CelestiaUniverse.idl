@@ -18,19 +18,19 @@ namespace CelestiaComponent
 {
     enum CelestiaMarkerRepresentation
     { 
-        diamond = 0,
-        triangle = 1,
-        square = 2,
-        filledSquare = 3,
-        plus = 4,
-        x = 5,
-        leftArrow = 6,
-        rightArrow = 7,
-        upArrow = 8,
-        downArrow = 9,
-        circle = 10,
-        disk = 11,
-        crosshair = 12,
+        Diamond = 0,
+        Triangle = 1,
+        Square = 2,
+        FilledSquare = 3,
+        Plus = 4,
+        X = 5,
+        LeftArrow = 6,
+        RightArrow = 7,
+        UpArrow = 8,
+        DownArrow = 9,
+        Circle = 10,
+        Disk = 11,
+        Crosshair = 12,
     };
 
     [default_interface]
