@@ -14,8 +14,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind title, Mode=OneTime}"/>
-                <CheckBox MinWidth="0" Grid.Column="2" VerticalAlignment="Center" IsChecked="{Binding value, Mode=TwoWay}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+                <CheckBox MinWidth="0" Grid.Column="2" VerticalAlignment="Center" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="1" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 
@@ -24,9 +29,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind title}" Margin="0 8 0 8"/>
-                <Slider Grid.Row="1" Minimum="{x:Bind min}" Maximum="{x:Bind max}" StepFrequency="{x:Bind step}" Value="{Binding value, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}" Margin="0 8 0 8"/>
+                <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="2" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 
@@ -37,8 +44,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind title, Mode=OneTime}"/>
-                <ComboBox Grid.Column="2" VerticalAlignment="Center" ItemsSource="{x:Bind items}" SelectedIndex="{Binding value, Mode=TwoWay}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+                <ComboBox Grid.Column="2" VerticalAlignment="Center" ItemsSource="{x:Bind Options}" SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="1" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 
