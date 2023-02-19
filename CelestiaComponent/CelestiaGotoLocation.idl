@@ -13,9 +13,9 @@ namespace CelestiaComponent
 {
     enum CelestiaGotoLocationDistanceUnit
     {
-        km = 0,
-        radii = 1,
-        au = 2
+        KM = 0,
+        Radii = 1,
+        AU = 2
     };
 
     [default_interface]

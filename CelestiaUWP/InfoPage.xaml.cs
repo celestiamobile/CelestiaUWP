@@ -59,7 +59,7 @@ namespace CelestiaUWP
             string radiusString;
             const float oneMiInKm = 1.609344f;
             const float oneFtInKm = 0.0003048f;
-            if (AppCore.MeasurementSystem == (int)CelestiaMeasurementSystem.imperial)
+            if (AppCore.MeasurementSystem == (int)CelestiaMeasurementSystem.Imperial)
             {
                 if (radius >= oneMiInKm)
                     radiusString = string.Format(LocalizationHelper.Localize("%d mi").Replace("%d", "{0}"), (int)(radius / oneMiInKm));

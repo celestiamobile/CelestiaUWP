@@ -89,11 +89,11 @@ namespace CelestiaUWP
 
             CelestiaEclipseKind kind;
             if (FindLunar && FindSolar)
-                kind = CelestiaEclipseKind.solarAndLunar;
+                kind = CelestiaEclipseKind.SolarAndLunar;
             else if (FindSolar)
-                kind = CelestiaEclipseKind.solar;
+                kind = CelestiaEclipseKind.Solar;
             else
-                kind = CelestiaEclipseKind.lunar;
+                kind = CelestiaEclipseKind.Lunar;
 
             var body = AppCore.Simulation.Find(AvailableObjects[SelectedObjectIndex]).Object;
             if (body == null || !(body is CelestiaBody))

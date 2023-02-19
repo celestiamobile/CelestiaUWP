@@ -95,7 +95,7 @@ namespace CelestiaUWP
 
             if (brightestStars == null)
             {
-                var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brightest);
+                var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.Brightest);
                 var brightest = bsb.Stars;
                 bsb.Dispose();
                 var s2 = new List<CelestiaBrowserItem>();
@@ -108,7 +108,7 @@ namespace CelestiaUWP
 
             if (starsWithPlanets == null)
             {
-                var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.withPlants);
+                var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.WithPlants);
                 var hasPlanets = hsb.Stars;
                 hsb.Dispose();
                 var s3 = new List<CelestiaBrowserItem>();
@@ -119,8 +119,8 @@ namespace CelestiaUWP
                 starsWithPlanets = new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), false);
             }
 
-            var nsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.nearest);
-            var bsb2 = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.brighter);
+            var nsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.Nearest);
+            var bsb2 = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.Brighter);
             var nearest = nsb.Stars;
             var brighter = bsb2.Stars;
             nsb.Dispose();

@@ -13,10 +13,10 @@ namespace CelestiaComponent
 {
     enum CelestiaStarBrowserType
     {
-        nearest = 0,
-        brighter = 1,
-        brightest = 2,
-        withPlants = 3
+        Nearest = 0,
+        Brighter = 1,
+        Brightest = 2,
+        WithPlants = 3
     };
 
     [default_interface]
