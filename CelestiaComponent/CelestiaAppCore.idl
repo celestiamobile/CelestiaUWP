@@ -213,6 +213,7 @@ namespace CelestiaComponent
         Int32 TimeZone;
         Int32 MeasurementSystem;
         Int32 TemperatureScale;
+        Int32 ScriptSystemAccessPolicy;
 
         event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
     }

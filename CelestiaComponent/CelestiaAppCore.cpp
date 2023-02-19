@@ -761,6 +761,16 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         core->setTemperatureScale((CelestiaCore::TemperatureScale)temperatureScale);
     }
 
+    int32_t CelestiaAppCore::ScriptSystemAccessPolicy()
+    {
+        return (int32_t)core->getScriptSystemAccessPolicy();
+    }
+
+    void CelestiaAppCore::ScriptSystemAccessPolicy(int32_t scriptSystemAccessPolicy)
+    {
+        core->setScriptSystemAccessPolicy((CelestiaCore::ScriptSystemAccessPolicy)scriptSystemAccessPolicy);
+    }
+
     event_token CelestiaAppCore::ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const& handler)
     {
         return showContextMenuEvent.add(handler);
