@@ -20,12 +20,14 @@ namespace CelestiaUWP.Settings
 {
     public class SettingsCommonItem
     {
-        public string title;
+        public string Title;
     }
 
     public abstract class SettingsBooleanItem : SettingsCommonItem
     {
-        public abstract bool value { get; set; }
+        public abstract bool IsEnabled { get; set; }
+        public abstract string Note { get; }
+        public abstract Visibility NoteVisibility { get; }
     }
 
     public class AppCoreBooleanItem : SettingsBooleanItem
@@ -33,15 +35,17 @@ namespace CelestiaUWP.Settings
         private CelestiaAppCore appCore;
         private string key;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        private string note;
 
-        public AppCoreBooleanItem(string title, CelestiaAppCore appCore, string key)
+        public AppCoreBooleanItem(string title, CelestiaAppCore appCore, string key, string note = "")
         {
-            this.title = title;
+            this.Title = title;
             this.key = key;
             this.appCore = appCore;
+            this.note = note;
         }
 
-        public override bool value
+        public override bool IsEnabled
         {
             get
             {
@@ -53,20 +57,27 @@ namespace CelestiaUWP.Settings
                 localSettings.Values[key] = value;
             }
         }
+
+        public override string Note => note;
+
+        public override Visibility NoteVisibility => string.IsNullOrEmpty(note) ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public class AppSettingsBooleanItem : SettingsBooleanItem
     {
         private AppSettings appSettings;
         private string key;
-        public AppSettingsBooleanItem(string title, AppSettings appSettings, string key)
+        private string note;
+
+        public AppSettingsBooleanItem(string title, AppSettings appSettings, string key, string note = "")
         {
-            this.title = title;
+            this.Title = title;
             this.key = key;
             this.appSettings = appSettings;
+            this.note = note;
         }
 
-        public override bool value
+        public override bool IsEnabled
         {
             get
             {
@@ -78,12 +89,18 @@ namespace CelestiaUWP.Settings
                 appSettings.Save();
             }
         }
+
+        public override string Note => note;
+
+        public override Visibility NoteVisibility => string.IsNullOrEmpty(note) ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public abstract class SettingsIntItem : SettingsCommonItem
     {
-        public abstract int value { get; set; }
-        public abstract string[] items { get; }
+        public abstract int Value { get; set; }
+        public abstract string[] Options { get; }
+        public abstract string Note { get; }
+        public abstract Visibility NoteVisibility { get; }
     }
 
     public class AppCoreIntItem : SettingsIntItem
@@ -92,16 +109,18 @@ namespace CelestiaUWP.Settings
         private string key;
         private string[] itemTitles;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        private string note;
 
-        public AppCoreIntItem(string title, CelestiaAppCore appCore, string key, string[] itemTitles)
+        public AppCoreIntItem(string title, CelestiaAppCore appCore, string key, string[] itemTitles, string note = "")
         {
-            this.title = title;
+            this.Title = title;
             this.key = key;
             this.appCore = appCore;
             this.itemTitles = itemTitles;
+            this.note = note;
         }
 
-        public override int value
+        public override int Value
         {
             get
             {
@@ -113,7 +132,9 @@ namespace CelestiaUWP.Settings
                 localSettings.Values[key] = value;
             }
         }
-        public override string[] items => itemTitles;
+        public override string[] Options => itemTitles;
+        public override string Note => note;
+        public override Visibility NoteVisibility => string.IsNullOrEmpty(note) ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public class AppSettingsIntItem : SettingsIntItem
@@ -121,15 +142,17 @@ namespace CelestiaUWP.Settings
         private AppSettings appSettings;
         private string key;
         private string[] itemTitles;
-        public AppSettingsIntItem(string title, AppSettings appSettings, string key, string[] itemTitles)
+        private string note;
+        public AppSettingsIntItem(string title, AppSettings appSettings, string key, string[] itemTitles, string note = "")
         {
-            this.title = title;
+            this.Title = title;
             this.key = key;
             this.appSettings = appSettings;
             this.itemTitles = itemTitles;
+            this.note = note;
         }
 
-        public override int value
+        public override int Value
         {
             get
             {
@@ -141,7 +164,10 @@ namespace CelestiaUWP.Settings
                 appSettings.Save();
             }
         }
-        public override string[] items => itemTitles;
+        public override string[] Options => itemTitles;
+        public override string Note => note;
+        public override Visibility NoteVisibility => string.IsNullOrEmpty(note) ? Visibility.Collapsed : Visibility.Visible;
+
     }
 
     public class LanguageIntItem : SettingsIntItem
@@ -151,7 +177,7 @@ namespace CelestiaUWP.Settings
         private string[] availableLanguages;
         public LanguageIntItem(string title, AppSettings appSettings, string[] availableLanguages)
         {
-            this.title = title;
+            this.Title = title;
             this.appSettings = appSettings;
             this.availableLanguages = availableLanguages;
 
@@ -172,7 +198,7 @@ namespace CelestiaUWP.Settings
             itemTitles = items.ToArray();
         }
 
-        public override int value
+        public override int Value
         {
             get
             {
@@ -193,22 +219,27 @@ namespace CelestiaUWP.Settings
                 appSettings.Save();
             }
         }
-        public override string[] items => itemTitles;
+        public override string[] Options => itemTitles;
+
+        public override string Note => "";
+        public override Visibility NoteVisibility => Visibility.Collapsed;
     }
 
     public class SettingsHeaderItem : SettingsCommonItem
     {
         public SettingsHeaderItem(string title)
         {
-            this.title = title;
+            this.Title = title;
         }
     }
     public abstract class SettingsDoubleItem : SettingsCommonItem
     {
-        public abstract double value { get; set; }
-        public abstract double min { get; }
-        public abstract double max { get; }
-        public abstract double step { get; }
+        public abstract double Value { get; set; }
+        public abstract double MinValue { get; }
+        public abstract double MaxValue { get; }
+        public abstract double Step { get; }
+        public abstract string Note { get; }
+        public abstract Visibility NoteVisibility { get; }
     }
 
     public class AppCoreFloatItem : SettingsDoubleItem
@@ -219,18 +250,20 @@ namespace CelestiaUWP.Settings
         private float maxValue;
         private float stepValue;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        private string note;
 
-        public AppCoreFloatItem(string title, CelestiaAppCore appCore, string key, float minValue, float maxValue, float stepValue = 1)
+        public AppCoreFloatItem(string title, CelestiaAppCore appCore, string key, float minValue, float maxValue, float stepValue = 1, string note = "")
         {
-            this.title = title;
+            this.Title = title;
             this.key = key;
             this.appCore = appCore;
             this.minValue = minValue;
             this.maxValue = maxValue;
             this.stepValue = stepValue;
+            this.note = note;
         }
 
-        public override double value
+        public override double Value
         {
             get
             {
@@ -244,9 +277,11 @@ namespace CelestiaUWP.Settings
             }
         }
 
-        public override double min => minValue;
-        public override double max => maxValue;
-        public override double step => stepValue;
+        public override double MinValue => minValue;
+        public override double MaxValue => maxValue;
+        public override double Step => stepValue;
+        public override string Note => "";
+        public override Visibility NoteVisibility => Visibility.Collapsed;
     }
 
     public class SettingsItemTemplateSelector : DataTemplateSelector
