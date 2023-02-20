@@ -28,6 +28,7 @@ namespace CelestiaUWP.Settings
         public abstract bool IsEnabled { get; set; }
         public abstract string Note { get; }
         public abstract Visibility NoteVisibility { get; }
+        protected bool hasCorrectValue = false;
     }
 
     public class AppCoreBooleanItem : SettingsBooleanItem
@@ -49,10 +50,13 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 return (bool)appCore.GetType().GetProperty(key).GetValue(appCore);
             }
             set
             {
+                if (!hasCorrectValue) return;
                 appCore.GetType().GetProperty(key).SetValue(appCore, value);
                 localSettings.Values[key] = value;
             }
@@ -81,10 +85,13 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 return (bool)appSettings.GetType().GetField(key).GetValue(appSettings);
             }
             set
             {
+                if (!hasCorrectValue) return;
                 appSettings.GetType().GetField(key).SetValue(appSettings, value);
                 appSettings.Save();
             }
@@ -101,6 +108,7 @@ namespace CelestiaUWP.Settings
         public abstract string[] Options { get; }
         public abstract string Note { get; }
         public abstract Visibility NoteVisibility { get; }
+        protected bool hasCorrectValue = false;
     }
 
     public class AppCoreIntItem : SettingsIntItem
@@ -124,10 +132,13 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 return (int)appCore.GetType().GetProperty(key).GetValue(appCore);
             }
             set
             {
+                if (!hasCorrectValue) return;
                 appCore.GetType().GetProperty(key).SetValue(appCore, value);
                 localSettings.Values[key] = value;
             }
@@ -156,10 +167,13 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 return (int)appSettings.GetType().GetField(key).GetValue(appSettings);
             }
             set
             {
+                if (!hasCorrectValue) return;
                 appSettings.GetType().GetField(key).SetValue(appSettings, value);
                 appSettings.Save();
             }
@@ -202,12 +216,15 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 var selectedLang = appSettings.LanguageOverride;
                 var selectedIndex = Array.IndexOf(availableLanguages, selectedLang);
                 return selectedIndex + 1;
             }
             set
             {
+                if (!hasCorrectValue) return;
                 if (value == 0)
                 {
                     appSettings.LanguageOverride = null;
@@ -240,6 +257,7 @@ namespace CelestiaUWP.Settings
         public abstract double Step { get; }
         public abstract string Note { get; }
         public abstract Visibility NoteVisibility { get; }
+        protected bool hasCorrectValue = false;
     }
 
     public class AppCoreFloatItem : SettingsDoubleItem
@@ -267,11 +285,14 @@ namespace CelestiaUWP.Settings
         {
             get
             {
+                if (!hasCorrectValue)
+                    hasCorrectValue = true;
                 var value = (float)appCore.GetType().GetProperty(key).GetValue(appCore);
                 return value;
             }
             set
             {
+                if (!hasCorrectValue) return;
                 appCore.GetType().GetProperty(key).SetValue(appCore, (float)value);
                 localSettings.Values[key] = (float)value;
             }
