@@ -27,34 +27,19 @@ namespace winrt::CelestiaComponent::implementation
         if (!obj)
             return Selection::Type_Nil;
 
-        auto interfaces = get_interfaces(obj);
-        auto object = get_self<CelestiaAstroObject>(obj)->obj;
+        if (obj.try_as<CelestiaBody>() != nullptr)
+            return Selection::Type_Body;
 
-        auto& bodyGuid = guid_of<CelestiaBody>();
-        auto& dsoGuid = guid_of<CelestiaDSO>();
-        auto& starGuid = guid_of<CelestiaStar>();
-        auto& locationGuid = guid_of<CelestiaLocation>();
+        if (obj.try_as<CelestiaStar>() != nullptr)
+            return Selection::Type_Star;
 
-        for (auto& interf : interfaces)
-        {
-            if (interf == bodyGuid)
-            {
-                return Selection::Type_Body;
-            }
-            if (interf == starGuid)
-            {
-                return Selection::Type_Star;
-            }
-            if (interf == dsoGuid)
-            {
-                return Selection::Type_DeepSky;
-            }
-            if (interf == locationGuid)
-            {
-                return Selection::Type_Location;
-            }
-        }
-        return Selection::Type_Location;
+        if (obj.try_as<CelestiaDSO>() != nullptr)
+            return Selection::Type_DeepSky;
+
+        if (obj.try_as<CelestiaLocation>() != nullptr)
+            return Selection::Type_Location;
+
+        return Selection::Type_Nil;
     }
 
     CelestiaComponent::CelestiaAstroObject GetAstroObject(Selection const& sel)
