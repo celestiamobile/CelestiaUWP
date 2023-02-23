@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="Transparent">
     <RelativePanel>
-        <muxc:WebView2 x:Name="WebView" NavigationStarting="WebView_NavigationStarting" WebMessageReceived="WebView_WebMessageReceived" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+        <muxc:WebView2 FlowDirection="LeftToRight" x:Name="WebView" NavigationStarting="WebView_NavigationStarting" WebMessageReceived="WebView_WebMessageReceived" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
         <muxc:ProgressRing x:Name="LoadingIndicator" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
     </RelativePanel>
 </Page>
