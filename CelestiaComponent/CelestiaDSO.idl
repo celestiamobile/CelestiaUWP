@@ -18,5 +18,6 @@ namespace CelestiaComponent
         String Type{ get; };
         String InfoURL{ get; };
         CelestiaVector Position{ get; };
+        String Description{ get; };
     }
 }

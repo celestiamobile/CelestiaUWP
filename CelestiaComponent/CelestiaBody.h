@@ -13,6 +13,7 @@
 #include "CelestiaAstroObject.h"
 #include "CelestiaOrbit.h"
 #include "CelestiaRotationModel.h"
+#include "CelestiaTimeline.h"
 
 #include "CelestiaBody.g.h"
 
@@ -40,6 +41,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaPlanetarySystem System();
         CelestiaComponent::CelestiaOrbit OrbitAtTime(Windows::Foundation::DateTime const& time);
         CelestiaComponent::CelestiaRotationModel RotationModelAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaTimeline Timeline();
 
         CelestiaComponent::CelestiaPlanetarySystem p {nullptr};
     };

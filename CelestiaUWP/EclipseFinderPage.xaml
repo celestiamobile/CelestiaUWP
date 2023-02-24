@@ -12,6 +12,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <helper:TimeConverter x:Key="TimeConverter"/>
+            <helper:TimeStringConverter x:Key="TimeStringConverter"/>
             <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             </Style>
@@ -24,7 +25,7 @@
                     <RelativePanel>
                         <TextBlock Text="{x:Bind local:EclipseFinderPage.GetEclipseDescription(Occulter, Receiver)}" RelativePanel.AlignLeftWithPanel="True"
                                 Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Bind StartTime}" RelativePanel.AlignRightWithPanel="True"
+                        <TextBlock Text="{x:Bind StartTime, Converter={StaticResource TimeStringConverter}, Mode=OneTime}" RelativePanel.AlignRightWithPanel="True"
                                 Grid.Column="2" VerticalAlignment="Center"/>
                     </RelativePanel>
                 </DataTemplate>

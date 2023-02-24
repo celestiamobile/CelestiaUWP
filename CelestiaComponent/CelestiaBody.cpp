@@ -92,4 +92,9 @@ namespace winrt::CelestiaComponent::implementation
     {
         return static_cast<Body*>(obj)->getRadius();
     }
+
+    CelestiaComponent::CelestiaTimeline CelestiaBody::Timeline()
+    {
+        return make<CelestiaTimeline>(static_cast<Body*>(obj)->getTimeline());
+    }
 }

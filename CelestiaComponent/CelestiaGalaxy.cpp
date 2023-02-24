@@ -20,4 +20,14 @@ namespace winrt::CelestiaComponent::implementation
 	CelestiaGalaxy::CelestiaGalaxy(Galaxy* galaxy) : CelestiaGalaxyT<CelestiaGalaxy, CelestiaDSO>(galaxy)
 	{
 	}
+
+    float CelestiaGalaxy::Radius()
+    {
+        return static_cast<Galaxy*>(obj)->getRadius();
+    }
+
+    float CelestiaGalaxy::Detail()
+    {
+        return static_cast<Galaxy*>(obj)->getDetail();
+    }
 }

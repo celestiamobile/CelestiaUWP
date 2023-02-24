@@ -37,4 +37,9 @@ namespace winrt::CelestiaComponent::implementation
         auto pos = static_cast<DeepSkyObject*>(obj)->getPosition();
         return make<CelestiaVector>(pos.x(), pos.y(), pos.z());
     }
+
+    hstring CelestiaDSO::Description()
+    {
+        return to_hstring(static_cast<DeepSkyObject*>(obj)->getDescription());
+    }
 }

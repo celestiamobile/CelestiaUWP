@@ -16,6 +16,7 @@
 #include "CelestiaStar.h"
 #include "CelestiaBody.h"
 #include "CelestiaDSO.h"
+#include "CelestiaGalaxy.h"
 #include "CelestiaLocation.h"
 
 using namespace std;
@@ -47,15 +48,17 @@ namespace winrt::CelestiaComponent::implementation
         switch (sel.getType())
         {
         case Selection::Type_Star:
-            return make<CelestiaComponent::implementation::CelestiaStar>(sel.star());
+            return make<CelestiaStar>(sel.star());
         case Selection::Type_DeepSky:
-            return make<CelestiaComponent::implementation::CelestiaDSO>(sel.deepsky());
+            if (to_hstring(sel.deepsky()->getObjTypeName()) == L"galaxy")
+                return make<CelestiaGalaxy>(reinterpret_cast<Galaxy*>(sel.deepsky()));
+            return make<CelestiaDSO>(sel.deepsky());
         case Selection::Type_Body:
-            return make<CelestiaComponent::implementation::CelestiaBody>(sel.body());
+            return make<CelestiaBody>(sel.body());
         case Selection::Type_Location:
-            return make<CelestiaComponent::implementation::CelestiaLocation>(sel.location());
+            return make<CelestiaLocation>(sel.location());
         case Selection::Type_Generic:
-            return make<CelestiaComponent::implementation::CelestiaAstroObject>(sel.object());
+            return make<CelestiaAstroObject>(sel.object());
         default:
             return nullptr;
         }

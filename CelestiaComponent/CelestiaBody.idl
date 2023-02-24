@@ -11,6 +11,7 @@ import "CelestiaAstroObject.idl";
 import "CelestiaOrbit.idl";
 import "CelestiaPlanetarySystem.idl";
 import "CelestiaRotationModel.idl";
+import "CelestiaTimeline.idl";
 
 namespace CelestiaComponent
 {
@@ -45,6 +46,7 @@ namespace CelestiaComponent
         Boolean HasAtmosphere{ get; };
         Boolean IsEllipsoid{ get; };
         Single Radius{ get; };
+        CelestiaTimeline Timeline{ get; };
 
         CelestiaOrbit OrbitAtTime(Windows.Foundation.DateTime time);
         CelestiaRotationModel RotationModelAtTime(Windows.Foundation.DateTime time);

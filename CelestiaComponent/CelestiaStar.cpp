@@ -32,4 +32,9 @@ namespace winrt::CelestiaComponent::implementation
     {
         return make<CelestiaUniversalCoord>(static_cast<Star*>(obj)->getPosition(CelestiaHelper::JulianDayFromDateTime(time)));
     }
+
+    hstring CelestiaStar::SpectralType()
+    {
+        return to_hstring(static_cast<Star*>(obj)->getSpectralType());
+    }
 }

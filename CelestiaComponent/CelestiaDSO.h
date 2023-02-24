@@ -26,5 +26,6 @@ namespace winrt::CelestiaComponent::implementation
         hstring Type();
         hstring InfoURL();
         CelestiaComponent::CelestiaVector Position();
+        hstring Description();
     };
 }

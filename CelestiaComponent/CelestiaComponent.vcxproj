@@ -807,6 +807,20 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaTimeline.h">
+      <DependentUpon>CelestiaTimeline.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaTimeline.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaTimeline.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaTimeline.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaVector.h">
       <DependentUpon>CelestiaVector.cpp</DependentUpon>
     </ClInclude>

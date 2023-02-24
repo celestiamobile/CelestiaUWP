@@ -10,6 +10,7 @@
 //
 
 using System;
+using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml.Data;
 
 namespace CelestiaUWP.Helper
@@ -28,6 +29,22 @@ namespace CelestiaUWP.Helper
             if (value == null)
                 return null;
             return ((DateTimeOffset)value).DateTime;
+        }
+    }
+
+    public class TimeStringConverter : IValueConverter
+    {
+        private DateTimeFormatter dateFormatter = new DateTimeFormatter("shortdate shorttime");
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value == null)
+                return null;
+            return dateFormatter.Format((DateTimeOffset)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return null;
         }
     }
 }

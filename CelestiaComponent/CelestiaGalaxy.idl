@@ -14,5 +14,7 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaGalaxy : CelestiaDSO
     {
+        Single Detail{ get; };
+        Single Radius{ get; };
     }
 }

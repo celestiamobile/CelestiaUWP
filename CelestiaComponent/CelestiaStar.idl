@@ -17,5 +17,6 @@ namespace CelestiaComponent
     {
         String InfoURL{ get; };
         CelestiaUniversalCoord PositionAtTime(Windows.Foundation.DateTime time);
+        String SpectralType{ get; };
     }
 }

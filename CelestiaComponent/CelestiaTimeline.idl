@@ -1,0 +1,27 @@
+//
+// Copyright © 2023 Celestia Development Team. All rights reserved.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+
+import "CelestiaVector.idl";
+
+namespace CelestiaComponent
+{
+    [default_interface]
+    runtimeclass CelestiaTimelinePhase
+    {
+        Windows.Foundation.IReference<Windows.Foundation.DateTime> StartTime{ get; };
+        Windows.Foundation.IReference<Windows.Foundation.DateTime> EndTime{ get; };
+    }
+
+    [default_interface]
+    runtimeclass CelestiaTimeline
+    {
+        Int32 PhaseCount{ get; };
+        CelestiaTimelinePhase PhaseAtIndex(Int32 index);
+    }
+}

@@ -18,5 +18,7 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaGalaxy : CelestiaGalaxyT<CelestiaGalaxy, CelestiaDSO>
     {
         CelestiaGalaxy(Galaxy* galaxy);
+        float Radius();
+        float Detail();
     };
 }

@@ -13,6 +13,8 @@
 #include "CelestiaDSOCatalog.g.cpp"
 #endif
 
+#include "CelestiaGalaxy.h"
+
 using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
@@ -28,7 +30,10 @@ namespace winrt::CelestiaComponent::implementation
 
 	CelestiaComponent::CelestiaDSO CelestiaDSOCatalog::DSOAt(int32_t index)
 	{
-		return make<CelestiaDSO>(db->getDSO(index));
+        auto dso = db->getDSO(index);
+        if (to_hstring(dso->getObjTypeName()) == L"galaxy")
+            return make<CelestiaGalaxy>(reinterpret_cast<Galaxy *>(dso));
+		return make<CelestiaDSO>(dso);
 	}
 
 	hstring CelestiaDSOCatalog::DSOName(CelestiaComponent::CelestiaDSO const& DSO)
