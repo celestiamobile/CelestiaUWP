@@ -7,8 +7,8 @@
     mc:Ignorable="d">
 
     <StackPanel Margin="16" Spacing="8">
-        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" x:Name="NameLabel"/>
-        <TextBlock Style="{StaticResource BodyTextBlockStyle}" x:Name="DetailLabel"/>
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="NameLabel"/>
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="DetailLabel"/>
         <HyperlinkButton x:Name="LinkButton" Margin="0,8,0,8" Padding="0"/>
     </StackPanel>
 </Page>
