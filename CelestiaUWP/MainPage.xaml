@@ -9,9 +9,11 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <RelativePanel>
-        <SwapChainPanel FlowDirection="LeftToRight" x:Name="GLView" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+        <SwapChainPanel FlowDirection="LeftToRight" x:Name="GLView" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <ContentControl x:Name="FocusHelperControl" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
+        </SwapChainPanel>
         <TextBlock x:Name="LoadingText" Style="{StaticResource TitleTextBlockStyle}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></TextBlock>
-        <MenuBar Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
+        <muxc:MenuBar Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></muxc:MenuBar>
         <RelativePanel Visibility="Collapsed" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" x:Name="OverlayBackground">
             <Frame Background="{ThemeResource SystemControlAcrylicElementBrush}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
             <RelativePanel x:Name="OverlayTitle" Background="{ThemeResource NavigationViewTopPaneBackground}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True">

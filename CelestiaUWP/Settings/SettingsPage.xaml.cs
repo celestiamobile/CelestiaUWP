@@ -15,6 +15,9 @@ using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewSelectionChangedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs;
+
 namespace CelestiaUWP.Settings
 {
     public sealed partial class SettingsPage : Page, INotifyPropertyChanged

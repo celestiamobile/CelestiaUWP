@@ -13,6 +13,9 @@ using CelestiaComponent;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
+
 namespace CelestiaUWP.Addon
 {
     public delegate void ShowItemHandler(ResourceItem category);

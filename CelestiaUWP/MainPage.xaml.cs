@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
@@ -31,6 +30,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+
+using MenuBarItem = Microsoft.UI.Xaml.Controls.MenuBarItem;
 
 namespace CelestiaUWP
 {
@@ -668,41 +669,34 @@ namespace CelestiaUWP
                     mAppCore.MouseWheel(delta > 0 ? -1 : 1, 0);
                 });
             };
-            Window.Current.CoreWindow.CharacterReceived += (sender, arg) =>
+            FocusHelperControl.Focus(FocusState.Programmatic);
+            FocusManager.GotFocus += FocusManager_GotFocus;
+            FocusHelperControl.CharacterReceived += (sender, arg) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
-                short key = (short)arg.KeyCode;
+                short key = (short)arg.Character;
 
                 mRenderer.EnqueueTask(() =>
                 {
                     mAppCore.CharEnter(key);
                 });
             };
-            Window.Current.CoreWindow.KeyDown += (sender, arg) =>
+            FocusHelperControl.KeyDown += (sender, arg) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
                 var modifiers = 0;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control) == CoreVirtualKeyStates.Down)
                     modifiers |= 16;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift) == CoreVirtualKeyStates.Down)
                     modifiers |= 8;
-                int key = (int)arg.VirtualKey;
+                int key = (int)arg.Key;
 
                 mRenderer.EnqueueTask(() =>
                 {
                     mAppCore.KeyDown(key, modifiers);
                 });
             };
-            Window.Current.CoreWindow.KeyUp += (sender, arg) =>
+            FocusHelperControl.KeyUp += (sender, arg) =>
             {
-                if (OverlayContainer.Content != null) return;
-                if (VisualTreeHelper.GetOpenPopups(Window.Current).Count > 0) return;
-
-                int key = (int)arg.VirtualKey;
+                int key = (int)arg.Key;
 
                 mRenderer.EnqueueTask(() =>
                 {
@@ -717,6 +711,33 @@ namespace CelestiaUWP
             });
         }
 
+        private void FocusManager_GotFocus(object sender, FocusManagerGotFocusEventArgs e)
+        {
+            var focusedItem = e.NewFocusedElement;
+            if (focusedItem != FocusHelperControl)
+            {
+                var element = focusedItem as FrameworkElement;
+                if (element != null)
+                {
+                    // Do not give up focus to GLView and its parents
+                    FrameworkElement parent = GLView;
+                    while (parent != null && parent != element)
+                    {
+                        var potentialParent = parent.Parent;
+                        if (potentialParent != null)
+                            parent = potentialParent as FrameworkElement;
+                        else
+                            parent = null;
+                    }
+
+                    if (parent == element)
+                    {
+                        FocusHelperControl.Focus(FocusState.Programmatic);
+                    }
+                }
+            }
+        }
+
         void PopulateMenuBar(string resourcePath)
         {
             MenuBarItem CreateMenuBarItem(string name)
@@ -724,7 +745,6 @@ namespace CelestiaUWP
                 return new MenuBarItem
                 {
                     Title = name,
-                    IsTabStop = false,
                     AllowFocusOnInteraction = false
                 };
             }
@@ -834,7 +854,7 @@ namespace CelestiaUWP
 
             var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
 
-            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H, IsEnabled = false });
+            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
             AppendItem(navigationItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
             {
                 ShowTourGuide();
@@ -865,7 +885,7 @@ namespace CelestiaUWP
                     {
                         mAppCore.CharEnter(action.Item2);
                     });
-                }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32), IsEnabled = false });
+                }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -879,11 +899,11 @@ namespace CelestiaUWP
             });
 
             var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L, IsEnabled = false });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K, IsEnabled = false });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space });
             AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Real Time"), 33);
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J });
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -893,10 +913,10 @@ namespace CelestiaUWP
             });
 
             var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D });
 
             var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
             AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>

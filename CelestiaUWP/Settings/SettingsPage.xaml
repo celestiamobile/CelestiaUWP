@@ -5,16 +5,17 @@
     xmlns:helper="using:CelestiaUWP.Helper"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
         <DataTemplate x:Key="NavigationViewItem" x:DataType="helper:NavigationViewItem">
-            <NavigationViewItem Content="{x:Bind Name}" Tag="{x:Bind Tag}"/>
+            <muxc:NavigationViewItem Content="{x:Bind Name}" Tag="{x:Bind Tag}"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <NavigationView MenuItemsSource="{x:Bind NavigationItems, Mode=OneWay}" MenuItemTemplate="{StaticResource NavigationViewItem}" SelectionChanged="Nav_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
+        <muxc:NavigationView MenuItemsSource="{x:Bind NavigationItems, Mode=OneWay}" MenuItemTemplate="{StaticResource NavigationViewItem}" SelectionChanged="Nav_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
             <Frame x:Name="Container"/>
-        </NavigationView>
+        </muxc:NavigationView>
     </Grid>
 </Page>

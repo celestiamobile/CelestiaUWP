@@ -5,10 +5,11 @@
     xmlns:helper="using:CelestiaUWP.Helper"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Grid>
-        <NavigationView x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
+        <muxc:NavigationView x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
             <Frame x:Name="Container"/>
-        </NavigationView>
+        </muxc:NavigationView>
     </Grid>
 </Page>
