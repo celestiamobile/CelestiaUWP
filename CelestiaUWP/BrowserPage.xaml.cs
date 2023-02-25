@@ -18,20 +18,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public static class CelestiaExtension
-    {
-        public static CelestiaBrowserItem[] GetChildren(this CelestiaAppCore AppCore, CelestiaBrowserItem item)
-        {
-            var obj = item.Object;
-            if (obj == null)
-                return new CelestiaBrowserItem[] { };
-            if (obj is CelestiaStar star)
-                return AppCore.Simulation.Universe.ChildrenForStar(star, AppCore.GetChildren);
-            if (obj is CelestiaBody body)
-                return AppCore.Simulation.Universe.ChildrenForBody(body, AppCore.GetChildren);
-            return new CelestiaBrowserItem[] { };
-        }
-    }
     public sealed partial class BrowserPage : Page, INotifyPropertyChanged
     {
         private CelestiaAppCore AppCore;
@@ -84,7 +70,7 @@ namespace CelestiaUWP
                     var solStar = sol.Object;
                     if (solStar is CelestiaStar)
                     {
-                        mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, AppCore.GetChildren, false) };
+                        mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false) };
                     }
                 }
                 else
@@ -101,7 +87,7 @@ namespace CelestiaUWP
                 var s2 = new List<CelestiaBrowserItem>();
                 foreach (var star in brightest)
                 {
-                    s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, true));
+                    s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, true));
                 }
                 brightestStars = new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s2.ToArray(), true);
             }
@@ -114,7 +100,7 @@ namespace CelestiaUWP
                 var s3 = new List<CelestiaBrowserItem>();
                 foreach (var star in hasPlanets)
                 {
-                    s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
+                    s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
                 }
                 starsWithPlanets = new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), false);
             }
@@ -130,11 +116,11 @@ namespace CelestiaUWP
             var s4 = new List<CelestiaBrowserItem>();
             foreach (var star in nearest)
             {
-                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
+                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
             foreach (var star in brighter)
             {
-                s4.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, AppCore.GetChildren, false));
+                s4.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
             mStarRoot = new CelestiaBrowserItem[]
             {
@@ -186,8 +172,8 @@ namespace CelestiaUWP
                             break;
                         }
                     }
-                    var item = new CelestiaBrowserItem(dsoCatalog.DSOName(dso), dso, AppCore.GetChildren, false);
-                    results[categoryIndex].Add(item);
+                    var entry = new CelestiaBrowserItem(dsoCatalog.DSOName(dso), dso, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false);
+                    results[categoryIndex].Add(entry);
                 }
                 var dsoCategories = new List<CelestiaBrowserItem>();
                 for (var i = 0; i < results.Count; i++)

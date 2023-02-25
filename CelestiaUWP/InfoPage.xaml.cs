@@ -33,161 +33,16 @@ namespace CelestiaUWP
             var Selection = parameter.Item2;
 
             NameLabel.Text = AppCore.Simulation.Universe.NameForSelection(Selection);
-            DetailLabel.Text = GetOverview(Selection, AppCore);
-            var url = CelestiaAppHelper.GetInfoURL(Selection);
+            DetailLabel.Text = CelestiaExtension.GetOverviewForSelection(Selection, (string original) =>
+            {
+                return LocalizationHelper.Localize(original);
+            }, AppCore);
+            var url = Selection.InfoURL;
             if (!string.IsNullOrEmpty(url))
             {
                 LinkButton.NavigateUri = new Uri(url);
                 LinkButton.Content = url;
             }
-        }
-
-        private string GetOverview(CelestiaSelection Selection, CelestiaAppCore AppCore)
-        {
-            var obj = Selection.Object;
-            if (obj is CelestiaBody)
-                return GetBodyOverview((CelestiaBody)obj, AppCore);
-            if (obj is CelestiaStar)
-                return GetStarOverview((CelestiaStar)obj, AppCore);
-            if (obj is CelestiaDSO)
-                return GetDSOOveriew((CelestiaDSO)obj);
-            return LocalizationHelper.Localize("No overview available.");
-        }
-
-        private string GetBodyOverview(CelestiaBody Body, CelestiaAppCore AppCore)
-        {
-            var lines = new List<string>();
-            var radius = Body.Radius;
-            string radiusString;
-            const float oneMiInKm = 1.609344f;
-            const float oneFtInKm = 0.0003048f;
-            if (AppCore.MeasurementSystem == (int)CelestiaMeasurementSystem.Imperial)
-            {
-                if (radius >= oneMiInKm)
-                    radiusString = string.Format(LocalizationHelper.Localize("%d mi").Replace("%d", "{0}"), (int)(radius / oneMiInKm));
-                else
-                    radiusString = string.Format(LocalizationHelper.Localize("%d ft").Replace("%d", "{0}"), (int)(radius / oneFtInKm));
-            }
-            else
-            {
-                if (radius >= 1.0f)
-                    radiusString = string.Format(LocalizationHelper.Localize("%d km").Replace("%d", "{0}"), (int)radius);
-                else
-                    radiusString = string.Format(LocalizationHelper.Localize("%d m").Replace("%d", "{0}"), (int)(radius * 1000.0f));
-            }
-            if (Body.IsEllipsoid)
-                lines.Add(string.Format(LocalizationHelper.Localize("Equatorial radius: %s").Replace("%s", "{0}"), radiusString));
-            else
-                lines.Add(string.Format(LocalizationHelper.Localize("Size: %s").Replace("%s", "{0}"), radiusString));
-            var time = AppCore.Simulation.Time;
-            var orbit = Body.OrbitAtTime(time);
-            var rotation = Body.RotationModelAtTime(time);
-            var orbitalPeriod = orbit.IsPeriodic ? orbit.Period : 0.0;
-            if (rotation.IsPeriodic && Body.Type != CelestiaBodyType.spacecraft)
-            {
-                var rotPeriod = rotation.Period;
-                var dayLength = 0.0;
-                if (orbit.IsPeriodic)
-                {
-                    var siderealDaysPerYear = orbitalPeriod / rotPeriod;
-                    var solarDaysPerYear = siderealDaysPerYear - 1.0;
-                    if (solarDaysPerYear > 0.0001)
-                    {
-                        dayLength = orbitalPeriod / (siderealDaysPerYear - 1.0);
-                    }
-                }
-                string unitTemplate;
-                if (rotPeriod < 2.0)
-                {
-                    rotPeriod *= 24;
-                    dayLength *= 24;
-
-                    unitTemplate = LocalizationHelper.Localize("%.2f hours").Replace("%.2f", "{0:N2}");
-                }
-                else
-                {
-                    unitTemplate = LocalizationHelper.Localize("%.2f days").Replace("%.2f", "{0:N2}");
-                }
-                lines.Add(string.Format(LocalizationHelper.Localize("Sidereal rotation period: %s").Replace("%s", "{0}"), string.Format(unitTemplate, rotPeriod)));
-
-                if (dayLength != 0.0)
-                {
-                    lines.Add(string.Format(LocalizationHelper.Localize("Length of day: %s").Replace("%s", "{0}"), string.Format(unitTemplate, dayLength)));
-                }
-            }
-
-            if (Body.HasRings)
-            {
-                lines.Add(LocalizationHelper.Localize("Has rings"));
-            }
-
-            if (Body.HasAtmosphere)
-            {
-                lines.Add(LocalizationHelper.Localize("Has atmosphere"));
-            }
-
-            var timeline = Body.Timeline;
-            if (timeline.PhaseCount > 0)
-            {
-                var startTime = timeline.PhaseAtIndex(0).StartTime;
-                var endTime = timeline.PhaseAtIndex(timeline.PhaseCount - 1).EndTime;
-                var dateFormatter = new DateTimeFormatter("shortdate shorttime");
-                if (startTime != null)
-                    lines.Add(string.Format(LocalizationHelper.Localize("Start time: %s").Replace("%s", "{0}"), dateFormatter.Format(startTime.Value)));
-                if (endTime != null)
-                    lines.Add(string.Format(LocalizationHelper.Localize("End time: %s").Replace("%s", "{0}"), dateFormatter.Format(endTime.Value)));
-            }
-
-            return string.Join("\n", lines.ToArray());
-        }
-
-        private string GetStarOverview(CelestiaStar Star, CelestiaAppCore AppCore)
-        {
-            var lines = new List<string>();
-
-            lines.Add(string.Format(LocalizationHelper.Localize("Spectral type: %s").Replace("%s", "{0}"), Star.SpectralType));
-
-            var time = AppCore.Simulation.Time;
-            var celPos = Star.PositionAtTime(time).OffsetFrom(CelestiaUniversalCoord.Zero);
-            var eqPos = CelestiaHelper.EclipticToEquatorial(CelestiaHelper.CelToJ2000Ecliptic(celPos));
-            var sph = CelestiaHelper.RectToSpherical(eqPos);
-
-            var hms = new CelestiaDMS(sph.X);
-            lines.Add(string.Format(LocalizationHelper.Localize("RA: {0}h {1}m {2:N2}s"), hms.Hours, hms.Minutes, hms.Seconds));
-
-            var dms = new CelestiaDMS(sph.Y);
-            lines.Add(string.Format(LocalizationHelper.Localize("DEC: {0}° {1}′ {2:N2}″"), dms.Hours, dms.Minutes, dms.Seconds));
-
-            return string.Join("\n", lines.ToArray());
-        }
-
-        private string GetDSOOveriew(CelestiaDSO DSO)
-        {
-            var lines = new List<string>();
-
-            if (DSO.Description.Length > 0)
-                lines.Add(DSO.Description);
-
-            var celPos = DSO.Position;
-            var eqPos = CelestiaHelper.EclipticToEquatorial(CelestiaHelper.CelToJ2000Ecliptic(celPos));
-            var sph = CelestiaHelper.RectToSpherical(eqPos);
-
-            var hms = new CelestiaDMS(sph.X);
-            lines.Add(string.Format(LocalizationHelper.Localize("RA: {0}h {1}m {2:N2}s"), hms.Hours, hms.Minutes, hms.Seconds));
-
-            var dms = new CelestiaDMS(sph.Y);
-            lines.Add(string.Format(LocalizationHelper.Localize("DEC: {0}° {1}′ {2:N2}″"), dms.Hours, dms.Minutes, dms.Seconds));
-
-            var galPos = CelestiaHelper.EquatorialToGalactic(eqPos);
-            sph = CelestiaHelper.RectToSpherical(galPos);
-
-            dms = new CelestiaDMS(sph.X);
-            lines.Add(string.Format(LocalizationHelper.Localize("L: {0}° {1}′ {2:N2}″"), dms.Hours, dms.Minutes, dms.Seconds));
-
-            dms = new CelestiaDMS(sph.Y);
-            lines.Add(string.Format(LocalizationHelper.Localize("B: {0}° {1}′ {2:N2}″"), dms.Hours, dms.Minutes, dms.Seconds));
-
-            return string.Join("\n", lines.ToArray());
         }
     }
 }

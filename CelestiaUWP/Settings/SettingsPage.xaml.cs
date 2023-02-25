@@ -59,27 +59,27 @@ namespace CelestiaUWP.Settings
                 var items = new SettingsCommonItem[]
                 {
                     new SettingsHeaderItem(LocalizationHelper.Localize("Objects")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, "ShowStars"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, "ShowPlanets"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, "ShowDwarfPlanets"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, "ShowMoons"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, "ShowMinorMoons"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, "ShowAsteroids"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, "ShowComets"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, "ShowSpacecrafts"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galaxies"), AppCore, "ShowGalaxies"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Nebulae"), AppCore, "ShowNebulae"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, "ShowGlobulars"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, "ShowOpenClusters"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, CelestiaSettingBooleanEntry.ShowStars),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, CelestiaSettingBooleanEntry.ShowPlanets),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, CelestiaSettingBooleanEntry.ShowDwarfPlanets),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMoons),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMinorMoons),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, CelestiaSettingBooleanEntry.ShowAsteroids),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, CelestiaSettingBooleanEntry.ShowComets),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, CelestiaSettingBooleanEntry.ShowSpacecrafts),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galaxies"), AppCore, CelestiaSettingBooleanEntry.ShowGalaxies),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Nebulae"), AppCore, CelestiaSettingBooleanEntry.ShowNebulae),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, CelestiaSettingBooleanEntry.ShowGlobulars),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, CelestiaSettingBooleanEntry.ShowOpenClusters),
                     new SettingsHeaderItem(LocalizationHelper.Localize("Features")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Clouds"), AppCore, "ShowCloudMaps"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Atmospheres"), AppCore, "ShowAtmospheres"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comet Tails"), AppCore, "ShowCometTails"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planet Rings"), AppCore, "ShowPlanetRings"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ring Shadows"), AppCore, "ShowRingShadows"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Eclipse Shadows"), AppCore, "ShowEclipseShadows"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Cloud Shadows"), AppCore, "ShowCloudShadows"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Night Lights"), AppCore, "ShowNightMaps"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Clouds"), AppCore, CelestiaSettingBooleanEntry.ShowCloudMaps),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Atmospheres"), AppCore, CelestiaSettingBooleanEntry.ShowAtmospheres),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comet Tails"), AppCore, CelestiaSettingBooleanEntry.ShowCometTails),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planet Rings"), AppCore, CelestiaSettingBooleanEntry.ShowPlanetRings),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ring Shadows"), AppCore, CelestiaSettingBooleanEntry.ShowRingShadows),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Eclipse Shadows"), AppCore, CelestiaSettingBooleanEntry.ShowEclipseShadows),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Cloud Shadows"), AppCore, CelestiaSettingBooleanEntry.ShowCloudShadows),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Night Lights"), AppCore, CelestiaSettingBooleanEntry.ShowNightMaps),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
@@ -88,33 +88,33 @@ namespace CelestiaUWP.Settings
                 var items = new SettingsCommonItem[]
                 {
                     new SettingsHeaderItem(LocalizationHelper.Localize("Orbits")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Orbits"), AppCore, "ShowOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Fading Orbits"), AppCore, "ShowFadingOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Partial Trajectories"), AppCore, "ShowPartialTrajectories"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, "ShowStellarOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, "ShowPlanetOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, "ShowDwarfPlanetOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, "ShowMoonOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, "ShowMinorMoonOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, "ShowAsteroidOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, "ShowCometOrbits"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, "ShowSpacecraftOrbits"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Orbits"), AppCore, CelestiaSettingBooleanEntry.ShowOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Fading Orbits"), AppCore, CelestiaSettingBooleanEntry.ShowFadingOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Partial Trajectories"), AppCore, CelestiaSettingBooleanEntry.ShowPartialTrajectories),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, CelestiaSettingBooleanEntry.ShowStellarOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, CelestiaSettingBooleanEntry.ShowPlanetOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, CelestiaSettingBooleanEntry.ShowDwarfPlanetOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMoonOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMinorMoonOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, CelestiaSettingBooleanEntry.ShowAsteroidOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, CelestiaSettingBooleanEntry.ShowCometOrbits),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, CelestiaSettingBooleanEntry.ShowSpacecraftOrbits),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Constellations")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Diagrams"), AppCore, "ShowDiagrams"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels"), AppCore, "ShowConstellationLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels in Latin"), AppCore, "ShowLatinConstellationLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Boundaries"), AppCore, "ShowBoundaries"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Diagrams"), AppCore, CelestiaSettingBooleanEntry.ShowDiagrams),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels"), AppCore, CelestiaSettingBooleanEntry.ShowConstellationLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels in Latin"), AppCore, CelestiaSettingBooleanEntry.ShowLatinConstellationLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Boundaries"), AppCore, CelestiaSettingBooleanEntry.ShowBoundaries),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Grids")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Equatorial"), AppCore, "ShowCelestialSphere"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic"), AppCore, "ShowEclipticGrid"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Horizontal"), AppCore, "ShowHorizonGrid"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galactic"), AppCore, "ShowGalacticGrid"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Equatorial"), AppCore, CelestiaSettingBooleanEntry.ShowCelestialSphere),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic"), AppCore, CelestiaSettingBooleanEntry.ShowEclipticGrid),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Horizontal"), AppCore, CelestiaSettingBooleanEntry.ShowHorizonGrid),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galactic"), AppCore, CelestiaSettingBooleanEntry.ShowGalacticGrid),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Miscellaneous")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Markers"), AppCore, "ShowMarkers"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic Line"), AppCore, "ShowEcliptic")
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Markers"), AppCore, CelestiaSettingBooleanEntry.ShowMarkers),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic Line"), AppCore, CelestiaSettingBooleanEntry.ShowEcliptic)
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
@@ -123,32 +123,32 @@ namespace CelestiaUWP.Settings
                 var items = new SettingsCommonItem[]
                 {
                     new SettingsHeaderItem(LocalizationHelper.Localize("Objects")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, "ShowStarLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, "ShowPlanetLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, "ShowDwarfPlanetLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, "ShowMoonLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, "ShowMinorMoonLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, "ShowAsteroidLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, "ShowCometLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, "ShowSpacecraftLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galaxies"), AppCore, "ShowGalaxyLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Nebulae"), AppCore, "ShowNebulaLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, "ShowGlobularLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, "ShowOpenClusterLabels"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, CelestiaSettingBooleanEntry.ShowStarLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, CelestiaSettingBooleanEntry.ShowPlanetLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, CelestiaSettingBooleanEntry.ShowDwarfPlanetLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMoonLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Minor Moons"), AppCore, CelestiaSettingBooleanEntry.ShowMinorMoonLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Asteroids"), AppCore, CelestiaSettingBooleanEntry.ShowAsteroidLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, CelestiaSettingBooleanEntry.ShowCometLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, CelestiaSettingBooleanEntry.ShowSpacecraftLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Galaxies"), AppCore, CelestiaSettingBooleanEntry.ShowGalaxyLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Nebulae"), AppCore, CelestiaSettingBooleanEntry.ShowNebulaLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, CelestiaSettingBooleanEntry.ShowGlobularLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, CelestiaSettingBooleanEntry.ShowOpenClusterLabels),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Locations")),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Locations"), AppCore, "ShowLocationLabels"),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Minimum Labeled Feature Size"), AppCore, "MinimumFeatureSize", 0, 99),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Cities"), AppCore, "ShowCityLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Observatories"), AppCore, "ShowObservatoryLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Landing Sites"), AppCore, "ShowLandingSiteLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Montes (Mountains)"), AppCore, "ShowMonsLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Maria (Seas)"), AppCore, "ShowMareLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Craters"), AppCore, "ShowCraterLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Valles (Valleys)"), AppCore, "ShowVallisLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Terrae (Land masses)"), AppCore, "ShowTerraLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Volcanoes"), AppCore, "ShowEruptiveCenterLabels"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Other"), AppCore, "ShowOtherLabels")
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Show Locations"), AppCore, CelestiaSettingBooleanEntry.ShowLocationLabels),
+                    new AppCoreFloatItem(LocalizationHelper.Localize("Minimum Labeled Feature Size"), AppCore, CelestiaSettingSingleEntry.MinimumFeatureSize, 0, 99),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Cities"), AppCore, CelestiaSettingBooleanEntry.ShowCityLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Observatories"), AppCore, CelestiaSettingBooleanEntry.ShowObservatoryLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Landing Sites"), AppCore, CelestiaSettingBooleanEntry.ShowLandingSiteLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Montes (Mountains)"), AppCore, CelestiaSettingBooleanEntry.ShowMonsLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Maria (Seas)"), AppCore, CelestiaSettingBooleanEntry.ShowMareLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Craters"), AppCore, CelestiaSettingBooleanEntry.ShowCraterLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Valles (Valleys)"), AppCore, CelestiaSettingBooleanEntry.ShowVallisLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Terrae (Land masses)"), AppCore, CelestiaSettingBooleanEntry.ShowTerraLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Volcanoes"), AppCore, CelestiaSettingBooleanEntry.ShowEruptiveCenterLabels),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Other"), AppCore, CelestiaSettingBooleanEntry.ShowOtherLabels)
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
@@ -156,21 +156,21 @@ namespace CelestiaUWP.Settings
             {
                 var items = new SettingsCommonItem[]
                 {
-                    new AppCoreIntItem(LocalizationHelper.Localize("Texture Resolution"), AppCore, "Resolution", new string[] { LocalizationHelper.Localize("Low"), LocalizationHelper.Localize("Medium"), LocalizationHelper.Localize("High") }),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Star Style"), AppCore, "StarStyle", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Texture Resolution"), AppCore, CelestiaSettingInt32Entry.Resolution, new string[] { LocalizationHelper.Localize("Low"), LocalizationHelper.Localize("Medium"), LocalizationHelper.Localize("High") }),
+                    new AppCoreIntItem(LocalizationHelper.Localize("Star Style"), AppCore, CelestiaSettingInt32Entry.StarStyle, new []
                     {
                         LocalizationHelper.Localize("Fuzzy Points"),
                         LocalizationHelper.Localize("Points"),
                         LocalizationHelper.Localize("Scaled Discs")
                     }),
 
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Smooth Lines"), AppCore, "ShowSmoothLines"),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Tinted Illumination"), AppCore, "ShowTintedIllumination"),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Smooth Lines"), AppCore, CelestiaSettingBooleanEntry.ShowSmoothLines),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Tinted Illumination"), AppCore, CelestiaSettingBooleanEntry.ShowTintedIllumination),
 
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Auto Mag"), AppCore, "ShowAutoMag"),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Ambient Light"), AppCore, "AmbientLightLevel", 0, 0.99f, 0.01f),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Faintest Stars"), AppCore, "FaintestVisible", 3, 12),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Galaxy Brightness"), AppCore, "GalaxyBrightness", 0, 1, 0.01f),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Auto Mag"), AppCore, CelestiaSettingBooleanEntry.ShowAutoMag),
+                    new AppCoreFloatItem(LocalizationHelper.Localize("Ambient Light"), AppCore, CelestiaSettingSingleEntry.AmbientLightLevel, 0, 0.99f, 0.01f),
+                    new AppCoreFloatItem(LocalizationHelper.Localize("Faintest Stars"), AppCore, CelestiaSettingSingleEntry.FaintestVisible, 3, 12),
+                    new AppCoreFloatItem(LocalizationHelper.Localize("Galaxy Brightness"), AppCore, CelestiaSettingSingleEntry.GalaxyBrightness, 0, 1, 0.01f),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Advanced")),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("HiDPI"), AppSettings, "UseFullDPI"),
@@ -182,7 +182,7 @@ namespace CelestiaUWP.Settings
             {
                 var items = new SettingsCommonItem[]
                 {
-                    new AppCoreIntItem(LocalizationHelper.Localize("Info Display"), AppCore, "HudDetail", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Info Display"), AppCore, CelestiaSettingInt32Entry.HudDetail, new []
                     {
                         LocalizationHelper.Localize("None"),
                         LocalizationHelper.Localize("Terse"),
@@ -190,12 +190,12 @@ namespace CelestiaUWP.Settings
                     }),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Time")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Time Zone"), AppCore, "TimeZone", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Time Zone"), AppCore, CelestiaSettingInt32Entry.TimeZone, new []
                     {
                         LocalizationHelper.Localize("Local Time"),
                         LocalizationHelper.Localize("UTC"),
                     }),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Date Format"), AppCore, "DateFormat", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Date Format"), AppCore, CelestiaSettingInt32Entry.DateFormat, new []
                     {
                         LocalizationHelper.Localize("Default"),
                         LocalizationHelper.Localize("YYYY MMM DD HH:MM:SS TZ"),
@@ -203,12 +203,12 @@ namespace CelestiaUWP.Settings
                     }),
 
                     new SettingsHeaderItem(LocalizationHelper.Localize("Region")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Measure Units"), AppCore, "MeasurementSystem", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Measure Units"), AppCore, CelestiaSettingInt32Entry.MeasurementSystem, new []
                     {
                         LocalizationHelper.Localize("Metric"),
                         LocalizationHelper.Localize("Imperial")
                     }),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Temperature Scale"), AppCore, "TemperatureScale", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Temperature Scale"), AppCore, CelestiaSettingInt32Entry.TemperatureScale, new []
                     {
                         LocalizationHelper.Localize("Kelvin"),
                         LocalizationHelper.Localize("Celsius"),
@@ -223,7 +223,7 @@ namespace CelestiaUWP.Settings
                 var items = new SettingsCommonItem[]
                 {
                     new SettingsHeaderItem(LocalizationHelper.Localize("Security")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Script System Access Policy"), AppCore, "ScriptSystemAccessPolicy", new []
+                    new AppCoreIntItem(LocalizationHelper.Localize("Script System Access Policy"), AppCore, CelestiaSettingInt32Entry.ScriptSystemAccessPolicy, new []
                     {
                         LocalizationHelper.Localize("Ask"),
                         LocalizationHelper.Localize("Allow"),

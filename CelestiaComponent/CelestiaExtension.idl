@@ -1,0 +1,143 @@
+import "CelestiaBrowserItem.idl";
+import "CelestiaAppCore.idl";
+
+namespace CelestiaComponent
+{
+    delegate String LocalizationProvider(String status);
+
+    enum CelestiaSettingBooleanEntry
+    {
+        None,
+        ShowStars,
+        ShowPlanets,
+        ShowDwarfPlanets,
+        ShowMoons,
+        ShowMinorMoons,
+        ShowAsteroids,
+        ShowComets,
+        ShowSpacecrafts,
+        ShowGalaxies,
+        ShowGlobulars,
+        ShowNebulae,
+        ShowOpenClusters,
+        ShowDiagrams,
+        ShowBoundaries,
+        ShowCloudMaps,
+        ShowNightMaps,
+        ShowAtmospheres,
+        ShowCometTails,
+        ShowPlanetRings,
+        ShowMarkers,
+        ShowOrbits,
+        ShowFadingOrbits,
+        ShowEcliptic,
+        ShowPartialTrajectories,
+        ShowSmoothLines,
+        ShowEclipseShadows,
+        ShowRingShadows,
+        ShowCloudShadows,
+        ShowAutoMag,
+        ShowCelestialSphere,
+        ShowEclipticGrid,
+        ShowHorizonGrid,
+        ShowGalacticGrid,
+        ShowTintedIllumination,
+        ShowStarLabels,
+        ShowPlanetLabels,
+        ShowMoonLabels,
+        ShowConstellationLabels,
+        ShowGalaxyLabels,
+        ShowGlobularLabels,
+        ShowNebulaLabels,
+        ShowOpenClusterLabels,
+        ShowAsteroidLabels,
+        ShowSpacecraftLabels,
+        ShowLocationLabels,
+        ShowCometLabels,
+        ShowDwarfPlanetLabels,
+        ShowMinorMoonLabels,
+        ShowLatinConstellationLabels,
+        ShowPlanetOrbits,
+        ShowMoonOrbits,
+        ShowAsteroidOrbits,
+        ShowSpacecraftOrbits,
+        ShowCometOrbits,
+        ShowStellarOrbits,
+        ShowDwarfPlanetOrbits,
+        ShowMinorMoonOrbits,
+        ShowCityLabels,
+        ShowObservatoryLabels,
+        ShowLandingSiteLabels,
+        ShowCraterLabels,
+        ShowVallisLabels,
+        ShowMonsLabels,
+        ShowPlanumLabels,
+        ShowChasmaLabels,
+        ShowPateraLabels,
+        ShowMareLabels,
+        ShowRupesLabels,
+        ShowTesseraLabels,
+        ShowRegioLabels,
+        ShowChaosLabels,
+        ShowTerraLabels,
+        ShowAstrumLabels,
+        ShowCoronaLabels,
+        ShowDorsumLabels,
+        ShowFossaLabels,
+        ShowCatenaLabels,
+        ShowMensaLabels,
+        ShowRimaLabels,
+        ShowUndaeLabels,
+        ShowReticulumLabels,
+        ShowPlanitiaLabels,
+        ShowLineaLabels,
+        ShowFluctusLabels,
+        ShowFarrumLabels,
+        ShowEruptiveCenterLabels,
+        ShowOtherLabels,
+    };
+
+    enum CelestiaSettingInt32Entry
+    {
+        None,
+        Resolution,
+        StarStyle,
+        HudDetail,
+        DateFormat,
+        TimeZone,
+        MeasurementSystem,
+        TemperatureScale,
+        ScriptSystemAccessPolicy,
+    };
+
+    enum CelestiaSettingSingleEntry
+    {
+        None,
+        AmbientLightLevel,
+        FaintestVisible,
+        GalaxyBrightness,
+        MinimumFeatureSize,
+        DistanceLimit,
+    };
+
+    [default_interface]
+    runtimeclass CelestiaExtension
+    {
+        static CelestiaSettingBooleanEntry GetBooleanEntryByName(String name);
+        static CelestiaSettingInt32Entry GetInt32EntryByName(String name);
+        static CelestiaSettingSingleEntry GetSingleEntryByName(String name);
+        static String GetNameByBooleanEntry(CelestiaSettingBooleanEntry entry);
+        static String GetNameByInt32Entry(CelestiaSettingInt32Entry entry);
+        static String GetNameBySingleEntry(CelestiaSettingSingleEntry entry);
+        static void SetCelestiaBooleanValue(CelestiaAppCore appCore, CelestiaSettingBooleanEntry entry, Boolean value);
+        static void SetCelestiaInt32Value(CelestiaAppCore appCore, CelestiaSettingInt32Entry entry, Int32 value);
+        static void SetCelestiaSingleValue(CelestiaAppCore appCore, CelestiaSettingSingleEntry entry, Single value);
+        static Boolean GetCelestiaBooleanValue(CelestiaAppCore appCore, CelestiaSettingBooleanEntry entry);
+        static Int32 GetCelestiaInt32Value(CelestiaAppCore appCore, CelestiaSettingInt32Entry entry);
+        static Single GetCelestiaSingleValue(CelestiaAppCore appCore, CelestiaSettingSingleEntry entry);
+
+        static CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item, CelestiaAppCore appCore);
+
+        static String GetOverviewForSelection(CelestiaSelection selection, LocalizationProvider localizationProvider, CelestiaAppCore appCore);
+    }
+}

@@ -16,11 +16,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
+using Windows.Data.Json;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -190,7 +193,7 @@ namespace CelestiaUWP
                     PopulateMenuBar(resourcePath);
                 });
 
-                ApplySettings(ReadSettings().Result);
+                ApplySettings(ReadDefaultSettings().Result);
 
                 mAppCore.Start();
 
@@ -484,7 +487,7 @@ namespace CelestiaUWP
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, GetChildren, false);
+                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, mAppCore); }, false);
                       if (browserItem.Children != null)
                       {
                           foreach (var child in browserItem.Children)
@@ -1203,55 +1206,57 @@ namespace CelestiaUWP
             return resourceLoader.GetString("CelestiaLanguage");
         }
 
-        private async Task<Dictionary<string, object>> ReadSettings()
+        private async Task<JsonObject> ReadDefaultSettings()
         {
             var installedFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            var settingsObject = new Dictionary<string, object>();
             try
             {
-                var serializer = new JsonSerializer();
-                using (var st = await installedFolder.OpenStreamForReadAsync("defaults.json"))
-                using (var sr = new StreamReader(st))
-                using (var jsonTextReader = new JsonTextReader(sr))
-                {
-                    settingsObject = serializer.Deserialize<Dictionary<string, object>>(jsonTextReader);
-                }
+                var defaultsFile = await installedFolder.GetFileAsync("defaults.json");
+                var content = await FileIO.ReadTextAsync(defaultsFile);
+                return JsonObject.Parse(content);
             }
-            catch { }
-            var newSettings = new Dictionary<string, object>();
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            foreach (var kvp in settingsObject)
-            {
-                var propInfo = typeof(CelestiaAppCore).GetProperty(kvp.Key);
-                if (propInfo == null) continue;
-
-                var def = kvp.Value;
-                var saved = localSettings.Values[kvp.Key];
-                if (saved != null)
-                {
-                    newSettings[kvp.Key] = saved;
-                }
-                else if (propInfo.PropertyType == typeof(Boolean))
-                {
-                    newSettings[kvp.Key] = (long)def != 0;
-                }
-                else if (propInfo.PropertyType == typeof(Double) || propInfo.PropertyType == typeof(Single))
-                {
-                    newSettings[kvp.Key] = (float)((double)def);
-                }
-                else if (propInfo.PropertyType == typeof(Int64) || propInfo.PropertyType == typeof(Int32) || propInfo.PropertyType == typeof(Int16))
-                {
-                    newSettings[kvp.Key] = (int)((long)def);
-                }
-            }
-            return newSettings;
+            catch { return null; }
         }
 
-        private void ApplySettings(Dictionary<string, object> settings)
+        private void ApplySettings(JsonObject defaultSettings)
         {
-            foreach (var kvp in settings)
+            if (defaultSettings == null) return;
+            var customSettings = ApplicationData.Current.LocalSettings;
+            foreach (var kvp in defaultSettings)
             {
-                mAppCore.GetType().GetProperty(kvp.Key).SetValue(mAppCore, kvp.Value);
+                object customSetting;
+                var hasCustomSetting = customSettings.Values.TryGetValue(kvp.Key, out customSetting);
+                var booleanEntry = CelestiaExtension.GetBooleanEntryByName(kvp.Key);
+                if (booleanEntry != CelestiaSettingBooleanEntry.None)
+                {
+                    bool currentValue = false;
+                    if (kvp.Value.ValueType == JsonValueType.Boolean)
+                        currentValue = kvp.Value.GetBoolean();
+                    else if (kvp.Value.ValueType == JsonValueType.Number)
+                        currentValue = kvp.Value.GetNumber() > 0.5;
+                    if (hasCustomSetting && customSetting is bool boolValue)
+                        currentValue = boolValue;
+                    CelestiaExtension.SetCelestiaBooleanValue(mAppCore, booleanEntry, currentValue);
+                    continue;
+                }
+                var int32Entry = CelestiaExtension.GetInt32EntryByName(kvp.Key);
+                if (int32Entry != CelestiaSettingInt32Entry.None)
+                {
+                    int currentValue = (int)kvp.Value.GetNumber();
+                    if (hasCustomSetting && customSetting is int intValue)
+                        currentValue = intValue;
+                    CelestiaExtension.SetCelestiaInt32Value(mAppCore, int32Entry, currentValue);
+                    continue;
+                }
+                var singleEntry = CelestiaExtension.GetSingleEntryByName(kvp.Key);
+                if (singleEntry != CelestiaSettingSingleEntry.None)
+                {
+                    float currentValue = (float)kvp.Value.GetNumber();
+                    if (hasCustomSetting && customSetting is float floatValue)
+                        currentValue = floatValue;
+                    CelestiaExtension.SetCelestiaSingleValue(mAppCore, singleEntry, currentValue);
+                    continue;
+                }
             }
         }
 
@@ -1301,17 +1306,6 @@ namespace CelestiaUWP
                 }
             };
             return menu;
-        }
-        private CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item)
-        {
-            var obj = item.Object;
-            if (obj == null)
-                return new CelestiaBrowserItem[] { };
-            if (obj is CelestiaStar star)
-                return mAppCore.Simulation.Universe.ChildrenForStar(star, GetChildren);
-            if (obj is CelestiaBody body)
-                return mAppCore.Simulation.Universe.ChildrenForBody(body, GetChildren);
-            return new CelestiaBrowserItem[] { };
         }
 
         private void CaptureImage()

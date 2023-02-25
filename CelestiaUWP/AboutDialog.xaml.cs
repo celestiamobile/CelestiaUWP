@@ -14,6 +14,8 @@ using System;
 using System.IO;
 using System.Text;
 using Windows.ApplicationModel;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
@@ -39,21 +41,12 @@ namespace CelestiaUWP
             try
             {
                 var authorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(authorFilePath);
-                using (var inputStream = await authorFile.OpenStreamForReadAsync())
-                using (var outputStream = new MemoryStream())
-                {
-                    inputStream.CopyTo(outputStream);
-                    AuthorLabel.Text = Encoding.UTF8.GetString(outputStream.GetBuffer());
-                    AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
-                }
+                var content = await FileIO.ReadTextAsync(authorFile);
+                AuthorLabel.Text = content;
+                AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
                 var tanslatorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(translatorFilePath);
-                using (var inputStream = await tanslatorFile.OpenStreamForReadAsync())
-                using (var outputStream = new MemoryStream())
-                {
-                    inputStream.CopyTo(outputStream);
-                    TranslatorLabel.Text = Encoding.UTF8.GetString(outputStream.GetBuffer());
-                    TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
-                }
+                TranslatorLabel.Text = content;
+                TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
             }
             catch { };
 

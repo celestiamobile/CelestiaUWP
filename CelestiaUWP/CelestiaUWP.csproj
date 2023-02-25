@@ -153,7 +153,6 @@
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helper\CelestiaAppHelper.cs" />
     <Compile Include="Helper\DoubleFloatConverter.cs" />
     <Compile Include="Helper\GamepadManager.cs" />
     <Compile Include="Helper\NavigationViewItem.cs" />

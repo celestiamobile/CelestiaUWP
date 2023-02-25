@@ -919,6 +919,20 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaExtension.h">
+      <DependentUpon>CelestiaExtension.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaExtension.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaExtension.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaExtension.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaStarBrowser.h">
       <DependentUpon>CelestiaStarBrowser.cpp</DependentUpon>
     </ClInclude>

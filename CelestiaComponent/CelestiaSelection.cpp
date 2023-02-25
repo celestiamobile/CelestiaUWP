@@ -28,16 +28,16 @@ namespace winrt::CelestiaComponent::implementation
         if (!obj)
             return Selection::Type_Nil;
 
-        if (obj.try_as<CelestiaBody>() != nullptr)
+        if (obj.try_as<CelestiaComponent::CelestiaBody>() != nullptr)
             return Selection::Type_Body;
 
-        if (obj.try_as<CelestiaStar>() != nullptr)
+        if (obj.try_as<CelestiaComponent::CelestiaStar>() != nullptr)
             return Selection::Type_Star;
 
-        if (obj.try_as<CelestiaDSO>() != nullptr)
+        if (obj.try_as<CelestiaComponent::CelestiaDSO>() != nullptr)
             return Selection::Type_DeepSky;
 
-        if (obj.try_as<CelestiaLocation>() != nullptr)
+        if (obj.try_as<CelestiaComponent::CelestiaLocation>() != nullptr)
             return Selection::Type_Location;
 
         return Selection::Type_Nil;
@@ -105,5 +105,26 @@ namespace winrt::CelestiaComponent::implementation
     double CelestiaSelection::Radius()
     {
         return AsSelection().radius();
+    }
+
+    hstring CelestiaSelection::InfoURL()
+    {
+        if (object == nullptr) return L"";
+        auto body = object.try_as<CelestiaComponent::CelestiaBody>();
+        if (body != nullptr)
+        {
+            return body.InfoURL();
+        }
+        auto star = object.try_as<CelestiaComponent::CelestiaStar>();
+        if (star != nullptr)
+        {
+            return star.InfoURL();
+        }
+        auto dso = object.try_as<CelestiaComponent::CelestiaDSO>();
+        if (dso != nullptr)
+        {
+            return dso.InfoURL();
+        }
+        return L"";
     }
 }

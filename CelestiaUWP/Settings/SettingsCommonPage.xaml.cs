@@ -10,6 +10,7 @@
 //
 
 using CelestiaComponent;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
@@ -34,14 +35,14 @@ namespace CelestiaUWP.Settings
     public class AppCoreBooleanItem : SettingsBooleanItem
     {
         private CelestiaAppCore appCore;
-        private string key;
+        private CelestiaSettingBooleanEntry entry;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         private string note;
 
-        public AppCoreBooleanItem(string title, CelestiaAppCore appCore, string key, string note = "")
+        public AppCoreBooleanItem(string title, CelestiaAppCore appCore, CelestiaSettingBooleanEntry entry, string note = "")
         {
             this.Title = title;
-            this.key = key;
+            this.entry = entry;
             this.appCore = appCore;
             this.note = note;
         }
@@ -52,13 +53,12 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue)
                     hasCorrectValue = true;
-                return (bool)appCore.GetType().GetProperty(key).GetValue(appCore);
+                return CelestiaExtension.GetCelestiaBooleanValue(appCore, entry);
             }
             set
             {
                 if (!hasCorrectValue) return;
-                appCore.GetType().GetProperty(key).SetValue(appCore, value);
-                localSettings.Values[key] = value;
+                CelestiaExtension.SetCelestiaBooleanValue(appCore, entry, value);
             }
         }
 
@@ -114,15 +114,15 @@ namespace CelestiaUWP.Settings
     public class AppCoreIntItem : SettingsIntItem
     {
         private CelestiaAppCore appCore;
-        private string key;
+        private CelestiaSettingInt32Entry entry;
         private string[] itemTitles;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         private string note;
 
-        public AppCoreIntItem(string title, CelestiaAppCore appCore, string key, string[] itemTitles, string note = "")
+        public AppCoreIntItem(string title, CelestiaAppCore appCore, CelestiaSettingInt32Entry entry, string[] itemTitles, string note = "")
         {
             this.Title = title;
-            this.key = key;
+            this.entry = entry;
             this.appCore = appCore;
             this.itemTitles = itemTitles;
             this.note = note;
@@ -134,13 +134,12 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue)
                     hasCorrectValue = true;
-                return (int)appCore.GetType().GetProperty(key).GetValue(appCore);
+                return CelestiaExtension.GetCelestiaInt32Value(appCore, entry);
             }
             set
             {
                 if (!hasCorrectValue) return;
-                appCore.GetType().GetProperty(key).SetValue(appCore, value);
-                localSettings.Values[key] = value;
+                CelestiaExtension.SetCelestiaInt32Value(appCore, entry, value);
             }
         }
         public override string[] Options => itemTitles;
@@ -263,17 +262,17 @@ namespace CelestiaUWP.Settings
     public class AppCoreFloatItem : SettingsDoubleItem
     {
         private CelestiaAppCore appCore;
-        private string key;
+        private CelestiaSettingSingleEntry entry;
         private float minValue;
         private float maxValue;
         private float stepValue;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         private string note;
 
-        public AppCoreFloatItem(string title, CelestiaAppCore appCore, string key, float minValue, float maxValue, float stepValue = 1, string note = "")
+        public AppCoreFloatItem(string title, CelestiaAppCore appCore, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float stepValue = 1, string note = "")
         {
             this.Title = title;
-            this.key = key;
+            this.entry = entry;
             this.appCore = appCore;
             this.minValue = minValue;
             this.maxValue = maxValue;
@@ -287,14 +286,12 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue)
                     hasCorrectValue = true;
-                var value = (float)appCore.GetType().GetProperty(key).GetValue(appCore);
-                return value;
+                return (float)CelestiaExtension.GetCelestiaSingleValue(appCore, entry);
             }
             set
             {
                 if (!hasCorrectValue) return;
-                appCore.GetType().GetProperty(key).SetValue(appCore, (float)value);
-                localSettings.Values[key] = (float)value;
+                CelestiaExtension.SetCelestiaSingleValue(appCore, entry, (float)value);
             }
         }
 
