@@ -72,6 +72,7 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="IsTabStop" Value="false"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

@@ -34,6 +34,9 @@ namespace CelestiaUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            var isXbox = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
+            if (isXbox)
+                RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
             Environment.SetEnvironmentVariable("WEBVIEW2_DEFAULT_BACKGROUND_COLOR", "0");
             AppCenter.Start("APPCENTER-APP-ID", typeof(Analytics), typeof(Crashes));
         }

@@ -14,7 +14,7 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <muxc:NavigationView MenuItemsSource="{x:Bind NavigationItems, Mode=OneWay}" MenuItemTemplate="{StaticResource NavigationViewItem}" SelectionChanged="Nav_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
+        <muxc:NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind NavigationItems, Mode=OneWay}" MenuItemTemplate="{StaticResource NavigationViewItem}" SelectionChanged="Nav_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
             <Frame x:Name="Container"/>
         </muxc:NavigationView>
     </Grid>

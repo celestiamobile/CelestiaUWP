@@ -103,6 +103,44 @@
     </Application>
   </Applications>
 
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>CelestiaComponent.dll</Path>
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaAppCore" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaAstroObject" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBody" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBrowserItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDestination" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDMS" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDSO" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDSOCatalog" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipse" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipseFinder" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaExtension" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGalaxy" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGotoLocation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaLocation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaObserver" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaOrbit" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaPlanetarySystem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaRenderer" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaRotationModel" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaScript" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaSelection" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaSimulation" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaStar" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaStarCatalog" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaTimeline" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaTimelinePhase" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniversalCoord" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniverse" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaVector" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+  </Extensions>
+
   <Capabilities>
     <Capability Name="internetClient" />
   </Capabilities>

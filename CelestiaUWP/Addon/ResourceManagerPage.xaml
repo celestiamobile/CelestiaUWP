@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Grid>
-        <muxc:NavigationView x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
+        <muxc:NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
             <Frame x:Name="Container"/>
         </muxc:NavigationView>
     </Grid>

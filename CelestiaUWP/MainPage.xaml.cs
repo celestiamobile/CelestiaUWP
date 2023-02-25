@@ -53,6 +53,11 @@ namespace CelestiaUWP
 
         private readonly AppSettings AppSettings = AppSettings.Shared;
 
+        private bool isXbox = false;
+        // Used in renderer thread
+        private bool isGLViewFocused = false;
+        private bool hasOverlayOpen = false;
+
         private string defaultParentPath
         {
             get { return Windows.ApplicationModel.Package.Current.InstalledLocation.Path; }
@@ -93,11 +98,12 @@ namespace CelestiaUWP
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = false;
+            isXbox = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (!ReadyForInput) return;
+            if (!ReadyForInput || isXbox) return;
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
             MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
@@ -271,7 +277,7 @@ namespace CelestiaUWP
             if (url != null)
             {
                 URLToOpen = null;
-                if (url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
+                if (!isXbox && url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
                 {
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var addon = query["item"];
@@ -296,7 +302,7 @@ namespace CelestiaUWP
                     catch { }
                     return;
                 }
-                else if (url.Scheme == "celguide" && url.Host == "guide" && url.Query != null)
+                else if (!isXbox && url.Scheme == "celguide" && url.Host == "guide" && url.Query != null)
                 {
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var guide = query["guide"];
@@ -316,6 +322,7 @@ namespace CelestiaUWP
                     return;
                 }
             }
+            if (!isXbox)
             {
                 Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
                 var queryItems = System.Web.HttpUtility.ParseQueryString("");
@@ -670,9 +677,11 @@ namespace CelestiaUWP
                 });
             };
             FocusHelperControl.Focus(FocusState.Programmatic);
+            isGLViewFocused = true;
             FocusManager.GotFocus += FocusManager_GotFocus;
             FocusHelperControl.CharacterReceived += (sender, arg) =>
             {
+                if (OverlayContainer.Content != null) return;
                 short key = (short)arg.Character;
 
                 mRenderer.EnqueueTask(() =>
@@ -682,6 +691,10 @@ namespace CelestiaUWP
             };
             FocusHelperControl.KeyDown += (sender, arg) =>
             {
+                if (OverlayContainer.Content != null) return;
+                // Gamepad buttons, ignore
+                if (arg.OriginalKey >= VirtualKey.GamepadA && arg.OriginalKey <= VirtualKey.GamepadRightThumbstickLeft) return;
+
                 var modifiers = 0;
                 if (CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control) == CoreVirtualKeyStates.Down)
                     modifiers |= 16;
@@ -694,27 +707,76 @@ namespace CelestiaUWP
                     mAppCore.KeyDown(key, modifiers);
                 });
             };
-            FocusHelperControl.KeyUp += (sender, arg) =>
+            FocusHelperControl.KeyUp += FocusHelperControl_KeyUp;
+            MenuBar.KeyUp += (_, args) =>
             {
-                int key = (int)arg.Key;
-
-                mRenderer.EnqueueTask(() =>
+                if (isXbox && args.Key == VirtualKey.GamepadMenu && OverlayContainer.Content == null)
                 {
-                    mAppCore.KeyUp(key, 0);
-                });
+                    MenuBar.Visibility = Visibility.Collapsed;
+                    FocusHelperControl.Focus(FocusState.Programmatic);
+                }
             };
-
             gamepadManager = new GamepadManager();
             mRenderer.SetPreRenderTask(() =>
             {
+                if (!isGLViewFocused || hasOverlayOpen) return;
                 gamepadManager.PollGamepad(mAppCore);
+            });
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
+            {
+                if (OverlayContainer.Content != null)
+                {
+                    args.Handled = true;
+                    ClosePanel();
+                    return;
+                }
+                if (MenuBar.Visibility == Visibility.Visible)
+                {
+                    args.Handled = true;
+                    MenuBar.Visibility = Visibility.Collapsed;
+                    FocusHelperControl.Focus(FocusState.Programmatic);
+                    return;
+                }
+                args.Handled = true;
+            };
+        }
+
+        private void FocusHelperControl_KeyUp(object sender, KeyRoutedEventArgs args)
+        {
+            if (OverlayContainer.Content != null) return;
+            if (isXbox)
+            {
+                if (args.Key == VirtualKey.GamepadMenu)
+                {
+                    // Show menu
+                    MenuBar.Visibility = Visibility.Visible;
+                    if (MenuBar.Items[0].IsLoaded)
+                        MenuBar.Items[0].Focus(FocusState.Programmatic);
+                    else
+                        MenuBar.Items[0].Loaded += (s, a) =>
+                        {
+                            ((MenuBarItem)s).Focus(FocusState.Programmatic);
+                        };
+                    return;
+                }
+            }
+
+            // Gamepad buttons, ignore
+            if (args.OriginalKey >= VirtualKey.GamepadA && args.OriginalKey <= VirtualKey.GamepadRightThumbstickLeft) return;
+
+            int key = (int)args.Key;
+
+            mRenderer.EnqueueTask(() =>
+            {
+                mAppCore.KeyUp(key, 0);
             });
         }
 
         private void FocusManager_GotFocus(object sender, FocusManagerGotFocusEventArgs e)
         {
             var focusedItem = e.NewFocusedElement;
-            if (focusedItem != FocusHelperControl)
+            var glViewHasFocus = focusedItem == FocusHelperControl;
+            if (!glViewHasFocus)
             {
                 var element = focusedItem as FrameworkElement;
                 if (element != null)
@@ -733,24 +795,29 @@ namespace CelestiaUWP
                     if (parent == element)
                     {
                         FocusHelperControl.Focus(FocusState.Programmatic);
+                        glViewHasFocus = true;
                     }
                 }
             }
+            mRenderer.EnqueueTask(() =>
+                {
+                    isGLViewFocused = glViewHasFocus;
+                });
         }
 
         void PopulateMenuBar(string resourcePath)
         {
             MenuBarItem CreateMenuBarItem(string name)
             {
-                return new MenuBarItem
+                var item = new MenuBarItem
                 {
                     Title = name,
-                    AllowFocusOnInteraction = false
                 };
+                return item;
             }
 
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
-            MenuBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
+            MenuBar.Visibility = (isFullScreen || isXbox) ? Visibility.Collapsed : Visibility.Visible;
 
             var fileItem = CreateMenuBarItem(LocalizationHelper.Localize("File"));
 
@@ -829,12 +896,15 @@ namespace CelestiaUWP
             });
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder"), async (sender, arg) =>
+            if (!isXbox)
             {
-                await Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder);
-            });
+                AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder"), async (sender, arg) =>
+                {
+                    await Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder);
+                });
 
-            fileItem.Items.Add(new MenuFlyoutSeparator());
+                fileItem.Items.Add(new MenuFlyoutSeparator());
+            }
 
             AppendItem(fileItem, LocalizationHelper.Localize("Exit"), (sender, arg) =>
             {
@@ -944,10 +1014,13 @@ namespace CelestiaUWP
                 builder.Query = queryItems.ToString();
                 _ = Launcher.LaunchUriAsync(builder.Uri);
             });
-            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
+            if (!isXbox)
             {
-                ShowAddonManagement();
-            });
+                AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
+                {
+                    ShowAddonManagement();
+                });
+            }
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("User Guide"), (sender, arg) =>
             {
@@ -1160,6 +1233,22 @@ namespace CelestiaUWP
                 RelativePanel.SetAlignBottomWithPanel(OverlayContainer, false);
             }
             OverlayContainer.Navigate(pageType, parameter);
+            // Disable focus on menubar
+            foreach (var item in MenuBar.Items)
+            {
+                item.IsTabStop = false;
+            }
+            if (ClosePanelButton.IsLoaded)
+                ClosePanelButton.Focus(FocusState.Programmatic);
+            else
+                ClosePanelButton.Loaded += (s, _) =>
+                {
+                    ((Button)s).Focus(FocusState.Programmatic);
+                };
+            mRenderer.EnqueueTask(() =>
+            {
+                hasOverlayOpen = true;
+            });
         }
 
         void ShowBookmarkOrganizer()
@@ -1386,8 +1475,29 @@ namespace CelestiaUWP
 
         private void ClosePanelButton_Click(object sender, RoutedEventArgs e)
         {
+            ClosePanel();
+        }
+        private void ClosePanel() {
             OverlayBackground.Visibility = Visibility.Collapsed;
             OverlayContainer.Content = null;
+            // enable focus on menubar
+            foreach (var item in MenuBar.Items)
+            {
+                item.IsTabStop = true;
+            }
+            // move focus to either menubar or GLView
+            if (MenuBar.Visibility == Visibility.Visible)
+            {
+                MenuBar.Items[0].Focus(FocusState.Programmatic);
+            }
+            else
+            {
+                FocusHelperControl.Focus(FocusState.Programmatic);
+            }
+            mRenderer.EnqueueTask(() =>
+            {
+                hasOverlayOpen = false;
+            });
         }
     }
 }
