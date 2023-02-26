@@ -9,8 +9,6 @@
     Title="Go to Object"
     PrimaryButtonText="OK"
     SecondaryButtonText="Cancel"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
     x:Name="ContentDialog">
 
     <Grid ColumnSpacing="6" RowSpacing="6">

@@ -17,6 +17,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaSelection : CelestiaSelectionT<CelestiaSelection>
     {
+        CelestiaSelection();
         CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj);
         CelestiaSelection(Selection const& sel);
 
