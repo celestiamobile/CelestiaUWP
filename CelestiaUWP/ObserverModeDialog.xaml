@@ -1,0 +1,30 @@
+﻿<ContentDialog
+    x:Class="CelestiaUWP.ObserverModeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:celestia="using:CelestiaComponent"
+    mc:Ignorable="d">
+
+    <ContentDialog.Resources>
+        <ResourceDictionary>
+            <local:ObserverModeStringConverter x:Key="ObserverModeStringConverter"/>
+        </ResourceDictionary>
+    </ContentDialog.Resources>
+    <StackPanel Orientation="Vertical" Spacing="8">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock VerticalAlignment="Center" x:Name="CoordinateSystemHint"/>
+            <ComboBox VerticalAlignment="Center" ItemsSource="{x:Bind CoordinateSystems, Mode=OneTime}" SelectedItem="{x:Bind SelectedCoordinateSystem, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="celestia:CoordinateSystem">
+                        <TextBlock Text="{x:Bind Converter={StaticResource ObserverModeStringConverter}, Mode=OneTime}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <AutoSuggestBox x:Name="ReferenceNameText" Visibility="{x:Bind RefObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
+        <AutoSuggestBox x:Name="TargetNameText" Visibility="{x:Bind TargetObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
+    </StackPanel>
+</ContentDialog>
