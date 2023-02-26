@@ -957,6 +957,11 @@ namespace CelestiaUWP
                     });
                 }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32), IsEnabled = false });
             }
+            AppendItem(navigationItem, LocalizationHelper.Localize("Set Observer Mode…"), (s,
+                e) =>
+            {
+                 ShowObserverMode();
+            });
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
             AppendItem(navigationItem, LocalizationHelper.Localize("Star Browser"), (sender, arg) =>
@@ -1137,7 +1142,7 @@ namespace CelestiaUWP
         {
             if (HasContentDialogOpen()) return;
 
-            var dialog = new GotoObjectDialog(mAppCore);
+            var dialog = new GotoObjectDialog(mAppCore, mRenderer);
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
@@ -1178,6 +1183,21 @@ namespace CelestiaUWP
         void ShowObjectNotFound()
         {
             ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+        }
+
+        async void ShowObserverMode()
+        {
+            var dialog = new ObserverModeDialog(mAppCore, mRenderer);
+            if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
+            var coordinateSystem = dialog.SelectedCoordinateSystem;
+            var referenceName = dialog.ReferenceObjectName;
+            var targetName = dialog.TargetObjectName;
+            mRenderer.EnqueueTask(() =>
+            {
+                var referenceObject = referenceName.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(referenceName);
+                var targetObject = targetName.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(targetName);
+                mAppCore.Simulation.ActiveObserver.SetFrame(coordinateSystem, referenceObject, targetObject);
+            });
         }
 
         void ShowBrowser()

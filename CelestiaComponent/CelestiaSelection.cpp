@@ -64,6 +64,10 @@ namespace winrt::CelestiaComponent::implementation
         }
     }
 
+    CelestiaSelection::CelestiaSelection() : CelestiaSelectionT<CelestiaSelection>(), object(nullptr), type(Selection::Type_Nil)
+    {
+    }
+
     CelestiaSelection::CelestiaSelection(CelestiaComponent::CelestiaAstroObject const& obj) : CelestiaSelectionT<CelestiaSelection>(), object(obj), type(GetAstroObjectType(obj))
     {
     }

@@ -13,6 +13,8 @@
 #include "CelestiaObserver.g.cpp"
 #endif
 
+#include "CelestiaSelection.h"
+
 using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
@@ -25,6 +27,11 @@ namespace winrt::CelestiaComponent::implementation
 	{
 		o->setDisplayedSurface(to_string(displayedSurfaceName));
 	}
+
+    void CelestiaObserver::SetFrame(CelestiaComponent::CoordinateSystem coordinateSystem, CelestiaComponent::CelestiaSelection const& refObj, CelestiaComponent::CelestiaSelection const& targetObj)
+    {
+        o->setFrame(static_cast<ObserverFrame::CoordinateSystem>(coordinateSystem), get_self<CelestiaSelection>(refObj)->AsSelection(), get_self<CelestiaSelection>(targetObj)->AsSelection());
+    }
 
 	hstring CelestiaObserver::DisplayedSurfaceName()
 	{
