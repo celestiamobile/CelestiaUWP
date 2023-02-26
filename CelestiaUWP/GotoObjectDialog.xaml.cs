@@ -26,7 +26,8 @@ namespace CelestiaUWP
         public string LatitudeString = "";
         public string DistanceString = "";
 
-        private CelestiaAppCore Core;
+        private CelestiaAppCore appCore;
+        private CelestiaRenderer renderer;
 
         public float? Latitude
         {
@@ -54,9 +55,10 @@ namespace CelestiaUWP
             LocalizationHelper.Localize("au")
         };
 
-        public GotoObjectDialog(CelestiaAppCore core)
+        public GotoObjectDialog(CelestiaAppCore appCore, CelestiaRenderer renderer)
         {
-            Core = core;
+            this.appCore = appCore;
+            this.renderer = renderer;
             this.InitializeComponent();
             Title = LocalizationHelper.Localize("Go to Object");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
@@ -65,14 +67,6 @@ namespace CelestiaUWP
             LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude");
             LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude");
             DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance");
-        }
-
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
         }
 
         private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -87,19 +81,21 @@ namespace CelestiaUWP
             }
 
             var results = await GetCompletion(sender.Text);
-
-            if (ObjectNameText.Text != text) return;
+            if (sender.Text != text) return;
 
             sender.ItemsSource = results;
         }
 
         private async Task<string[]> GetCompletion(string key)
         {
-            var simulation = Core.Simulation;
-            return await Task.Run(() =>
+            var simulation = appCore.Simulation;
+            var promise = new TaskCompletionSource<string[]>();
+            renderer.EnqueueTask(() =>
             {
-                return simulation.GetCompletion(key) ?? (new string[] { });
+                var result = simulation.GetCompletion(key) ?? (new string[] { });
+                promise.SetResult(result);
             });
+            return await promise.Task;
         }
     }
 }

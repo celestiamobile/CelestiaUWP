@@ -21,6 +21,8 @@ namespace winrt::CelestiaComponent::implementation
         hstring DisplayedSurfaceName();
         void DisplayedSurfaceName(hstring const& displayedSurfaceName);
 
+        void SetFrame(CelestiaComponent::CoordinateSystem coordinateSystem, CelestiaComponent::CelestiaSelection const& refObj, CelestiaComponent::CelestiaSelection const& targetObj);
+
         Observer* o;
     };
 }

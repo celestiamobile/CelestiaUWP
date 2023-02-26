@@ -142,6 +142,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="ObserverModeDialog.xaml.cs">
+      <DependentUpon>ObserverModeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SettingsCommonPage.xaml.cs">
       <DependentUpon>SettingsCommonPage.xaml</DependentUpon>
     </Compile>
@@ -285,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Addon\ResourceItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ObserverModeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
