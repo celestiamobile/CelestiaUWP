@@ -151,7 +151,8 @@ namespace winrt::CelestiaComponent::implementation
     com_array<hstring> CelestiaSimulation::GetCompletion(hstring const& name)
     {
         std::vector<hstring> vec;
-        auto names = sim->getObjectCompletion(to_string(name), true);
+        std::vector<std::string> names;
+        sim->getObjectCompletion(names, to_string(name), true);
         for (const auto& name : names)
             vec.push_back(to_hstring(name));
         return com_array<hstring>(vec);
