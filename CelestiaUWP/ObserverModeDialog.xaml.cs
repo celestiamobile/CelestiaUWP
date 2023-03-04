@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 
 namespace CelestiaUWP
 {
@@ -29,15 +30,13 @@ namespace CelestiaUWP
                 switch (val)
                 {
                 case CoordinateSystem.Universal:
-                    return LocalizationHelper.Localize("Universal");
+                    return LocalizationHelper.Localize("Free Flight");
                 case CoordinateSystem.Ecliptical:
-                    return LocalizationHelper.Localize("Ecliptical");
-                case CoordinateSystem.Equatorial:
-                    return LocalizationHelper.Localize("Equatorial");
+                    return LocalizationHelper.Localize("Follow");
                 case CoordinateSystem.BodyFixed:
-                    return LocalizationHelper.Localize("BodyFixed");
+                    return LocalizationHelper.Localize("Sync Orbit");
                 case CoordinateSystem.PhaseLock:
-                    return LocalizationHelper.Localize("PhaseLock");
+                    return LocalizationHelper.Localize("Phase Lock");
                 case CoordinateSystem.Chase:
                     return LocalizationHelper.Localize("Chase");
                 }
@@ -56,7 +55,7 @@ namespace CelestiaUWP
         private readonly CelestiaAppCore appCore;
         private readonly CelestiaRenderer renderer;
 
-        readonly CoordinateSystem[] CoordinateSystems = new CoordinateSystem[] { CoordinateSystem.Universal, CoordinateSystem.Ecliptical, CoordinateSystem.Equatorial, CoordinateSystem.BodyFixed, CoordinateSystem.PhaseLock, CoordinateSystem.Chase };
+        readonly CoordinateSystem[] CoordinateSystems = new CoordinateSystem[] { CoordinateSystem.Universal, CoordinateSystem.Ecliptical, CoordinateSystem.BodyFixed, CoordinateSystem.PhaseLock, CoordinateSystem.Chase };
 
         private CoordinateSystem selectedCoordinateSystem = CoordinateSystem.Universal;
 
@@ -81,7 +80,7 @@ namespace CelestiaUWP
         }
 
         public Visibility RefObjectTextBoxVisibility => SelectedCoordinateSystem == CoordinateSystem.Universal ? Visibility.Collapsed : Visibility.Visible;
-        public Visibility TargetObjectTextBoxVisibility => (SelectedCoordinateSystem == CoordinateSystem.PhaseLock || SelectedCoordinateSystem == CoordinateSystem.Chase) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility TargetObjectTextBoxVisibility => SelectedCoordinateSystem == CoordinateSystem.PhaseLock ? Visibility.Visible : Visibility.Collapsed;
 
         public ObserverModeDialog(CelestiaAppCore appCore, CelestiaRenderer renderer)
         {
@@ -89,8 +88,31 @@ namespace CelestiaUWP
             this.renderer = renderer;
             this.InitializeComponent();
             CoordinateSystemHint.Text = LocalizationHelper.Localize("Coordinate System:");
-            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object Name");
-            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object Name");
+            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object");
+            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object");
+            var infoText = LocalizationHelper.Localize("Flight mode decides how you move around in Celestia. Learn more…");
+            var infoLinkText = LocalizationHelper.Localize("Learn more…");
+            var linkTextPos = infoText.IndexOf(infoLinkText);
+            if (linkTextPos == -1)
+            {
+                LearnMoreHint.Visibility= Visibility.Collapsed;
+            }
+            else
+            {
+                var textBefore = infoText.Substring(0, linkTextPos);
+                var textAfter = infoText.Substring(linkTextPos + infoLinkText.Length);
+                var span = new Span();
+                span.Inlines.Add(new Run() { Text = textBefore });
+
+                var link = new Hyperlink();
+                link.Inlines.Add(new Run() { Text = infoLinkText });
+                link.NavigateUri = new Uri($"https://celestia.mobi/help/flight-mode?lang={LocalizationHelper.Locale}");
+                span.Inlines.Add(link);
+
+                span.Inlines.Add(new Run() { Text = textAfter });
+                LearnMoreHint.Inlines.Add(span);
+            }
+
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
         }
