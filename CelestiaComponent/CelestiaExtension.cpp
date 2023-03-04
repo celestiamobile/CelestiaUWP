@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace winrt;
+using namespace Windows::System;
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -1162,7 +1163,7 @@ namespace winrt::CelestiaComponent::implementation
         lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %dÂ¡Ã£ %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         return JoinLines(lines);
     }
@@ -1182,16 +1183,16 @@ namespace winrt::CelestiaComponent::implementation
         lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %dÂ¡Ã£ %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
         dms = CelestiaDMS(sph.X());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %dÂ¡Ã£ %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         dms = CelestiaDMS(sph.Y());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %dÂ¡Ã£ %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         return JoinLines(lines);
     }
@@ -1247,23 +1248,31 @@ namespace winrt::CelestiaComponent::implementation
                 up ? appCore.MouseButtonUp(x, y, CelestiaMouseButton::Left) : appCore.MouseButtonDown(x, y, CelestiaMouseButton::Left);
             }
             break;
+        case CelestiaGamepadAction::GoTo:
+            if (up)
+                appCore.CharEnter(103);
+            break;
+        case CelestiaGamepadAction::Esc:
+            if (up)
+                appCore.CharEnter(27);
+            break;
         case CelestiaGamepadAction::PitchUp:
-            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Up), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Up), 0);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad2), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad2), 0);
             break;
         case CelestiaGamepadAction::PitchDown:
-            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Down), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Down), 0);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad8), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad8), 0);
             break;
         case CelestiaGamepadAction::YawLeft:
-            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Left), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Left), 0);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad4), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad4), 0);
             break;
         case CelestiaGamepadAction::YawRight:
-            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Right), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Right), 0);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad6), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad6), 0);
             break;
         case CelestiaGamepadAction::RollLeft:
-            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button7) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button7);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad7), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad7), 0);
             break;
         case CelestiaGamepadAction::RollRight:
-            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button8) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button8);
+            up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad9), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad9), 0);
             break;
         default:
             break;
