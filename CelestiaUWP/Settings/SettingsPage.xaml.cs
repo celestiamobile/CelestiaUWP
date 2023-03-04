@@ -29,7 +29,7 @@ namespace CelestiaUWP.Settings
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Labels"), "labels"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Renderer"), "renderer"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Time & Region"), "region"),
-            new Helper.NavigationViewItem(LocalizationHelper.Localize("Gamepad"), "gamepad"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Game Controller"), "gamepad"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Advanced"), "advanced"),
         };
 
@@ -231,8 +231,10 @@ namespace CelestiaUWP.Settings
                     LocalizationHelper.Localize("Travel Slower"),
                     LocalizationHelper.Localize("Stop"),
                     LocalizationHelper.Localize("Reverse Travel Direction"),
-                    LocalizationHelper.Localize("Reverse Observer Direction"),
+                    LocalizationHelper.Localize("Reverse Observer Orientation"),
                     LocalizationHelper.Localize("Tap Center"),
+                    LocalizationHelper.Localize("Go to Object"),
+                    LocalizationHelper.Localize("Esc"),
                     LocalizationHelper.Localize("Pitch Up"),
                     LocalizationHelper.Localize("Pitch Down"),
                     LocalizationHelper.Localize("Yaw Left"),
@@ -243,21 +245,21 @@ namespace CelestiaUWP.Settings
                 var items = new SettingsCommonItem[]
                 {
                     new SettingsHeaderItem(LocalizationHelper.Localize("Buttons")),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("A/X"), AppSettings, "GamepadRemapA", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("B/Circle"), AppSettings, "GamepadRemapB", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("X/Square"), AppSettings, "GamepadRemapX", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("Y/Triangle"), AppSettings, "GamepadRemapY", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("A / X"), AppSettings, "GamepadRemapA", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("B / Circle"), AppSettings, "GamepadRemapB", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("X / Square"), AppSettings, "GamepadRemapX", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("Y / Triangle"), AppSettings, "GamepadRemapY", actions),
                     new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Up"), AppSettings, "GamepadRemapDpadUp", actions),
                     new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Down"), AppSettings, "GamepadRemapDpadDown", actions),
                     new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Left"), AppSettings, "GamepadRemapDpadLeft", actions),
                     new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Right"), AppSettings, "GamepadRemapDpadRight", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("LB/L1"), AppSettings, "GamepadRemapLB", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("LT/L2"), AppSettings, "GamepadRemapLT", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("RB/R1"), AppSettings, "GamepadRemapRB", actions),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("RT/R2"), AppSettings, "GamepadRemapRT", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("LB / L1"), AppSettings, "GamepadRemapLB", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("LT / L2"), AppSettings, "GamepadRemapLT", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("RB / R1"), AppSettings, "GamepadRemapRB", actions),
+                    new AppSettingsIntItem(LocalizationHelper.Localize("RT / R2"), AppSettings, "GamepadRemapRT", actions),
                     new SettingsHeaderItem(LocalizationHelper.Localize("Thumbsticks")),
-                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Horizontally"), AppSettings, "GamepadRemapInvertX"),
-                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Vertically"), AppSettings, "GamepadRemapInvertY"),
+                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Horizontally"), AppSettings, "GamepadInvertX"),
+                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Vertically"), AppSettings, "GamepadInvertY"),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }

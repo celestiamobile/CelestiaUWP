@@ -15,7 +15,6 @@ namespace CelestiaComponent
     {
         Universal = 0,
         Ecliptical = 1,
-        Equatorial = 2,
         BodyFixed = 3,
         PhaseLock = 5,
         Chase = 6,

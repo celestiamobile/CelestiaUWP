@@ -10,7 +10,6 @@
 //
 
 using CelestiaComponent;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
@@ -118,16 +117,31 @@ namespace CelestiaUWP.Settings
     {
         private CelestiaAppCore appCore;
         private CelestiaSettingInt32Entry entry;
+        private (string, int)[] options;
         private string[] itemTitles;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         private string note;
 
         public AppCoreIntItem(string title, CelestiaAppCore appCore, CelestiaSettingInt32Entry entry, string[] itemTitles, string note = "")
         {
-            this.Title = title;
+            Title = title;
             this.entry = entry;
             this.appCore = appCore;
+            options = new (string, int)[itemTitles.Length];
+            for (int i = 0; i < itemTitles.Length; i++)
+                options[i] = (itemTitles[i], i);
             this.itemTitles = itemTitles;
+            this.note = note;
+        }
+        public AppCoreIntItem(string title, CelestiaAppCore appCore, CelestiaSettingInt32Entry entry, (string, int)[] options, string note = "")
+        {
+            Title = title;
+            this.entry = entry;
+            this.appCore = appCore;
+            this.options = options;
+            itemTitles = new string[options.Length];
+            for (int i = 0; i < options.Length; i++)
+                itemTitles[i] = options[i].Item1;
             this.note = note;
         }
 
@@ -137,12 +151,18 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue)
                     hasCorrectValue = true;
-                return CelestiaExtension.GetCelestiaInt32Value(appCore, entry);
+                var value = CelestiaExtension.GetCelestiaInt32Value(appCore, entry);
+                for (var i = 0; i < options.Length; i += 1)
+                {
+                    if (options[i].Item2 == value)
+                        return i;
+                }
+                return 0;
             }
             set
             {
                 if (!hasCorrectValue) return;
-                CelestiaExtension.SetCelestiaInt32Value(appCore, entry, value);
+                CelestiaExtension.SetCelestiaInt32Value(appCore, entry, options[value].Item2);
                 var key = CelestiaExtension.GetNameByInt32Entry(entry);
                 if (key != null && key.Length > 0)
                     localSettings.Values[key] = value;
@@ -157,6 +177,7 @@ namespace CelestiaUWP.Settings
     {
         private AppSettings appSettings;
         private string key;
+        private (string, int)[] options;
         private string[] itemTitles;
         private string note;
         public AppSettingsIntItem(string title, AppSettings appSettings, string key, string[] itemTitles, string note = "")
@@ -165,6 +186,21 @@ namespace CelestiaUWP.Settings
             this.key = key;
             this.appSettings = appSettings;
             this.itemTitles = itemTitles;
+            options = new (string, int)[itemTitles.Length];
+            for (int i = 0; i < itemTitles.Length; i++)
+                options[i] = (itemTitles[i], i);
+            this.note = note;
+        }
+
+        public AppSettingsIntItem(string title, AppSettings appSettings, string key, (string, int)[] options, string note = "")
+        {
+            this.Title = title;
+            this.key = key;
+            this.appSettings = appSettings;
+            this.options = options;
+            itemTitles = new string[options.Length];  
+            for (int i = 0; i < options.Length; i++)
+                itemTitles[i] = options[i].Item1;
             this.note = note;
         }
 
@@ -174,12 +210,18 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue)
                     hasCorrectValue = true;
-                return (int)appSettings.GetType().GetField(key).GetValue(appSettings);
+                var value = (int)appSettings.GetType().GetField(key).GetValue(appSettings);
+                for (var i = 0; i < options.Length; i += 1)
+                {
+                    if (options[i].Item2 == value)
+                        return i;
+                }
+                return 0;
             }
             set
             {
                 if (!hasCorrectValue) return;
-                appSettings.GetType().GetField(key).SetValue(appSettings, value);
+                appSettings.GetType().GetField(key).SetValue(appSettings, options[value].Item2);
                 appSettings.Save();
             }
         }

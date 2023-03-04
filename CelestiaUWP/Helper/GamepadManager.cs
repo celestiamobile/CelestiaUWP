@@ -124,6 +124,10 @@ namespace CelestiaUWP.Helper
                     _isDpadDownPressed = isDpadDownPressed;
                     GamepadButtonAction(core, AppSettings.GamepadRemapDpadDown, isDpadDownPressed);
                 }
+                if (AppSettings.GamepadInvertX)
+                    thumbstickX = -thumbstickX;
+                if (AppSettings.GamepadInvertY)
+                    thumbstickY = -thumbstickY;
                 if (thumbstickX != 0.0)
                 {
                     GamepadJoystickAction(core, CelestiaJoystickAxis.X, thumbstickX);

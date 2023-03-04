@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:celestia="using:CelestiaComponent"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <ContentDialog.Resources>
@@ -26,5 +27,6 @@
         </StackPanel>
         <AutoSuggestBox x:Name="ReferenceNameText" Visibility="{x:Bind RefObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
         <AutoSuggestBox x:Name="TargetNameText" Visibility="{x:Bind TargetObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
+        <TextBlock x:Name="LearnMoreHint"/>
     </StackPanel>
 </ContentDialog>

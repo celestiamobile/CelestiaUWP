@@ -34,8 +34,8 @@ namespace CelestiaUWP
         public CelestiaGamepadAction GamepadRemapDpadRight;
         public CelestiaGamepadAction GamepadRemapDpadUp;
         public CelestiaGamepadAction GamepadRemapDpadDown;
-        public bool GamepadRemapInvertX;
-        public bool GamepadRemapInvertY;
+        public bool GamepadInvertX;
+        public bool GamepadInvertY;
 
         public static CelestiaGamepadAction GetAction(ApplicationDataContainer settings, string key, CelestiaGamepadAction defaultAction = CelestiaGamepadAction.None)
         {
@@ -75,12 +75,12 @@ namespace CelestiaUWP
             GamepadRemapLB = GetAction(settings, "GamepadRemapLB");
             GamepadRemapRT = GetAction(settings, "GamepadRemapRT", CelestiaGamepadAction.RollRight);
             GamepadRemapRB = GetAction(settings, "GamepadRemapRB");
-            GamepadRemapDpadLeft = GetAction(settings, "GamepadRemapDpadLeft", CelestiaGamepadAction.YawLeft);
-            GamepadRemapDpadRight = GetAction(settings, "GamepadRemapDpadRight", CelestiaGamepadAction.YawRight);
+            GamepadRemapDpadLeft = GetAction(settings, "GamepadRemapDpadLeft", CelestiaGamepadAction.RollLeft);
+            GamepadRemapDpadRight = GetAction(settings, "GamepadRemapDpadRight", CelestiaGamepadAction.RollRight);
             GamepadRemapDpadUp = GetAction(settings, "GamepadRemapDpadUp", CelestiaGamepadAction.PitchUp);
             GamepadRemapDpadDown = GetAction(settings, "GamepadRemapDpadDown", CelestiaGamepadAction.PitchDown);
-            GamepadRemapInvertX = GetBool(settings, "GamepadRemapInvertX");
-            GamepadRemapInvertY = GetBool(settings, "GamepadRemapInvertY");
+            GamepadInvertX = GetBool(settings, "GamepadInvertX");
+            GamepadInvertY = GetBool(settings, "GamepadInvertY");
         }
 
         public void Save()
@@ -102,8 +102,8 @@ namespace CelestiaUWP
             settings.Values["GamepadRemapDpadRight"] = (int)GamepadRemapDpadRight;
             settings.Values["GamepadRemapDpadUp"] = (int)GamepadRemapDpadUp;
             settings.Values["GamepadRemapDpadDown"] = (int)GamepadRemapDpadDown;
-            settings.Values["GamepadRemapInvertX"] = GamepadRemapInvertX;
-            settings.Values["GamepadRemapInvertY"] = GamepadRemapInvertY;
+            settings.Values["GamepadInvertX"] = GamepadInvertX;
+            settings.Values["GamepadInvertY"] = GamepadInvertY;
         }
     }
 }
