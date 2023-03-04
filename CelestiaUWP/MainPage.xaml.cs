@@ -716,7 +716,7 @@ namespace CelestiaUWP
                     FocusHelperControl.Focus(FocusState.Programmatic);
                 }
             };
-            gamepadManager = new GamepadManager();
+            gamepadManager = new GamepadManager(AppSettings);
             mRenderer.SetPreRenderTask(() =>
             {
                 if (!isGLViewFocused || hasOverlayOpen) return;
