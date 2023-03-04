@@ -114,6 +114,18 @@ namespace winrt::CelestiaComponent::implementation
         core->resize(width, height);
     }
 
+    int32_t CelestiaAppCore::GetWidth()
+    {
+        auto [width, _] = core->getWindowDimension();
+        return static_cast<int32_t>(width);
+    }
+
+    int32_t CelestiaAppCore::GetHeight()
+    {
+        auto [_, height] = core->getWindowDimension();
+        return static_cast<int32_t>(height);
+    }
+
     void CelestiaAppCore::Start()
     {
         core->start();
