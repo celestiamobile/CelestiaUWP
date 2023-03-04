@@ -41,6 +41,8 @@ namespace winrt::CelestiaComponent::implementation
         void Tick();
         void Draw();
         void Resize(int32_t width, int32_t height);
+        int32_t GetWidth();
+        int32_t GetHeight();
         void Start();
         void SetDPI(int32_t dpi);
         void SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom);

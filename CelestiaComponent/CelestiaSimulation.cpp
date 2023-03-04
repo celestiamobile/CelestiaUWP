@@ -148,6 +148,11 @@ namespace winrt::CelestiaComponent::implementation
             2.5);
     }
 
+    void CelestiaSimulation::ReverseOrientation()
+    {
+        sim->reverseObserverOrientation();
+    }
+
     com_array<hstring> CelestiaSimulation::GetCompletion(hstring const& name)
     {
         std::vector<hstring> vec;

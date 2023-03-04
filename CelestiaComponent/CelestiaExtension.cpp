@@ -1217,4 +1217,56 @@ namespace winrt::CelestiaComponent::implementation
         }
         return localizationProvider(L"No overview available.");
     }
+
+    void CelestiaExtension::InvokeCelestiaGamepadAction(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaGamepadAction action, bool up)
+    {
+        switch (action)
+        {
+        case CelestiaGamepadAction::MoveFaster:
+            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button2) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button2);
+            break;
+        case CelestiaGamepadAction::MoveSlower:
+            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button1) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button1);
+            break;
+        case CelestiaGamepadAction::StopSpeed:
+            if (up)
+                appCore.CharEnter(115);
+            break;
+        case CelestiaGamepadAction::ReverseSpeed:
+            if (up)
+                appCore.CharEnter(113);
+            break;
+        case CelestiaGamepadAction::ReverseOrientation:
+            if (up)
+                appCore.Simulation().ReverseOrientation();
+            break;
+        case CelestiaGamepadAction::TapCenter:
+            {
+                auto x = static_cast<float>(appCore.GetWidth()) / 2.0f;
+                auto y = static_cast<float>(appCore.GetHeight()) / 2.0f;
+                up ? appCore.MouseButtonUp(x, y, CelestiaMouseButton::Left) : appCore.MouseButtonDown(x, y, CelestiaMouseButton::Left);
+            }
+            break;
+        case CelestiaGamepadAction::PitchUp:
+            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Up), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Up), 0);
+            break;
+        case CelestiaGamepadAction::PitchDown:
+            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Down), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Down), 0);
+            break;
+        case CelestiaGamepadAction::YawLeft:
+            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Left), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Left), 0);
+            break;
+        case CelestiaGamepadAction::YawRight:
+            up ? appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Right), 0) : appCore.KeyUp(static_cast<int32_t>(Windows::System::VirtualKey::Right), 0);
+            break;
+        case CelestiaGamepadAction::RollLeft:
+            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button7) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button7);
+            break;
+        case CelestiaGamepadAction::RollRight:
+            up ? appCore.JoystickButtonUp(CelestiaJoystickButton::Button8) : appCore.JoystickButtonDown(CelestiaJoystickButton::Button8);
+            break;
+        default:
+            break;
+        }
+    }
 }

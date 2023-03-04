@@ -20,6 +20,7 @@ namespace winrt::CelestiaComponent::implementation
         static int32_t GetCelestiaInt32Value(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSettingInt32Entry entry);
         static float GetCelestiaSingleValue(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSettingSingleEntry entry);
         static hstring GetOverviewForSelection(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::LocalizationProvider const& localizationProvider, CelestiaComponent::CelestiaAppCore const& appCore);
+        static void InvokeCelestiaGamepadAction(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaGamepadAction action, bool up);
     };
 }
 
