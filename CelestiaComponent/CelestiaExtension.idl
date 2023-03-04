@@ -5,6 +5,23 @@ namespace CelestiaComponent
 {
     delegate String LocalizationProvider(String status);
 
+    enum CelestiaGamepadAction
+    {
+        None,
+        MoveFaster,
+        MoveSlower,
+        StopSpeed,
+        ReverseSpeed,
+        ReverseOrientation,
+        TapCenter,
+        PitchUp,
+        PitchDown,
+        YawLeft,
+        YawRight,
+        RollLeft,
+        RollRight,
+    };
+
     enum CelestiaSettingBooleanEntry
     {
         None,
@@ -135,6 +152,7 @@ namespace CelestiaComponent
         static Boolean GetCelestiaBooleanValue(CelestiaAppCore appCore, CelestiaSettingBooleanEntry entry);
         static Int32 GetCelestiaInt32Value(CelestiaAppCore appCore, CelestiaSettingInt32Entry entry);
         static Single GetCelestiaSingleValue(CelestiaAppCore appCore, CelestiaSettingSingleEntry entry);
+        static void InvokeCelestiaGamepadAction(CelestiaAppCore appCore, CelestiaGamepadAction action, Boolean up);
 
         static CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item, CelestiaAppCore appCore);
 

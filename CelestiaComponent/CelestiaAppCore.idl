@@ -72,6 +72,8 @@ namespace CelestiaComponent
         void Tick();
         void Draw();
         void Resize(Int32 width, Int32 height);
+        Int32 GetWidth();
+        Int32 GetHeight();
         void Start();
         void SetDPI(Int32 dpi);
         void SetSafeAreaInsets(Int32 left, Int32 top, Int32 right, Int32 bottom);
