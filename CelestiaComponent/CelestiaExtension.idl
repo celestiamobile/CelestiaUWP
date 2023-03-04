@@ -14,6 +14,8 @@ namespace CelestiaComponent
         ReverseSpeed,
         ReverseOrientation,
         TapCenter,
+        GoTo,
+        Esc,
         PitchUp,
         PitchDown,
         YawLeft,

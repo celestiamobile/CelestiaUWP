@@ -957,7 +957,7 @@ namespace CelestiaUWP
                     });
                 }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
-            AppendItem(navigationItem, LocalizationHelper.Localize("Set Observer Mode…"), (s,
+            AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
                 e) =>
             {
                  ShowObserverMode();
