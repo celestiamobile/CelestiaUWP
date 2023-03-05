@@ -169,7 +169,6 @@ namespace CelestiaUWP.Settings
                     }),
 
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Smooth Lines"), AppCore, CelestiaSettingBooleanEntry.ShowSmoothLines),
-                    new AppCoreBooleanItem(LocalizationHelper.Localize("Tinted Illumination"), AppCore, CelestiaSettingBooleanEntry.ShowTintedIllumination),
 
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Auto Mag"), AppCore, CelestiaSettingBooleanEntry.ShowAutoMag),
                     new AppCoreFloatItem(LocalizationHelper.Localize("Ambient Light"), AppCore, CelestiaSettingSingleEntry.AmbientLightLevel, 0, 0.99f, 0.01f),
