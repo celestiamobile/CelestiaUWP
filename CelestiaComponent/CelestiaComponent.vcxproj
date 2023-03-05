@@ -487,7 +487,6 @@
     <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\bigfix.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
@@ -500,6 +499,8 @@
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\r128.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\r128util.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\stringutils.h" />
@@ -656,13 +657,13 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\glcompat.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\timer.cpp" />

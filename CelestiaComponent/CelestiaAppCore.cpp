@@ -437,7 +437,6 @@ void CelestiaAppCore::Show##flag(bool value) \
     RENDERMETHODS(EclipticGrid)
     RENDERMETHODS(HorizonGrid)
     RENDERMETHODS(GalacticGrid)
-    RENDERMETHODS(TintedIllumination)
 
 #define LABELMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Labels() \
