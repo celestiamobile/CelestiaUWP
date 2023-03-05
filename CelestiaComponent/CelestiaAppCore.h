@@ -259,6 +259,8 @@ namespace winrt::CelestiaComponent::implementation
         void HudDetail(int32_t hudDetail);
         int32_t DateFormat();
         void DateFormat(int32_t dateFormat);
+        int32_t StarColors();
+        void StarColors(int32_t starColors);
         float AmbientLightLevel();
         void AmbientLightLevel(float ambientLightLevel);
         float FaintestVisible();
@@ -269,6 +271,8 @@ namespace winrt::CelestiaComponent::implementation
         void MinimumFeatureSize(float minimumFeatureSize);
         float DistanceLimit();
         void DistanceLimit(float distanceLimit);
+        float TintSaturation();
+        void TintSaturation(float tintSaturation);
 
         bool ShowBodyAxes();
         void ShowBodyAxes(bool showBodyAxes);

@@ -126,6 +126,7 @@ namespace CelestiaComponent
         MeasurementSystem,
         TemperatureScale,
         ScriptSystemAccessPolicy,
+        StarColors,
     };
 
     enum CelestiaSettingSingleEntry
@@ -136,6 +137,7 @@ namespace CelestiaComponent
         GalaxyBrightness,
         MinimumFeatureSize,
         DistanceLimit,
+        TintSaturation,
     };
 
     [default_interface]
