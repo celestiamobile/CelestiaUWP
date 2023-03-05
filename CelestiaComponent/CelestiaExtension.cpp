@@ -234,6 +234,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingInt32Entry::TemperatureScale;
         else if (name == L"ScriptSystemAccessPolicy")
             return CelestiaComponent::CelestiaSettingInt32Entry::ScriptSystemAccessPolicy;
+        else if (name == L"StarColors")
+            return CelestiaComponent::CelestiaSettingInt32Entry::StarColors;
         return CelestiaComponent::CelestiaSettingInt32Entry::None;
     }
 
@@ -249,6 +251,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingSingleEntry::MinimumFeatureSize;
         else if (name == L"DistanceLimit")
             return CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit;
+        else if (name == L"TintSaturaton")
+            return CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation;
         return CelestiaComponent::CelestiaSettingSingleEntry::None;
     }
 
@@ -454,6 +458,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"TemperatureScale";
         case CelestiaComponent::CelestiaSettingInt32Entry::ScriptSystemAccessPolicy:
             return L"ScriptSystemAccessPolicy";
+        case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
+            return L"StarColors";
         default:
             break;
         }
@@ -474,6 +480,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"MinimumFeatureSize";
         case CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit:
             return L"DistanceLimit";
+        case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
+            return L"TintSaturation";
         default:
             break;
         }
@@ -775,6 +783,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingInt32Entry::ScriptSystemAccessPolicy:
             appCore.ScriptSystemAccessPolicy(value);
             break;
+        case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
+            appCore.StarColors(value);
+            break;
         default:
             break;
         }
@@ -798,6 +809,9 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit:
             appCore.DistanceLimit(value);
+            break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
+            appCore.TintSaturation(value);
             break;
         default:
             break;
@@ -1006,6 +1020,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.TemperatureScale();
         case CelestiaComponent::CelestiaSettingInt32Entry::ScriptSystemAccessPolicy:
             return appCore.ScriptSystemAccessPolicy();
+        case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
+            return appCore.StarColors();
         default:
             break;
         }
@@ -1026,6 +1042,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.MinimumFeatureSize();
         case CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit:
             return appCore.DistanceLimit();
+        case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
+            return appCore.TintSaturation();
         default:
             break;
         }
