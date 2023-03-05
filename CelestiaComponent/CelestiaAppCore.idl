@@ -141,7 +141,6 @@ namespace CelestiaComponent
         Boolean ShowEclipticGrid;
         Boolean ShowHorizonGrid;
         Boolean ShowGalacticGrid;
-        Boolean ShowTintedIllumination;
         Boolean ShowStarLabels;
         Boolean ShowPlanetLabels;
         Boolean ShowMoonLabels;

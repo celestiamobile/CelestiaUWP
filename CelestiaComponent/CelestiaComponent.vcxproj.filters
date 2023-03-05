@@ -55,9 +55,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Celestia\src\celutil\bigfix.cpp">
-      <Filter>Celestia\celutil</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -549,6 +546,11 @@
     <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="CelestiaTimeline.cpp" />
+    <ClCompile Include="CelestiaExtension.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -563,9 +565,6 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\bigfix.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h">
@@ -1136,6 +1135,12 @@
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\r128.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\r128util.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>
