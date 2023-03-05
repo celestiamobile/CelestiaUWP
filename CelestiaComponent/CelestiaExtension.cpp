@@ -107,8 +107,6 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowHorizonGrid;
         else if (name == L"ShowGalacticGrid")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalacticGrid;
-        else if (name == L"ShowTintedIllumination")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowTintedIllumination;
         else if (name == L"ShowStarLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowStarLabels;
         else if (name == L"ShowPlanetLabels")
@@ -324,8 +322,6 @@ namespace winrt::CelestiaComponent::implementation
             return L"ShowHorizonGrid";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalacticGrid:
             return L"ShowGalacticGrid";
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTintedIllumination:
-            return L"ShowTintedIllumination";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowStarLabels:
             return L"ShowStarLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetLabels:
@@ -586,9 +582,6 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalacticGrid:
             appCore.ShowGalacticGrid(value);
-            break;
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTintedIllumination:
-            appCore.ShowTintedIllumination(value);
             break;
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowStarLabels:
             appCore.ShowStarLabels(value);
@@ -881,8 +874,6 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.ShowHorizonGrid();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalacticGrid:
             return appCore.ShowGalacticGrid();
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTintedIllumination:
-            return appCore.ShowTintedIllumination();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowStarLabels:
             return appCore.ShowStarLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetLabels:

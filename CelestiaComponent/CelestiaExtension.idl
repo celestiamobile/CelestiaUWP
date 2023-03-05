@@ -60,7 +60,6 @@ namespace CelestiaComponent
         ShowEclipticGrid,
         ShowHorizonGrid,
         ShowGalacticGrid,
-        ShowTintedIllumination,
         ShowStarLabels,
         ShowPlanetLabels,
         ShowMoonLabels,

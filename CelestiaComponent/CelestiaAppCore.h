@@ -143,8 +143,6 @@ namespace winrt::CelestiaComponent::implementation
         void ShowHorizonGrid(bool showHorizonGrid);
         bool ShowGalacticGrid();
         void ShowGalacticGrid(bool showGalacticGrid);
-        bool ShowTintedIllumination();
-        void ShowTintedIllumination(bool showTintedIllumination);
         bool ShowStarLabels();
         void ShowStarLabels(bool showStarLabels);
         bool ShowPlanetLabels();
