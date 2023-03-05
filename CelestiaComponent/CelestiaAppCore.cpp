@@ -553,6 +553,16 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         core->getRenderer()->setStarStyle((Renderer::StarStyle)starStyle);
     }
 
+    int32_t CelestiaAppCore::StarColors()
+    {
+        return static_cast<int32_t>(core->getRenderer()->getStarColorTable()->type());
+    }
+
+    void CelestiaAppCore::StarColors(int32_t starColors)
+    {
+        core->getRenderer()->setStarColorTable(GetStarColorTable(static_cast<ColorTableType>(starColors)));
+    }
+
     int32_t CelestiaAppCore::HudDetail()
     {
         return core->getHudDetail();
@@ -680,6 +690,16 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::DistanceLimit(float distanceLimit)
     {
         core->getRenderer()->setDistanceLimit(distanceLimit);
+    }
+
+    float CelestiaAppCore::TintSaturation()
+    {
+        return core->getRenderer()->getTintSaturation();
+    }
+
+    void CelestiaAppCore::TintSaturation(float tintSaturation)
+    {
+        core->getRenderer()->setTintSaturation(tintSaturation);
     }
 
     bool CelestiaAppCore::ShowBodyAxes()

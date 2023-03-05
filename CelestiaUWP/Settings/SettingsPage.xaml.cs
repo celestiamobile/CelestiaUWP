@@ -167,6 +167,12 @@ namespace CelestiaUWP.Settings
                         LocalizationHelper.Localize("Points"),
                         LocalizationHelper.Localize("Scaled Discs")
                     }),
+                    new AppCoreIntItem(LocalizationHelper.Localize("Star Colors"), AppCore, CelestiaSettingInt32Entry.StarColors, new []
+                    {
+                        LocalizationHelper.Localize("Classic Colors"),
+                        LocalizationHelper.Localize("Blackbody D65"),
+                    }),
+                    new AppCoreFloatItem(LocalizationHelper.Localize("Tinted Illumination Saturation"), AppCore, CelestiaSettingSingleEntry.TintSaturation, 0, 1, 0.01f, LocalizationHelper.Localize("Tinted illuminaton saturation setting is only effective with Blackbody D65 star colors.")),
 
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Smooth Lines"), AppCore, CelestiaSettingBooleanEntry.ShowSmoothLines),
 

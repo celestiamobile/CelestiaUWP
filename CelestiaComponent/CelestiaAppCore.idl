@@ -198,11 +198,13 @@ namespace CelestiaComponent
         Int32 StarStyle;
         Int32 HudDetail;
         Int32 DateFormat;
+        Int32 StarColors;
         Single AmbientLightLevel;
         Single FaintestVisible;
         Single GalaxyBrightness;
         Single MinimumFeatureSize;
         Single DistanceLimit;
+        Single TintSaturation;
 
         Boolean ShowBodyAxes;
         Boolean ShowFrameAxes;
