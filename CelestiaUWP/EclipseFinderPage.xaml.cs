@@ -9,8 +9,8 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;

@@ -9,24 +9,16 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public class BookmarkNode
-    {
-        public bool IsFolder;
-        public string Name;
-        public string URL;
-        public ObservableCollection<BookmarkNode> Children;
-    }
-
     public class BookmarkBasePage : Page, INotifyPropertyChanged
     {
         protected CelestiaAppCore AppCore;
@@ -43,21 +35,12 @@ namespace CelestiaUWP
 
         async private void ReadBookmarks()
         {
-            ObservableCollection<BookmarkNode> bookmarks;
-            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            try
+            Bookmarks.Clear();
+            var bookmarks = new ObservableCollection<BookmarkNode>();
+            var items = await BookmarkHelper.ReadBookmarks();
+            foreach (var item in items)
             {
-                var serializer = new JsonSerializer();
-                using (var bookmarkStream = await localFolder.OpenStreamForReadAsync("bookmarks.json"))
-                using (var sr = new StreamReader(bookmarkStream))
-                using (var jsonTextReader = new JsonTextReader(sr))
-                {
-                    bookmarks = serializer.Deserialize<ObservableCollection<BookmarkNode>>(jsonTextReader);
-                }
-            }
-            catch
-            {
-                bookmarks = new ObservableCollection<BookmarkNode>();
+                bookmarks.Add(item);
             }
             Bookmarks = bookmarks;
             OnPropertyChanged("Bookmarks");
@@ -65,18 +48,12 @@ namespace CelestiaUWP
 
         async public void WriteBookmarks()
         {
-            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            try
+            var vector = BookmarkHelper.CreateEmptyList();
+            foreach (var bookmark in Bookmarks)
             {
-                var serializer = new JsonSerializer();
-                using (var bookmarkStream = await localFolder.OpenStreamForWriteAsync("bookmarks.json", Windows.Storage.CreationCollisionOption.ReplaceExisting))
-                using (var sr = new StreamWriter(bookmarkStream))
-                using (var jsonTextWriter = new JsonTextWriter(sr))
-                {
-                    serializer.Serialize(jsonTextWriter, Bookmarks);
-                }
+                vector.Add(bookmark);
             }
-            catch { }
+            await BookmarkHelper.WriteBookmarks(vector);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

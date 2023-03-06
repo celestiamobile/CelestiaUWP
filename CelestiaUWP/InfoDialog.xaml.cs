@@ -9,7 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP

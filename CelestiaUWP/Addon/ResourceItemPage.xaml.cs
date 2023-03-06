@@ -9,10 +9,10 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -82,7 +82,7 @@ namespace CelestiaUWP.Addon
 
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
-            queryItems.Add("item", Item.id);
+            queryItems.Add("item", Item.ID);
             queryItems.Add("platform", "uwp");
             queryItems.Add("titleVisibility", "visible");
             queryItems.Add("transparentBackground", "1");
@@ -109,13 +109,13 @@ namespace CelestiaUWP.Addon
 
         private void Shared_ProgressUpdate(ResourceItem item, double progress)
         {
-            if (item.id != Item.id) return;
+            if (item.ID != Item.ID) return;
             InstallProgressBar.Value = progress;
         }
 
         private void UpdateState()
         {
-            GoButton.Content = LocalizationHelper.Localize(Item.type == "script" ? "Run" :"Go");
+            GoButton.Content = LocalizationHelper.Localize(Item.Type == "script" ? "Run" :"Go");
 
             switch (State)
             {
@@ -133,9 +133,9 @@ namespace CelestiaUWP.Addon
                     break;
             }
 
-            if (Item.type == "script")
+            if (Item.Type == "script")
             {
-                var mainScriptName = Item.mainScriptName;
+                var mainScriptName = Item.MainScriptName;
                 if (State == ResourceManager.ItemState.Installed && mainScriptName != null)
                 {
                     var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
@@ -155,7 +155,7 @@ namespace CelestiaUWP.Addon
             }
             else
             {
-                if (State == ResourceManager.ItemState.Installed && Item.objectName != null && !AppCore.Simulation.Find(Item.objectName).IsEmpty)
+                if (State == ResourceManager.ItemState.Installed && Item.DemoObjectName != null && !AppCore.Simulation.Find(Item.DemoObjectName).IsEmpty)
                 {
                     GoButton.Visibility = Visibility.Visible;
                 }
@@ -171,7 +171,7 @@ namespace CelestiaUWP.Addon
             Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
-            queryItems.Add("item", Item.id);
+            queryItems.Add("item", Item.ID);
             var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
             builder.Query = queryItems.ToString();
             try
@@ -179,11 +179,13 @@ namespace CelestiaUWP.Addon
                 var httpResponse = await httpClient.GetAsync(builder.Uri);
                 httpResponse.EnsureSuccessStatusCode();
                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
-                if (requestResult.status != 0) return;
-                var item = requestResult.Get<Addon.ResourceItem>();
-                Item = item;
-                UpdateState();
+                var requestResult = RequestResult.TryParse(httpResponseBody);
+                if (requestResult.Status == 0)
+                {
+                    var item = ResourceItem.TryParse(requestResult.Info.Detail);
+                    Item = item;
+                    UpdateState();
+                }
             }
             catch { }
         }
@@ -209,9 +211,9 @@ namespace CelestiaUWP.Addon
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Item.type == "script")
+            if (Item.Type == "script")
             {
-                var mainScriptName = Item.mainScriptName;
+                var mainScriptName = Item.MainScriptName;
                 if (mainScriptName == null) return;
                 var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
                 if (File.Exists(path))
@@ -223,10 +225,10 @@ namespace CelestiaUWP.Addon
                 }
                 return;
             }
-            var objectName = Item.objectName;
+            var objectName = Item.DemoObjectName;
             if (objectName == null) return;
 
-            var selection = AppCore.Simulation.Find(Item.objectName);
+            var selection = AppCore.Simulation.Find(Item.DemoObjectName);
             if (selection.IsEmpty)
             {
                 ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));

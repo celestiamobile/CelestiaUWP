@@ -9,13 +9,10 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
 using System;
-using System.IO;
-using System.Text;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
@@ -40,11 +37,11 @@ namespace CelestiaUWP
         {
             try
             {
-                var authorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(authorFilePath);
+                var authorFile = await StorageFile.GetFileFromPathAsync(authorFilePath);
                 var content = await FileIO.ReadTextAsync(authorFile);
                 AuthorLabel.Text = content;
                 AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
-                var tanslatorFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(translatorFilePath);
+                var tanslatorFile = await StorageFile.GetFileFromPathAsync(translatorFilePath);
                 TranslatorLabel.Text = content;
                 TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
             }

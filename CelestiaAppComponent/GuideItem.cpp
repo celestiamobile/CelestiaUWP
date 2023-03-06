@@ -27,15 +27,10 @@ namespace winrt::CelestiaAppComponent::implementation
 
     CelestiaAppComponent::GuideItem GuideItem::TryParse(hstring const& data)
     {
-        try
-        {
-            auto object = JsonObject::Parse(data);
-            // Get mandatory fields
-            auto title = object.GetNamedString(L"title");
-            auto id = object.GetNamedString(L"id");
-            return CelestiaAppComponent::GuideItem(title, id);
-        }
-        catch (hresult_error const&) {};
-        return nullptr;
+        auto object = JsonObject::Parse(data);
+        // Get mandatory fields
+        auto title = object.GetNamedString(L"title");
+        auto id = object.GetNamedString(L"id");
+        return CelestiaAppComponent::GuideItem(title, id);
     }
 }

@@ -131,9 +131,7 @@
     <Compile Include="Addon\InstalledItemListPage.xaml.cs">
       <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Addon\RequestResult.cs" />
     <Compile Include="Addon\ResourceConstants.cs" />
-    <Compile Include="Addon\ResourceItem.cs" />
     <Compile Include="Addon\ResourceItemPage.xaml.cs">
       <DependentUpon>ResourceItemPage.xaml</DependentUpon>
     </Compile>
@@ -141,7 +139,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppSettings.cs" />
     <Compile Include="ObserverModeDialog.xaml.cs">
       <DependentUpon>ObserverModeDialog.xaml</DependentUpon>
     </Compile>
@@ -157,11 +154,9 @@
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\DoubleFloatConverter.cs" />
-    <Compile Include="Helper\GamepadManager.cs" />
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
     <Compile Include="Helper\ContentDialogHelper.cs" />
-    <Compile Include="Helper\LocalizationHelper.cs" />
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
@@ -199,7 +194,6 @@
     <Compile Include="Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Web\JavascriptBridge.cs" />
     <Compile Include="Web\SafeWebPage.xaml.cs">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </Compile>
@@ -379,11 +373,12 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.2</Version>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CelestiaAppComponent\CelestiaAppComponent.vcxproj">
+      <Project>{8f851773-b6a0-4907-85a7-6d6b2958f70a}</Project>
+      <Name>CelestiaAppComponent</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CelestiaComponent\CelestiaComponent.vcxproj">
       <Project>{f0bc785c-485c-433b-8128-22a79b58f307}</Project>
       <Name>CelestiaComponent</Name>

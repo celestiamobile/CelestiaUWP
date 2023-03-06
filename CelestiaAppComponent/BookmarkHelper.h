@@ -8,6 +8,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         static Windows::Foundation::IAsyncOperation<Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode>> ReadBookmarks();
         static Windows::Foundation::IAsyncAction WriteBookmarks(Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> const& bookmarks);
+        static Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> CreateEmptyList();
     };
 }
 

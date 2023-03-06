@@ -9,7 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
-using Newtonsoft.Json;
+using CelestiaAppComponent;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,12 +48,12 @@ namespace CelestiaUWP.Addon
 
         public string ItemPath(ResourceItem item)
         {
-            return AddonFolderPath + "\\" + item.id;
+            return AddonFolderPath + "\\" + item.ID;
         }
 
         public ItemState StateForItem(ResourceItem item)
         {
-            if (CancellationTokens.ContainsKey(item.id))
+            if (CancellationTokens.ContainsKey(item.ID))
                 return ItemState.Downloading;
             else if (Directory.Exists(ItemPath(item)))
                 return ItemState.Installed;
@@ -66,7 +66,7 @@ namespace CelestiaUWP.Addon
             var client = new HttpClient();
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
-            CancellationTokens[item.id] = cancellationTokenSource;
+            CancellationTokens[item.ID] = cancellationTokenSource;
 
             try
             {
@@ -80,7 +80,7 @@ namespace CelestiaUWP.Addon
                 var tempFolder = Windows.Storage.ApplicationData.Current.TemporaryFolder;
                 var tempFile = await tempFolder.CreateFileAsync(GuidHelper.CreateNewGuid().ToString() + ".zip");
 
-                var response = await client.GetAsync(item.item, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                var response = await client.GetAsync(item.URL, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
                 response.EnsureSuccessStatusCode();
 
                 var total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
@@ -119,14 +119,14 @@ namespace CelestiaUWP.Addon
                 }
                 var destinationPath = ItemPath(item);
                 ZipFile.ExtractToDirectory(tempFile.Path, destinationPath);
-                File.WriteAllText(destinationPath + "\\description.json", JsonConvert.SerializeObject(item));
+                File.WriteAllText(destinationPath + "\\description.json", item.JSONRepresentation.Stringify());
 
-                CancellationTokens.Remove(item.id);
+                CancellationTokens.Remove(item.ID);
                 DownloadSuccess(item);
             }
             catch
             {
-                CancellationTokens.Remove(item.id);
+                CancellationTokens.Remove(item.ID);
                 DownloadFailure(item);
             }
         }
@@ -155,12 +155,12 @@ namespace CelestiaUWP.Addon
             {
                 try
                 {
-                    var serializer = new JsonSerializer();
-                    using (var stream = await subfolder.OpenStreamForReadAsync("description.json"))
-                    using (var sr = new StreamReader(stream))
-                    using (var jsonTextReader = new JsonTextReader(sr))
+                    var descriptionFile = await subfolder.GetFileAsync("description.json");
+                    var content = await FileIO.ReadTextAsync(descriptionFile);
+                    var item = ResourceItem.TryParse(content);
+                    if (item != null)
                     {
-                        items.Add(serializer.Deserialize<ResourceItem>(jsonTextReader));
+                        items.Add(item);
                     }
                 }
                 catch { }
@@ -172,7 +172,7 @@ namespace CelestiaUWP.Addon
         public void Cancel(ResourceItem item)
         {
             CancellationTokenSource cancellationToken;
-            if (CancellationTokens.Remove(item.id, out cancellationToken))
+            if (CancellationTokens.Remove(item.ID, out cancellationToken))
                 cancellationToken.Cancel();
         }
 

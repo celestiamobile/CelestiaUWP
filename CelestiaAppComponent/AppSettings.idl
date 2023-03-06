@@ -1,5 +1,35 @@
 namespace CelestiaAppComponent
 {
+    enum AppSettingBooleanEntry
+    {
+        UseFullDPI,
+        EnableMSAA,
+        GamepadInvertX,
+        GamepadInvertY,
+    };
+
+    enum AppSettingInt32Entry
+    {
+        GamepadRemapA,
+        GamepadRemapB,
+        GamepadRemapX,
+        GamepadRemapY,
+        GamepadRemapLT,
+        GamepadRemapRT,
+        GamepadRemapLB,
+        GamepadRemapRB,
+        GamepadRemapDpadUp,
+        GamepadRemapDpadDown,
+        GamepadRemapDpadLeft,
+        GamepadRemapDpadRight,
+    };
+
+    enum AppSettingStringEntry
+    {
+        LanguageOverride,
+        LastNewsID,
+    };
+
     [default_interface]
     runtimeclass AppSettings
     {
@@ -20,6 +50,13 @@ namespace CelestiaAppComponent
         CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadDown;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadLeft;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadRight;
+
+        void SetBoolean(AppSettingBooleanEntry entry, Boolean value);
+        Boolean GetBoolean(AppSettingBooleanEntry entry);
+        void SetInt32(AppSettingInt32Entry entry, Int32 value);
+        Int32 GetInt32(AppSettingInt32Entry entry);
+        void SetString(AppSettingStringEntry entry, String value);
+        String GetString(AppSettingStringEntry entry);
 
         Boolean GamepadInvertX;
         Boolean GamepadInvertY;

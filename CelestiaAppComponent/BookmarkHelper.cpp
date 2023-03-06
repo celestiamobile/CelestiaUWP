@@ -43,9 +43,13 @@ namespace winrt::CelestiaAppComponent::implementation
         {
             auto bookmarkFile{ co_await localFolder.CreateFileAsync(L"bookmarks.json", Windows::Storage::CreationCollisionOption::ReplaceExisting) };
             co_await Windows::Storage::FileIO::WriteTextAsync(bookmarkFile, jsonArray.Stringify());
-
         }
         catch (hresult_error const&) {};
         co_return;
+    }
+
+    Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> BookmarkHelper::CreateEmptyList()
+    {
+        return single_threaded_observable_vector<CelestiaAppComponent::BookmarkNode>();
     }
 }

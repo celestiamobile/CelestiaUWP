@@ -249,6 +249,150 @@ namespace winrt::CelestiaAppComponent::implementation
         gamepadInvertY = value;
     }
 
+    void AppSettings::SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingBooleanEntry::UseFullDPI:
+            UseFullDPI(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
+            EnableMSAA(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
+            GamepadInvertX(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
+            GamepadInvertY(value);
+            break;
+        default:
+            break;
+        }
+    }
+
+    bool AppSettings::GetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingBooleanEntry::UseFullDPI:
+            return UseFullDPI();
+        case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
+            return EnableMSAA();
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
+            return GamepadInvertX();
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
+            return GamepadInvertY();
+        default:
+            return false;
+        }
+    }
+
+    void AppSettings::SetInt32(CelestiaAppComponent::AppSettingInt32Entry entry, int32_t value)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapA:
+            GamepadRemapA(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapB:
+            GamepadRemapB(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapX:
+            GamepadRemapX(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapY:
+            GamepadRemapY(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLT:
+            GamepadRemapLT(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRT:
+            GamepadRemapRT(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLB:
+            GamepadRemapLB(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRB:
+            GamepadRemapRB(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadUp:
+            GamepadRemapDpadUp(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadDown:
+            GamepadRemapDpadDown(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadLeft:
+            GamepadRemapDpadLeft(static_cast<CelestiaGamepadAction>(value));
+            break;
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
+            GamepadRemapDpadRight(static_cast<CelestiaGamepadAction>(value));
+            break;
+        default:
+            break;
+        }
+    }
+
+    int32_t AppSettings::GetInt32(CelestiaAppComponent::AppSettingInt32Entry entry)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapA:
+            return static_cast<int32_t>(GamepadRemapA());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapB:
+            return static_cast<int32_t>(GamepadRemapB());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapX:
+            return static_cast<int32_t>(GamepadRemapX());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapY:
+            return static_cast<int32_t>(GamepadRemapY());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLT:
+            return static_cast<int32_t>(GamepadRemapLT());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRT:
+            return static_cast<int32_t>(GamepadRemapRT());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLB:
+            return static_cast<int32_t>(GamepadRemapLB());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRB:
+            return static_cast<int32_t>(GamepadRemapRB());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadUp:
+            return static_cast<int32_t>(GamepadRemapDpadUp());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadDown:
+            return static_cast<int32_t>(GamepadRemapDpadDown());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadLeft:
+            return static_cast<int32_t>(GamepadRemapDpadLeft());
+        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
+            return static_cast<int32_t>(GamepadRemapDpadRight());
+        default:
+            return 0;
+        }
+    }
+
+    void AppSettings::SetString(CelestiaAppComponent::AppSettingStringEntry entry, hstring const& value)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingStringEntry::LanguageOverride:
+            LanguageOverride(value);
+            break;
+        case CelestiaAppComponent::AppSettingStringEntry::LastNewsID:
+            LastNewsID(value);
+            break;
+        default:
+            break;
+        }
+    }
+
+    hstring AppSettings::GetString(CelestiaAppComponent::AppSettingStringEntry entry)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingStringEntry::LanguageOverride:
+            return LanguageOverride();
+        case CelestiaAppComponent::AppSettingStringEntry::LastNewsID:
+            return LastNewsID();
+        default:
+            return L"";
+        }
+    }
+
     void AppSettings::Save(Windows::Storage::ApplicationDataContainer const& settings)
     {
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
