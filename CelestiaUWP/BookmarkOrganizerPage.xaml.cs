@@ -9,9 +9,8 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
 using System;
-using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -42,15 +41,32 @@ namespace CelestiaUWP
             }
             else
             {
-                var listToAddTo = parent == null ? Bookmarks : parent.Children;
-                var index = listToAddTo.IndexOf(selected);
-                if (index >= 0)
+                if (parent == null)
                 {
-                    listToAddTo.Insert(index, bookmark);
+                    var listToAddTo = Bookmarks;
+                    var index = listToAddTo.IndexOf(selected);
+                    if (index >= 0)
+                    {
+                        listToAddTo.Insert(index, bookmark);
+                    }
+                    else
+                    {
+                        listToAddTo.Add(bookmark);
+                    }
                 }
                 else
                 {
-                    listToAddTo.Add(bookmark);
+                    
+                    var listToAddTo = parent.Children;
+                    var index = listToAddTo.IndexOf(selected);
+                    if (index >= 0)
+                    {
+                        listToAddTo.Insert(index, bookmark);
+                    }
+                    else
+                    {
+                        listToAddTo.Add(bookmark);
+                    }
                 }
             }
             WriteBookmarks();
@@ -67,12 +83,7 @@ namespace CelestiaUWP
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var bookmark = new BookmarkNode
-                {
-                    IsFolder = true,
-                    Name = dialog.Text,
-                    Children = new ObservableCollection<BookmarkNode>()
-                };
+                var bookmark = new BookmarkNode(true, dialog.Text, "", BookmarkHelper.CreateEmptyList());
                 InsertBookmarkAtSelection(bookmark);
             }
         }
@@ -99,13 +110,25 @@ namespace CelestiaUWP
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var children = parent == null ? Bookmarks : parent.Children;
-                var index = children.IndexOf(bookmark);
-                if (index >= 0)
+                if (parent == null)
                 {
-                    bookmark.Name = dialog.Text;
-                    children[index] = bookmark;
-                    WriteBookmarks();
+                    var index = Bookmarks.IndexOf(bookmark);
+                    if (index >= 0)
+                    {
+                        bookmark.Name = dialog.Text;
+                        Bookmarks[index] = bookmark;
+                        WriteBookmarks();
+                    }
+                }
+                else
+                {
+                    var index = parent.Children.IndexOf(bookmark);
+                    if (index >= 0)
+                    {
+                        bookmark.Name = dialog.Text;
+                        parent.Children[index] = bookmark;
+                        WriteBookmarks();
+                    }
                 }
             }
         }
@@ -115,8 +138,10 @@ namespace CelestiaUWP
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
 
-            var children = parent == null ? Bookmarks: parent.Children;
-            children.Remove(bookmark);
+            if (parent == null)
+                Bookmarks.Remove(bookmark);
+            else
+                parent.Children.Remove(bookmark);
             WriteBookmarks();
         }
 

@@ -10,7 +10,7 @@
 //
 
 using CelestiaComponent;
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CelestiaUWP"
+    xmlns:app="using:CelestiaAppComponent"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,7 +12,7 @@
     <RelativePanel Margin="16">
         <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <muxc:TreeView.ItemTemplate>
-                <DataTemplate x:DataType="local:BookmarkNode">
+                <DataTemplate x:DataType="app:BookmarkNode">
                     <muxc:TreeViewItem ItemsSource="{x:Bind Children}"
                                Content="{x:Bind Name}"/>
                 </DataTemplate>

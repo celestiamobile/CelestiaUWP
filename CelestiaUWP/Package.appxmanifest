@@ -139,6 +139,30 @@
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaVector" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
+
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>CelestiaAppComponent.dll</Path>
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettings" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkNode" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.GamepadManager" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.GuideItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessagePayload" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandlerContext" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.DummyHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunDemoHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunScriptHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ShareURLHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SendACKHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptBridge" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.LocalizationHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResultInfo" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceItem" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
   </Extensions>
 
   <Capabilities>
