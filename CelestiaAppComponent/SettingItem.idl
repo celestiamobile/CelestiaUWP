@@ -1,0 +1,96 @@
+import "AppSettings.idl";
+
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    unsealed runtimeclass SettingBaseItem
+    {
+    }
+
+    [default_interface]
+    unsealed runtimeclass SettingBooleanItem : SettingBaseItem
+    {
+        Boolean IsEnabled;
+        String Title{ get; };
+        String Note{ get; };
+        Boolean NoteVisibility{ get; };
+    }
+
+    [default_interface]
+    unsealed runtimeclass SettingInt32Item : SettingBaseItem
+    {
+        Int32 Value;
+        String Title{ get; };
+        String Note{ get; };
+        Boolean NoteVisibility{ get; };
+        Windows.Foundation.Collections.IObservableVector<String> Options{ get; };
+    }
+
+    [default_interface]
+    unsealed runtimeclass SettingDoubleItem : SettingBaseItem
+    {
+        Double Value;
+        Double MinValue{ get; };
+        Double MaxValue{ get; };
+        Double Step{ get; };
+        String Title{ get; };
+        String Note{ get; };
+        Boolean NoteVisibility{ get; };
+    }
+
+    [default_interface]
+    runtimeclass SettingHeaderItem : SettingBaseItem
+    {
+        SettingHeaderItem(String title);
+        String Title{ get; };
+    }
+
+    [default_interface]
+    runtimeclass OptionPair
+    {
+        OptionPair(Int32 _value, String name);
+        Int32 Value{ get; };
+        String Name{ get; };
+    }
+
+    [default_interface]
+    runtimeclass AppCoreBooleanItem : SettingBooleanItem
+    {
+        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
+    runtimeclass AppSettingsBooleanItem : SettingBooleanItem
+    {
+        AppSettingsBooleanItem(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings);
+        AppSettingsBooleanItem(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
+    runtimeclass AppCoreInt32Item : SettingInt32Item
+    {
+        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
+    runtimeclass AppSettingsInt32Item : SettingInt32Item
+    {
+        AppSettingsInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings);
+        AppSettingsInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
+    runtimeclass LanguageInt32Item : SettingInt32Item
+    {
+        LanguageInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, Windows.Foundation.Collections.IVector<String> availableLanguages, Windows.Storage.ApplicationDataContainer localSettings);
+    }
+
+    [default_interface]
+    runtimeclass AppCoreSingleItem : SettingDoubleItem
+    {
+        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+}

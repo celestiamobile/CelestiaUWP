@@ -161,6 +161,18 @@
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResultInfo" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBaseItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingDoubleItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingHeaderItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.OptionPair" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.LanguageInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreSingleItem" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
   </Extensions>

@@ -9,9 +9,7 @@
     mc:Ignorable="d"
     Title="Set Simulation Time"
     PrimaryButtonText="OK"
-    SecondaryButtonText="Cancel"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    SecondaryButtonText="Cancel">
 
     <StackPanel Spacing="6">
         <DatePicker Date="{x:Bind mDate, Mode=TwoWay}" CalendarIdentifier="GregorianCalendar" x:Name="DatePicker"></DatePicker>

@@ -4,5 +4,6 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Gaming.Input.h>
+#include <winrt/Windows.Globalization.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/CelestiaComponent.h>
