@@ -60,9 +60,9 @@ namespace CelestiaUWP.Settings
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (item.Tag == "display")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Objects")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Objects")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, CelestiaSettingBooleanEntry.ShowStars, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, CelestiaSettingBooleanEntry.ShowPlanets, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, CelestiaSettingBooleanEntry.ShowDwarfPlanets, localSettings),
@@ -75,7 +75,7 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Nebulae"), AppCore, CelestiaSettingBooleanEntry.ShowNebulae, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, CelestiaSettingBooleanEntry.ShowGlobulars, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, CelestiaSettingBooleanEntry.ShowOpenClusters, localSettings),
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Features")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Features")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Clouds"), AppCore, CelestiaSettingBooleanEntry.ShowCloudMaps, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Atmospheres"), AppCore, CelestiaSettingBooleanEntry.ShowAtmospheres, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Comet Tails"), AppCore, CelestiaSettingBooleanEntry.ShowCometTails, localSettings),
@@ -89,9 +89,9 @@ namespace CelestiaUWP.Settings
             }
             else if (item.Tag == "guides")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Orbits")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Orbits")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Orbits"), AppCore, CelestiaSettingBooleanEntry.ShowOrbits, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Fading Orbits"), AppCore, CelestiaSettingBooleanEntry.ShowFadingOrbits, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Partial Trajectories"), AppCore, CelestiaSettingBooleanEntry.ShowPartialTrajectories, localSettings),
@@ -104,19 +104,19 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Comets"), AppCore, CelestiaSettingBooleanEntry.ShowCometOrbits, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Spacecraft"), AppCore, CelestiaSettingBooleanEntry.ShowSpacecraftOrbits, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Constellations")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Constellations")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Diagrams"), AppCore, CelestiaSettingBooleanEntry.ShowDiagrams, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels"), AppCore, CelestiaSettingBooleanEntry.ShowConstellationLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Labels in Latin"), AppCore, CelestiaSettingBooleanEntry.ShowLatinConstellationLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Boundaries"), AppCore, CelestiaSettingBooleanEntry.ShowBoundaries, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Grids")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Grids")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Equatorial"), AppCore, CelestiaSettingBooleanEntry.ShowCelestialSphere, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic"), AppCore, CelestiaSettingBooleanEntry.ShowEclipticGrid, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Horizontal"), AppCore, CelestiaSettingBooleanEntry.ShowHorizonGrid, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Galactic"), AppCore, CelestiaSettingBooleanEntry.ShowGalacticGrid, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Miscellaneous")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Miscellaneous")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Markers"), AppCore, CelestiaSettingBooleanEntry.ShowMarkers, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic Line"), AppCore, CelestiaSettingBooleanEntry.ShowEcliptic, localSettings)
                 };
@@ -124,9 +124,9 @@ namespace CelestiaUWP.Settings
             }
             else if (item.Tag == "labels")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Objects")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Objects")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Stars"), AppCore, CelestiaSettingBooleanEntry.ShowStarLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Planets"), AppCore, CelestiaSettingBooleanEntry.ShowPlanetLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Dwarf Planets"), AppCore, CelestiaSettingBooleanEntry.ShowDwarfPlanetLabels, localSettings),
@@ -140,9 +140,9 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Globulars"), AppCore, CelestiaSettingBooleanEntry.ShowGlobularLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Open Clusters"), AppCore, CelestiaSettingBooleanEntry.ShowOpenClusterLabels, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Locations")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Locations")),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Show Locations"), AppCore, CelestiaSettingBooleanEntry.ShowLocationLabels, localSettings),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Minimum Labeled Feature Size"), AppCore, CelestiaSettingSingleEntry.MinimumFeatureSize, 0, 99, localSettings),
+                    new AppCoreSingleItem(LocalizationHelper.Localize("Minimum Labeled Feature Size"), AppCore, CelestiaSettingSingleEntry.MinimumFeatureSize, 0, 99, 1, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Cities"), AppCore, CelestiaSettingBooleanEntry.ShowCityLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Observatories"), AppCore, CelestiaSettingBooleanEntry.ShowObservatoryLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Landing Sites"), AppCore, CelestiaSettingBooleanEntry.ShowLandingSiteLabels, localSettings),
@@ -158,30 +158,30 @@ namespace CelestiaUWP.Settings
             }
             else if (item.Tag == "renderer")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new AppCoreIntItem(LocalizationHelper.Localize("Texture Resolution"), AppCore, CelestiaSettingInt32Entry.Resolution, new string[] { LocalizationHelper.Localize("Low"), LocalizationHelper.Localize("Medium"), LocalizationHelper.Localize("High") }, localSettings),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Star Style"), AppCore, CelestiaSettingInt32Entry.StarStyle, new []
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Texture Resolution"), AppCore, CelestiaSettingInt32Entry.Resolution, new [] { new OptionPair(0, LocalizationHelper.Localize("Low")), new OptionPair(1, LocalizationHelper.Localize("Medium")), new OptionPair(2, LocalizationHelper.Localize("High")) }, localSettings),
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Star Style"), AppCore, CelestiaSettingInt32Entry.StarStyle, new []
                     {
-                        LocalizationHelper.Localize("Fuzzy Points"),
-                        LocalizationHelper.Localize("Points"),
-                        LocalizationHelper.Localize("Scaled Discs")
+                        new OptionPair(0, LocalizationHelper.Localize("Fuzzy Points")),
+                        new OptionPair(1, LocalizationHelper.Localize("Points")),
+                        new OptionPair(2, LocalizationHelper.Localize("Scaled Discs")),
                     }, localSettings),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Star Colors"), AppCore, CelestiaSettingInt32Entry.StarColors, new []
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Star Colors"), AppCore, CelestiaSettingInt32Entry.StarColors, new []
                     {
-                        LocalizationHelper.Localize("Classic Colors"),
-                        LocalizationHelper.Localize("Blackbody D65"),
+                        new OptionPair(0, LocalizationHelper.Localize("Classic Colors")),
+                        new OptionPair(1, LocalizationHelper.Localize("Blackbody D65")),
                     }, localSettings),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Tinted Illumination Saturation"), AppCore, CelestiaSettingSingleEntry.TintSaturation, 0, 1, localSettings, 0.01f, LocalizationHelper.Localize("Tinted illuminaton saturation setting is only effective with Blackbody D65 star colors.")),
+                    new AppCoreSingleItem(LocalizationHelper.Localize("Tinted Illumination Saturation"), AppCore, CelestiaSettingSingleEntry.TintSaturation, 0, 1, 0.01f, localSettings, LocalizationHelper.Localize("Tinted illuminaton saturation setting is only effective with Blackbody D65 star colors.")),
 
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Smooth Lines"), AppCore, CelestiaSettingBooleanEntry.ShowSmoothLines, localSettings),
 
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Auto Mag"), AppCore, CelestiaSettingBooleanEntry.ShowAutoMag, localSettings),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Ambient Light"), AppCore, CelestiaSettingSingleEntry.AmbientLightLevel, 0, 0.99f, localSettings, 0.01f),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Faintest Stars"), AppCore, CelestiaSettingSingleEntry.FaintestVisible, 3, 12, localSettings),
-                    new AppCoreFloatItem(LocalizationHelper.Localize("Galaxy Brightness"), AppCore, CelestiaSettingSingleEntry.GalaxyBrightness, 0, 1, localSettings, 0.01f),
+                    new AppCoreSingleItem(LocalizationHelper.Localize("Ambient Light"), AppCore, CelestiaSettingSingleEntry.AmbientLightLevel, 0, 0.99f, 0.01f, localSettings),
+                    new AppCoreSingleItem(LocalizationHelper.Localize("Faintest Stars"), AppCore, CelestiaSettingSingleEntry.FaintestVisible, 3, 12, 1, localSettings),
+                    new AppCoreSingleItem(LocalizationHelper.Localize("Galaxy Brightness"), AppCore, CelestiaSettingSingleEntry.GalaxyBrightness, 0, 1, 0.01f, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Advanced")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Advanced")),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("HiDPI"), AppSettings, AppSettingBooleanEntry.UseFullDPI, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Anti-aliasing"), AppSettings, AppSettingBooleanEntry.EnableMSAA, localSettings),
                 };
@@ -189,80 +189,80 @@ namespace CelestiaUWP.Settings
             }
             else if (item.Tag == "region")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new AppCoreIntItem(LocalizationHelper.Localize("Info Display"), AppCore, CelestiaSettingInt32Entry.HudDetail, new []
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Info Display"), AppCore, CelestiaSettingInt32Entry.HudDetail, new []
                     {
-                        LocalizationHelper.Localize("None"),
-                        LocalizationHelper.Localize("Terse"),
-                        LocalizationHelper.Localize("Verbose")
+                        new OptionPair(0, LocalizationHelper.Localize("None")),
+                        new OptionPair(1, LocalizationHelper.Localize("Terse")),
+                        new OptionPair(2, LocalizationHelper.Localize("Verbose")),
                     }, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Time")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Time Zone"), AppCore, CelestiaSettingInt32Entry.TimeZone, new []
+                    new SettingHeaderItem(LocalizationHelper.Localize("Time")),
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Time Zone"), AppCore, CelestiaSettingInt32Entry.TimeZone, new []
                     {
-                        LocalizationHelper.Localize("Local Time"),
-                        LocalizationHelper.Localize("UTC"),
+                        new OptionPair(0, LocalizationHelper.Localize("Local Time")),
+                        new OptionPair(1, LocalizationHelper.Localize("UTC")),
                     }, localSettings),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Date Format"), AppCore, CelestiaSettingInt32Entry.DateFormat, new []
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Date Format"), AppCore, CelestiaSettingInt32Entry.DateFormat, new []
                     {
-                        LocalizationHelper.Localize("Default"),
-                        LocalizationHelper.Localize("YYYY MMM DD HH:MM:SS TZ"),
-                        LocalizationHelper.Localize("UTC Offset")
+                        new OptionPair(0, LocalizationHelper.Localize("Default")),
+                        new OptionPair(1, LocalizationHelper.Localize("YYYY MMM DD HH:MM:SS TZ")),
+                        new OptionPair(2, LocalizationHelper.Localize("UTC Offset")),
                     }, localSettings),
 
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Region")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Measure Units"), AppCore, CelestiaSettingInt32Entry.MeasurementSystem, new []
+                    new SettingHeaderItem(LocalizationHelper.Localize("Region")),
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Measure Units"), AppCore, CelestiaSettingInt32Entry.MeasurementSystem, new []
                     {
-                        LocalizationHelper.Localize("Metric"),
-                        LocalizationHelper.Localize("Imperial")
+                        new OptionPair(0, LocalizationHelper.Localize("Metric")),
+                        new OptionPair(1, LocalizationHelper.Localize("Imperial")),
                     }, localSettings),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Temperature Scale"), AppCore, CelestiaSettingInt32Entry.TemperatureScale, new []
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Temperature Scale"), AppCore, CelestiaSettingInt32Entry.TemperatureScale, new []
                     {
-                        LocalizationHelper.Localize("Kelvin"),
-                        LocalizationHelper.Localize("Celsius"),
-                        LocalizationHelper.Localize("Fahrenheit")
+                        new OptionPair(0, LocalizationHelper.Localize("Kelvin")),
+                        new OptionPair(1, LocalizationHelper.Localize("Celsius")),
+                        new OptionPair(2, LocalizationHelper.Localize("Fahrenheit")),
                     }, localSettings),
-                    new LanguageIntItem(LocalizationHelper.Localize("Language"), AppSettings, AvailableLanguages, localSettings),
+                    new LanguageInt32Item(LocalizationHelper.Localize("Language"), AppSettings, AvailableLanguages, localSettings),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
             else if (item.Tag == "gamepad")
             {
-                var actions = new string[]
+                var actions = new []
                 {
-                    LocalizationHelper.Localize("None"),
-                    LocalizationHelper.Localize("Travel Faster"),
-                    LocalizationHelper.Localize("Travel Slower"),
-                    LocalizationHelper.Localize("Stop"),
-                    LocalizationHelper.Localize("Reverse Travel Direction"),
-                    LocalizationHelper.Localize("Reverse Observer Orientation"),
-                    LocalizationHelper.Localize("Tap Center"),
-                    LocalizationHelper.Localize("Go to Object"),
-                    LocalizationHelper.Localize("Esc"),
-                    LocalizationHelper.Localize("Pitch Up"),
-                    LocalizationHelper.Localize("Pitch Down"),
-                    LocalizationHelper.Localize("Yaw Left"),
-                    LocalizationHelper.Localize("Yaw Right"),
-                    LocalizationHelper.Localize("Roll Left"),
-                    LocalizationHelper.Localize("Roll Right"),
+                    new OptionPair(0, LocalizationHelper.Localize("None")),
+                    new OptionPair(1, LocalizationHelper.Localize("Travel Faster")),
+                    new OptionPair(2, LocalizationHelper.Localize("Travel Slower")),
+                    new OptionPair(3, LocalizationHelper.Localize("Stop")),
+                    new OptionPair(4, LocalizationHelper.Localize("Reverse Travel Direction")),
+                    new OptionPair(5, LocalizationHelper.Localize("Reverse Observer Orientation")),
+                    new OptionPair(6, LocalizationHelper.Localize("Tap Center")),
+                    new OptionPair(7, LocalizationHelper.Localize("Go to Object")),
+                    new OptionPair(8, LocalizationHelper.Localize("Esc")),
+                    new OptionPair(9, LocalizationHelper.Localize("Pitch Up")),
+                    new OptionPair(10, LocalizationHelper.Localize("Pitch Down")),
+                    new OptionPair(11, LocalizationHelper.Localize("Yaw Left")),
+                    new OptionPair(12, LocalizationHelper.Localize("Yaw Right")),
+                    new OptionPair(13, LocalizationHelper.Localize("Roll Left")),
+                    new OptionPair(14, LocalizationHelper.Localize("Roll Right")),
                 };
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Buttons")),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("A / X"), AppSettings, AppSettingInt32Entry.GamepadRemapA, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("B / Circle"), AppSettings, AppSettingInt32Entry.GamepadRemapB, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("X / Square"), AppSettings, AppSettingInt32Entry.GamepadRemapX, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("Y / Triangle"), AppSettings, AppSettingInt32Entry.GamepadRemapY, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Up"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadUp, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Down"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadDown, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Left"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadLeft, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("D-pad Right"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadRight, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("LB / L1"), AppSettings, AppSettingInt32Entry.GamepadRemapLB, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("LT / L2"), AppSettings, AppSettingInt32Entry.GamepadRemapLT, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("RB / R1"), AppSettings, AppSettingInt32Entry.GamepadRemapRB, actions, localSettings),
-                    new AppSettingsIntItem(LocalizationHelper.Localize("RT / R2"), AppSettings, AppSettingInt32Entry.GamepadRemapRT, actions, localSettings),
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Thumbsticks")),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Buttons")),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("A / X"), AppSettings, AppSettingInt32Entry.GamepadRemapA, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("B / Circle"), AppSettings, AppSettingInt32Entry.GamepadRemapB, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("X / Square"), AppSettings, AppSettingInt32Entry.GamepadRemapX, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("Y / Triangle"), AppSettings, AppSettingInt32Entry.GamepadRemapY, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("D-pad Up"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadUp, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("D-pad Down"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadDown, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("D-pad Left"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadLeft, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("D-pad Right"), AppSettings, AppSettingInt32Entry.GamepadRemapDpadRight, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("LB / L1"), AppSettings, AppSettingInt32Entry.GamepadRemapLB, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("LT / L2"), AppSettings, AppSettingInt32Entry.GamepadRemapLT, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("RB / R1"), AppSettings, AppSettingInt32Entry.GamepadRemapRB, actions, localSettings),
+                    new AppSettingsInt32Item(LocalizationHelper.Localize("RT / R2"), AppSettings, AppSettingInt32Entry.GamepadRemapRT, actions, localSettings),
+                    new SettingHeaderItem(LocalizationHelper.Localize("Thumbsticks")),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Horizontally"), AppSettings, AppSettingBooleanEntry.GamepadInvertX, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Vertically"), AppSettings, AppSettingBooleanEntry.GamepadInvertY, localSettings),
                 };
@@ -270,14 +270,14 @@ namespace CelestiaUWP.Settings
             }
             else if (item.Tag == "advanced")
             {
-                var items = new SettingsCommonItem[]
+                var items = new SettingBaseItem[]
                 {
-                    new SettingsHeaderItem(LocalizationHelper.Localize("Security")),
-                    new AppCoreIntItem(LocalizationHelper.Localize("Script System Access Policy"), AppCore, CelestiaSettingInt32Entry.ScriptSystemAccessPolicy, new []
+                    new SettingHeaderItem(LocalizationHelper.Localize("Security")),
+                    new AppCoreInt32Item(LocalizationHelper.Localize("Script System Access Policy"), AppCore, CelestiaSettingInt32Entry.ScriptSystemAccessPolicy, new []
                     {
-                        LocalizationHelper.Localize("Ask"),
-                        LocalizationHelper.Localize("Allow"),
-                        LocalizationHelper.Localize("Deny")
+                        new OptionPair(0, LocalizationHelper.Localize("Ask")),
+                        new OptionPair(1, LocalizationHelper.Localize("Allow")),
+                        new OptionPair(2, LocalizationHelper.Localize("Deny")),
                     }, localSettings, LocalizationHelper.Localize("This policy decides whether Lua scripts have access to the files on the system or not.")),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);

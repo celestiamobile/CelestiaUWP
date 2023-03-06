@@ -142,6 +142,9 @@
     <ClInclude Include="JavascriptBridge.h">
       <DependentUpon>JavascriptBridge.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SettingItem.h">
+      <DependentUpon>SettingItem.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -174,6 +177,9 @@
     <ClCompile Include="JavascriptBridge.cpp">
       <DependentUpon>JavascriptBridge.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SettingItem.cpp">
+      <DependentUpon>SettingItem.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +192,7 @@
     <Midl Include="BookmarkHelper.idl" />
     <Midl Include="GamepadManager.idl" />
     <Midl Include="JavascriptBridge.idl" />
+    <Midl Include="SettingItem.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />
