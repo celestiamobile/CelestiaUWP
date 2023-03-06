@@ -62,12 +62,19 @@ namespace winrt::CelestiaAppComponent::implementation
         bool GamepadInvertY();
         void GamepadInvertY(bool);
 
+        void SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value);
+        bool GetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry);
+        void SetInt32(CelestiaAppComponent::AppSettingInt32Entry entry, int32_t value);
+        int32_t GetInt32(CelestiaAppComponent::AppSettingInt32Entry entry);
+        void SetString(CelestiaAppComponent::AppSettingStringEntry entry, hstring const& value);
+        hstring GetString(CelestiaAppComponent::AppSettingStringEntry entry);
+
         void Save(Windows::Storage::ApplicationDataContainer const& settings);
 
     private:
         bool useFullDPI{ true };
         bool enableMSAA{ false };
-        hstring languageOverride{ L""};
+        hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
 
         CelestiaComponent::CelestiaGamepadAction gamepadRemapA{ CelestiaComponent::CelestiaGamepadAction::MoveSlower };

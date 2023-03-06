@@ -44,18 +44,13 @@ namespace winrt::CelestiaAppComponent::implementation
 
     CelestiaAppComponent::RequestResult RequestResult::TryParse(hstring const& data)
     {
-        try
-        {
-            auto object = JsonObject::Parse(data);
-            // Get mandatory fields
-            auto status = (int32_t)object.GetNamedNumber(L"status");
-            auto infoObject = object.GetNamedObject(L"info");
-            // Get optional fields
-            auto detail = infoObject.GetNamedString(L"detail", L"");
-            auto reason = infoObject.GetNamedString(L"reason", L"");
-            return CelestiaAppComponent::RequestResult(CelestiaAppComponent::RequestResultInfo(detail, reason), status);
-        }
-        catch (hresult_error const&) {};
-        return nullptr;
+        auto object = JsonObject::Parse(data);
+        // Get mandatory fields
+        auto status = static_cast<int32_t>(object.GetNamedNumber(L"status"));
+        auto infoObject = object.GetNamedObject(L"info");
+        // Get optional fields
+        auto detail = infoObject.GetNamedString(L"detail", L"");
+        auto reason = infoObject.GetNamedString(L"reason", L"");
+        return CelestiaAppComponent::RequestResult(CelestiaAppComponent::RequestResultInfo(detail, reason), status);
     }
 }

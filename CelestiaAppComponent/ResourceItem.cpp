@@ -47,21 +47,16 @@ namespace winrt::CelestiaAppComponent::implementation
 
     CelestiaAppComponent::ResourceItem ResourceItem::TryParse(hstring const& data)
     {
-        try
-        {
-            auto object = JsonObject::Parse(data);
-            // Get mandatory fields
-            auto name = object.GetNamedString(L"name");
-            auto id = object.GetNamedString(L"id");
-            auto url = object.GetNamedString(L"item");
-            auto type = object.GetNamedString(L"type");
-            // Get optional fields
-            auto demoObjectName = object.GetNamedString(L"objectName", L"");
-            auto mainScriptName = object.GetNamedString(L"mainScriptName", L"");
-            return CelestiaAppComponent::ResourceItem(name, id, url, type, demoObjectName, mainScriptName);
-        }
-        catch (hresult_error const&) {};
-        return nullptr;
+        auto object = JsonObject::Parse(data);
+        // Get mandatory fields
+        auto name = object.GetNamedString(L"name");
+        auto id = object.GetNamedString(L"id");
+        auto url = object.GetNamedString(L"item");
+        auto type = object.GetNamedString(L"type");
+        // Get optional fields
+        auto demoObjectName = object.GetNamedString(L"objectName", L"");
+        auto mainScriptName = object.GetNamedString(L"mainScriptName", L"");
+        return CelestiaAppComponent::ResourceItem(name, id, url, type, demoObjectName, mainScriptName);
     }
 
     JsonObject ResourceItem::JSONRepresentation()
