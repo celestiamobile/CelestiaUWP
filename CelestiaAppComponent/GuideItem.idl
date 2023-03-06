@@ -1,0 +1,11 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass GuideItem
+    {
+        GuideItem(String title, String id);
+        String Title{ get; };
+        String ID{ get; };
+        static GuideItem TryParse(String data);
+    }
+}

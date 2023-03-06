@@ -1,0 +1,29 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass AppSettings
+    {
+        AppSettings(Windows.Storage.ApplicationDataContainer settings);
+        Boolean UseFullDPI;
+        Boolean EnableMSAA;
+        String LanguageOverride;
+        String LastNewsID;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapA;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapX;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapY;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapLT;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapRT;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapLB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapRB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadUp;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadDown;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadLeft;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadRight;
+
+        Boolean GamepadInvertX;
+        Boolean GamepadInvertY;
+
+        void Save(Windows.Storage.ApplicationDataContainer settings);
+    }
+}
