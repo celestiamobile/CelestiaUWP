@@ -9,10 +9,10 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,7 +51,16 @@ namespace CelestiaUWP
         private Uri URLToOpen;
         private bool ReadyForInput = false;
 
-        private readonly AppSettings AppSettings = AppSettings.Shared;
+        private AppSettings _appSetting;
+        private AppSettings AppSettings
+        {
+            get
+            {
+                if (_appSetting == null)
+                    _appSetting = new AppSettings(ApplicationData.Current.LocalSettings);
+                return _appSetting;
+            }
+        }
 
         private bool isXbox = false;
         // Used in renderer thread
@@ -245,12 +254,6 @@ namespace CelestiaUWP
             LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
         }
 
-        internal class GuideItem
-        {
-            public string id;
-            public string title;
-        }
-
         private async void OpenFileOrURL()
         {
             var scriptFile = ScriptFileToOpen;
@@ -294,10 +297,12 @@ namespace CelestiaUWP
                         var httpResponse = await httpClient.GetAsync(builder.Uri);
                         httpResponse.EnsureSuccessStatusCode();
                         var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                        var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
-                        if (requestResult.status != 0) return;
-                        var item = requestResult.Get<Addon.ResourceItem>();
-                        ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0),new Addon.AddonPageParameter(mAppCore, mRenderer, item));
+                        var requestResult = RequestResult.TryParse(httpResponseBody);
+                        if (requestResult.Status == 0)
+                        {
+                            var item = ResourceItem.TryParse(requestResult.Info.Detail);
+                            ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item));
+                        }
                     }
                     catch { }
                     return;
@@ -336,21 +341,25 @@ namespace CelestiaUWP
                     var httpResponse = await httpClient.GetAsync(builder.Uri);
                     httpResponse.EnsureSuccessStatusCode();
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
-                    if (requestResult.status != 0) return;
-                    var item = requestResult.Get<GuideItem>();
-                    var appSettings = AppSettings;
-                    if (item.id == null || appSettings.LastNewsID == item.id) return;
-                    var args = GenerateWebArgsForGuide(item.id);
-                    args.ACKReceiver = (id) =>
+                    var requestResult = RequestResult.TryParse(httpResponseBody);
+                    if (requestResult.Status == 0)
                     {
-                        if (id == item.id)
+                        var item = GuideItem.TryParse(requestResult.Info.Detail);
+                        var appSettings = AppSettings;
+                        if (item.ID != appSettings.LastNewsID)
                         {
-                            appSettings.LastNewsID = id;
-                            appSettings.Save();
+                            var args = GenerateWebArgsForGuide(item.ID);
+                            args.ACKReceiver = (id) =>
+                            {
+                                if (id == item.ID)
+                                {
+                                    appSettings.LastNewsID = id;
+                                    appSettings.Save(ApplicationData.Current.LocalSettings);
+                                }
+                            };
+                            ShowPage(typeof(SafeWebPage), new Size(450, 0), args);
                         }
-                    };
-                    ShowPage(typeof(SafeWebPage), new Size(450, 0), args);
+                    }
                 }
                 catch { }
             }

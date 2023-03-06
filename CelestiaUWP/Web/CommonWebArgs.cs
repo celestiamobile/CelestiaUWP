@@ -9,6 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using System;
 
@@ -21,6 +22,6 @@ namespace CelestiaUWP.Web
         public Uri Uri;
         public string[] MatchingQueryKeys;
         public string ContextDirectory;
-        public SendACK ACKReceiver;
+        public JavascriptMessageACKCallback ACKReceiver;
     }
 }

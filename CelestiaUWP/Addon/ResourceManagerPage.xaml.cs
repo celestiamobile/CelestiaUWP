@@ -9,6 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

@@ -1,0 +1,64 @@
+namespace CelestiaAppComponent
+{
+    delegate void JavascriptMessageACKCallback(String id);
+    delegate void JavascriptMessageShareCallback(String title, Windows.Foundation.Uri uri);
+
+    [default_interface]
+    runtimeclass JavascriptMessagePayload
+    {
+        String Operation{ get; };
+        String Content{ get; };
+        Int32 MinScriptVersion{ get; };
+        static JavascriptMessagePayload TryParse(String message);
+    }
+
+    [default_interface]
+    runtimeclass JavascriptMessageHandlerContext
+    {
+        CelestiaComponent.CelestiaAppCore AppCore{ get; };
+        CelestiaComponent.CelestiaRenderer Renderer{ get; };
+        String ContextDirectory{ get; };
+        JavascriptMessageACKCallback ACKCallback{ get; };
+        JavascriptMessageShareCallback ShareCallback{ get; };
+    }
+
+    [default_interface]
+    unsealed runtimeclass JavascriptMessageHandler
+    {
+        String Operation{ get; };
+        void ExecuteWithContent(String content, JavascriptMessageHandlerContext context);
+    }
+
+    [default_interface]
+    runtimeclass DummyHandler : JavascriptMessageHandler
+    {
+    }
+
+    [default_interface]
+    runtimeclass RunDemoHandler : JavascriptMessageHandler
+    {
+    }
+
+    [default_interface]
+    runtimeclass RunScriptHandler : JavascriptMessageHandler
+    {
+    }
+
+    [default_interface]
+    runtimeclass ShareURLHandler : JavascriptMessageHandler
+    {
+    }
+
+    [default_interface]
+    runtimeclass SendACKHandler : JavascriptMessageHandler
+    {
+    }
+
+    [default_interface]
+    runtimeclass JavascriptBridge
+    {
+        JavascriptBridge(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, String contextDirectory, JavascriptMessageACKCallback ACKCallback, JavascriptMessageShareCallback shareCallback);
+
+        void ReceivedMessage(String message);
+    }
+}
