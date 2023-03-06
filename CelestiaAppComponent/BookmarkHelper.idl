@@ -1,0 +1,11 @@
+import "BookmarkNode.idl";
+
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass BookmarkHelper
+    {
+        static Windows.Foundation.IAsyncOperation<Windows.Foundation.Collections.IObservableVector<BookmarkNode> > ReadBookmarks();
+        static Windows.Foundation.IAsyncAction WriteBookmarks(Windows.Foundation.Collections.IObservableVector<BookmarkNode> value);
+    }
+}

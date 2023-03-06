@@ -1,0 +1,16 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass ResourceItem
+    {
+        ResourceItem(String name, String id, String url, String type, String demoObjectName, String mainScriptName);
+        String Name{ get; };
+        String ID{ get; };
+        String URL{ get; };
+        String Type{ get; };
+        String DemoObjectName{ get; };
+        String MainScriptName{ get; };
+        static ResourceItem TryParse(String data);
+        Windows.Data.Json.JsonObject JSONRepresentation{ get; };
+    }
+}

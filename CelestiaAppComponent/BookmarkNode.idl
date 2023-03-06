@@ -1,0 +1,15 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass BookmarkNode
+    {
+        BookmarkNode(Windows.Data.Json.JsonObject jsonObject);
+        BookmarkNode(Boolean isFolder, String name, String url, Windows.Foundation.Collections.IObservableVector<BookmarkNode> children);
+        Boolean IsFolder;
+        String Name;
+        String URL;
+        Windows.Foundation.Collections.IObservableVector<BookmarkNode> Children;
+        Boolean HasErrors{ get; };
+        Windows.Data.Json.JsonObject JsonRepresentation{ get; };
+    }
+}

@@ -1,0 +1,9 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass LocalizationHelper
+    {
+        static String Locale;
+        static String Localize(String original);
+    }
+}

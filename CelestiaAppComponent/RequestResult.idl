@@ -1,0 +1,19 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass RequestResultInfo
+    {
+        RequestResultInfo(String detail, String reason);
+        String Detail{ get; };
+        String Reason{ get; };
+    }
+
+    [default_interface]
+    runtimeclass RequestResult
+    {
+        RequestResult(RequestResultInfo info, Int32 status);
+        RequestResultInfo Info{ get; };
+        Int32 Status{ get; };
+        static RequestResult TryParse(String data);
+    }
+}
