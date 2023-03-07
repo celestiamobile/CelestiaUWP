@@ -27,11 +27,13 @@ namespace CelestiaUWP.Addon
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
         public ResourceItem Item;
-        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item)
+        public ResourceManager ResourceManager;
+        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item, ResourceManager resourceManager)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
             this.Item = item;
+            this.ResourceManager = resourceManager;
         }
     }
 
@@ -41,6 +43,7 @@ namespace CelestiaUWP.Addon
         private CelestiaRenderer Renderer;
 
         private ResourceItem mItem;
+        private ResourceManager ResourceManager;
         ResourceItem Item
         {
             get => mItem;
@@ -51,11 +54,11 @@ namespace CelestiaUWP.Addon
             }
         }
 
-        ResourceManager.ItemState State
+        ResourceItemState State
         {
             get
             {
-                return ResourceManager.Shared.StateForItem(Item);
+                return ResourceManager.StateForItem(Item);
             }
         }
 
@@ -72,10 +75,11 @@ namespace CelestiaUWP.Addon
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
             Item = parameter.Item;
+            ResourceManager = parameter.ResourceManager;
 
-            ResourceManager.Shared.ProgressUpdate += Shared_ProgressUpdate;
-            ResourceManager.Shared.DownloadSuccess += Shared_DownloadSuccess;
-            ResourceManager.Shared.DownloadFailure += Shared_DownloadFailure;
+            ResourceManager.DownloadProgressUpdate += Shared_ProgressUpdate;
+            ResourceManager.DownloadSuccess += Shared_DownloadSuccess;
+            ResourceManager.DownloadFailure += Shared_DownloadFailure;
 
             UpdateState();
             ReloadItem();
@@ -93,24 +97,26 @@ namespace CelestiaUWP.Addon
             args.AppCore = AppCore;
             args.Uri = builder.Uri;
             args.MatchingQueryKeys = new string[] { "item" };
-            args.ContextDirectory = ResourceManager.Shared.ItemPath(Item);
+            args.ContextDirectory = ResourceManager.ItemPath(Item);
             WebContent.Navigate(typeof(SafeWebPage), args);
         }
 
-        private void Shared_DownloadFailure(ResourceItem item)
+        private void Shared_DownloadFailure(object sender, ResourceManagerDownloadFailureArgs args)
         {
+            if (args.Item.ID != mItem.ID) return;
             UpdateState();
         }
 
-        private void Shared_DownloadSuccess(ResourceItem item)
+        private void Shared_DownloadSuccess(object sender, ResourceManagerDownloadSuccessArgs args)
         {
+            if (args.Item.ID != mItem.ID) return;
             UpdateState();
         }
 
-        private void Shared_ProgressUpdate(ResourceItem item, double progress)
+        private void Shared_ProgressUpdate(object sender, ResourceManagerDownloadProgressArgs args)
         {
-            if (item.ID != Item.ID) return;
-            InstallProgressBar.Value = progress;
+            if (args.Item.ID != mItem.ID) return;
+            InstallProgressBar.Value = args.Progress;
         }
 
         private void UpdateState()
@@ -119,15 +125,15 @@ namespace CelestiaUWP.Addon
 
             switch (State)
             {
-                case ResourceManager.ItemState.Downloading:
+                case ResourceItemState.Downloading:
                     InstallProgressBar.Visibility = Visibility.Visible;
                     ActionButton.Content = LocalizationHelper.Localize("Cancel");
                     break;
-                case ResourceManager.ItemState.Installed:
+                case ResourceItemState.Installed:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Uninstall");
                     break;
-                case ResourceManager.ItemState.None:
+                case ResourceItemState.None:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Install");
                     break;
@@ -136,9 +142,9 @@ namespace CelestiaUWP.Addon
             if (Item.Type == "script")
             {
                 var mainScriptName = Item.MainScriptName;
-                if (State == ResourceManager.ItemState.Installed && mainScriptName != null)
+                if (State == ResourceItemState.Installed && mainScriptName != null)
                 {
-                    var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                    var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
                     if (File.Exists(path))
                     {
                         GoButton.Visibility = Visibility.Visible;
@@ -155,7 +161,7 @@ namespace CelestiaUWP.Addon
             }
             else
             {
-                if (State == ResourceManager.ItemState.Installed && Item.DemoObjectName != null && !AppCore.Simulation.Find(Item.DemoObjectName).IsEmpty)
+                if (State == ResourceItemState.Installed && Item.DemoObjectName != null && !AppCore.Simulation.Find(Item.DemoObjectName).IsEmpty)
                 {
                     GoButton.Visibility = Visibility.Visible;
                 }
@@ -190,20 +196,20 @@ namespace CelestiaUWP.Addon
             catch { }
         }
 
-        private void ActionButton_Click(object sender, RoutedEventArgs e)
+        private async void ActionButton_Click(object sender, RoutedEventArgs e)
         {
             switch (State)
             {
-                case ResourceManager.ItemState.Downloading:
-                    ResourceManager.Shared.Cancel(Item);
+                case ResourceItemState.Downloading:
+                    ResourceManager.Cancel(Item);
                     UpdateState();
                     break;
-                case ResourceManager.ItemState.Installed:
-                    ResourceManager.Shared.Uninstall(Item);
+                case ResourceItemState.Installed:
+                    await ResourceManager.Uninstall(Item);
                     UpdateState();
                     break;
-                case ResourceManager.ItemState.None:
-                    ResourceManager.Shared.DownloadItem(Item);
+                case ResourceItemState.None:
+                    ResourceManager.Download(Item);
                     UpdateState();
                     break;
             }
@@ -215,7 +221,7 @@ namespace CelestiaUWP.Addon
             {
                 var mainScriptName = Item.MainScriptName;
                 if (mainScriptName == null) return;
-                var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
                 if (File.Exists(path))
                 {
                     Renderer.EnqueueTask(() =>

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Storage;
@@ -44,7 +45,7 @@ namespace CelestiaUWP
         private Point? mLastRightMousePosition = null;
         private Point? mLastMiddleMousePosition = null;
 
-        private string mExtraAddonFolder;
+        private StorageFolder mExtraAddonFolder;
         private string mExtraScriptFolder;
 
         private Windows.Storage.StorageFile ScriptFileToOpen;
@@ -61,6 +62,8 @@ namespace CelestiaUWP
                 return _appSetting;
             }
         }
+
+        private CelestiaAppComponent.ResourceManager resourceManager = null;
 
         private bool isXbox = false;
         // Used in renderer thread
@@ -147,7 +150,7 @@ namespace CelestiaUWP
 
                 List<string> extraPaths = new List<string>();
                 if (mExtraAddonFolder != null)
-                    extraPaths.Add(mExtraAddonFolder);
+                    extraPaths.Add(mExtraAddonFolder.Path);
 
                 void progressCallback(string progress)
                 {
@@ -204,7 +207,7 @@ namespace CelestiaUWP
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
-                    Addon.ResourceManager.Shared.AddonFolderPath = mExtraAddonFolder;
+                    resourceManager = new CelestiaAppComponent.ResourceManager(mExtraAddonFolder);
                     SetUpGLViewInteractions();
                     PopulateMenuBar(resourcePath);
                 });
@@ -301,7 +304,7 @@ namespace CelestiaUWP
                         if (requestResult.Status == 0)
                         {
                             var item = ResourceItem.TryParse(requestResult.Info.Detail);
-                            ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item));
+                            ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item, resourceManager));
                         }
                     }
                     catch { }
@@ -402,8 +405,7 @@ namespace CelestiaUWP
             try
             {
                 var mainFolder = await folder.CreateFolderAsync("CelestiaResources", Windows.Storage.CreationCollisionOption.OpenIfExists);
-                var addonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
-                mExtraAddonFolder = addonFolder.Path;
+                mExtraAddonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
                 var scriptFolder = await mainFolder.CreateFolderAsync("scripts", Windows.Storage.CreationCollisionOption.OpenIfExists);
                 mExtraScriptFolder = scriptFolder.Path;
             } catch { }
@@ -1314,7 +1316,7 @@ namespace CelestiaUWP
 
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, resourceManager));
         }
 
         async void ShowAboutDialog()

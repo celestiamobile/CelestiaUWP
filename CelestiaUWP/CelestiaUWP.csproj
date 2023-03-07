@@ -135,7 +135,6 @@
     <Compile Include="Addon\ResourceItemPage.xaml.cs">
       <DependentUpon>ResourceItemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Addon\ResourceManager.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
