@@ -39,7 +39,7 @@ jobs:
       cd CelestiaUWP
       git config --global user.email "name@name.com"
       git config --global user.name "Name Name"
-      git cherry-pick origin/nuget-dependencies
+      git cherry-pick origin/nuget-dependencies-update
     displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
   - script: |
