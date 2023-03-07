@@ -4,9 +4,6 @@ resources:
     type: github
     endpoint: GithubAuth
     name: levinli303/Celestia
-  - repository: vcpkg-prebuilt
-    type: git
-    name: vcpkg-prebuilt
   - repository: CelestiaContent
     type: github
     endpoint: GithubAuth
