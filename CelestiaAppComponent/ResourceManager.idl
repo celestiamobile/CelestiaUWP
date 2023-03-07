@@ -1,0 +1,48 @@
+import "ResourceItem.idl";
+
+namespace CelestiaAppComponent
+{
+    enum ResourceItemState
+    {
+        None,
+        Downloading,
+        Installed,
+    };
+
+    [default_interface]
+    runtimeclass ResourceManagerDownloadProgressArgs
+    {
+        ResourceItem Item{ get; };
+        Double Progress{ get; };
+    }
+
+    [default_interface]
+    runtimeclass ResourceManagerDownloadSuccessArgs
+    {
+        ResourceItem Item{ get; };
+    }
+
+    [default_interface]
+    runtimeclass ResourceManagerDownloadFailureArgs
+    {
+        ResourceItem Item{ get; };
+    }
+
+    [default_interface]
+    runtimeclass ResourceManager
+    {
+        ResourceManager(Windows.Storage.StorageFolder parentFolder);
+
+        String ItemPath(ResourceItem item);
+        ResourceItemState StateForItem(ResourceItem item);
+        Windows.Foundation.IAsyncAction DownloadAsync(ResourceItem item);
+        void Download(ResourceItem item);
+        void Cancel(ResourceItem item);
+        Windows.Foundation.IAsyncAction Uninstall(ResourceItem item);
+        Windows.Foundation.IAsyncOperation<Windows.Foundation.Collections.IVector<ResourceItem> > InstalledItems();
+
+        event Windows.Foundation.EventHandler<ResourceManagerDownloadProgressArgs> DownloadProgressUpdate;
+        event Windows.Foundation.EventHandler<ResourceManagerDownloadSuccessArgs> DownloadSuccess;
+        event Windows.Foundation.EventHandler<ResourceManagerDownloadFailureArgs> DownloadFailure;
+    }
+}

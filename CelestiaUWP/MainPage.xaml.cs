@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Storage;
@@ -44,7 +45,8 @@ namespace CelestiaUWP
         private Point? mLastRightMousePosition = null;
         private Point? mLastMiddleMousePosition = null;
 
-        private string mExtraAddonFolder;
+        private StorageFolder mExtraAddonFolder = null;
+        private string mExtraAddonFolderPath = "";
         private string mExtraScriptFolder;
 
         private Windows.Storage.StorageFile ScriptFileToOpen;
@@ -61,6 +63,8 @@ namespace CelestiaUWP
                 return _appSetting;
             }
         }
+
+        private CelestiaAppComponent.ResourceManager resourceManager = null;
 
         private bool isXbox = false;
         // Used in renderer thread
@@ -146,8 +150,8 @@ namespace CelestiaUWP
                 CelestiaAppCore.InitGL();
 
                 List<string> extraPaths = new List<string>();
-                if (mExtraAddonFolder != null)
-                    extraPaths.Add(mExtraAddonFolder);
+                if (mExtraAddonFolderPath.Length > 0)
+                    extraPaths.Add(mExtraAddonFolderPath);
 
                 void progressCallback(string progress)
                 {
@@ -204,7 +208,8 @@ namespace CelestiaUWP
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
-                    Addon.ResourceManager.Shared.AddonFolderPath = mExtraAddonFolder;
+                    if (mExtraAddonFolder != null)
+                        resourceManager = new CelestiaAppComponent.ResourceManager(mExtraAddonFolder);
                     SetUpGLViewInteractions();
                     PopulateMenuBar(resourcePath);
                 });
@@ -280,7 +285,7 @@ namespace CelestiaUWP
             if (url != null)
             {
                 URLToOpen = null;
-                if (!isXbox && url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
+                if (!isXbox && resourceManager != null && url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
                 {
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var addon = query["item"];
@@ -301,7 +306,7 @@ namespace CelestiaUWP
                         if (requestResult.Status == 0)
                         {
                             var item = ResourceItem.TryParse(requestResult.Info.Detail);
-                            ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item));
+                            ShowPage(typeof(Addon.ResourceItemPage), new Size(450, 0), new Addon.AddonPageParameter(mAppCore, mRenderer, item, resourceManager));
                         }
                     }
                     catch { }
@@ -402,8 +407,8 @@ namespace CelestiaUWP
             try
             {
                 var mainFolder = await folder.CreateFolderAsync("CelestiaResources", Windows.Storage.CreationCollisionOption.OpenIfExists);
-                var addonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
-                mExtraAddonFolder = addonFolder.Path;
+                mExtraAddonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                mExtraAddonFolderPath = mExtraAddonFolder.Path;
                 var scriptFolder = await mainFolder.CreateFolderAsync("scripts", Windows.Storage.CreationCollisionOption.OpenIfExists);
                 mExtraScriptFolder = scriptFolder.Path;
             } catch { }
@@ -924,6 +929,10 @@ namespace CelestiaUWP
             {
                 AppendItem(item, title, (sender, arg) =>
                 {
+                    var flyout = (MenuFlyoutItem)sender;
+                    if (!flyout.IsLoaded)
+                        return;
+
                     mRenderer.EnqueueTask(() =>
                     {
                         mAppCore.CharEnter(input);
@@ -933,7 +942,7 @@ namespace CelestiaUWP
 
             var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
 
-            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H, IsEnabled = false });
+            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
             AppendItem(navigationItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
             {
                 ShowTourGuide();
@@ -958,13 +967,7 @@ namespace CelestiaUWP
                 };
             foreach (var action in actions)
             {
-                AppendItem(navigationItem, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
-                {
-                    mRenderer.EnqueueTask(() =>
-                    {
-                        mAppCore.CharEnter(action.Item2);
-                    });
-                }, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32), IsEnabled = false });
+                AppendCharEnterItem(navigationItem, action.Item1, action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
             AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
                 e) =>
@@ -983,11 +986,11 @@ namespace CelestiaUWP
             });
 
             var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L, IsEnabled = false });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K, IsEnabled = false });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space });
             AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Real Time"), 33);
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J, IsEnabled = false });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J });
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
@@ -997,10 +1000,10 @@ namespace CelestiaUWP
             });
 
             var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete, IsEnabled = false });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D, IsEnabled = false });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D });
 
             var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
             AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
@@ -1028,7 +1031,7 @@ namespace CelestiaUWP
                 builder.Query = queryItems.ToString();
                 _ = Launcher.LaunchUriAsync(builder.Uri);
             });
-            if (!isXbox)
+            if (!isXbox && resourceManager != null)
             {
                 AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
                 {
@@ -1314,7 +1317,7 @@ namespace CelestiaUWP
 
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, resourceManager));
         }
 
         async void ShowAboutDialog()

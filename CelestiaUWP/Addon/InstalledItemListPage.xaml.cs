@@ -10,7 +10,9 @@
 //
 
 using CelestiaAppComponent;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -21,7 +23,7 @@ namespace CelestiaUWP.Addon
     public sealed partial class InstalledItemListPage : Page, INotifyPropertyChanged
     {
         private ShowItemHandler Handler;
-
+        private ResourceManager ResourceManager;
         private ResourceItem[] mItems = new ResourceItem[] { };
 
         ResourceItem[] Items
@@ -43,12 +45,14 @@ namespace CelestiaUWP.Addon
         {
             var parameter = e.Parameter as InstalledListParameter;
             Handler = parameter.Handler;
+            ResourceManager = parameter.ResourceManager;
             LoadItems();
         }
 
         private async void LoadItems()
         {
-            Items = await ResourceManager.Shared.InstalledItems();
+            var items = await ResourceManager.InstalledItems();
+            Items = items.ToArray();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

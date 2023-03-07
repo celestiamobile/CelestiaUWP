@@ -83,6 +83,30 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgTriplet>x64-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgTriplet>x64-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <VcpkgTriplet>x86-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <VcpkgTriplet>x86-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <VcpkgTriplet>arm64-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <VcpkgTriplet>arm64-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <VcpkgTriplet>arm-uwp</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <VcpkgTriplet>arm-uwp</VcpkgTriplet>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -145,6 +169,9 @@
     <ClInclude Include="SettingItem.h">
       <DependentUpon>SettingItem.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <DependentUpon>ResourceManager.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -180,6 +207,9 @@
     <ClCompile Include="SettingItem.cpp">
       <DependentUpon>SettingItem.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <DependentUpon>ResourceManager.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +223,7 @@
     <Midl Include="GamepadManager.idl" />
     <Midl Include="JavascriptBridge.idl" />
     <Midl Include="SettingItem.idl" />
+    <Midl Include="ResourceManager.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />

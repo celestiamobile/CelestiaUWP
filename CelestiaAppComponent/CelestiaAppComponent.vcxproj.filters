@@ -11,14 +11,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="Class.idl" />
+    <Midl Include="LocalizationHelper.idl" />
+    <Midl Include="RequestResult.idl" />
+    <Midl Include="GuideItem.idl" />
+    <Midl Include="ResourceItem.idl" />
+    <Midl Include="AppSettings.idl" />
+    <Midl Include="BookmarkNode.idl" />
+    <Midl Include="BookmarkHelper.idl" />
+    <Midl Include="GamepadManager.idl" />
+    <Midl Include="JavascriptBridge.idl" />
+    <Midl Include="SettingItem.idl" />
+    <Midl Include="ResourceManager.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />
