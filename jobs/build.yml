@@ -11,8 +11,6 @@ jobs:
     arch: ${{ parameters.arch }}
 
   steps:
-  - checkout: vcpkg-prebuilt
-    fetchDepth: 1
   - checkout: Celestia
   - checkout: CelestiaContent
     fetchDepth: 1
@@ -41,7 +39,7 @@ jobs:
       cd CelestiaUWP
       git config --global user.email "name@name.com"
       git config --global user.name "Name Name"
-      git cherry-pick origin/nupkg-dependencies
+      git cherry-pick origin/nuget-dependencies
     displayName: 'Cherry-Pick Pre-built Nuget Changes'
 
   - script: |
@@ -74,15 +72,30 @@ jobs:
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
+  - task: DownloadPackage@1
+    inputs:
+      packageType: 'nuget'
+      feed: '9f9dcde1-dcba-4537-8214-71c8a03b99a0/018c4587-05c3-4ee5-885e-27362b084c67'
+      view:
+      definition: 'b1cdeeaf-bdb3-4129-b24e-c50396d00423'
+      version: '1.0.1'
+      extract: false
+      downloadPath: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Download Dependencies'
+
+  - script: |
+      ren celestia-uwp-dependencies.nupkg celestia-uwp-dependencies.1.0.1.nupkg
+    displayName: 'Rename NUPKG'
+
   - task: NuGetCommand@2
     inputs:
       command: custom
-      arguments: 'install vcpkg-export-20221022-105318 -source $(System.DefaultWorkingDirectory)/vcpkg-prebuilt -OutputDirectory CelestiaUWP/packages'
-    displayName: 'Install Pre-built Nuget Packages'
+      arguments: 'install celestia-uwp-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
+    displayName: 'Install Dependencies'
 
   - script: |
-      RD vcpkg-prebuilt /S /Q
-      RD CelestiaUWP\packages\vcpkg-export-20221022-105318.1.0.0\installed\x64-uwp\debug /S /Q
+      DEL celestia-uwp-dependencies.1.0.1.nupkg
+      RD CelestiaUWP\packages\celestia-uwp-dependencies.1.0.1\installed\x64-uwp\debug /S /Q
       RD Celestia\.git /S /Q
       RD CelestiaContent\.git /S /Q
       RD CelestiaUWP\.git /S /Q
