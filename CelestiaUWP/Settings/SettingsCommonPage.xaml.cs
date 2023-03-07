@@ -59,6 +59,9 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue) return;
                 CelestiaExtension.SetCelestiaBooleanValue(appCore, entry, value);
+                var key = CelestiaExtension.GetNameByBooleanEntry(entry);
+                if (key != null && key.Length > 0)
+                    localSettings.Values[key] = value;
             }
         }
 
@@ -140,6 +143,9 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue) return;
                 CelestiaExtension.SetCelestiaInt32Value(appCore, entry, value);
+                var key = CelestiaExtension.GetNameByInt32Entry(entry);
+                if (key != null && key.Length > 0)
+                    localSettings.Values[key] = value;
             }
         }
         public override string[] Options => itemTitles;
@@ -292,6 +298,9 @@ namespace CelestiaUWP.Settings
             {
                 if (!hasCorrectValue) return;
                 CelestiaExtension.SetCelestiaSingleValue(appCore, entry, (float)value);
+                var key = CelestiaExtension.GetNameBySingleEntry(entry);
+                if (key != null && key.Length > 0)
+                    localSettings.Values[key] = (float)value;
             }
         }
 
