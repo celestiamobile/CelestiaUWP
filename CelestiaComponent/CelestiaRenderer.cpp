@@ -19,7 +19,9 @@
 
 #include <EGL/eglext.h>
 #include <EGL/eglplatform.h>
-#include <angle_windowsstore.h>
+
+static const wchar_t EGLNativeWindowTypeProperty[] = L"EGLNativeWindowTypeProperty";
+static const wchar_t EGLRenderResolutionScaleProperty[] = L"EGLRenderResolutionScaleProperty";
 
 #define EGL_PLATFORM_ANGLE_ANGLE 0x3202
 #define EGL_PLATFORM_ANGLE_TYPE_ANGLE 0x3203
