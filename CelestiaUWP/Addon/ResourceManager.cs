@@ -53,10 +53,10 @@ namespace CelestiaUWP.Addon
 
         public ItemState StateForItem(ResourceItem item)
         {
-            if (Directory.Exists(ItemPath(item)))
-                return ItemState.Installed;
-            else if (CancellationTokens.ContainsKey(item.id))
+            if (CancellationTokens.ContainsKey(item.id))
                 return ItemState.Downloading;
+            else if (Directory.Exists(ItemPath(item)))
+                return ItemState.Installed;
             else
                 return ItemState.None;
         }

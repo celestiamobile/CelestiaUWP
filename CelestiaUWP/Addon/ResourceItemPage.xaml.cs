@@ -155,7 +155,7 @@ namespace CelestiaUWP.Addon
             }
             else
             {
-                if (State == ResourceManager.ItemState.Installed && Item.objectName != null && AppCore.Simulation.Find(Item.objectName).IsEmpty)
+                if (State == ResourceManager.ItemState.Installed && Item.objectName != null && !AppCore.Simulation.Find(Item.objectName).IsEmpty)
                 {
                     GoButton.Visibility = Visibility.Visible;
                 }
