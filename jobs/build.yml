@@ -17,14 +17,25 @@ jobs:
   - checkout: CelestiaContent
     fetchDepth: 1
   - checkout: CelestiaLocalization
-    fetchDepth: 1
   - checkout: self
 
   - script: |
       cd Celestia
-      git checkout origin/master
+      git checkout origin/$(Build.SourceBranchName)
       git submodule update --init thirdparty/miniaudio
+      cd ../CelestiaLocalization
+      git checkout origin/$(Build.SourceBranchName)
     displayName: 'Checkout Branch'
+    condition: ne( variables['Build.Reason'], 'PullRequest' )
+
+  - script: |
+      cd Celestia
+      git checkout origin/$(System.PullRequest.TargetBranch)
+      git submodule update --init thirdparty/miniaudio
+      cd ../CelestiaLocalization
+      git checkout origin/$(System.PullRequest.TargetBranch)
+    displayName: 'Checkout Branch (PR)'
+    condition: eq( variables['Build.Reason'], 'PullRequest' )
 
   - script: |
       cd CelestiaUWP
@@ -35,8 +46,15 @@ jobs:
 
   - script: |
       cd Celestia
-      git cherry-pick origin/angle
+      git cherry-pick origin/angle-$(Build.SourceBranchName)
     displayName: 'Cherry-Pick ANGLE Commit'
+    condition: ne( variables['Build.Reason'], 'PullRequest' )
+
+  - script: |
+      cd Celestia
+      git cherry-pick origin/angle-$(System.PullRequest.TargetBranch)
+    displayName: 'Cherry-Pick ANGLE Commit (PR)'
+    condition: eq( variables['Build.Reason'], 'PullRequest' )
 
   - pwsh: |
       (Get-Content CelestiaUWP\App.xaml.cs) -replace 'APPCENTER-APP-ID', '06fcb18f-a477-4b2d-9cd9-f1b37135c16b' | Out-File -encoding UTF8 CelestiaUWP\App.xaml.cs

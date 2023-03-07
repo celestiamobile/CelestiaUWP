@@ -18,6 +18,7 @@ resources:
 
 trigger:
 - main
+- develop
 
 stages:
 - stage: Build_MSIXUpload
