@@ -1162,7 +1162,7 @@ namespace winrt::CelestiaComponent::implementation
         lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         return JoinLines(lines);
     }
@@ -1182,16 +1182,16 @@ namespace winrt::CelestiaComponent::implementation
         lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
         dms = CelestiaDMS(sph.X());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         dms = CelestiaDMS(sph.Y());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %d¡ã %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
 
         return JoinLines(lines);
     }
