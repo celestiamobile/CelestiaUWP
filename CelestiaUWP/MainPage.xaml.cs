@@ -13,6 +13,7 @@ using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
-using Windows.ApplicationModel.Resources.Core;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Storage;
@@ -49,9 +49,10 @@ namespace CelestiaUWP
         private string mExtraAddonFolderPath = "";
         private string mExtraScriptFolder;
 
-        private Windows.Storage.StorageFile ScriptFileToOpen;
+        private StorageFile ScriptFileToOpen;
         private Uri URLToOpen;
         private bool ReadyForInput = false;
+        private bool DidShowXboxWelcomeMessage = false;
 
         private AppSettings _appSetting;
         private AppSettings AppSettings
@@ -363,10 +364,22 @@ namespace CelestiaUWP
                                 }
                             };
                             ShowPage(typeof(SafeWebPage), new Size(450, 0), args);
+                            return;
                         }
                     }
                 }
                 catch { }
+            }
+            if (isXbox && !DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
+            {
+                DidShowXboxWelcomeMessage = true;
+                var welcomeDialog = new WelcomeDialog();
+                await welcomeDialog.ShowAsync();
+                if (welcomeDialog.ShouldNotShowMessageAgain)
+                {
+                    AppSettings.IgnoreXboxWelcomeMessage = true;
+                    AppSettings.Save(ApplicationData.Current.LocalSettings);
+                }
             }
         }
 

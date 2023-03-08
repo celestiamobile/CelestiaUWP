@@ -19,6 +19,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto enableMSAAResult = propertySet.TryLookup(L"EnableMSAA");
         if (enableMSAAResult)
             enableMSAA = unbox_value_or(enableMSAAResult, enableMSAA);
+        auto ignoreXboxWelcomeMessageResult = propertySet.TryLookup(L"IgnoreXboxWelcomeMessage");
+        if (ignoreXboxWelcomeMessageResult)
+            ignoreXboxWelcomeMessage = unbox_value_or(ignoreXboxWelcomeMessageResult, ignoreXboxWelcomeMessage);
         auto languageOverrideResult = propertySet.TryLookup(L"LanguageOverride");
         if (languageOverrideResult)
             languageOverride = unbox_value_or(languageOverrideResult, languageOverride);
@@ -87,6 +90,16 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::EnableMSAA(bool value)
     {
         enableMSAA = value;
+    }
+
+    bool AppSettings::IgnoreXboxWelcomeMessage()
+    {
+        return ignoreXboxWelcomeMessage;
+    }
+
+    void AppSettings::IgnoreXboxWelcomeMessage(bool value)
+    {
+        ignoreXboxWelcomeMessage = value;
     }
 
     hstring AppSettings::LanguageOverride()
@@ -259,6 +272,9 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
             EnableMSAA(value);
             break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::IgnoreXboxWelcomeMessage:
+            IgnoreXboxWelcomeMessage(value);
+            break;
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
             GamepadInvertX(value);
             break;
@@ -278,6 +294,8 @@ namespace winrt::CelestiaAppComponent::implementation
             return UseFullDPI();
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
             return EnableMSAA();
+        case CelestiaAppComponent::AppSettingBooleanEntry::IgnoreXboxWelcomeMessage:
+            return IgnoreXboxWelcomeMessage();
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
             return GamepadInvertX();
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
@@ -397,6 +415,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
         settings.Values().Insert(L"EnableMSAA", box_value(enableMSAA));
+        settings.Values().Insert(L"IgnoreXboxWelcomeMessage", box_value(ignoreXboxWelcomeMessage));
         settings.Values().Insert(L"LanguageOverride", box_value(languageOverride));
         settings.Values().Insert(L"LastNewsID", box_value(lastNewsID));
         settings.Values().Insert(L"GamepadRemapA", box_value(static_cast<int>(gamepadRemapA)));
