@@ -14,6 +14,9 @@ namespace winrt::CelestiaAppComponent::implementation
         bool EnableMSAA();
         void EnableMSAA(bool);
 
+        bool IgnoreXboxWelcomeMessage();
+        void IgnoreXboxWelcomeMessage(bool);
+
         hstring LanguageOverride();
         void LanguageOverride(hstring const&);
 
@@ -74,6 +77,7 @@ namespace winrt::CelestiaAppComponent::implementation
     private:
         bool useFullDPI{ true };
         bool enableMSAA{ false };
+        bool ignoreXboxWelcomeMessage{ false };
         hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
 

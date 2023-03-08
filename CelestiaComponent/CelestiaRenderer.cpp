@@ -50,40 +50,6 @@ namespace winrt::CelestiaComponent::implementation
         InitializeConditionVariable(&resumeCond);
     }
 
-    // ANGLE by default chooses a non opaque config, which is an issue for Celestia
-    bool ChooseOpaqueConfig(EGLDisplay dpy, const EGLint* attrib_list, EGLConfig* config)
-    {
-        EGLint configCount = 0;
-        // Get config count
-        if (!eglChooseConfig(dpy, attrib_list, nullptr, 0, &configCount) || configCount == 0)
-            return false;
-        auto configs = new EGLConfig[configCount];
-        // Get all the configs
-        EGLint newConfigCount = 0;
-        if (!eglChooseConfig(dpy, attrib_list, configs, configCount, &newConfigCount) || newConfigCount == 0)
-        {
-            delete[] configs;
-            return false;
-        }
-
-        // Find the first config that has an alpha size of 0
-        for (int i = 0; i < newConfigCount; i++)
-        {
-            EGLint alphaSize = -1;
-            if (eglGetConfigAttrib(dpy, configs[i], EGL_ALPHA_SIZE, &alphaSize) && alphaSize == 0)
-            {
-                *config = configs[i];
-                delete[] configs;
-                return true;
-            }
-        }
-
-        // If no config with alpha size of 0 was found, just return the first config
-        *config = configs[0];
-        delete[] configs;
-        return true;
-    }
-
     bool CelestiaRenderer::Initialize()
     {
         if (context == EGL_NO_CONTEXT)
@@ -187,9 +153,10 @@ namespace winrt::CelestiaComponent::implementation
                 }
             }
 
+            EGLint numConfigs;
             if (enableMultisample) {
                 // Try to enable multisample but fallback if not available
-                if (!ChooseOpaqueConfig(display, multisampleAttribs, &config) && !ChooseOpaqueConfig(display, attribs, &config))
+                if (!eglChooseConfig(display, multisampleAttribs, &config, 1, &numConfigs) && !eglChooseConfig(display, attribs, &config, 1, &numConfigs))
                 {
                     printf("eglChooseConfig() returned error %d", eglGetError());
                     Destroy();
@@ -197,7 +164,7 @@ namespace winrt::CelestiaComponent::implementation
                 }
             }
             else {
-                if (!ChooseOpaqueConfig(display, attribs, &config))
+                if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
                 {
                     printf("eglChooseConfig() returned error %d", eglGetError());
                     Destroy();
@@ -214,7 +181,7 @@ namespace winrt::CelestiaComponent::implementation
 
             const EGLint contextAttributes[] =
             {
-                    EGL_CONTEXT_CLIENT_VERSION, 2,
+                    EGL_CONTEXT_CLIENT_VERSION, 3,
                     EGL_NONE
             };
 

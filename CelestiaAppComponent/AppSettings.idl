@@ -4,6 +4,7 @@ namespace CelestiaAppComponent
     {
         UseFullDPI,
         EnableMSAA,
+        IgnoreXboxWelcomeMessage,
         GamepadInvertX,
         GamepadInvertY,
     };
@@ -36,6 +37,7 @@ namespace CelestiaAppComponent
         AppSettings(Windows.Storage.ApplicationDataContainer settings);
         Boolean UseFullDPI;
         Boolean EnableMSAA;
+        Boolean IgnoreXboxWelcomeMessage;
         String LanguageOverride;
         String LastNewsID;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapA;
