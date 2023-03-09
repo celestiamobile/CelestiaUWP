@@ -52,6 +52,27 @@ namespace CelestiaComponent
         Button8 = 7,
     };
 
+    enum Cursor
+    {
+        Arrow = 0,
+        UpArrow = 1,
+        Cross = 2,
+        InvertedCross = 3,
+        Wait = 4,
+        Busy = 5,
+        Ibeam = 6,
+        SizeVer = 7,
+        SizeHor = 8,
+        SizeBDiag = 9,
+        SizeFDiag = 10,
+        SizeAll = 11,
+        SplitV = 12,
+        SplitH = 13,
+        PointingHand = 14,
+        Forbidden = 15,
+        WhatsThis = 16,
+    };
+
     delegate void CelestiaLoadCallback(String status);
 
     [default_interface]
@@ -60,6 +81,18 @@ namespace CelestiaComponent
         Single X{ get; };
         Single Y{ get; };
         CelestiaSelection Selection{ get; };
+    }
+
+    [default_interface]
+    runtimeclass ChangeCursorArgs
+    {
+        Cursor Cursor{ get; };
+    }
+
+    [default_interface]
+    runtimeclass FatalErrorArgs
+    {
+        String Message{ get; };
     }
 
     [default_interface]
@@ -219,5 +252,7 @@ namespace CelestiaComponent
         Int32 ScriptSystemAccessPolicy;
 
         event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
+        event Windows.Foundation.EventHandler<ChangeCursorArgs> ChangeCursor;
+        event Windows.Foundation.EventHandler<FatalErrorArgs> FatalError;
     }
 }

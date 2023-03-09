@@ -13,6 +13,8 @@
 #include "CelestiaSimulation.h"
 #include "CelestiaScript.h"
 #include "ShowContextMenuArgs.g.h"
+#include "ChangeCursorArgs.g.h"
+#include "FatalErrorArgs.g.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
@@ -30,6 +32,22 @@ namespace winrt::CelestiaComponent::implementation
         float x;
         float y;
         CelestiaComponent::CelestiaSelection selection;
+    };
+
+    struct ChangeCursorArgs : ChangeCursorArgsT<ChangeCursorArgs>
+    {
+        ChangeCursorArgs(CelestiaComponent::Cursor cursor) : cursor(cursor) {}
+        CelestiaComponent::Cursor Cursor() { return cursor; }
+    private:
+        CelestiaComponent::Cursor cursor;
+    };
+
+    struct FatalErrorArgs : FatalErrorArgsT<FatalErrorArgs>
+    {
+        FatalErrorArgs(hstring const& message) : message(message) {}
+        hstring Message() { return message; }
+    private:
+        hstring message;
     };
 
     struct CelestiaAppCore : CelestiaAppCoreT<CelestiaAppCore>
@@ -300,7 +318,15 @@ namespace winrt::CelestiaComponent::implementation
         event_token ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const&);
         void ShowContextMenu(event_token const&);
 
+        event_token ChangeCursor(Windows::Foundation::EventHandler<CelestiaComponent::ChangeCursorArgs> const&);
+        void ChangeCursor(event_token const&);
+
+        event_token FatalError(Windows::Foundation::EventHandler<CelestiaComponent::FatalErrorArgs> const&);
+        void FatalError(event_token const&);
+
         event<Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs>> showContextMenuEvent;
+        event<Windows::Foundation::EventHandler<CelestiaComponent::ChangeCursorArgs>> changeCursorEvent;
+        event<Windows::Foundation::EventHandler<CelestiaComponent::FatalErrorArgs>> fatalErrorEvent;
 
     private:
         CelestiaCore* core;

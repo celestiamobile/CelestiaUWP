@@ -41,9 +41,9 @@ namespace CelestiaUWP
         private readonly CelestiaAppCore mAppCore;
         private CelestiaRenderer mRenderer;
 
-        private Point? mLastLeftMousePosition = null;
-        private Point? mLastRightMousePosition = null;
-        private Point? mLastMiddleMousePosition = null;
+        private Point? lastMousePosition = null;
+        private Point? mousePressedGlobalPosition = null;
+        private CelestiaMouseButton? currentPressedButton = null;
 
         private StorageFolder mExtraAddonFolder = null;
         private string mExtraAddonFolderPath = "";
@@ -53,6 +53,7 @@ namespace CelestiaUWP
         private Uri URLToOpen;
         private bool ReadyForInput = false;
         private bool DidShowXboxWelcomeMessage = false;
+        private bool isMouseHidden = false;
 
         private AppSettings _appSetting;
         private AppSettings AppSettings
@@ -429,6 +430,8 @@ namespace CelestiaUWP
 
         void SetUpGLViewInteractions()
         {
+            // mAppCore.ChangeCursor += AppCore_ChangeCursor; // Not useful for now since we only capture pointer on press
+            mAppCore.FatalError += AppCore_FatalError;
             mAppCore.ShowContextMenu += (_, contextMenuArgs) =>
             {
                 var x = contextMenuArgs.X;
@@ -586,31 +589,41 @@ namespace CelestiaUWP
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
-                    var position = args.GetCurrentPoint((UIElement)sender).Position;
-                    position = new Point(position.X * scale, position.Y * scale);
-                    if (properties.IsLeftButtonPressed)
+                    CelestiaMouseButton? newButtonPressed = null;
+                    if (properties.IsLeftButtonPressed && currentPressedButton != CelestiaMouseButton.Left)
                     {
-                        mLastLeftMousePosition = position;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Left);
-                        });
+                        newButtonPressed = CelestiaMouseButton.Left;
                     }
-                    if (properties.IsRightButtonPressed)
+                    else if (properties.IsRightButtonPressed && currentPressedButton != CelestiaMouseButton.Right)
                     {
-                        mLastRightMousePosition = position;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Right);
-                        });
+                        newButtonPressed = CelestiaMouseButton.Right;
                     }
-                    if (properties.IsMiddleButtonPressed)
+                    if (properties.IsMiddleButtonPressed && currentPressedButton != CelestiaMouseButton.Middle)
                     {
-                        mLastMiddleMousePosition = position;
+                        newButtonPressed = CelestiaMouseButton.Middle; 
+                    }
+                    if (newButtonPressed != null)
+                    {
+                        var oldButton = currentPressedButton;
+                        currentPressedButton = newButtonPressed;
+                        var position = args.GetCurrentPoint((UIElement)sender).Position;
+                        var scaledPosition = new Point(position.X * scale, position.Y * scale);
+
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonDown((float)position.X, (float)position.Y, CelestiaMouseButton.Middle);
+                            if (oldButton != null)
+                                mAppCore.MouseButtonUp((float)scaledPosition.X, (float)scaledPosition.Y, (CelestiaMouseButton)oldButton);
+                            mAppCore.MouseButtonDown((float)scaledPosition.X, (float)scaledPosition.Y, (CelestiaMouseButton)newButtonPressed);
                         });
+
+                        lastMousePosition = position;
+                        mousePressedGlobalPosition = CoreWindow.GetForCurrentThread().PointerPosition;
+                        if (!isMouseHidden)
+                        {
+                            isMouseHidden = true;
+                            GLView.CapturePointer(args.Pointer);
+                            CoreWindow.GetForCurrentThread().PointerCursor = null;
+                        }
                     }
                 }
             };
@@ -618,48 +631,20 @@ namespace CelestiaUWP
             {
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
-                    var properties = args.GetCurrentPoint((UIElement)sender).Properties;
-                    var position = args.GetCurrentPoint((UIElement)sender).Position;
-                    position = new Point(position.X * scale, position.Y * scale);
-                    if (properties.IsLeftButtonPressed && mLastLeftMousePosition != null)
-                    {
-                        var lastPos = mLastLeftMousePosition;
-                        var oldPos = (Point)lastPos;
+                    if (lastMousePosition == null || currentPressedButton == null || mousePressedGlobalPosition == null)
+                        return;
 
-                        var x = position.X - oldPos.X;
-                        var y = position.Y - oldPos.Y;
-                        mLastLeftMousePosition = position;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Left);
-                        });
-                    }
-                    if (properties.IsRightButtonPressed && mLastRightMousePosition != null)
+                    var newPosition = args.GetCurrentPoint((UIElement)sender).Position;
+                    var scaledPosition = new Point(newPosition.X * scale, newPosition.Y * scale);
+                    var oldScaledPosition = new Point(((Point)lastMousePosition).X * scale, ((Point)lastMousePosition).Y * scale);
+                    var x = scaledPosition.X - oldScaledPosition.X;
+                    var y = scaledPosition.Y - oldScaledPosition.Y;
+                    var button = (CelestiaMouseButton)currentPressedButton;
+                    mRenderer.EnqueueTask(() =>
                     {
-                        var lastPos = mLastRightMousePosition;
-                        var oldPos = (Point)lastPos;
-
-                        var x = position.X - oldPos.X;
-                        var y = position.Y - oldPos.Y;
-                        mLastRightMousePosition = position;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Right);
-                        });
-                    }
-                    if (properties.IsMiddleButtonPressed && mLastMiddleMousePosition != null)
-                    {
-                        var lastPos = mLastMiddleMousePosition;
-                        var oldPos = (Point)lastPos;
-
-                        var x = position.X - oldPos.X;
-                        var y = position.Y - oldPos.Y;
-                        mLastMiddleMousePosition = position;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseMove((float)x, (float)y, CelestiaMouseButton.Middle);
-                        });
-                    }
+                        mAppCore.MouseMove((float)x, (float)y, button);
+                    });
+                    CoreWindow.GetForCurrentThread().PointerPosition = (Point)mousePressedGlobalPosition;
                 }
             };
             GLView.PointerReleased += (sender, args) =>
@@ -667,31 +652,39 @@ namespace CelestiaUWP
                 if (args.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
                 {
                     var properties = args.GetCurrentPoint((UIElement)sender).Properties;
-                    var position = args.GetCurrentPoint((UIElement)sender).Position;
-                    position = new Point(position.X * scale, position.Y * scale);
-                    if (mLastLeftMousePosition != null && !properties.IsLeftButtonPressed)
+                    bool buttonReleased = false;
+                    if (currentPressedButton == CelestiaMouseButton.Left)
                     {
-                        mLastLeftMousePosition = null;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Left);
-                        });
+                        buttonReleased = !properties.IsLeftButtonPressed;
                     }
-                    if (mLastRightMousePosition != null && !properties.IsRightButtonPressed)
+                    else if (currentPressedButton == CelestiaMouseButton.Right)
                     {
-                        mLastRightMousePosition = null;
-                        mRenderer.EnqueueTask(() =>
-                        {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Right);
-                        });
+                        buttonReleased = !properties.IsRightButtonPressed;
                     }
-                    if (mLastMiddleMousePosition != null && !properties.IsMiddleButtonPressed)
+                    else if (currentPressedButton == CelestiaMouseButton.Middle)
                     {
-                        mLastMiddleMousePosition = null;
+                        buttonReleased = !properties.IsMiddleButtonPressed;
+                    }
+
+                    if (buttonReleased)
+                    {
+                        var position = args.GetCurrentPoint((UIElement)sender).Position;
+                        var scaledPosition = new Point(position.X * scale, position.Y * scale);
+                        var button = (CelestiaMouseButton)currentPressedButton;
                         mRenderer.EnqueueTask(() =>
                         {
-                            mAppCore.MouseButtonUp((float)position.X, (float)position.Y, CelestiaMouseButton.Middle);
+                            mAppCore.MouseButtonUp((float)scaledPosition.X, (float)scaledPosition.Y, button);
                         });
+                        currentPressedButton = null;
+                        lastMousePosition = null;
+                        mousePressedGlobalPosition = null;
+
+                        if (isMouseHidden)
+                        {
+                            isMouseHidden = false;
+                            GLView.ReleasePointerCapture(args.Pointer);
+                            CoreWindow.GetForCurrentThread().PointerCursor = new CoreCursor(CoreCursorType.Arrow, 0);
+                        }
                     }
                 }
             };
@@ -766,6 +759,76 @@ namespace CelestiaUWP
                 }
                 args.Handled = true;
             };
+        }
+
+        private void AppCore_ChangeCursor(object sender, ChangeCursorArgs e)
+        {
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                var window = CoreWindow.GetForCurrentThread();
+                switch (e.Cursor)
+                {
+                    case Cursor.Arrow:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 0);
+                        break;
+                    case Cursor.UpArrow:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.UpArrow, 0);
+                        break;
+                    case Cursor.Cross:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Cross, 0);
+                        break;
+                    case Cursor.InvertedCross:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Cross, 0);
+                        break;
+                    case Cursor.Wait:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Wait, 0);
+                        break;
+                    case Cursor.Busy:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Wait, 0);
+                        break;
+                    case Cursor.Ibeam:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.IBeam, 0);
+                        break;
+                    case Cursor.SizeVer:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 0);
+                        break;
+                    case Cursor.SizeHor:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeWestEast, 0);
+                        break;
+                    case Cursor.SizeBDiag:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 0);
+                        break;
+                    case Cursor.SizeFDiag:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 0);
+                        break;
+                    case Cursor.SizeAll:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeAll, 0);
+                        break;
+                    case Cursor.SplitV:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeWestEast, 0);
+                        break;
+                    case Cursor.SplitH:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 0);
+                        break;
+                    case Cursor.PointingHand:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Hand, 0);
+                        break;
+                    case Cursor.Forbidden:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.UniversalNo, 0);
+                        break;
+                    case Cursor.WhatsThis:
+                        window.PointerCursor = new CoreCursor(CoreCursorType.Help, 0);
+                        break;
+                }
+            });
+        }
+
+        private void AppCore_FatalError(object sender, FatalErrorArgs e)
+        {
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                ContentDialogHelper.ShowAlert(this, e.Message);
+            });
         }
 
         private void FocusHelperControl_KeyUp(object sender, KeyRoutedEventArgs args)
