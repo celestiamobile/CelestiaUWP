@@ -595,20 +595,6 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utilities\ContentDialogHelper.h">
-      <DependentUpon>Utilities\ContentDialogHelper.cpp</DependentUpon>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Utilities\ContentDialogHelper.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="Utilities\ContentDialogHelper.idl">
-      <SubType>Code</SubType>
-      <DependentUpon>Utilities\ContentDialogHelper.cpp</DependentUpon>
-    </Midl>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Utilities\WindowHelper.h">
       <DependentUpon>Utilities\WindowHelper.cpp</DependentUpon>
     </ClInclude>

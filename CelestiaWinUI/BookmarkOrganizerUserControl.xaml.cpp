@@ -25,6 +25,11 @@ namespace winrt::CelestiaWinUI::implementation
         GoButton().Content(box_value(LocalizationHelper::Localize(L"Go")));
         RenameButton().Content(box_value(LocalizationHelper::Localize(L"Rename")));
         ReadBookmarks();
+
+        Unloaded([this](IInspectable const&, RoutedEventArgs const&)
+            {
+                WriteBookmarks();
+            });
     }
 
     Collections::IObservableVector<BookmarkNode> BookmarkOrganizerUserControl::Bookmarks()
