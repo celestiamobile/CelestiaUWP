@@ -35,6 +35,7 @@ namespace winrt::CelestiaWinUI::implementation
         std::vector<hstring> availableLanguages;
         bool isMouseCaptured{ false };
         std::optional<Windows::Foundation::Point> lastMousePosition{ std::nullopt };
+        std::optional<Windows::Foundation::Point> lastMouseGlobalPosition{ std::nullopt };
         std::optional<CelestiaComponent::CelestiaMouseButton> currentPressedButton{ std::nullopt };
         Windows::Storage::StorageFile scriptFileToOpen{ nullptr };
         Windows::Foundation::Uri urlToOpen{ nullptr };

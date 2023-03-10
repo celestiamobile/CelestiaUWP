@@ -1288,6 +1288,10 @@ namespace winrt::CelestiaWinUI::implementation
                     });
 
                 lastMousePosition = position;
+                POINT globalPosition;
+                if (GetCursorPos(&globalPosition))
+                    lastMouseGlobalPosition = Point(static_cast<float>(globalPosition.x), static_cast<float>(globalPosition.y));
+
                 if (!isMouseCaptured)
                 {
                     GLView().CapturePointer(args.Pointer());
@@ -1316,7 +1320,21 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     appCore.MouseMove((float)x, (float)y, button);
                 });
-            lastMousePosition = position;
+
+            if (lastMouseGlobalPosition.has_value())
+            {
+                int globalX = static_cast<int>(lastMouseGlobalPosition.value().X);
+                int globalY = static_cast<int>(lastMouseGlobalPosition.value().Y);
+                if (!SetCursorPos(globalX, globalY))
+                {
+                    lastMouseGlobalPosition = std::nullopt;
+                    lastMousePosition = position;
+                }
+            }
+            else
+            {
+                lastMousePosition = position;
+            }
         }
     }
 
@@ -1351,6 +1369,7 @@ namespace winrt::CelestiaWinUI::implementation
                     });
                 lastMousePosition = std::nullopt;
                 currentPressedButton = std::nullopt;
+                lastMouseGlobalPosition = std::nullopt;
 
                 if (isMouseCaptured)
                 {
