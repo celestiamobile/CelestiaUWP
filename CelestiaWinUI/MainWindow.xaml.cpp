@@ -556,8 +556,7 @@ namespace winrt::CelestiaWinUI::implementation
         AppendItem(helpItem, LocalizationHelper::Localize(L"About Celestia"), [this](IInspectable const&, RoutedEventArgs const&)
             {
                 AboutDialog dialog{ defaultResourcePath + L"\\AUTHORS", defaultResourcePath + L"\\TRANSLATORS" };
-                dialog.XamlRoot(Content().XamlRoot());
-                dialog.ShowAsync();
+                ContentDialogHelper::ShowContentDialogAsync(Content(), dialog);
             });
 
         MenuBar().Items().Append(fileItem);
@@ -588,8 +587,7 @@ namespace winrt::CelestiaWinUI::implementation
     IAsyncAction MainWindow::ShowTimeSetting(DateTime const& original)
     {
         TimeSettingDialog dialog{ original };
-        dialog.XamlRoot(Content().XamlRoot());
-        if (co_await dialog.ShowAsync() == ContentDialogResult::Primary)
+        if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) == ContentDialogResult::Primary)
         {
             auto date = dialog.DisplayDate();
             renderer.EnqueueTask([this, date]()
@@ -602,8 +600,7 @@ namespace winrt::CelestiaWinUI::implementation
     IAsyncAction MainWindow::ShowGotoObject()
     {
         GotoObjectDialog dialog{ appCore, renderer };
-        dialog.XamlRoot(Content().XamlRoot());
-        if (co_await dialog.ShowAsync() == ContentDialogResult::Primary)
+        if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) == ContentDialogResult::Primary)
         {
             auto objectName = dialog.Text();
             auto latitude = dialog.Latitude();
@@ -843,13 +840,11 @@ namespace winrt::CelestiaWinUI::implementation
             }
             catch (hresult_error const&) {}
         }
-
         if (isXbox && !didShowXboxWelcomeMessage && !AppSettings().IgnoreXboxWelcomeMessage())
         {
             didShowXboxWelcomeMessage = true;
             CelestiaWinUI::WelcomeDialog welcomeDialog;
-            welcomeDialog.XamlRoot(Content().XamlRoot());
-            co_await welcomeDialog.ShowAsync();
+            co_await ContentDialogHelper::ShowContentDialogAsync(Content(), welcomeDialog);
             if (welcomeDialog.ShouldNotShowMessageAgain())
             {
                 AppSettings().IgnoreXboxWelcomeMessage(true);
@@ -1011,8 +1006,7 @@ namespace winrt::CelestiaWinUI::implementation
     fire_and_forget MainWindow::ShowObserverMode()
     {
         ObserverModeDialog dialog{ appCore, renderer };
-        dialog.XamlRoot(Content().XamlRoot());
-        if (co_await dialog.ShowAsync() != ContentDialogResult::Primary) co_return;
+        if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) != ContentDialogResult::Primary) co_return;
         auto coordinateSystem = dialog.SelectedCoordinateSystem();
         auto referenceObjectName = dialog.ReferenceObjectName();
         auto targetObjectName = dialog.TargetObjectName();
@@ -1168,7 +1162,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                 std::vector<MenuFlyoutItemBase> browserMenuItems;
                 CelestiaBrowserItem browserItem = { appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false };
-                if (!browserItem.Children().empty())
+                if (!browserItem.Children().Size() == 0)
                 {
                     for (const auto& child : browserItem.Children())
                     {
@@ -1669,7 +1663,7 @@ namespace winrt::CelestiaWinUI::implementation
                         });
                     children.push_back(selectItem);
                 }
-                if (!item.Children().empty())
+                if (!item.Children().Size() == 0)
                 {
                     children.push_back(MenuFlyoutSeparator());
 

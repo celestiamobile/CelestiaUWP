@@ -19,6 +19,7 @@
                     <TreeView.ItemTemplate>
                         <DataTemplate x:DataType="local:BrowserItem">
                             <TreeViewItem ItemsSource="{x:Bind Children}"
+                               IsExpanded="{x:Bind Item.IsExpanded, Mode=TwoWay}"
                                Content="{x:Bind ItemName}"/>
                         </DataTemplate>
                     </TreeView.ItemTemplate>

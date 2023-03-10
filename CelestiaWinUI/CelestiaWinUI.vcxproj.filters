@@ -32,7 +32,6 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Utilities\ContentDialogHelper.cpp" />
     <ClCompile Include="Utilities\WindowHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
