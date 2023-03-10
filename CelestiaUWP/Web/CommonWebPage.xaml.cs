@@ -37,7 +37,7 @@ namespace CelestiaUWP.Web
             matchingQueryKeys = parameter.MatchingQueryKeys;
             bridge = new JavascriptBridge(parameter.AppCore, parameter.Renderer, parameter.ContextDirectory, parameter.ACKReceiver, (title, uri) =>
             {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ShowShare(title, uri);
                 });

@@ -215,7 +215,7 @@ namespace CelestiaUWP.Addon
             }
         }
 
-        private void GoButton_Click(object sender, RoutedEventArgs e)
+        private async void GoButton_Click(object sender, RoutedEventArgs e)
         {
             if (Item.Type == "script")
             {
@@ -237,7 +237,7 @@ namespace CelestiaUWP.Addon
             var selection = AppCore.Simulation.Find(Item.DemoObjectName);
             if (selection.IsEmpty)
             {
-                ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+                await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
                 return;
             }
 

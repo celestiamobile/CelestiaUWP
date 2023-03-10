@@ -85,11 +85,10 @@ namespace CelestiaUWP
 
         private async void CreateNewFolder()
         {
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("Folder name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Folder name"));
+            if (text.Length > 0)
             {
-                var bookmark = new BookmarkNode(true, dialog.Text, "", BookmarkHelper.CreateEmptyList());
+                var bookmark = new BookmarkNode(true, text, "", BookmarkHelper.CreateEmptyList());
                 InsertBookmarkAtSelection(bookmark);
             }
         }
@@ -112,16 +111,15 @@ namespace CelestiaUWP
         {
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name"));
+            if (text.Length > 0)
             {
                 if (parent == null)
                 {
                     var index = Bookmarks.IndexOf(bookmark);
                     if (index >= 0)
                     {
-                        bookmark.Name = dialog.Text;
+                        bookmark.Name = text;
                         Bookmarks[index] = bookmark;
                         WriteBookmarks();
                     }
@@ -131,7 +129,7 @@ namespace CelestiaUWP
                     var index = parent.Children.IndexOf(bookmark);
                     if (index >= 0)
                     {
-                        bookmark.Name = dialog.Text;
+                        bookmark.Name = text;
                         parent.Children[index] = bookmark;
                         WriteBookmarks();
                     }

@@ -154,7 +154,6 @@
     </Compile>
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
-    <Compile Include="Helper\ContentDialogHelper.cs" />
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
@@ -179,9 +178,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Addon\ResourceManagerPage.xaml.cs">
       <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TextInputDialog.xaml.cs">
-      <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeSettingDialog.xaml.cs">
       <DependentUpon>TimeSettingDialog.xaml</DependentUpon>
@@ -331,10 +327,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Addon\ResourceManagerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TextInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

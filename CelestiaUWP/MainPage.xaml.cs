@@ -170,9 +170,9 @@ namespace CelestiaUWP
                     if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
                     {
                         // Try to restore originial settings
-                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                         {
-                            ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration."));
+                            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration."));
                         });
                         Directory.SetCurrentDirectory(defaultResourcePath);
                         CelestiaAppCore.SetLocaleDirectory(defaultResourcePath + "\\locale", locale);
@@ -375,7 +375,7 @@ namespace CelestiaUWP
             {
                 DidShowXboxWelcomeMessage = true;
                 var welcomeDialog = new WelcomeDialog();
-                await welcomeDialog.ShowAsync();
+                await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
                 if (welcomeDialog.ShouldNotShowMessageAgain)
                 {
                     AppSettings.IgnoreXboxWelcomeMessage = true;
@@ -825,9 +825,9 @@ namespace CelestiaUWP
 
         private void AppCore_FatalError(object sender, FatalErrorArgs e)
         {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
-                ContentDialogHelper.ShowAlert(this, e.Message);
+                await ContentDialogHelper.ShowAlert(this, e.Message);
             });
         }
 
@@ -1205,13 +1205,9 @@ namespace CelestiaUWP
 
         async void ShowSelectObject()
         {
-            if (HasContentDialogOpen()) return;
-
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("Object name:"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Object name:"));
+            if (text.Length > 0)
             {
-                var text = dialog.Text;
                 var selection = mAppCore.Simulation.Find(text);
                 if (selection.IsEmpty)
                 {
@@ -1228,10 +1224,8 @@ namespace CelestiaUWP
         }
         async void ShowGotoObject()
         {
-            if (HasContentDialogOpen()) return;
-
             var dialog = new GotoObjectDialog(mAppCore, mRenderer);
-            var result = await dialog.ShowAsync();
+            var result = await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
             if (result == ContentDialogResult.Primary)
             {
                 var objectName = dialog.Text;
@@ -1255,28 +1249,15 @@ namespace CelestiaUWP
             }
         }
 
-        bool HasContentDialogOpen()
+        async void ShowObjectNotFound()
         {
-            var openedpopups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popup in openedpopups)
-            {
-                if (popup.Child is ContentDialog)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        void ShowObjectNotFound()
-        {
-            ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
         }
 
         async void ShowObserverMode()
         {
             var dialog = new ObserverModeDialog(mAppCore, mRenderer);
-            if (await dialog.ShowAsync() != ContentDialogResult.Primary) return;
+            if (await ContentDialogHelper.ShowContentDialogAsync(this, dialog) != ContentDialogResult.Primary) return;
             var coordinateSystem = dialog.SelectedCoordinateSystem;
             var referenceName = dialog.ReferenceObjectName;
             var targetName = dialog.TargetObjectName;
@@ -1300,8 +1281,6 @@ namespace CelestiaUWP
 
         async void ShowTimeSetting()
         {
-            if (HasContentDialogOpen()) return;
-
             var time = DateTimeOffset.Now;
             try
             {
@@ -1310,7 +1289,7 @@ namespace CelestiaUWP
             catch {} // Catch all exceptions
 
             var dialog = new TimeSettingDialog(time);
-            var result = await dialog.ShowAsync();
+            var result = await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
             if (result == ContentDialogResult.Primary)
             {
                 var date = dialog.DisplayDate;
@@ -1382,13 +1361,11 @@ namespace CelestiaUWP
 
         async void ShowOpenGLInfo(string Info)
         {
-            if (HasContentDialogOpen()) return;
-
             var dialog = new InfoDialog(Info)
             {
                 Title = LocalizationHelper.Localize("OpenGL Info")
             };
-            await dialog.ShowAsync();
+            await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
         }
 
         void ShowAddonManagement()
@@ -1398,10 +1375,8 @@ namespace CelestiaUWP
 
         async void ShowAboutDialog()
         {
-            if (HasContentDialogOpen()) return;
-
             var dialog = new AboutDialog(defaultResourcePath + "\\AUTHORS", defaultResourcePath + "\\TRANSLATORS");
-            await dialog.ShowAsync();
+            await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
         }
 
         async Task<string> GetLocale(string LocalePath)
@@ -1549,9 +1524,9 @@ namespace CelestiaUWP
             });
         }
 
-        private void ShowScreenshotFailure()
+        private async void ShowScreenshotFailure()
         {
-            ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Failed in capturing screenshot."));
+            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Failed in capturing screenshot."));
         }
 
         private async void SaveScreenshot(string path)

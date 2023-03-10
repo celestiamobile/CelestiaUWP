@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="completion_source.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="LocalizationHelper.h">
       <DependentUpon>LocalizationHelper.idl</DependentUpon>
@@ -171,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <DependentUpon>ResourceManager.idl</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="ContentDialogHelper.h">
+      <DependentUpon>ContentDialogHelper.idl</DependentUpon>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +214,9 @@
     <ClCompile Include="ResourceManager.cpp">
       <DependentUpon>ResourceManager.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="ContentDialogHelper.cpp">
+      <DependentUpon>ContentDialogHelper.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +231,7 @@
     <Midl Include="JavascriptBridge.idl" />
     <Midl Include="SettingItem.idl" />
     <Midl Include="ResourceManager.idl" />
+    <Midl Include="ContentDialogHelper.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />
