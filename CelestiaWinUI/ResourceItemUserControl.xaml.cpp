@@ -23,11 +23,12 @@ namespace winrt::CelestiaWinUI::implementation
         resourceManager.DownloadFailure({ get_weak(), &ResourceItemUserControl::ResourceManager_DownloadFailure });
         resourceManager.DownloadProgressUpdate({ get_weak(), &ResourceItemUserControl::ResourceManager_DownloadProgressUpdate });
 
+        bool isXbox = Windows::System::Profile::AnalyticsInfo::VersionInfo().DeviceFamily() == L"Windows.Xbox";
         auto uriString = hstring(L"https://celestia.mobi/resources/item") + L"?" + Windows::Web::Http::HttpFormUrlEncodedContent(
             {
                 {L"lang", LocalizationHelper::Locale()},
                 {L"item", item.ID()},
-                {L"platform", L"uwp"},
+                {L"platform", isXbox ? L"xbox" : L"uwp"},
                 {L"titleVisibility", L"visible"},
                 {L"transparentBackground", L"1"}
             }

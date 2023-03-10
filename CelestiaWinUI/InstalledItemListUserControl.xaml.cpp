@@ -8,6 +8,7 @@ using namespace winrt;
 using namespace CelestiaAppComponent;
 using namespace Windows::Foundation;
 using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::UI::Xaml::Controls;
 
 namespace winrt::CelestiaWinUI::implementation
 {
@@ -40,11 +41,9 @@ namespace winrt::CelestiaWinUI::implementation
         items.ReplaceAll(std::vector<CelestiaAppComponent::ResourceItem>{ installedItems.begin(), installedItems.end() });
     }
 
-    void InstalledItemListUserControl::ListView_SelectionChanged(IInspectable const&, Input::TappedRoutedEventArgs const& args)
+    void InstalledItemListUserControl::ItemList_ItemClick(IInspectable const&, ItemClickEventArgs const& args)
     {
-        auto source = args.OriginalSource().try_as<FrameworkElement>();
-        if (source == nullptr) return;
-        auto item = source.DataContext().try_as<CelestiaAppComponent::ResourceItem>();
+        auto item = args.ClickedItem().try_as<CelestiaAppComponent::ResourceItem>();
         if (item != nullptr)
             itemSelectedEvent(*this, make<InstalledItemListItemSelectedArgs>(item.as<CelestiaAppComponent::ResourceItem>()));
     }

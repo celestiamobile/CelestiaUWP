@@ -33,8 +33,9 @@ namespace winrt::CelestiaWinUI::implementation
         hstring extraAddonFolderPath{ L"" };
         hstring extraScriptFolder{ L"" };
         std::vector<hstring> availableLanguages;
-        bool isMouseCaptured{ false };
+        bool isMouseHidden{ false };
         std::optional<Windows::Foundation::Point> lastMousePosition{ std::nullopt };
+        std::optional<Windows::Foundation::Point> lastMouseGlobalPosition{ std::nullopt };
         std::optional<CelestiaComponent::CelestiaMouseButton> currentPressedButton{ std::nullopt };
         Windows::Storage::StorageFile scriptFileToOpen{ nullptr };
         Windows::Foundation::Uri urlToOpen{ nullptr };
