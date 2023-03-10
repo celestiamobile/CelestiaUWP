@@ -25,7 +25,7 @@ namespace winrt::CelestiaWinUI::implementation
         event_token ItemSelected(Windows::Foundation::EventHandler<CelestiaWinUI::InstalledItemListItemSelectedArgs> const&);
         void ItemSelected(event_token const&);
 
-        void ListView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::TappedRoutedEventArgs const&);
+        void ItemList_ItemClick(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::ItemClickEventArgs const&);
 
     private:
         CelestiaAppComponent::ResourceManager resourceManager;

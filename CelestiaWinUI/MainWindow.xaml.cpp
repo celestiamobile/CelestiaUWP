@@ -434,10 +434,6 @@ namespace winrt::CelestiaWinUI::implementation
         MenuBarItem navigationItem;
         navigationItem.Title(LocalizationHelper::Localize(L"Navigation"));
         AppendCharEnterItem(navigationItem, LocalizationHelper::Localize(L"Select Sol"), 104, appCore, renderer, VirtualKey::H);
-        AppendItem(navigationItem, LocalizationHelper::Localize(L"Tour Guide"), [this](IInspectable const&, RoutedEventArgs const&)
-            {
-                ShowTourGuide();
-            });
         AppendItem(navigationItem, LocalizationHelper::Localize(L"Select Object"), [this](IInspectable const&, RoutedEventArgs const&)
             {
                 ShowSelectObject();
@@ -462,17 +458,24 @@ namespace winrt::CelestiaWinUI::implementation
         {
             AppendCharEnterItem(navigationItem, LocalizationHelper::Localize(name), code, appCore, renderer, (VirtualKey)(code - 32));
         }
+        navigationItem.Items().Append(MenuFlyoutSeparator());
+
         AppendItem(navigationItem, LocalizationHelper::Localize(L"Flight Mode"), [this](IInspectable const&, RoutedEventArgs const&)
             {
                 ShowObserverMode();
             });
-        navigationItem.Items().Append(MenuFlyoutSeparator());
 
-        AppendItem(navigationItem, LocalizationHelper::Localize(L"Star Browser"), [this](IInspectable const&, RoutedEventArgs const&)
+        MenuBarItem toolsItem;
+        toolsItem.Title(LocalizationHelper::Localize(L"Tools"));
+        AppendItem(toolsItem, LocalizationHelper::Localize(L"Tour Guide"), [this](IInspectable const&, RoutedEventArgs const&)
+            {
+                ShowTourGuide();
+            });
+        AppendItem(toolsItem, LocalizationHelper::Localize(L"Star Browser"), [this](IInspectable const&, RoutedEventArgs const&)
             {
                 ShowBrowser();
             });
-        AppendItem(navigationItem, LocalizationHelper::Localize(L"Eclipse Finder"), [this](IInspectable const&, RoutedEventArgs const&)
+        AppendItem(toolsItem, LocalizationHelper::Localize(L"Eclipse Finder"), [this](IInspectable const&, RoutedEventArgs const&)
             {
                 ShowEclipseFinder();
             });
@@ -519,7 +522,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         MenuBarItem helpItem;
         helpItem.Title(LocalizationHelper::Localize(L"Help"));
-        AppendCharEnterItem(helpItem, LocalizationHelper::Localize(L"Run Demo"), 100, appCore, renderer);
+        AppendCharEnterItem(helpItem, LocalizationHelper::Localize(L"Run Demo"), 100, appCore, renderer, VirtualKey::D);
         helpItem.Items().Append(MenuFlyoutSeparator());
         AppendItem(helpItem, LocalizationHelper::Localize(L"OpenGL Info"), [this](IInspectable const&, RoutedEventArgs const&)
             {
@@ -562,6 +565,7 @@ namespace winrt::CelestiaWinUI::implementation
         MenuBar().Items().Append(fileItem);
         MenuBar().Items().Append(navigationItem);
         MenuBar().Items().Append(timeItem);
+        MenuBar().Items().Append(toolsItem);
         MenuBar().Items().Append(viewItem);
         MenuBar().Items().Append(bookmarkItem);
         MenuBar().Items().Append(helpItem);
@@ -677,14 +681,28 @@ namespace winrt::CelestiaWinUI::implementation
     Uri GetURIForGuide(hstring const& guide)
     {
         using namespace Windows::Web::Http;
+        bool isXbox = Windows::System::Profile::AnalyticsInfo::VersionInfo().DeviceFamily() == L"Windows.Xbox";
         auto query = HttpFormUrlEncodedContent(
             {
                 {L"lang", LocalizationHelper::Locale()},
                 {L"guide", guide},
-                {L"platform", L"uwp"},
+                {L"platform", isXbox ? L"xbox" : L"uwp"},
                 {L"transparentBackground", L"1"},
             });
         return Uri(hstring(L"https://celestia.mobi/resources/guide") + L"?" + query.ToString());
+    }
+
+    Uri GetURIForPath(hstring const& path)
+    {
+        using namespace Windows::Web::Http;
+        bool isXbox = Windows::System::Profile::AnalyticsInfo::VersionInfo().DeviceFamily() == L"Windows.Xbox";
+        auto query = HttpFormUrlEncodedContent(
+            {
+                {L"lang", LocalizationHelper::Locale()},
+                {L"platform", isXbox ? L"xbox" : L"uwp"},
+                {L"transparentBackground", L"1"},
+            });
+        return Uri(hstring(L"https://celestia.mobi") + path + L"?" + query.ToString());
     }
 
     IAsyncAction MainWindow::OpenFileOrURL()
@@ -795,6 +813,31 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
         if (!isXbox) {
+            if (!AppSettings().OnboardMessageDisplayed())
+            {
+                AppSettings().OnboardMessageDisplayed(true);
+                AppSettings().Save(ApplicationData::Current().LocalSettings());
+                const hstring id = L"Welcome";
+                auto trackedWindow = WindowHelper::GetTrackedWindow(id);
+                if (trackedWindow != nullptr)
+                {
+                    trackedWindow.Activate();
+                    co_return;
+                }
+                Window window;
+                window.Title(L"Celestia");
+                SafeWebUserControl userControl{ CelestiaWinUI::CommonWebUserControlArgs(GetURIForPath(L"/help/welcome"), single_threaded_vector<hstring>(), appCore, renderer, L"", nullptr, [weak_window{make_weak(window)}]()
+                    {
+                        return weak_window.get();
+                    }) };
+                window.Content(userControl);
+                WindowHelper::SetWindowIcon(window);
+                WindowHelper::ResizeWindow(window, 400, 600);
+                WindowHelper::TrackWindow(window, id);
+                window.Activate();
+                co_return;
+            }
+
             HttpClient client;
             HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()} });
             auto latestGuideURL = hstring(L"https://celestia.mobi/api") + L"/resource/latest" + L"?" + query.ToString();
@@ -1282,10 +1325,18 @@ namespace winrt::CelestiaWinUI::implementation
                     });
 
                 lastMousePosition = position;
-                if (!isMouseCaptured)
+                POINT globalPosition;
+                if (GetCursorPos(&globalPosition))
+                    lastMouseGlobalPosition = Point(static_cast<float>(globalPosition.x), static_cast<float>(globalPosition.y));
+                else
+                    lastMouseGlobalPosition = std::nullopt;
+
+                if (!isMouseHidden)
                 {
+                    GLView().ProtectedCursor(Microsoft::UI::Input::InputSystemCursor::Create(Microsoft::UI::Input::InputSystemCursorShape::Arrow));
+                    GLView().ProtectedCursor().Close();
                     GLView().CapturePointer(args.Pointer());
-                    isMouseCaptured = true;
+                    isMouseHidden = true;
                 }
             }
         }
@@ -1310,7 +1361,21 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     appCore.MouseMove((float)x, (float)y, button);
                 });
-            lastMousePosition = position;
+
+            if (lastMouseGlobalPosition.has_value())
+            {
+                int globalX = static_cast<int>(lastMouseGlobalPosition.value().X);
+                int globalY = static_cast<int>(lastMouseGlobalPosition.value().Y);
+                if (!SetCursorPos(globalX, globalY))
+                {
+                    lastMouseGlobalPosition = std::nullopt;
+                    lastMousePosition = position;
+                }
+            }
+            else
+            {
+                lastMousePosition = position;
+            }
         }
     }
 
@@ -1345,11 +1410,13 @@ namespace winrt::CelestiaWinUI::implementation
                     });
                 lastMousePosition = std::nullopt;
                 currentPressedButton = std::nullopt;
+                lastMouseGlobalPosition = std::nullopt;
 
-                if (isMouseCaptured)
+                if (isMouseHidden)
                 {
+                    GLView().ProtectedCursor(Microsoft::UI::Input::InputSystemCursor::Create(Microsoft::UI::Input::InputSystemCursorShape::Arrow));
                     GLView().ReleasePointerCapture(args.Pointer());
-                    isMouseCaptured = false;
+                    isMouseHidden = false;
                 }
             }
         }

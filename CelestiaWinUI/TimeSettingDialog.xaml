@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Spacing="6">
+    <StackPanel Orientation="Vertical" Spacing="{StaticResource VerticalSpacing}">
         <DatePicker Date="{x:Bind Date, Mode=TwoWay}" CalendarIdentifier="GregorianCalendar" x:Name="DatePicker"></DatePicker>
         <TimePicker Time="{x:Bind Time, Mode=TwoWay}" ClockIdentifier="24HourClock"></TimePicker>
         <Button Content="Set to Current Time" Click="CurrentTimeButton_Click" x:Name="CurrentTimeButton"/>

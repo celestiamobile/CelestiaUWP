@@ -13,9 +13,9 @@
                 <NavigationViewItem Content="{x:Bind TabName, Mode=OneTime}"/>
             </DataTemplate>
         </NavigationView.MenuItemTemplate>
-        <RelativePanel>
+        <RelativePanel Margin="{StaticResource Margin}">
             <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="16, 16, 16, 0" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
                     <TreeView.ItemTemplate>
                         <DataTemplate x:DataType="app:BrowserItem">
                             <TreeViewItem ItemsSource="{x:Bind BindableChildren}"
@@ -24,8 +24,7 @@
                         </DataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-                <StackPanel Orientation="Horizontal" Spacing="8" Margin="16" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource HorizontalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
             </RelativePanel>
         </RelativePanel>
     </NavigationView>
