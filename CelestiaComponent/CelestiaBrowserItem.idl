@@ -23,6 +23,7 @@ namespace CelestiaComponent
         CelestiaBrowserItemChildrenProvider Provider{ get; };
         String Name{ get; };
         CelestiaAstroObject Object{ get; };
+        Boolean IsExpanded;
         Windows.Foundation.Collections.IObservableVector<CelestiaBrowserItem> Children{ get; };
     }
 }

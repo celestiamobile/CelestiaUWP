@@ -12,6 +12,7 @@
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -41,17 +42,7 @@ namespace CelestiaUWP
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Stars"), "star"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("DSOs"), "dso"),
         };
-        private CelestiaBrowserItem[] Root
-        {
-            get => root;
-            set
-            {
-                root = value;
-                OnPropertyChanged("Root");
-            }
-        }
-
-        private CelestiaBrowserItem[] root = new CelestiaBrowserItem[] { };
+        private ObservableCollection<CelestiaBrowserItem> Root = new ObservableCollection<CelestiaBrowserItem>();
 
         public BrowserPage()
         {
@@ -189,9 +180,8 @@ namespace CelestiaUWP
                 mDSORoot = dsoCategories.ToArray();
             }
 
-            Root = mSolRoot;
-
-            var actions = new (string, short)[] {
+            var actions = new (string, short)[]
+                {
                     ("Go", 103),
                     ("Follow", 102),
                     ("Sync Orbit", 121),
@@ -224,27 +214,39 @@ namespace CelestiaUWP
                 };
                 ButtonStack.Children.Add(button);
             }
+
             Nav.SelectedItem = NavigationItems[0];
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            if (mSolRoot == null)
-                return;
+            SetRoot(((Helper.NavigationViewItem)args.SelectedItem).Tag);
+        }
 
-            switch (((Helper.NavigationViewItem)args.SelectedItem).Tag)
+        private void SetRoot(string tag)
+        {
+            CelestiaBrowserItem[] items = null;
+            switch (tag)
             {
                 case "sol":
-                    Root = mSolRoot;
+                    items = mSolRoot;
                     break;
                 case "star":
-                    Root = mStarRoot;
+                    items = mStarRoot;
                     break;
                 case "dso":
-                    Root = mDSORoot;
+                    items = mDSORoot;
                     break;
                 default:
                     break;
+            }
+            Root.Clear();
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    Root.Add(item);
+                }
             }
         }
 

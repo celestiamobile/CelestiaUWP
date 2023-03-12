@@ -65,6 +65,16 @@ namespace winrt::CelestiaComponent::implementation
         return obj;
     }
 
+    bool CelestiaBrowserItem::IsExpanded()
+    {
+        return expanded;
+    }
+
+    void CelestiaBrowserItem::IsExpanded(bool value)
+    {
+        expanded = value;
+    }
+
     Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> CelestiaBrowserItem::Children()
     {
         if (!areChildrenLoaded && provider != nullptr)

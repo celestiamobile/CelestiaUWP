@@ -28,6 +28,8 @@ namespace winrt::CelestiaComponent::implementation
 
         hstring Name();
         CelestiaComponent::CelestiaAstroObject Object();
+        bool IsExpanded();
+        void IsExpanded(bool);
 
         Windows::Foundation::Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> Children();
 
@@ -37,6 +39,7 @@ namespace winrt::CelestiaComponent::implementation
         Windows::Foundation::Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> children;
         bool areChildrenLoaded;
         bool sorted;
+        bool expanded{ false };
     };
 }
 

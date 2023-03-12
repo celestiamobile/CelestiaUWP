@@ -19,7 +19,7 @@
                 <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Root, Mode=OneWay}" Margin="16, 16, 16, 0" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="celestia:CelestiaBrowserItem">
-                            <muxc:TreeViewItem ItemsSource="{x:Bind Children}"
+                            <muxc:TreeViewItem IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}" ItemsSource="{x:Bind Children}"
                                Content="{x:Bind Name}"/>
                         </DataTemplate>
                     </muxc:TreeView.ItemTemplate>

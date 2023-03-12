@@ -27,6 +27,12 @@ namespace CelestiaUWP
             DeleteButton.Content = LocalizationHelper.Localize("Delete");
             GoButton.Content = LocalizationHelper.Localize("Go");
             RenameButton.Content = LocalizationHelper.Localize("Rename");
+            Unloaded += BookmarkOrganizerPage_Unloaded;
+        }
+
+        private void BookmarkOrganizerPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WriteBookmarks();
         }
 
         public void InsertBookmarkAtSelection(BookmarkNode bookmark)
