@@ -148,7 +148,6 @@
     <Compile Include="Web\CommonWebPage.xaml.cs">
       <DependentUpon>CommonWebPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookmarkBasePage.cs" />
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>

@@ -67,7 +67,15 @@ namespace winrt::CelestiaAppComponent::implementation
         Windows::UI::Xaml::Interop::IBindableVector,
         Windows::UI::Xaml::Interop::IBindableIterable>
     {
-        ObservableVector(Windows::Foundation::Collections::IObservableVector<T> const& store) : store(store) {}
+        ObservableVector(Windows::Foundation::Collections::IObservableVector<T> const& store) : store(store)
+        {
+            store.VectorChanged([weak_this{ get_weak() }](Windows::Foundation::IInspectable const&, Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->changed(*strong_this, args);
+                });
+        }
 
         event_token VectorChanged(Windows::UI::Xaml::Interop::BindableVectorChangedEventHandler const& handler)
         {

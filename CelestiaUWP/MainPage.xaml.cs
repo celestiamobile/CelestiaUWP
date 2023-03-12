@@ -1043,7 +1043,7 @@ namespace CelestiaUWP
                 };
             foreach (var action in actions)
             {
-                AppendCharEnterItem(navigationItem, action.Item1, action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
+                AppendCharEnterItem(navigationItem, LocalizationHelper.Localize(action.Item1), action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
             AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
                 e) =>
@@ -1092,7 +1092,7 @@ namespace CelestiaUWP
             });
 
             var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help"));
-            AppendCharEnterItem(helpItem, LocalizationHelper.Localize("Run Demo"), 100);
+            AppendCharEnterItem(helpItem, LocalizationHelper.Localize("Run Demo"), 100, new KeyboardAccelerator() { Key = VirtualKey.D });
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info"), (sender, arg) =>
             {

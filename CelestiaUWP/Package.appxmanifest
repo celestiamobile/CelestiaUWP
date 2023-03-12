@@ -178,6 +178,8 @@
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadFailureArgs" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManager" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaAppComponent.ContentDialogHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItemTab" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
   </Extensions>

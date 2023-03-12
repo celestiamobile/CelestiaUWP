@@ -35,7 +35,10 @@ namespace CelestiaUWP.Web
             var parameter = (CommonWebArgs)e.Parameter;
             initialUri = parameter.Uri;
             matchingQueryKeys = parameter.MatchingQueryKeys;
-            bridge = new JavascriptBridge(parameter.AppCore, parameter.Renderer, parameter.ContextDirectory, parameter.ACKReceiver, (title, uri) =>
+            var contextDirectory = parameter.ContextDirectory;
+            if (contextDirectory == null)
+                contextDirectory = "";
+            bridge = new JavascriptBridge(parameter.AppCore, parameter.Renderer, contextDirectory, parameter.ACKReceiver, (title, uri) =>
             {
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
