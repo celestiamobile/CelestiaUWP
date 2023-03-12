@@ -5,9 +5,8 @@ namespace CelestiaWinUI
     {
         BookmarkOrganizerUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
 
-        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BookmarkNode> Bookmarks;
+        Microsoft.UI.Xaml.Interop.IBindableObservableVector Bookmarks{ get; };
 
-        Windows.Foundation.IAsyncAction WriteBookmarks();
-        Windows.Foundation.IAsyncAction InsertBookmarkAtSelection(CelestiaAppComponent.BookmarkNode bookmark);
+        void InsertBookmarkAtSelection(CelestiaAppComponent.BookmarkNode bookmark);
     }
 }

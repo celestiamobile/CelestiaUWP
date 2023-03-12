@@ -3,12 +3,6 @@
 #if __has_include("BrowserUserControl.g.cpp")
 #include "BrowserUserControl.g.cpp"
 #endif
-#if __has_include("BrowserItem.g.cpp")
-#include "BrowserItem.g.cpp"
-#endif
-#if __has_include("BrowserItemTab.g.cpp")
-#include "BrowserItemTab.g.cpp"
-#endif
 
 using namespace winrt;
 using namespace CelestiaAppComponent;
@@ -19,51 +13,14 @@ using namespace Microsoft::UI::Xaml::Controls;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    Collections::IObservableVector<CelestiaWinUI::BrowserItem> savedSol = nullptr;
-    Collections::IObservableVector<CelestiaWinUI::BrowserItem> savedDsos = nullptr;
-    CelestiaWinUI::BrowserItem savedBrightestStars = nullptr;
-    CelestiaWinUI::BrowserItem savedStarsWithPlanets = nullptr;
-
-    BrowserItem::BrowserItem(CelestiaComponent::CelestiaBrowserItem const& item) : item(item)
-    {
-        children = single_threaded_observable_vector<CelestiaWinUI::BrowserItem>();
-    }
-
-    CelestiaComponent::CelestiaBrowserItem BrowserItem::Item() { return item; }
-
-
-    hstring BrowserItem::ItemName()
-    {
-        return item.Name();
-    }
-
-    Collections::IObservableVector<CelestiaWinUI::BrowserItem> BrowserItem::Children()
-    {
-        if (children.Size() == 0)
-        {
-            for (const auto& child : item.Children())
-            {
-                children.Append(CelestiaWinUI::BrowserItem(child));
-            }
-        }
-        return children;
-    }
-
-    BrowserItemTab::BrowserItemTab(Collections::IObservableVector<CelestiaWinUI::BrowserItem> const& children, hstring const& tabName) : tabName(tabName), children(children) {}
-
-    hstring BrowserItemTab::TabName()
-    {
-        return tabName;
-    }
-
-    Collections::IObservableVector<CelestiaWinUI::BrowserItem> BrowserItemTab::Children()
-    {
-        return children;
-    }
+    Collections::IObservableVector<BrowserItem> savedSol = nullptr;
+    Collections::IObservableVector<BrowserItem> savedDsos = nullptr;
+    BrowserItem savedBrightestStars = nullptr;
+    BrowserItem savedStarsWithPlanets = nullptr;
 
     BrowserUserControl::BrowserUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
-        rootItems = single_threaded_observable_vector<CelestiaWinUI::BrowserItemTab>();
+        rootItems = single_threaded_observable_vector<BrowserItemTab>();
         InitializeComponent();
 
         LoadData();
@@ -74,18 +31,18 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto item = args.SelectedItem();
         if (item == nullptr) return;
-        auto browserItem = item.try_as<CelestiaWinUI::BrowserItemTab>();
+        auto browserItem = item.try_as<BrowserItemTab>();
         if (browserItem == nullptr) return;
-        rootItem = browserItem.Children();
+        rootItem = BrowserItem::ConvertToBindable(browserItem.Children());
         propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"RootItem"));
     }
 
-    Collections::IObservableVector<CelestiaWinUI::BrowserItemTab> BrowserUserControl::RootItems()
+    Collections::IObservableVector<BrowserItemTab> BrowserUserControl::RootItems()
     {
         return rootItems;
     }
 
-    Collections::IObservableVector<CelestiaWinUI::BrowserItem> BrowserUserControl::RootItem()
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BrowserUserControl::RootItem()
     {
         return rootItem;
     }
@@ -120,7 +77,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     auto selectedItem = Tree().SelectedItem();
                     if (selectedItem == nullptr) return;
-                    auto browserItem = selectedItem.try_as<CelestiaWinUI::BrowserItem>();
+                    auto browserItem = selectedItem.try_as<BrowserItem>();
                     if (browserItem == nullptr) return;
                     renderer.EnqueueTask([this, browserItem, copiedCode]()
                         {
@@ -137,7 +94,7 @@ namespace winrt::CelestiaWinUI::implementation
         hstring solarSystemTabName = LocalizationHelper::Localize(L"Solar System");
         if (savedSol != nullptr)
         {
-            rootItems.Append(CelestiaWinUI::BrowserItemTab(savedSol, solarSystemTabName));
+            rootItems.Append(BrowserItemTab(savedSol, solarSystemTabName));
         }
         else
         {
@@ -148,14 +105,14 @@ namespace winrt::CelestiaWinUI::implementation
                 if (star)
                 {
                     CelestiaBrowserItem sol = { appCore.Simulation().Universe().StarCatalog().StarName(star), star, [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false };
-                    savedSol = single_threaded_observable_vector<CelestiaWinUI::BrowserItem>();
-                    savedSol.Append(CelestiaWinUI::BrowserItem(sol));
-                    rootItems.Append(CelestiaWinUI::BrowserItemTab(savedSol, solarSystemTabName));
+                    savedSol = single_threaded_observable_vector<BrowserItem>();
+                    savedSol.Append(BrowserItem(sol));
+                    rootItems.Append(BrowserItemTab(savedSol, solarSystemTabName));
                 }
             }
         }
 
-        auto starRoot = single_threaded_observable_vector<CelestiaWinUI::BrowserItem>();
+        auto starRoot = single_threaded_observable_vector<BrowserItem>();
         if (savedBrightestStars != nullptr)
         {
             starRoot.Append(savedBrightestStars);
@@ -169,7 +126,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 stars.emplace_back(appCore.Simulation().Universe().StarCatalog().StarName(star), star, [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false);
             }
-            savedBrightestStars = CelestiaWinUI::BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Brightest Stars (Absolute Magnitude)"), stars, true));
+            savedBrightestStars = BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Brightest Stars (Absolute Magnitude)"), stars, true));
             starRoot.Append(savedBrightestStars);
         }
 
@@ -186,8 +143,8 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 stars.emplace_back(appCore.Simulation().Universe().StarCatalog().StarName(star), star, [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false);
             }
-            savedStarsWithPlanets = CelestiaWinUI::BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(LocalizationHelper::Localize(L"Stars with Planets")), stars, true));
-            starRoot.Append(savedBrightestStars);
+            savedStarsWithPlanets = BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(LocalizationHelper::Localize(L"Stars with Planets")), stars, true));
+            starRoot.Append(savedStarsWithPlanets);
         }
 
         // Non static items
@@ -205,15 +162,15 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 stars.emplace_back(appCore.Simulation().Universe().StarCatalog().StarName(star), star, [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false);
             }
-            starRoot.Append(CelestiaWinUI::BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(LocalizationHelper::Localize(name)), stars, true)));
+            starRoot.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(LocalizationHelper::Localize(name)), stars, true)));
         }
 
-        rootItems.Append(CelestiaWinUI::BrowserItemTab(starRoot, LocalizationHelper::Localize(L"Stars")));
+        rootItems.Append(BrowserItemTab(starRoot, LocalizationHelper::Localize(L"Stars")));
 
         hstring dsoTabName = LocalizationHelper::Localize(L"DSOs");
         if (savedDsos != nullptr)
         {
-            rootItems.Append(CelestiaWinUI::BrowserItemTab(savedDsos, dsoTabName));
+            rootItems.Append(BrowserItemTab(savedDsos, dsoTabName));
         }
         else
         {
@@ -261,16 +218,16 @@ namespace winrt::CelestiaWinUI::implementation
                 CelestiaBrowserItem item{ dsoCatalog.DSOName(dso), dso, [this](CelestiaBrowserItem const& item) { return CelestiaExtension::GetChildren(item, appCore); }, false };
                 results[categoryIndex].push_back(item);
             }
-            auto dsoCategories = single_threaded_observable_vector<CelestiaWinUI::BrowserItem>();
+            auto dsoCategories = single_threaded_observable_vector<BrowserItem>();
             for (size_t i = 0; i < results.size(); i++)
             {
                 if (results[i].size() > 0)
                 {
-                    dsoCategories.Append(CelestiaWinUI::BrowserItem(CelestiaBrowserItem(categoryNames[i], results[i], false)));
+                    dsoCategories.Append(BrowserItem(CelestiaBrowserItem(categoryNames[i], results[i], false)));
                 }
             }
             savedDsos = dsoCategories;
-            rootItems.Append(CelestiaWinUI::BrowserItemTab(savedDsos, dsoTabName));
+            rootItems.Append(BrowserItemTab(savedDsos, dsoTabName));
         }
         Nav().SelectedItem(rootItems.GetAt(0));
     }
