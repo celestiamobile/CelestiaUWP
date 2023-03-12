@@ -19,30 +19,33 @@ namespace winrt::CelestiaWinUI::implementation
     BookmarkOrganizerUserControl::BookmarkOrganizerUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
         bookmarks = single_threaded_observable_vector<BookmarkNode>();
+        bindableBookmarks = BookmarkHelper::ConvertToBindable(bookmarks);
         InitializeComponent();
         NewFolderButton().Content(box_value(LocalizationHelper::Localize(L"New Folder")));
         DeleteButton().Content(box_value(LocalizationHelper::Localize(L"Delete")));
         GoButton().Content(box_value(LocalizationHelper::Localize(L"Go")));
         RenameButton().Content(box_value(LocalizationHelper::Localize(L"Rename")));
         ReadBookmarks();
-
-        Unloaded([this](IInspectable const&, RoutedEventArgs const&)
-            {
-                WriteBookmarks();
-            });
+        saveTimer = DispatcherTimer();
+        saveTimer.Interval(std::chrono::seconds(10));
+        saveTimerToken = saveTimer.Tick({ get_weak(), &BookmarkOrganizerUserControl::SaveTimer_Tick });
+        saveTimer.Start();
     }
 
-    Collections::IObservableVector<BookmarkNode> BookmarkOrganizerUserControl::Bookmarks()
+    Microsoft::UI::Xaml::Interop::IBindableObservableVector BookmarkOrganizerUserControl::Bookmarks()
     {
-        return bookmarks;
+        return bindableBookmarks;
     }
 
     IAsyncAction BookmarkOrganizerUserControl::WriteBookmarks()
     {
+        if (isSaving) co_return;
+        isSaving = true;
         co_await BookmarkHelper::WriteBookmarks(bookmarks);
+        isSaving = false;
     }
 
-    IAsyncAction BookmarkOrganizerUserControl::InsertBookmarkAtSelection(BookmarkNode const& bookmark)
+    void BookmarkOrganizerUserControl::InsertBookmarkAtSelection(BookmarkNode const& bookmark)
     {
         const auto& [selectedBookmark, parentBookmark] = GetSelectionInfo();
         if (selectedBookmark == nullptr)
@@ -69,12 +72,22 @@ namespace winrt::CelestiaWinUI::implementation
                 listToAddTo.Append(bookmark);
             }
         }
+    }
+
+    fire_and_forget BookmarkOrganizerUserControl::SaveTimer_Tick(IInspectable const&, IInspectable const&)
+    {
         co_await WriteBookmarks();
     }
 
-    void BookmarkOrganizerUserControl::Bookmarks(Collections::IObservableVector<BookmarkNode> const& value)
+    fire_and_forget BookmarkOrganizerUserControl::BookmarkOrganizerPage_Unloaded(IInspectable const&, RoutedEventArgs const&)
     {
-        bookmarks = value;
+        if (saveTimer != nullptr)
+        {
+            saveTimer.Tick(saveTimerToken);
+            saveTimer.Stop();
+        }
+        if (isRead)
+            co_await WriteBookmarks();
     }
 
     fire_and_forget BookmarkOrganizerUserControl::NewFolderButton_Click(IInspectable const&, RoutedEventArgs const&)
@@ -106,21 +119,18 @@ namespace winrt::CelestiaWinUI::implementation
         {
             bookmarkToChange.Name(name);
             listToChangeIn.SetAt(index, bookmarkToChange); // Force the change to be reflected on UI
-            co_await WriteBookmarks();
         }
     }
 
-    fire_and_forget BookmarkOrganizerUserControl::DeleteButton_Click(IInspectable const&, RoutedEventArgs const&)
+    void BookmarkOrganizerUserControl::DeleteButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
         const auto& [bookmark, parentBookmark] = GetSelectionInfo();
-        if (bookmark == nullptr) return;
         auto listToRemoveFrom = parentBookmark == nullptr ? bookmarks : parentBookmark.Children();
 
         uint32_t index;
         if (listToRemoveFrom.IndexOf(bookmark, index))
         {
             listToRemoveFrom.RemoveAt(index);
-            co_await WriteBookmarks();
         }
     }
 
@@ -141,6 +151,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto newBookmarks = co_await BookmarkHelper::ReadBookmarks();
         bookmarks.ReplaceAll(std::vector<BookmarkNode>(newBookmarks.begin(), newBookmarks.end()));
+        isRead = true;
     }
 
     std::pair<BookmarkNode, BookmarkNode> BookmarkOrganizerUserControl::GetSelectionInfo()

@@ -5,13 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:app="using:CelestiaAppComponent"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Unloaded="BookmarkOrganizerPage_Unloaded">
 
     <RelativePanel Margin="16">
-        <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
+        <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="app:BookmarkNode">
-                    <TreeViewItem ItemsSource="{x:Bind Children}"
+                    <TreeViewItem ItemsSource="{x:Bind BindableChildren}"
                                Content="{x:Bind Name}"/>
                 </DataTemplate>
             </TreeView.ItemTemplate>

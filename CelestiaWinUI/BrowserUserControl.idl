@@ -1,28 +1,11 @@
 namespace CelestiaWinUI
 {
     [default_interface]
-    runtimeclass BrowserItem
-    {
-        BrowserItem(CelestiaComponent.CelestiaBrowserItem item);
-        String ItemName{ get; };
-        CelestiaComponent.CelestiaBrowserItem Item{ get; };
-        Windows.Foundation.Collections.IObservableVector<BrowserItem> Children{ get; };
-    }
-
-    [default_interface]
-    runtimeclass BrowserItemTab
-    {
-        BrowserItemTab(Windows.Foundation.Collections.IObservableVector<BrowserItem> children, String tabName);
-        String TabName{ get; };
-        Windows.Foundation.Collections.IObservableVector<BrowserItem> Children{ get; };
-    }
-
-    [default_interface]
     runtimeclass BrowserUserControl : Microsoft.UI.Xaml.Controls.UserControl, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         BrowserUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
 
-        Windows.Foundation.Collections.IObservableVector<BrowserItemTab> RootItems{ get; };
-        Windows.Foundation.Collections.IObservableVector<BrowserItem> RootItem{ get; };
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserItemTab> RootItems{ get; };
+        Microsoft.UI.Xaml.Interop.IBindableObservableVector RootItem{ get; };
     }
 }
