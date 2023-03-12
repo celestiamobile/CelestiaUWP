@@ -29,12 +29,12 @@ namespace winrt::CelestiaComponent::implementation
         hstring Name();
         CelestiaComponent::CelestiaAstroObject Object();
 
-        com_array<CelestiaComponent::CelestiaBrowserItem> Children();
+        Windows::Foundation::Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> Children();
 
         CelestiaComponent::CelestiaAstroObject obj;
         CelestiaComponent::CelestiaBrowserItemChildrenProvider provider;
         hstring name;
-        std::vector<CelestiaComponent::CelestiaBrowserItem> children;
+        Windows::Foundation::Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> children;
         bool areChildrenLoaded;
         bool sorted;
     };

@@ -21,6 +21,8 @@
 #include <stringapiset.h>
 
 using namespace std;
+using namespace winrt;
+using namespace Windows::Foundation;
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -38,12 +40,13 @@ namespace winrt::CelestiaComponent::implementation
         }
         if (!sorted)
             std::sort(vec.begin(), vec.end(), CompareBrowserItems);
-        this->children = vec;
+        this->children = single_threaded_observable_vector<CelestiaComponent::CelestiaBrowserItem>({ vec.begin(), vec.end()});
         areChildrenLoaded = true;
     }
 
     CelestiaBrowserItem::CelestiaBrowserItem(hstring name, CelestiaComponent::CelestiaAstroObject const& obj, CelestiaComponent::CelestiaBrowserItemChildrenProvider const& provider, bool sorted) : CelestiaBrowserItemT<CelestiaBrowserItem>(), obj(obj), provider(provider), name(name), sorted(sorted)
     {
+        children = single_threaded_observable_vector<CelestiaComponent::CelestiaBrowserItem>();
         areChildrenLoaded = false;
     }
 
@@ -62,7 +65,7 @@ namespace winrt::CelestiaComponent::implementation
         return obj;
     }
 
-    com_array<CelestiaComponent::CelestiaBrowserItem> CelestiaBrowserItem::Children()
+    Collections::IObservableVector<CelestiaComponent::CelestiaBrowserItem> CelestiaBrowserItem::Children()
     {
         if (!areChildrenLoaded && provider != nullptr)
         {
@@ -75,9 +78,9 @@ namespace winrt::CelestiaComponent::implementation
             }
             if (!sorted)
                 std::sort(vec.begin(), vec.end(), CompareBrowserItems);
-            children = vec;
+            children.ReplaceAll(vec);
             areChildrenLoaded = true;
         }
-        return com_array<CelestiaComponent::CelestiaBrowserItem>(children);
+        return children;
     }
 }
