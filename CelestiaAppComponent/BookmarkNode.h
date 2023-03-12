@@ -20,6 +20,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> Children();
         void Children(Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> const&);
+        Windows::UI::Xaml::Interop::IBindableObservableVector BindableChildren();
 
         bool HasErrors() noexcept;
         Windows::Data::Json::JsonObject JsonRepresentation() noexcept;
@@ -29,6 +30,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring name;
         hstring url;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> children;
+        Windows::UI::Xaml::Interop::IBindableObservableVector bindableChildren;
         bool hasErrors;
     };
 }

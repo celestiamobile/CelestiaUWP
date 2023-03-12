@@ -13,7 +13,7 @@
         <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <muxc:TreeView.ItemTemplate>
                 <DataTemplate x:DataType="app:BookmarkNode">
-                    <muxc:TreeViewItem ItemsSource="{x:Bind Children}"
+                    <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
                                Content="{x:Bind Name}"/>
                 </DataTemplate>
             </muxc:TreeView.ItemTemplate>

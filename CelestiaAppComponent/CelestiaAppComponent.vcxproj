@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="completion_source.h" />
+    <ClInclude Include="ObservableVector.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="LocalizationHelper.h">
       <DependentUpon>LocalizationHelper.idl</DependentUpon>

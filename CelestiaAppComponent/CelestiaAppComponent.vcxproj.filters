@@ -15,6 +15,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="completion_source.h" />
+    <ClInclude Include="ObservableVector.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="LocalizationHelper.idl" />
@@ -28,6 +30,7 @@
     <Midl Include="JavascriptBridge.idl" />
     <Midl Include="SettingItem.idl" />
     <Midl Include="ResourceManager.idl" />
+    <Midl Include="ContentDialogHelper.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />

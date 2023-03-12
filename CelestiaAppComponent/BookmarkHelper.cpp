@@ -4,6 +4,8 @@
 #include "BookmarkHelper.g.cpp"
 #endif
 
+#include "ObservableVector.h"
+
 using namespace winrt;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
@@ -51,5 +53,10 @@ namespace winrt::CelestiaAppComponent::implementation
     Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> BookmarkHelper::CreateEmptyList()
     {
         return single_threaded_observable_vector<CelestiaAppComponent::BookmarkNode>();
+    }
+
+    Windows::UI::Xaml::Interop::IBindableObservableVector BookmarkHelper::ConvertToBindable(Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> const& list)
+    {
+        return make<ObservableVector<CelestiaAppComponent::BookmarkNode>>(list);
     }
 }

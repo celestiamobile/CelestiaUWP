@@ -8,5 +8,6 @@ namespace CelestiaAppComponent
         static Windows.Foundation.IAsyncOperation<Windows.Foundation.Collections.IObservableVector<BookmarkNode> > ReadBookmarks();
         static Windows.Foundation.IAsyncAction WriteBookmarks(Windows.Foundation.Collections.IObservableVector<BookmarkNode> value);
         static Windows.Foundation.Collections.IObservableVector<BookmarkNode> CreateEmptyList();
+        static Windows.UI.Xaml.Interop.IBindableObservableVector ConvertToBindable(Windows.Foundation.Collections.IObservableVector<BookmarkNode> list);
     }
 }

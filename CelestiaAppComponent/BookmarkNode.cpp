@@ -4,6 +4,8 @@
 #include "BookmarkNode.g.cpp"
 #endif
 
+#include "ObservableVector.h"
+
 using namespace std;
 using namespace winrt;
 using namespace Windows::Data::Json;
@@ -13,6 +15,7 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     BookmarkNode::BookmarkNode(JsonObject const& jsonObject) noexcept : isFolder(false), name(L""), url(L""), children(single_threaded_observable_vector<CelestiaAppComponent::BookmarkNode>())
     {
+        bindableChildren = make<ObservableVector<CelestiaAppComponent::BookmarkNode>>(children);
         name = jsonObject.GetNamedString(L"Name", name);
         url = jsonObject.GetNamedString(L"URL", url);
         isFolder = jsonObject.GetNamedBoolean(L"IsFolder", isFolder);
@@ -72,6 +75,11 @@ namespace winrt::CelestiaAppComponent::implementation
     void BookmarkNode::URL(hstring const& value)
     {
         url = value;
+    }
+
+    Windows::UI::Xaml::Interop::IBindableObservableVector BookmarkNode::BindableChildren()
+    {
+        return bindableChildren;
     }
 
     Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> BookmarkNode::Children()
