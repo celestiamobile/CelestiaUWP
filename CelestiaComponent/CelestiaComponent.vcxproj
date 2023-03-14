@@ -398,6 +398,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\stellarclass.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\surface.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\texmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\textlayout.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\texture.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timeline.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h" />
@@ -582,6 +583,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\staroctree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\stellarclass.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\texmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\textlayout.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />

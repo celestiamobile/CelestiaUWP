@@ -551,6 +551,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\textlayout.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1142,6 +1145,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\r128util.h">
       <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\textlayout.h">
+      <Filter>Celestia\celengine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
