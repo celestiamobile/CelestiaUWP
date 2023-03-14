@@ -8,8 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
+        <x:Double x:Key="InternalSpacing">4</x:Double>
         <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
-            <Grid VerticalAlignment="Center">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -21,25 +22,25 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
                 <CheckBox MinWidth="0" Grid.Column="2" VerticalAlignment="Center" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="0 4" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
-            <Grid VerticalAlignment="Center">
+            <Grid RowSpacing="{StaticResource InternalSpacing}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}" Margin="0 8 0 8"/>
+                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}"/>
                 <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="2" Margin="0 4" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                <TextBlock Grid.Row="2" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
-            <Grid VerticalAlignment="Center">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -51,7 +52,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
                 <ComboBox Grid.Column="2" VerticalAlignment="Center" ItemsSource="{x:Bind Options}" SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Margin="0 4" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>
 

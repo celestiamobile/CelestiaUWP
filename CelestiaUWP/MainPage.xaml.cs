@@ -1043,10 +1043,6 @@ namespace CelestiaUWP
             var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
 
             AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
-            AppendItem(navigationItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
-            {
-                ShowTourGuide();
-            });
             AppendItem(navigationItem, LocalizationHelper.Localize("Select Object"), (sender, arg) =>
             {
                 ShowSelectObject();
@@ -1069,18 +1065,23 @@ namespace CelestiaUWP
             {
                 AppendCharEnterItem(navigationItem, LocalizationHelper.Localize(action.Item1), action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
+            navigationItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
                 e) =>
             {
                  ShowObserverMode();
             });
-            navigationItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(navigationItem, LocalizationHelper.Localize("Star Browser"), (sender, arg) =>
+            var toolsItem = CreateMenuBarItem(LocalizationHelper.Localize("Tools"));
+            AppendItem(toolsItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
+            {
+                ShowTourGuide();
+            });
+            AppendItem(toolsItem, LocalizationHelper.Localize("Star Browser"), (sender, arg) =>
             {
                 ShowBrowser();
             });
-            AppendItem(navigationItem, LocalizationHelper.Localize("Eclipse Finder"), (sender, arg) =>
+            AppendItem(toolsItem, LocalizationHelper.Localize("Eclipse Finder"), (sender, arg) =>
             {
                 ShowEclipseFinder();
             });
@@ -1151,6 +1152,7 @@ namespace CelestiaUWP
             MenuBar.Items.Add(fileItem);
             MenuBar.Items.Add(navigationItem);
             MenuBar.Items.Add(timeItem);
+            MenuBar.Items.Add(toolsItem);
             MenuBar.Items.Add(viewItem);
             MenuBar.Items.Add(bookmarkItem);
             MenuBar.Items.Add(helpItem);

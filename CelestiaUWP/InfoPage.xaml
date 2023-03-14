@@ -6,9 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Margin="16" Spacing="8">
+    <StackPanel Margin="{StaticResource Margin}" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical">
         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="NameLabel"/>
         <TextBlock Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="DetailLabel"/>
-        <HyperlinkButton x:Name="LinkButton" Margin="0,8,0,8" Padding="0"/>
+        <HyperlinkButton x:Name="LinkButton" Margin="0" Padding="0"/>
     </StackPanel>
 </Page>

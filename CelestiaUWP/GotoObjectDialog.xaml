@@ -11,7 +11,7 @@
     SecondaryButtonText="Cancel"
     x:Name="ContentDialog">
 
-    <Grid ColumnSpacing="6" RowSpacing="6">
+    <Grid ColumnSpacing="{StaticResource HorizontalSpacing}" RowSpacing="{StaticResource VerticalSpacing}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>

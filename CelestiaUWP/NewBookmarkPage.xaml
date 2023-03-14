@@ -9,8 +9,8 @@
     mc:Ignorable="d">
 
     <RelativePanel>
-        <RelativePanel x:Name="NewNameContainer" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  RelativePanel.AlignTopWithPanel="True" >
-            <TextBox Text="{x:Bind NameText, Mode=TwoWay}" Margin="0, 0, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="ConfirmButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        <RelativePanel x:Name="NewNameContainer" Margin="{StaticResource TopHalf}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"  RelativePanel.AlignTopWithPanel="True" >
+            <TextBox Text="{x:Bind NameText, Mode=TwoWay}" Margin="{StaticResource RightSpacing}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="ConfirmButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="OK" x:Name="ConfirmButton" Click="ConfirmButton_Click" Width="100" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
         </RelativePanel>
         <Frame x:Name="Organizer" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="NewNameContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>

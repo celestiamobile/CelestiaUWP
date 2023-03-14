@@ -10,8 +10,8 @@
     mc:Ignorable="d"
     Unloaded="BookmarkOrganizerPage_Unloaded">
 
-    <RelativePanel Margin="16">
-        <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
+    <RelativePanel Margin="{StaticResource Margin}">
+        <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="{StaticResource RightSpacing}" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <muxc:TreeView.ItemTemplate>
                 <DataTemplate x:DataType="app:BookmarkNode">
                     <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
@@ -19,7 +19,7 @@
                 </DataTemplate>
             </muxc:TreeView.ItemTemplate>
         </muxc:TreeView>
-        <StackPanel x:Name="ButtonStack" Spacing="8" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
+        <StackPanel x:Name="ButtonStack" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
             <Button Content="New Folder" x:Name="NewFolderButton" Click="NewFolderButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Rename" x:Name="RenameButton" Click="RenameButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Delete" x:Name="DeleteButton" Click="DeleteButton_Click" HorizontalAlignment="Center" Width="100"></Button>

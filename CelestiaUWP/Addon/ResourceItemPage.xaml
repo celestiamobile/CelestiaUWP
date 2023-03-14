@@ -8,10 +8,15 @@
     mc:Ignorable="d">
     <RelativePanel>
         <Frame x:Name="WebContent" RelativePanel.Above="ActionContainer" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
-        <RelativePanel Margin="16" x:Name="ActionContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-            <muxc:ProgressBar x:Name="InstallProgressBar" Visibility="Collapsed" Maximum="1.0" Minimum="0.0" Margin="0, 0, 12, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.LeftOf="ActionButton"/>
-            <Button Style="{StaticResource AccentButtonStyle}" Content="Go" x:Name="GoButton" Visibility="Collapsed" Click="GoButton_Click" RelativePanel.LeftOf="ActionButton" Margin="0, 0, 12, 0"/>
-            <Button Style="{StaticResource AccentButtonStyle}" Content="Install" x:Name="ActionButton" Click="ActionButton_Click" RelativePanel.AlignRightWithPanel="True"/>
-        </RelativePanel>
+        <Grid Margin="{StaticResource BottomHalf}" ColumnSpacing="{StaticResource HorizontalSpacing}" x:Name="ActionContainer" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <muxc:ProgressBar x:Name="InstallProgressBar" Visibility="Collapsed" Maximum="1.0" Minimum="0.0" Grid.Column="0"/>
+            <Button Style="{StaticResource AccentButtonStyle}" Content="Go" x:Name="GoButton" Visibility="Collapsed" Click="GoButton_Click" Grid.Column="1"/>
+            <Button Style="{StaticResource AccentButtonStyle}" Content="Install" x:Name="ActionButton" Click="ActionButton_Click" Grid.Column="2"/>
+        </Grid>
     </RelativePanel>
 </Page>

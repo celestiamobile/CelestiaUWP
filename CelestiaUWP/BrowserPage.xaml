@@ -13,9 +13,9 @@
                 <muxc:NavigationViewItem Content="{x:Bind TabName, Mode=OneTime}"/>
             </DataTemplate>
         </muxc:NavigationView.MenuItemTemplate>
-        <RelativePanel>
+        <RelativePanel Margin="{StaticResource Margin}">
             <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="16, 16, 16, 0" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="app:BrowserItem">
                             <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
@@ -24,7 +24,7 @@
                         </DataTemplate>
                     </muxc:TreeView.ItemTemplate>
                 </muxc:TreeView>
-                <controls:WrapPanel Orientation="Horizontal" HorizontalSpacing="8" VerticalSpacing="4" Margin="16" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <controls:WrapPanel Orientation="Horizontal" HorizontalSpacing="{StaticResource HorizontalSpacing}" VerticalSpacing="{StaticResource VerticalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                 </controls:WrapPanel>
             </RelativePanel>
         </RelativePanel>

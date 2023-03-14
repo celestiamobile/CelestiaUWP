@@ -11,7 +11,7 @@
         <TextBlock>Celestia <Run FontFamily="Segoe MDL2 Assets" Text="&#xEB52;" Foreground="OrangeRed"/> Xbox</TextBlock>
     </ContentDialog.Title>
 
-    <StackPanel Orientation="Vertical" Spacing="8">
+    <StackPanel Orientation="Vertical" Spacing="{StaticResource VerticalSpacing}">
         <TextBlock x:Name="WelcomeMessageContent" TextWrapping="WrapWholeWords"/>
         <CheckBox x:Name="IgnoreCheckBox"/>
     </StackPanel>
