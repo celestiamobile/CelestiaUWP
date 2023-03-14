@@ -5,6 +5,7 @@ namespace CelestiaAppComponent
         UseFullDPI,
         EnableMSAA,
         IgnoreXboxWelcomeMessage,
+        OnboardMessageDisplayed,
         GamepadInvertX,
         GamepadInvertY,
     };
@@ -38,6 +39,7 @@ namespace CelestiaAppComponent
         Boolean UseFullDPI;
         Boolean EnableMSAA;
         Boolean IgnoreXboxWelcomeMessage;
+        Boolean OnboardMessageDisplayed;
         String LanguageOverride;
         String LastNewsID;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapA;

@@ -336,6 +336,13 @@ namespace CelestiaUWP
             }
             if (!isXbox)
             {
+                if (!AppSettings.OnboardMessageDisplayed)
+                {
+                    AppSettings.OnboardMessageDisplayed = true;
+                    AppSettings.Save(ApplicationData.Current.LocalSettings);
+                    ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForPath("/help/welcome"));
+                    return;
+                }
                 Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
                 var queryItems = System.Web.HttpUtility.ParseQueryString("");
                 queryItems.Add("lang", LocalizationHelper.Locale);
@@ -398,6 +405,23 @@ namespace CelestiaUWP
             args.AppCore = mAppCore;
             args.Uri = builder.Uri;
             args.MatchingQueryKeys = new string[] { "guide" };
+            return args;
+        }
+
+        public CommonWebArgs GenerateWebArgsForPath(string path)
+        {
+            // Same additional parameters here
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            queryItems.Add("platform", "uwp");
+            queryItems.Add("transparentBackground", "1");
+            var builder = new UriBuilder($"https://celestia.mobi{path}");
+            builder.Query = queryItems.ToString();
+            var args = new CommonWebArgs();
+            args.Renderer = mRenderer;
+            args.AppCore = mAppCore;
+            args.Uri = builder.Uri;
+            args.MatchingQueryKeys = new string[] {};
             return args;
         }
 

@@ -22,6 +22,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto ignoreXboxWelcomeMessageResult = propertySet.TryLookup(L"IgnoreXboxWelcomeMessage");
         if (ignoreXboxWelcomeMessageResult)
             ignoreXboxWelcomeMessage = unbox_value_or(ignoreXboxWelcomeMessageResult, ignoreXboxWelcomeMessage);
+        auto onboardMessageDisplayedResult = propertySet.TryLookup(L"OnboardMessageDisplayed");
+        if (onboardMessageDisplayedResult)
+            onboardMessageDisplayed = unbox_value_or(onboardMessageDisplayedResult, onboardMessageDisplayed);
         auto languageOverrideResult = propertySet.TryLookup(L"LanguageOverride");
         if (languageOverrideResult)
             languageOverride = unbox_value_or(languageOverrideResult, languageOverride);
@@ -100,6 +103,16 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::IgnoreXboxWelcomeMessage(bool value)
     {
         ignoreXboxWelcomeMessage = value;
+    }
+
+    bool AppSettings::OnboardMessageDisplayed()
+    {
+        return onboardMessageDisplayed;
+    }
+
+    void AppSettings::OnboardMessageDisplayed(bool value)
+    {
+        onboardMessageDisplayed = value;
     }
 
     hstring AppSettings::LanguageOverride()
@@ -281,6 +294,9 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
             GamepadInvertY(value);
             break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
+            OnboardMessageDisplayed(value);
+            break;
         default:
             break;
         }
@@ -300,6 +316,8 @@ namespace winrt::CelestiaAppComponent::implementation
             return GamepadInvertX();
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
             return GamepadInvertY();
+        case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
+            return OnboardMessageDisplayed();
         default:
             return false;
         }
@@ -416,6 +434,7 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
         settings.Values().Insert(L"EnableMSAA", box_value(enableMSAA));
         settings.Values().Insert(L"IgnoreXboxWelcomeMessage", box_value(ignoreXboxWelcomeMessage));
+        settings.Values().Insert(L"OnboardMessageDisplayed", box_value(onboardMessageDisplayed));
         settings.Values().Insert(L"LanguageOverride", box_value(languageOverride));
         settings.Values().Insert(L"LastNewsID", box_value(lastNewsID));
         settings.Values().Insert(L"GamepadRemapA", box_value(static_cast<int>(gamepadRemapA)));

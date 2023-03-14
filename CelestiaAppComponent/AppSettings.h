@@ -17,6 +17,9 @@ namespace winrt::CelestiaAppComponent::implementation
         bool IgnoreXboxWelcomeMessage();
         void IgnoreXboxWelcomeMessage(bool);
 
+        bool OnboardMessageDisplayed();
+        void OnboardMessageDisplayed(bool);
+
         hstring LanguageOverride();
         void LanguageOverride(hstring const&);
 
@@ -78,6 +81,7 @@ namespace winrt::CelestiaAppComponent::implementation
         bool useFullDPI{ true };
         bool enableMSAA{ false };
         bool ignoreXboxWelcomeMessage{ false };
+        bool onboardMessageDisplayed{ false };
         hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
 
