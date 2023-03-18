@@ -149,7 +149,7 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(0, LocalizationHelper::Localize(L"Classic Colors")),
                 OptionPair(1, LocalizationHelper::Localize(L"Blackbody D65")),
             }), localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation"), appCore, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illuminaton saturation setting is only effective with Blackbody D65 star colors.")),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation"), appCore, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illumination saturation setting is only effective with Blackbody D65 star colors.")),
 
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines"), appCore, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 

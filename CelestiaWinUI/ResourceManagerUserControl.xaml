@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <NavigationView x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
+    <NavigationView IsBackButtonVisible="Visible" IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Nav" IsSettingsVisible="False" BackRequested="Nav_BackRequested" PaneDisplayMode="Top">
         <Frame x:Name="Container"/>
     </NavigationView>
 </UserControl>
