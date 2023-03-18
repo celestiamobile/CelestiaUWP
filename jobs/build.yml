@@ -39,8 +39,17 @@ jobs:
       cd CelestiaUWP
       git config --global user.email "name@name.com"
       git config --global user.name "Name Name"
-      git cherry-pick origin/nuget-dependencies
+      git cherry-pick origin/nuget-dependencies-$(Build.SourceBranchName)
     displayName: 'Cherry-Pick Pre-built Nuget Changes'
+    condition: ne( variables['Build.Reason'], 'PullRequest' )
+
+  - script: |
+      cd CelestiaUWP
+      git config --global user.email "name@name.com"
+      git config --global user.name "Name Name"
+      git cherry-pick origin/nuget-dependencies-$(System.PullRequest.TargetBranch)
+    displayName: 'Cherry-Pick Pre-built Nuget Changes (PR)'
+    condition: eq( variables['Build.Reason'], 'PullRequest' )
 
   - script: |
       cd Celestia
