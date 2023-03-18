@@ -35,7 +35,8 @@ namespace CelestiaUWP.Web
             catch {}
             if (webViewVersion == null)
             {
-                WebViewNotFoundView.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                WebContent.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                WebContent.Navigate(typeof(LegacyWebPage), parameter);
             }
             else
             {

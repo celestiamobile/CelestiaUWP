@@ -187,6 +187,9 @@
     <Compile Include="Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Web\LegacyWebPage.xaml.cs">
+      <DependentUpon>LegacyWebPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Web\SafeWebPage.xaml.cs">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </Compile>
@@ -338,6 +341,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Web\LegacyWebPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

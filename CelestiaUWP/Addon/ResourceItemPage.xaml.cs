@@ -84,10 +84,12 @@ namespace CelestiaUWP.Addon
             UpdateState();
             ReloadItem();
 
+            bool isXbox = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
+
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
             queryItems.Add("item", Item.ID);
-            queryItems.Add("platform", "uwp");
+            queryItems.Add("platform", isXbox ? "xbox" : "uwp");
             queryItems.Add("titleVisibility", "visible");
             queryItems.Add("transparentBackground", "1");
             var builder = new UriBuilder("https://celestia.mobi/resources/item");

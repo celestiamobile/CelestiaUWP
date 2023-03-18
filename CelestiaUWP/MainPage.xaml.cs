@@ -30,7 +30,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 
 using MenuBarItem = Microsoft.UI.Xaml.Controls.MenuBarItem;
 
@@ -66,7 +65,7 @@ namespace CelestiaUWP
             }
         }
 
-        private CelestiaAppComponent.ResourceManager resourceManager = null;
+        private ResourceManager resourceManager = null;
 
         private bool isXbox = false;
         // Used in renderer thread
@@ -287,7 +286,7 @@ namespace CelestiaUWP
             if (url != null)
             {
                 URLToOpen = null;
-                if (!isXbox && resourceManager != null && url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
+                if (resourceManager != null && url.Scheme == "celaddon" && url.Host == "item" && url.Query != null)
                 {
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var addon = query["item"];
@@ -314,7 +313,7 @@ namespace CelestiaUWP
                     catch { }
                     return;
                 }
-                else if (!isXbox && url.Scheme == "celguide" && url.Host == "guide" && url.Query != null)
+                else if (url.Scheme == "celguide" && url.Host == "guide" && url.Query != null)
                 {
                     var query = System.Web.HttpUtility.ParseQueryString(url.Query);
                     var guide = query["guide"];
@@ -343,6 +342,25 @@ namespace CelestiaUWP
                     ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForPath("/help/welcome"));
                     return;
                 }
+            }
+            else
+            {
+                if (!DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
+                {
+                    DidShowXboxWelcomeMessage = true;
+                    var welcomeDialog = new WelcomeDialog();
+                    await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
+                    if (welcomeDialog.ShouldNotShowMessageAgain)
+                    {
+                        AppSettings.IgnoreXboxWelcomeMessage = true;
+                        AppSettings.Save(ApplicationData.Current.LocalSettings);
+                    }
+                    return;
+                }
+            }
+
+            if (!isXbox)
+            {
                 Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
                 var queryItems = System.Web.HttpUtility.ParseQueryString("");
                 queryItems.Add("lang", LocalizationHelper.Locale);
@@ -378,17 +396,6 @@ namespace CelestiaUWP
                 }
                 catch { }
             }
-            if (isXbox && !DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
-            {
-                DidShowXboxWelcomeMessage = true;
-                var welcomeDialog = new WelcomeDialog();
-                await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
-                if (welcomeDialog.ShouldNotShowMessageAgain)
-                {
-                    AppSettings.IgnoreXboxWelcomeMessage = true;
-                    AppSettings.Save(ApplicationData.Current.LocalSettings);
-                }
-            }
         }
 
         public CommonWebArgs GenerateWebArgsForGuide(string id)
@@ -396,7 +403,7 @@ namespace CelestiaUWP
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
             queryItems.Add("guide", id);
-            queryItems.Add("platform", "uwp");
+            queryItems.Add("platform", isXbox ? "xbox" : "uwp");
             queryItems.Add("transparentBackground", "1");
             var builder = new UriBuilder("https://celestia.mobi/resources/guide");
             builder.Query = queryItems.ToString();
@@ -413,7 +420,7 @@ namespace CelestiaUWP
             // Same additional parameters here
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
-            queryItems.Add("platform", "uwp");
+            queryItems.Add("platform", isXbox ? "xbox" : "uwp");
             queryItems.Add("transparentBackground", "1");
             var builder = new UriBuilder($"https://celestia.mobi{path}");
             builder.Query = queryItems.ToString();
@@ -1132,13 +1139,10 @@ namespace CelestiaUWP
                 builder.Query = queryItems.ToString();
                 _ = Launcher.LaunchUriAsync(builder.Uri);
             });
-            if (!isXbox && resourceManager != null)
+            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
             {
-                AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
-                {
-                    ShowAddonManagement();
-                });
-            }
+                ShowAddonManagement();
+            });
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("User Guide"), (sender, arg) =>
             {

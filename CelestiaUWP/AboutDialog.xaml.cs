@@ -38,11 +38,12 @@ namespace CelestiaUWP
             try
             {
                 var authorFile = await StorageFile.GetFileFromPathAsync(authorFilePath);
-                var content = await FileIO.ReadTextAsync(authorFile);
-                AuthorLabel.Text = content;
+                var authorContent = await FileIO.ReadTextAsync(authorFile);
+                AuthorLabel.Text = authorContent;
                 AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
                 var tanslatorFile = await StorageFile.GetFileFromPathAsync(translatorFilePath);
-                TranslatorLabel.Text = content;
+                var translatorContent = await FileIO.ReadTextAsync(tanslatorFile);
+                TranslatorLabel.Text = translatorContent;
                 TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
             }
             catch { };

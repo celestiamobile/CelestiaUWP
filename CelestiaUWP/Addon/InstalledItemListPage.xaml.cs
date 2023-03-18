@@ -63,12 +63,9 @@ namespace CelestiaUWP.Addon
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        private void ListView_SelectionChanged(object sender, TappedRoutedEventArgs e)
+        private void ItemList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var source = e.OriginalSource as FrameworkElement;
-            if (source == null) return;
-            var item = source.DataContext as ResourceItem;
+            var item = e.ClickedItem as ResourceItem;
             if (item == null) return;
             Handler(item);
         }
