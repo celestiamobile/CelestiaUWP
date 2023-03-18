@@ -9,9 +9,11 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaComponent;
+using CelestiaAppComponent;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -33,8 +35,16 @@ namespace CelestiaUWP.Web
             var parameter = (CommonWebArgs)e.Parameter;
             initialUri = parameter.Uri;
             matchingQueryKeys = parameter.MatchingQueryKeys;
-            bridge = new JavascriptBridge(parameter.ContextDirectory, parameter.AppCore, parameter.Renderer, Dispatcher);
-            bridge.ackReceived = parameter.ACKReceiver;
+            var contextDirectory = parameter.ContextDirectory;
+            if (contextDirectory == null)
+                contextDirectory = "";
+            bridge = new JavascriptBridge(parameter.AppCore, parameter.Renderer, contextDirectory, parameter.ACKReceiver, (title, uri) =>
+            {
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ShowShare(title, uri);
+                });
+            });
             EnsureWebView2();
         }
 
@@ -89,10 +99,21 @@ namespace CelestiaUWP.Web
                 var message = args.TryGetWebMessageAsString();
                 if (bridge != null && message != null)
                 {
-                    bridge.receivedMessage(message);
+                    bridge.ReceivedMessage(message);
                 }
             }
             catch { }
+        }
+
+        private void ShowShare(string title, Uri uri)
+        {
+            var transferManager = DataTransferManager.GetForCurrentView();
+            transferManager.DataRequested += (s, e) =>
+            {
+                e.Request.Data.Properties.Title = title;
+                e.Request.Data.SetWebLink(uri);
+            };
+            DataTransferManager.ShowShareUI();
         }
     }
 }

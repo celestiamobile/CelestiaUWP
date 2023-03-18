@@ -9,8 +9,8 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -47,7 +47,7 @@ namespace CelestiaUWP
             set => DistanceString = value == null ? "" : ((double)value).ToString();
         }
 
-        public int Unit = 0;
+        public int Unit = 1;
         private readonly string[] Units = new string[]
         {
             LocalizationHelper.Localize("km"),

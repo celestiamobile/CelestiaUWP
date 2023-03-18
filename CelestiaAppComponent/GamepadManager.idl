@@ -1,0 +1,11 @@
+import "AppSettings.idl";
+
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass GamepadManager
+    {
+        GamepadManager(AppSettings appSettings);
+        void PollGamepad(CelestiaComponent.CelestiaAppCore appCore);
+    }
+}

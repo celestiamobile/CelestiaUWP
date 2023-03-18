@@ -9,18 +9,32 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
+using CelestiaComponent;
 using System;
-using System.Collections.ObjectModel;
+using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Interop;
+using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
-    public sealed partial class BookmarkOrganizerPage : BookmarkBasePage
+    public sealed partial class BookmarkOrganizerPage : Page
     {
+        private CelestiaAppCore AppCore = null;
+        private CelestiaRenderer Renderer = null;
+
+        private IObservableVector<BookmarkNode> bookmarks = BookmarkHelper.CreateEmptyList();
+        private IBindableObservableVector Bookmarks = null;
+
+        private DispatcherTimer saveTimer = null;
+        private bool isSaving = false;
+        private bool isRead = false;
         public BookmarkOrganizerPage()
         {
+            Bookmarks = BookmarkHelper.ConvertToBindable(bookmarks);
+
             this.InitializeComponent();
 
             NewFolderButton.Content = LocalizationHelper.Localize("New Folder");
@@ -29,10 +43,32 @@ namespace CelestiaUWP
             RenameButton.Content = LocalizationHelper.Localize("Rename");
             Unloaded += BookmarkOrganizerPage_Unloaded;
         }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            ReadBookmarks();
+            saveTimer = new DispatcherTimer();
+            saveTimer.Interval = TimeSpan.FromSeconds(10);
+            saveTimer.Tick += SaveTimer_Tick;
+            saveTimer.Start();
+        }
+
+        private void SaveTimer_Tick(object sender, object e)
+        {
+            WriteBookmarks();
+        }
 
         private void BookmarkOrganizerPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            WriteBookmarks();
+            if (saveTimer != null)
+            {
+                saveTimer.Tick -= SaveTimer_Tick;
+                saveTimer.Stop();
+            }
+            if (isRead)
+                WriteBookmarks();
         }
 
         public void InsertBookmarkAtSelection(BookmarkNode bookmark)
@@ -40,7 +76,7 @@ namespace CelestiaUWP
             var (selected, parent) = GetSelectedBookmarkAndParent();
             if (selected == null)
             {
-                Bookmarks.Add(bookmark);
+                bookmarks.Add(bookmark);
             }
             else if (selected.IsFolder)
             {
@@ -48,7 +84,7 @@ namespace CelestiaUWP
             }
             else
             {
-                var listToAddTo = parent == null ? Bookmarks : parent.Children;
+                var listToAddTo = parent == null ? bookmarks : parent.Children;
                 var index = listToAddTo.IndexOf(selected);
                 if (index >= 0)
                 {
@@ -59,26 +95,18 @@ namespace CelestiaUWP
                     listToAddTo.Add(bookmark);
                 }
             }
-            WriteBookmarks();
         }
 
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)
         {
             CreateNewFolder();
         }
-
         private async void CreateNewFolder()
         {
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("Folder name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Folder name"));
+            if (text.Length > 0)
             {
-                var bookmark = new BookmarkNode
-                {
-                    IsFolder = true,
-                    Name = dialog.Text,
-                    Children = new ObservableCollection<BookmarkNode>()
-                };
+                var bookmark = new BookmarkNode(true, text, "", BookmarkHelper.CreateEmptyList());
                 InsertBookmarkAtSelection(bookmark);
             }
         }
@@ -101,18 +129,15 @@ namespace CelestiaUWP
         {
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
-            var dialog = new TextInputDialog(LocalizationHelper.Localize("New name"));
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name"));
+            if (text.Length <= 0) return;
+
+            var listToChange = parent == null ? bookmarks : parent.Children;
+            var index = bookmarks.IndexOf(bookmark);
+            if (index >= 0)
             {
-                var children = parent == null ? Bookmarks : parent.Children;
-                var index = children.IndexOf(bookmark);
-                if (index >= 0)
-                {
-                    bookmark.Name = dialog.Text;
-                    children[index] = bookmark;
-                    WriteBookmarks();
-                }
+                bookmark.Name = text;
+                listToChange[index] = bookmark;
             }
         }
 
@@ -121,9 +146,10 @@ namespace CelestiaUWP
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
 
-            var children = parent == null ? Bookmarks: parent.Children;
-            children.Remove(bookmark);
-            WriteBookmarks();
+            if (parent == null)
+                bookmarks.Remove(bookmark);
+            else
+                parent.Children.Remove(bookmark);
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
@@ -137,6 +163,30 @@ namespace CelestiaUWP
                     AppCore.GoToURL(bookmark.URL);
                 });
             }
+        }
+
+        async private void ReadBookmarks()
+        {
+            bookmarks.Clear();
+            var items = await BookmarkHelper.ReadBookmarks();
+            foreach (var item in items)
+            {
+                bookmarks.Add(item);
+            }
+            isRead = true;
+        }
+
+        async private void WriteBookmarks()
+        {
+            if (isSaving) return;
+            isSaving = true;
+            var vector = BookmarkHelper.CreateEmptyList();
+            foreach (var bookmark in bookmarks)
+            {
+                vector.Add(bookmark);
+            }
+            await BookmarkHelper.WriteBookmarks(vector);
+            isSaving = false;
         }
     }
 }

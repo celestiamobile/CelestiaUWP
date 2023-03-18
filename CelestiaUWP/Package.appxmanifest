@@ -100,6 +100,9 @@
           </uap:Protocol>
         </uap:Extension>
       </Extensions>
+      <uap:ApplicationContentUriRules>
+        <uap:Rule Type="include" Match="https://celestia.mobi"/>
+      </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
 
@@ -137,6 +140,49 @@
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniversalCoord" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniverse" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaVector" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>CelestiaAppComponent.dll</Path>
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettings" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkNode" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.GamepadManager" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.GuideItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessagePayload" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandlerContext" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptMessageHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.DummyHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunDemoHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RunScriptHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ShareURLHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SendACKHandler" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptBridge" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.LocalizationHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResultInfo" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBaseItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingDoubleItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingHeaderItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.OptionPair" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsBooleanItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.LanguageInt32Item" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreSingleItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadProgressArgs" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadSuccessArgs" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadFailureArgs" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManager" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.ContentDialogHelper" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItemTab" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
   </Extensions>

@@ -9,10 +9,10 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -27,11 +27,13 @@ namespace CelestiaUWP.Addon
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
         public ResourceItem Item;
-        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item)
+        public ResourceManager ResourceManager;
+        public AddonPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceItem item, ResourceManager resourceManager)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
             this.Item = item;
+            this.ResourceManager = resourceManager;
         }
     }
 
@@ -41,6 +43,7 @@ namespace CelestiaUWP.Addon
         private CelestiaRenderer Renderer;
 
         private ResourceItem mItem;
+        private ResourceManager ResourceManager;
         ResourceItem Item
         {
             get => mItem;
@@ -51,11 +54,11 @@ namespace CelestiaUWP.Addon
             }
         }
 
-        ResourceManager.ItemState State
+        ResourceItemState State
         {
             get
             {
-                return ResourceManager.Shared.StateForItem(Item);
+                return ResourceManager.StateForItem(Item);
             }
         }
 
@@ -72,18 +75,21 @@ namespace CelestiaUWP.Addon
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
             Item = parameter.Item;
+            ResourceManager = parameter.ResourceManager;
 
-            ResourceManager.Shared.ProgressUpdate += Shared_ProgressUpdate;
-            ResourceManager.Shared.DownloadSuccess += Shared_DownloadSuccess;
-            ResourceManager.Shared.DownloadFailure += Shared_DownloadFailure;
+            ResourceManager.DownloadProgressUpdate += Shared_ProgressUpdate;
+            ResourceManager.DownloadSuccess += Shared_DownloadSuccess;
+            ResourceManager.DownloadFailure += Shared_DownloadFailure;
 
             UpdateState();
             ReloadItem();
 
+            bool isXbox = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
+
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
-            queryItems.Add("item", Item.id);
-            queryItems.Add("platform", "uwp");
+            queryItems.Add("item", Item.ID);
+            queryItems.Add("platform", isXbox ? "xbox" : "uwp");
             queryItems.Add("titleVisibility", "visible");
             queryItems.Add("transparentBackground", "1");
             var builder = new UriBuilder("https://celestia.mobi/resources/item");
@@ -93,52 +99,54 @@ namespace CelestiaUWP.Addon
             args.AppCore = AppCore;
             args.Uri = builder.Uri;
             args.MatchingQueryKeys = new string[] { "item" };
-            args.ContextDirectory = ResourceManager.Shared.ItemPath(Item);
+            args.ContextDirectory = ResourceManager.ItemPath(Item);
             WebContent.Navigate(typeof(SafeWebPage), args);
         }
 
-        private void Shared_DownloadFailure(ResourceItem item)
+        private void Shared_DownloadFailure(object sender, ResourceManagerDownloadFailureArgs args)
         {
+            if (args.Item.ID != mItem.ID) return;
             UpdateState();
         }
 
-        private void Shared_DownloadSuccess(ResourceItem item)
+        private void Shared_DownloadSuccess(object sender, ResourceManagerDownloadSuccessArgs args)
         {
+            if (args.Item.ID != mItem.ID) return;
             UpdateState();
         }
 
-        private void Shared_ProgressUpdate(ResourceItem item, double progress)
+        private void Shared_ProgressUpdate(object sender, ResourceManagerDownloadProgressArgs args)
         {
-            if (item.id != Item.id) return;
-            InstallProgressBar.Value = progress;
+            if (args.Item.ID != mItem.ID) return;
+            InstallProgressBar.Value = args.Progress;
         }
 
         private void UpdateState()
         {
-            GoButton.Content = LocalizationHelper.Localize(Item.type == "script" ? "Run" :"Go");
+            GoButton.Content = LocalizationHelper.Localize(Item.Type == "script" ? "Run" :"Go");
 
             switch (State)
             {
-                case ResourceManager.ItemState.Downloading:
+                case ResourceItemState.Downloading:
                     InstallProgressBar.Visibility = Visibility.Visible;
                     ActionButton.Content = LocalizationHelper.Localize("Cancel");
                     break;
-                case ResourceManager.ItemState.Installed:
+                case ResourceItemState.Installed:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Uninstall");
                     break;
-                case ResourceManager.ItemState.None:
+                case ResourceItemState.None:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
                     ActionButton.Content = LocalizationHelper.Localize("Install");
                     break;
             }
 
-            if (Item.type == "script")
+            if (Item.Type == "script")
             {
-                var mainScriptName = Item.mainScriptName;
-                if (State == ResourceManager.ItemState.Installed && mainScriptName != null)
+                var mainScriptName = Item.MainScriptName;
+                if (State == ResourceItemState.Installed && mainScriptName != null)
                 {
-                    var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                    var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
                     if (File.Exists(path))
                     {
                         GoButton.Visibility = Visibility.Visible;
@@ -155,7 +163,7 @@ namespace CelestiaUWP.Addon
             }
             else
             {
-                if (State == ResourceManager.ItemState.Installed && Item.objectName != null && !AppCore.Simulation.Find(Item.objectName).IsEmpty)
+                if (State == ResourceItemState.Installed && Item.DemoObjectName != null && !AppCore.Simulation.Find(Item.DemoObjectName).IsEmpty)
                 {
                     GoButton.Visibility = Visibility.Visible;
                 }
@@ -171,7 +179,7 @@ namespace CelestiaUWP.Addon
             Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
             var queryItems = System.Web.HttpUtility.ParseQueryString("");
             queryItems.Add("lang", LocalizationHelper.Locale);
-            queryItems.Add("item", Item.id);
+            queryItems.Add("item", Item.ID);
             var builder = new UriBuilder(Addon.Constants.APIPrefix + "/resource/item");
             builder.Query = queryItems.ToString();
             try
@@ -179,41 +187,43 @@ namespace CelestiaUWP.Addon
                 var httpResponse = await httpClient.GetAsync(builder.Uri);
                 httpResponse.EnsureSuccessStatusCode();
                 var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                var requestResult = JsonConvert.DeserializeObject<Addon.RequestResult>(httpResponseBody);
-                if (requestResult.status != 0) return;
-                var item = requestResult.Get<Addon.ResourceItem>();
-                Item = item;
-                UpdateState();
+                var requestResult = RequestResult.TryParse(httpResponseBody);
+                if (requestResult.Status == 0)
+                {
+                    var item = ResourceItem.TryParse(requestResult.Info.Detail);
+                    Item = item;
+                    UpdateState();
+                }
             }
             catch { }
         }
 
-        private void ActionButton_Click(object sender, RoutedEventArgs e)
+        private async void ActionButton_Click(object sender, RoutedEventArgs e)
         {
             switch (State)
             {
-                case ResourceManager.ItemState.Downloading:
-                    ResourceManager.Shared.Cancel(Item);
+                case ResourceItemState.Downloading:
+                    ResourceManager.Cancel(Item);
                     UpdateState();
                     break;
-                case ResourceManager.ItemState.Installed:
-                    ResourceManager.Shared.Uninstall(Item);
+                case ResourceItemState.Installed:
+                    await ResourceManager.Uninstall(Item);
                     UpdateState();
                     break;
-                case ResourceManager.ItemState.None:
-                    ResourceManager.Shared.DownloadItem(Item);
+                case ResourceItemState.None:
+                    ResourceManager.Download(Item);
                     UpdateState();
                     break;
             }
         }
 
-        private void GoButton_Click(object sender, RoutedEventArgs e)
+        private async void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Item.type == "script")
+            if (Item.Type == "script")
             {
-                var mainScriptName = Item.mainScriptName;
+                var mainScriptName = Item.MainScriptName;
                 if (mainScriptName == null) return;
-                var path = ResourceManager.Shared.ItemPath(Item) + "\\" + mainScriptName;
+                var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
                 if (File.Exists(path))
                 {
                     Renderer.EnqueueTask(() =>
@@ -223,13 +233,13 @@ namespace CelestiaUWP.Addon
                 }
                 return;
             }
-            var objectName = Item.objectName;
+            var objectName = Item.DemoObjectName;
             if (objectName == null) return;
 
-            var selection = AppCore.Simulation.Find(Item.objectName);
+            var selection = AppCore.Simulation.Find(Item.DemoObjectName);
             if (selection.IsEmpty)
             {
-                ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+                await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
                 return;
             }
 

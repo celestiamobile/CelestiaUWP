@@ -18,8 +18,8 @@
             </Style>
         </ResourceDictionary>
     </Page.Resources>
-    <RelativePanel>
-        <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" Margin="16, 16, 16, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+    <RelativePanel Margin="{StaticResource Margin}">
+        <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="celestia:CelestiaEclipse">
                     <RelativePanel>
@@ -31,7 +31,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel x:Name="ControlContainer" Spacing="8" Orientation="Vertical" Margin="16" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+        <StackPanel x:Name="ControlContainer" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" Margin="{StaticResource TopSpacing}"  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
             <RelativePanel>
                 <TextBlock Text="Start time:" x:Name="StartTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <CalendarDatePicker Date="{x:Bind StartTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
@@ -40,7 +40,7 @@
                 <TextBlock Text="End time:" x:Name="EndTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <CalendarDatePicker Date="{x:Bind EndTime, Mode=TwoWay, Converter={StaticResource TimeConverter}}" RelativePanel.AlignRightWithPanel="True"/>
             </RelativePanel>
-            <Grid>
+            <Grid ColumnSpacing="{StaticResource HorizontalSpacing}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

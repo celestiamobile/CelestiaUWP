@@ -1,0 +1,12 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass ContentDialogHelper
+    {
+        static Windows.Foundation.IAsyncAction ShowAlert(Windows.UI.Xaml.UIElement element, String message);
+        static Windows.Foundation.IAsyncOperation<Boolean> ShowOption(Windows.UI.Xaml.UIElement element, String message);
+        static Windows.Foundation.IAsyncOperation<String> GetText(Windows.UI.Xaml.UIElement element, String message);
+        static Windows.Foundation.IAsyncAction ShowText(Windows.UI.Xaml.UIElement element, String title, String text);
+        static Windows.Foundation.IAsyncOperation<Windows.UI.Xaml.Controls.ContentDialogResult> ShowContentDialogAsync(Windows.UI.Xaml.UIElement element, Windows.UI.Xaml.Controls.ContentDialog contentDialog);
+    }
+}

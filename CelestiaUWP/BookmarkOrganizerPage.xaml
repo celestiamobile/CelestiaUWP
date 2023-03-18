@@ -1,27 +1,29 @@
-﻿<local:BookmarkBasePage
+﻿<Page
     x:Class="CelestiaUWP.BookmarkOrganizerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CelestiaUWP"
+    xmlns:app="using:CelestiaAppComponent"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Unloaded="BookmarkOrganizerPage_Unloaded">
 
-    <RelativePanel Margin="16">
-        <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="0, 0, 16, 0" ItemsSource="{x:Bind Bookmarks, Mode=TwoWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
+    <RelativePanel Margin="{StaticResource Margin}">
+        <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="{StaticResource RightSpacing}" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
             <muxc:TreeView.ItemTemplate>
-                <DataTemplate x:DataType="local:BookmarkNode">
-                    <muxc:TreeViewItem ItemsSource="{x:Bind Children}"
+                <DataTemplate x:DataType="app:BookmarkNode">
+                    <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
                                Content="{x:Bind Name}"/>
                 </DataTemplate>
             </muxc:TreeView.ItemTemplate>
         </muxc:TreeView>
-        <StackPanel x:Name="ButtonStack" Spacing="8" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
+        <StackPanel x:Name="ButtonStack" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
             <Button Content="New Folder" x:Name="NewFolderButton" Click="NewFolderButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Rename" x:Name="RenameButton" Click="RenameButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Delete" x:Name="DeleteButton" Click="DeleteButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Go" x:Name="GoButton" Click="GoButton_Click" HorizontalAlignment="Center" Width="100"></Button>
         </StackPanel>
     </RelativePanel>
-</local:BookmarkBasePage>
+</Page>

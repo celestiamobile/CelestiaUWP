@@ -9,11 +9,9 @@
     mc:Ignorable="d"
     Title="Set Simulation Time"
     PrimaryButtonText="OK"
-    SecondaryButtonText="Cancel"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    SecondaryButtonText="Cancel">
 
-    <StackPanel Spacing="6">
+    <StackPanel Orientation="Vertical" Spacing="{StaticResource VerticalSpacing}">
         <DatePicker Date="{x:Bind mDate, Mode=TwoWay}" CalendarIdentifier="GregorianCalendar" x:Name="DatePicker"></DatePicker>
         <TimePicker Time="{x:Bind mTime, Mode=TwoWay}" ClockIdentifier="24HourClock"></TimePicker>
         <Button Content="Set to Current Time" Click="CurrentTimeButton_Click" x:Name="CurrentTimeButton"/>

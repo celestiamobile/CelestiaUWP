@@ -9,7 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
 using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
@@ -62,14 +62,6 @@ namespace CelestiaUWP
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");
             DisplayDate = original;
-        }
-
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

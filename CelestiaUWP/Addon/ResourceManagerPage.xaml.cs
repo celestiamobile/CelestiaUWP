@@ -9,6 +9,7 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -23,9 +24,11 @@ namespace CelestiaUWP.Addon
     public class InstalledListParameter
     {
         public ShowItemHandler Handler;
-        public InstalledListParameter(ShowItemHandler handler)
+        public ResourceManager ResourceManager;
+        public InstalledListParameter(ShowItemHandler handler, ResourceManager resourceManager)
         {
             this.Handler = handler;
+            this.ResourceManager = resourceManager;
         }
     }
 
@@ -33,10 +36,12 @@ namespace CelestiaUWP.Addon
     {
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
-        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer)
+        public ResourceManager ResourceManager;
+        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceManager resourceManager)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
+            this.ResourceManager = resourceManager;
         }
     }
 
@@ -44,6 +49,7 @@ namespace CelestiaUWP.Addon
     {
         private CelestiaAppCore AppCore;
         private CelestiaRenderer Renderer;
+        private ResourceManager ResourceManager;
         public ResourceManagerPage()
         {
             this.InitializeComponent();
@@ -54,16 +60,17 @@ namespace CelestiaUWP.Addon
             var parameter = (ResourceManagerPageParameter)e.Parameter;
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
+            ResourceManager= parameter.ResourceManager;
             Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter(delegate (ResourceItem item)
             {
                 ShowItem(item);
-            }));
+            }, ResourceManager));
         }
 
         private void ShowItem(ResourceItem item)
         {
             Nav.IsBackEnabled = true;
-            Container.Navigate(typeof(ResourceItemPage), new AddonPageParameter(AppCore, Renderer, item));
+            Container.Navigate(typeof(ResourceItemPage), new AddonPageParameter(AppCore, Renderer, item, ResourceManager));
         }
 
         private void Nav_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

@@ -1,0 +1,70 @@
+namespace CelestiaAppComponent
+{
+    enum AppSettingBooleanEntry
+    {
+        UseFullDPI,
+        EnableMSAA,
+        IgnoreXboxWelcomeMessage,
+        OnboardMessageDisplayed,
+        GamepadInvertX,
+        GamepadInvertY,
+    };
+
+    enum AppSettingInt32Entry
+    {
+        GamepadRemapA,
+        GamepadRemapB,
+        GamepadRemapX,
+        GamepadRemapY,
+        GamepadRemapLT,
+        GamepadRemapRT,
+        GamepadRemapLB,
+        GamepadRemapRB,
+        GamepadRemapDpadUp,
+        GamepadRemapDpadDown,
+        GamepadRemapDpadLeft,
+        GamepadRemapDpadRight,
+    };
+
+    enum AppSettingStringEntry
+    {
+        LanguageOverride,
+        LastNewsID,
+    };
+
+    [default_interface]
+    runtimeclass AppSettings
+    {
+        AppSettings(Windows.Storage.ApplicationDataContainer settings);
+        Boolean UseFullDPI;
+        Boolean EnableMSAA;
+        Boolean IgnoreXboxWelcomeMessage;
+        Boolean OnboardMessageDisplayed;
+        String LanguageOverride;
+        String LastNewsID;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapA;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapX;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapY;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapLT;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapRT;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapLB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapRB;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadUp;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadDown;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadLeft;
+        CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadRight;
+
+        void SetBoolean(AppSettingBooleanEntry entry, Boolean value);
+        Boolean GetBoolean(AppSettingBooleanEntry entry);
+        void SetInt32(AppSettingInt32Entry entry, Int32 value);
+        Int32 GetInt32(AppSettingInt32Entry entry);
+        void SetString(AppSettingStringEntry entry, String value);
+        String GetString(AppSettingStringEntry entry);
+
+        Boolean GamepadInvertX;
+        Boolean GamepadInvertY;
+
+        void Save(Windows.Storage.ApplicationDataContainer settings);
+    }
+}

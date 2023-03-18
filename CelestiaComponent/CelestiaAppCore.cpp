@@ -52,10 +52,46 @@ namespace winrt::CelestiaComponent::implementation
         weak_ref<CelestiaAppCore> weakAppCore;
     };
 
+    class AppCoreAlerter : public CelestiaCore::Alerter
+    {
+    public:
+        AppCoreAlerter(weak_ref<CelestiaAppCore> const& weakAppCore) : CelestiaCore::Alerter(), weakAppCore(weakAppCore) {};
+
+        void fatalError(const std::string& message)
+        {
+            auto appCore = weakAppCore.get();
+            if (appCore == nullptr) return;
+
+            appCore->fatalErrorEvent(*appCore, make<FatalErrorArgs>(to_hstring(message)));
+        }
+    private:
+        weak_ref<CelestiaAppCore> weakAppCore;
+    };
+
+    class AppCoreCursorHandler : public CelestiaCore::CursorHandler
+    {
+    public:
+        AppCoreCursorHandler(weak_ref<CelestiaAppCore> const& weakAppCore) : CelestiaCore::CursorHandler(), weakAppCore(weakAppCore) {};
+
+        void setCursorShape(CelestiaCore::CursorShape cursorShape)
+        {
+            auto appCore = weakAppCore.get();
+            if (appCore == nullptr) return;
+
+            appCore->changeCursorEvent(*appCore, make<ChangeCursorArgs>(static_cast<CelestiaComponent::Cursor>(cursorShape)));
+        }
+
+        CelestiaCore::CursorShape getCursorShape() const { return CelestiaCore::ArrowCursor; }
+    private:
+        weak_ref<CelestiaAppCore> weakAppCore;
+    };
+
     CelestiaAppCore::CelestiaAppCore() : CelestiaAppCoreT<CelestiaAppCore>(), sim(nullptr)
     {
         core = new CelestiaCore;
         core->setContextMenuHandler(new AppCoreContextMenuHandler(get_weak()));
+        core->setAlerter(new AppCoreAlerter(get_weak()));
+        core->setCursorHandler(new AppCoreCursorHandler(get_weak()));
     }
 
     bool CelestiaAppCore::StartSimulation(hstring const&configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
@@ -810,5 +846,25 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::ShowContextMenu(event_token const& token)
     {
         showContextMenuEvent.remove(token);
+    }
+
+    event_token CelestiaAppCore::ChangeCursor(Windows::Foundation::EventHandler<CelestiaComponent::ChangeCursorArgs> const& handler)
+    {
+        return changeCursorEvent.add(handler);
+    }
+
+    void CelestiaAppCore::ChangeCursor(event_token const& token)
+    {
+        changeCursorEvent.remove(token);
+    }
+
+    event_token CelestiaAppCore::FatalError(Windows::Foundation::EventHandler<CelestiaComponent::FatalErrorArgs> const& handler)
+    {
+        return fatalErrorEvent.add(handler);
+    }
+
+    void CelestiaAppCore::FatalError(event_token const& token)
+    {
+        fatalErrorEvent.remove(token);
     }
 }

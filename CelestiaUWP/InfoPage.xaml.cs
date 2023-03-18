@@ -9,11 +9,9 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using System;
-using System.Collections.Generic;
-using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 

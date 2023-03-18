@@ -131,17 +131,13 @@
     <Compile Include="Addon\InstalledItemListPage.xaml.cs">
       <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Addon\RequestResult.cs" />
     <Compile Include="Addon\ResourceConstants.cs" />
-    <Compile Include="Addon\ResourceItem.cs" />
     <Compile Include="Addon\ResourceItemPage.xaml.cs">
       <DependentUpon>ResourceItemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Addon\ResourceManager.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppSettings.cs" />
     <Compile Include="ObserverModeDialog.xaml.cs">
       <DependentUpon>ObserverModeDialog.xaml</DependentUpon>
     </Compile>
@@ -152,16 +148,11 @@
     <Compile Include="Web\CommonWebPage.xaml.cs">
       <DependentUpon>CommonWebPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BookmarkBasePage.cs" />
     <Compile Include="BookmarkOrganizerPage.xaml.cs">
       <DependentUpon>BookmarkOrganizerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helper\DoubleFloatConverter.cs" />
-    <Compile Include="Helper\GamepadManager.cs" />
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
-    <Compile Include="Helper\ContentDialogHelper.cs" />
-    <Compile Include="Helper\LocalizationHelper.cs" />
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
@@ -187,9 +178,6 @@
     <Compile Include="Addon\ResourceManagerPage.xaml.cs">
       <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TextInputDialog.xaml.cs">
-      <DependentUpon>TextInputDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TimeSettingDialog.xaml.cs">
       <DependentUpon>TimeSettingDialog.xaml</DependentUpon>
     </Compile>
@@ -199,9 +187,14 @@
     <Compile Include="Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Web\JavascriptBridge.cs" />
+    <Compile Include="Web\LegacyWebPage.xaml.cs">
+      <DependentUpon>LegacyWebPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Web\SafeWebPage.xaml.cs">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WelcomeDialog.xaml.cs">
+      <DependentUpon>WelcomeDialog.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -339,10 +332,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TextInputDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="TimeSettingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -355,7 +344,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Web\LegacyWebPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Web\SafeWebPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WelcomeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -379,11 +376,12 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.2</Version>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CelestiaAppComponent\CelestiaAppComponent.vcxproj">
+      <Project>{8f851773-b6a0-4907-85a7-6d6b2958f70a}</Project>
+      <Name>CelestiaAppComponent</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CelestiaComponent\CelestiaComponent.vcxproj">
       <Project>{f0bc785c-485c-433b-8128-22a79b58f307}</Project>
       <Name>CelestiaComponent</Name>

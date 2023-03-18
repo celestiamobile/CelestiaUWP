@@ -14,8 +14,8 @@
             <local:ObserverModeStringConverter x:Key="ObserverModeStringConverter"/>
         </ResourceDictionary>
     </ContentDialog.Resources>
-    <StackPanel Orientation="Vertical" Spacing="8">
-        <StackPanel Orientation="Horizontal" Spacing="8">
+    <StackPanel Orientation="Vertical" Spacing="{StaticResource VerticalSpacing}">
+        <StackPanel Orientation="Horizontal" Spacing="{StaticResource HorizontalSpacing}">
             <TextBlock VerticalAlignment="Center" x:Name="CoordinateSystemHint"/>
             <ComboBox VerticalAlignment="Center" ItemsSource="{x:Bind CoordinateSystems, Mode=OneTime}" SelectedItem="{x:Bind SelectedCoordinateSystem, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>

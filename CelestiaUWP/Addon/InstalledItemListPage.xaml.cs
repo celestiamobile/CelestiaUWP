@@ -9,8 +9,10 @@
 // of the License, or (at your option) any later version.
 //
 
-using CelestiaUWP.Helper;
+using CelestiaAppComponent;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -21,7 +23,7 @@ namespace CelestiaUWP.Addon
     public sealed partial class InstalledItemListPage : Page, INotifyPropertyChanged
     {
         private ShowItemHandler Handler;
-
+        private ResourceManager ResourceManager;
         private ResourceItem[] mItems = new ResourceItem[] { };
 
         ResourceItem[] Items
@@ -43,12 +45,14 @@ namespace CelestiaUWP.Addon
         {
             var parameter = e.Parameter as InstalledListParameter;
             Handler = parameter.Handler;
+            ResourceManager = parameter.ResourceManager;
             LoadItems();
         }
 
         private async void LoadItems()
         {
-            Items = await ResourceManager.Shared.InstalledItems();
+            var items = await ResourceManager.InstalledItems();
+            Items = items.ToArray();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,12 +63,9 @@ namespace CelestiaUWP.Addon
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        private void ListView_SelectionChanged(object sender, TappedRoutedEventArgs e)
+        private void ItemList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var source = e.OriginalSource as FrameworkElement;
-            if (source == null) return;
-            var item = source.DataContext as ResourceItem;
+            var item = e.ClickedItem as ResourceItem;
             if (item == null) return;
             Handler(item);
         }

@@ -9,8 +9,8 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -48,13 +48,7 @@ namespace CelestiaUWP
                 var url = AppCore.CurrentURL;
                 _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    var bookmark = new BookmarkNode
-                    {
-                        IsFolder = false,
-                        Name = NameText,
-                        URL = AppCore.CurrentURL,
-                        Children = new ObservableCollection<BookmarkNode>()
-                    };
+                    var bookmark = new BookmarkNode(false, NameText, AppCore.CurrentURL, BookmarkHelper.CreateEmptyList());
                     var organizerPage = Organizer.Content as BookmarkOrganizerPage;
                     if (organizerPage != null)
                         organizerPage.InsertBookmarkAtSelection(bookmark);

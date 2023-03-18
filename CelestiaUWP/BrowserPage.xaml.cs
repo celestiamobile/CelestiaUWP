@@ -9,12 +9,13 @@
 // of the License, or (at your option) any later version.
 //
 
+using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Interop;
 using Windows.UI.Xaml.Navigation;
 
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
@@ -28,21 +29,16 @@ namespace CelestiaUWP
         private CelestiaRenderer Renderer;
 
         // Static ones, persistent
-        private static CelestiaBrowserItem[] mSolRoot = null;
-        private static CelestiaBrowserItem[] mDSORoot = null;
-        private static CelestiaBrowserItem brightestStars = null;
-        private static CelestiaBrowserItem starsWithPlanets = null;
+        private static BrowserItem[] SolRoot = null;
+        private static BrowserItem[] DSORoot = null;
+        private static BrowserItem BrightestStars = null;
+        private static BrowserItem StarsWithPlanets = null;
 
         // Dynamic ones, updates every time the page is opened
-        private CelestiaBrowserItem[] mStarRoot = null;
+        private BrowserItem[] StarRoot = null;
 
-        private readonly Helper.NavigationViewItem[] NavigationItems = new Helper.NavigationViewItem[]
-        {
-            new Helper.NavigationViewItem(LocalizationHelper.Localize("Solar System"), "sol"),
-            new Helper.NavigationViewItem(LocalizationHelper.Localize("Stars"), "star"),
-            new Helper.NavigationViewItem(LocalizationHelper.Localize("DSOs"), "dso"),
-        };
-        private ObservableCollection<CelestiaBrowserItem> Root = new ObservableCollection<CelestiaBrowserItem>();
+        private ObservableCollection<BrowserItemTab> RootItems = new ObservableCollection<BrowserItemTab>();
+        private IBindableObservableVector RootItem = null;
 
         public BrowserPage()
         {
@@ -55,7 +51,7 @@ namespace CelestiaUWP
             AppCore = parameter.Item1;
             Renderer = parameter.Item2;
 
-            if (mSolRoot == null)
+            if (SolRoot == null)
             {
                 // Static should just initialize once
                 var sol = AppCore.Simulation.Find("Sol");
@@ -64,16 +60,14 @@ namespace CelestiaUWP
                     var solStar = sol.Object;
                     if (solStar is CelestiaStar)
                     {
-                        mSolRoot = new CelestiaBrowserItem[] { new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false) };
+                        SolRoot = new BrowserItem[] { new BrowserItem(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false)) };
                     }
                 }
-                else
-                {
-                    mSolRoot = new CelestiaBrowserItem[] { };
-                }
             }
+            if (SolRoot != null)
+                RootItems.Add(new BrowserItemTab(SolRoot, LocalizationHelper.Localize("Solar System")));
 
-            if (brightestStars == null)
+            if (BrightestStars == null)
             {
                 var bsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.Brightest);
                 var brightest = bsb.Stars;
@@ -83,10 +77,10 @@ namespace CelestiaUWP
                 {
                     s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, true));
                 }
-                brightestStars = new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s2.ToArray(), true);
+                BrightestStars = new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s2.ToArray(), true));
             }
 
-            if (starsWithPlanets == null)
+            if (StarsWithPlanets == null)
             {
                 var hsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.WithPlants);
                 var hasPlanets = hsb.Stars;
@@ -96,7 +90,7 @@ namespace CelestiaUWP
                 {
                     s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
                 }
-                starsWithPlanets = new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), false);
+                StarsWithPlanets = new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), false));
             }
 
             var nsb = AppCore.Simulation.StarBrowser(CelestiaStarBrowserType.Nearest);
@@ -116,15 +110,16 @@ namespace CelestiaUWP
             {
                 s4.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
-            mStarRoot = new CelestiaBrowserItem[]
+            StarRoot = new BrowserItem[]
             {
-                new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray(), true),
-                new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s4.ToArray(), true),
-                brightestStars,
-                starsWithPlanets
+                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray(), true)),
+                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s4.ToArray(), true)),
+                BrightestStars,
+                StarsWithPlanets
             };
+            RootItems.Add(new BrowserItemTab(StarRoot, LocalizationHelper.Localize("Stars")));
 
-            if (mDSORoot == null)
+            if (DSORoot == null)
             {
                 var typeMap = new string[]
                 {
@@ -169,16 +164,17 @@ namespace CelestiaUWP
                     var entry = new CelestiaBrowserItem(dsoCatalog.DSOName(dso), dso, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false);
                     results[categoryIndex].Add(entry);
                 }
-                var dsoCategories = new List<CelestiaBrowserItem>();
+                var dsoCategories = new List<BrowserItem>();
                 for (var i = 0; i < results.Count; i++)
                 {
                     if (results[i].Count > 0)
                     {
-                        dsoCategories.Add(new CelestiaBrowserItem(categoryNames[i], results[i].ToArray(), false));
+                        dsoCategories.Add(new BrowserItem(new CelestiaBrowserItem(categoryNames[i], results[i].ToArray(), false)));
                     }
                 }
-                mDSORoot = dsoCategories.ToArray();
+                DSORoot = dsoCategories.ToArray();
             }
+            RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs")));
 
             var actions = new (string, short)[]
                 {
@@ -198,9 +194,9 @@ namespace CelestiaUWP
                 button.Click += (sender, arg) =>
                 {
                     var selectedItem = Tree.SelectedItem;
-                    if (selectedItem is CelestiaBrowserItem item)
+                    if (selectedItem is BrowserItem item)
                     {
-                        var obj = item.Object;
+                        var obj = item.Item.Object;
                         if (obj != null)
                         {
                             Renderer.EnqueueTask(() =>
@@ -215,39 +211,17 @@ namespace CelestiaUWP
                 ButtonStack.Children.Add(button);
             }
 
-            Nav.SelectedItem = NavigationItems[0];
+            Nav.SelectedItem = RootItems[0];
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            SetRoot(((Helper.NavigationViewItem)args.SelectedItem).Tag);
-        }
-
-        private void SetRoot(string tag)
-        {
-            CelestiaBrowserItem[] items = null;
-            switch (tag)
-            {
-                case "sol":
-                    items = mSolRoot;
-                    break;
-                case "star":
-                    items = mStarRoot;
-                    break;
-                case "dso":
-                    items = mDSORoot;
-                    break;
-                default:
-                    break;
-            }
-            Root.Clear();
-            if (items != null)
-            {
-                foreach (var item in items)
-                {
-                    Root.Add(item);
-                }
-            }
+            var item = args.SelectedItem;
+            if (item == null) return;
+            var browserItem = item as BrowserItemTab;
+            if (browserItem == null) return;
+            RootItem = BrowserItem.ConvertToBindable(browserItem.Children);
+            OnPropertyChanged("RootItem");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
