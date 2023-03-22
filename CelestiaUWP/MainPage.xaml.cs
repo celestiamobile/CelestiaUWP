@@ -359,7 +359,6 @@ namespace CelestiaUWP
                 }
             }
 
-            if (!isXbox)
             {
                 Windows.Web.Http.HttpClient httpClient = new Windows.Web.Http.HttpClient();
                 var queryItems = System.Web.HttpUtility.ParseQueryString("");
