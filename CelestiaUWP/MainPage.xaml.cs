@@ -333,30 +333,10 @@ namespace CelestiaUWP
                     return;
                 }
             }
-            if (!isXbox)
+
+            if (ShowHelpIfNeeded())
             {
-                if (!AppSettings.OnboardMessageDisplayed)
-                {
-                    AppSettings.OnboardMessageDisplayed = true;
-                    AppSettings.Save(ApplicationData.Current.LocalSettings);
-                    ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForPath("/help/welcome"));
-                    return;
-                }
-            }
-            else
-            {
-                if (!DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
-                {
-                    DidShowXboxWelcomeMessage = true;
-                    var welcomeDialog = new WelcomeDialog();
-                    await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
-                    if (welcomeDialog.ShouldNotShowMessageAgain)
-                    {
-                        AppSettings.IgnoreXboxWelcomeMessage = true;
-                        AppSettings.Save(ApplicationData.Current.LocalSettings);
-                    }
-                    return;
-                }
+                return;
             }
 
             {
@@ -1143,9 +1123,12 @@ namespace CelestiaUWP
                 ShowAddonManagement();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("User Guide"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), async (sender, arg) =>
             {
-                _ = Launcher.LaunchUriAsync(new Uri("https://github.com/levinli303/Celestia/wiki"));
+                if (isXbox)
+                    ShowXboxHelp();
+                else
+                    ShowNonXboxHelp();
             });
             AppendItem(helpItem, LocalizationHelper.Localize("About Celestia"), (sender, arg) =>
             {
@@ -1222,6 +1205,48 @@ namespace CelestiaUWP
             if (file != null)
                 OpenFileIfReady(file);
         }
+
+        async void ShowXboxHelp()
+        {
+            var welcomeDialog = new WelcomeDialog();
+            await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
+
+            if (welcomeDialog.ShouldNotShowMessageAgain)
+            {
+                AppSettings.IgnoreXboxWelcomeMessage = true;
+                AppSettings.Save(ApplicationData.Current.LocalSettings);
+            }
+        }
+
+        void ShowNonXboxHelp()
+        {
+            ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForPath("/help/welcome"));
+        }
+
+        bool ShowHelpIfNeeded()
+        {
+            if (!isXbox)
+            {
+                if (!AppSettings.OnboardMessageDisplayed)
+                {
+                    AppSettings.OnboardMessageDisplayed = true;
+                    AppSettings.Save(ApplicationData.Current.LocalSettings);
+                    ShowNonXboxHelp();
+                    return true;
+                }
+            }
+            else
+            {
+                if (!DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
+                {
+                    DidShowXboxWelcomeMessage = true;
+                    ShowXboxHelp();
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void ShowTourGuide()
         {
             ShowPage(typeof(TourGuidePage), new Size(400, 0), (mAppCore, mRenderer));
