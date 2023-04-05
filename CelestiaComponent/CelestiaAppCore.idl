@@ -73,6 +73,12 @@ namespace CelestiaComponent
         WhatsThis = 16,
     };
 
+    enum CelestiaLayoutDirection
+    {
+        LTR = 0,
+        RTL = 1,
+    };
+
     delegate void CelestiaLoadCallback(String status);
 
     [default_interface]
@@ -250,6 +256,8 @@ namespace CelestiaComponent
         Int32 MeasurementSystem;
         Int32 TemperatureScale;
         Int32 ScriptSystemAccessPolicy;
+
+        CelestiaLayoutDirection LayoutDirection;
 
         event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
         event Windows.Foundation.EventHandler<ChangeCursorArgs> ChangeCursor;

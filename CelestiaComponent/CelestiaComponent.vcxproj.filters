@@ -145,9 +145,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\asterismrenderer.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -161,9 +158,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\boundariesrenderer.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\category.cpp">
@@ -554,6 +548,15 @@
     <ClCompile Include="..\..\Celestia\src\celengine\textlayout.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\asterismrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\boundariesrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\unicode.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -708,9 +711,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\asterismrenderer.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\astro.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -727,9 +727,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\boundaries.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\boundariesrenderer.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\category.h">
@@ -1148,6 +1145,27 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\textlayout.h">
       <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\asterismrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\boundariesrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celmath\vecgl.h">
+      <Filter>Celestia\celmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\arrayvector.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\flag.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\intrusiveptr.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\unicode.h">
+      <Filter>Celestia\celutil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
