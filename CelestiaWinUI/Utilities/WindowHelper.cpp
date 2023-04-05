@@ -95,6 +95,27 @@ namespace winrt::CelestiaWinUI::implementation
         }
     }
 
+    void WindowHelper::SetWindowFlowDirection(Window const& window)
+    {
+        auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
+        auto flowDirection = resourceLoader.GetString(L"ApplicationFlowDirection");
+        if (flowDirection != L"RightToLeft") return;
+
+        auto windowNative{ window.try_as<IWindowNative>() };
+        if (!windowNative) return;
+
+        HWND hWnd{ 0 };
+        windowNative->get_WindowHandle(&hWnd);
+        auto extended_style = GetWindowLong(hWnd, GWL_EXSTYLE);
+        SetWindowLong(hWnd, GWL_EXSTYLE, extended_style | WS_EX_LAYOUTRTL);
+
+        auto content = window.Content().try_as<FrameworkElement>();
+        if (content)
+        {
+            content.FlowDirection(FlowDirection::RightToLeft);
+        }
+    }
+
     void WindowHelper::ResizeWindow(Window const& window, int32_t width, int32_t height)
     {
         auto appWindow = GetAppWindow(window);

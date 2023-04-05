@@ -72,6 +72,8 @@ namespace winrt::CelestiaWinUI::implementation
         void ShowSettings();
         void ShowAddonManagement();
         void ToggleFullScreen();
+        fire_and_forget ShowXboxHelp();
+        void ShowNonXboxHelp();
 
         void AppCore_ShowContextMenu(Windows::Foundation::IInspectable const&, CelestiaComponent::ShowContextMenuArgs const& args);
         void AppCore_FatalError(Windows::Foundation::IInspectable const&, CelestiaComponent::FatalErrorArgs const& args);

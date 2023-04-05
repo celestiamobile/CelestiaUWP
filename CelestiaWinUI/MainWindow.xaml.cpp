@@ -15,8 +15,9 @@ using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 using namespace Windows::ApplicationModel::DataTransfer;
 using namespace Windows::Data::Json;
-using namespace Windows::Storage;
 using namespace Windows::Foundation;
+using namespace Windows::Globalization;
+using namespace Windows::Storage;
 using namespace Windows::System;
 
 namespace winrt::CelestiaWinUI::implementation
@@ -63,10 +64,22 @@ namespace winrt::CelestiaWinUI::implementation
         auto configPath = customConfigFile != nullptr ? customConfigFile.Path() : defaultConfigFilePath;
 
         auto localePath = defaultResourcePath + L"\\locale";
-        auto systemLocale = co_await GetLocale(localePath);
-        hstring locale = AppSettings().LanguageOverride();
-        if (locale.empty())
-            locale = systemLocale;
+
+        auto locale = co_await GetLocale(localePath);
+
+        // Migrate override language to system
+        auto overrideLocaleLegacy = AppSettings().LanguageOverride();
+        if (!overrideLocaleLegacy.empty())
+        {
+            ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+            AppSettings().LanguageOverride(L"");
+            AppSettings().Save(ApplicationData::Current().LocalSettings());
+
+            // We cannot change language during runtime, so still prefer this override value instead
+            locale = overrideLocaleLegacy;
+        }
+
+        WindowHelper::SetWindowFlowDirection(*this);
 
         co_await CreateExtraFolders();
         auto defaultSettings = co_await ReadDefaultSettings();
@@ -552,9 +565,12 @@ namespace winrt::CelestiaWinUI::implementation
                 });
         }
         helpItem.Items().Append(MenuFlyoutSeparator());
-        AppendItem(helpItem, LocalizationHelper::Localize(L"User Guide"), [this](IInspectable const&, RoutedEventArgs const&)
+        AppendItem(helpItem, LocalizationHelper::Localize(L"Celestia Help"), [this](IInspectable const&, RoutedEventArgs const&)
             {
-                Launcher::LaunchUriAsync(Uri(L"https://github.com/levinli303/Celestia/wiki"));
+                if (isXbox)
+                    ShowXboxHelp();
+                else
+                    ShowNonXboxHelp();
             });
         AppendItem(helpItem, LocalizationHelper::Localize(L"About Celestia"), [this](IInspectable const&, RoutedEventArgs const&)
             {
@@ -771,6 +787,7 @@ namespace winrt::CelestiaWinUI::implementation
                                 };
                                 window.Content(userControl);
                                 WindowHelper::SetWindowIcon(window);
+                                WindowHelper::SetWindowFlowDirection(window);
                                 WindowHelper::ResizeWindow(window, 400, 600);
                                 WindowHelper::TrackWindow(window, item.ID());
                                 window.Activate();
@@ -804,6 +821,7 @@ namespace winrt::CelestiaWinUI::implementation
                             }) };
                         window.Content(userControl);
                         WindowHelper::SetWindowIcon(window);
+                        WindowHelper::SetWindowFlowDirection(window);
                         WindowHelper::ResizeWindow(window, 400, 600);
                         WindowHelper::TrackWindow(window, guide);
                         window.Activate();
@@ -812,29 +830,22 @@ namespace winrt::CelestiaWinUI::implementation
                 co_return;
             }
         }
-        if (!isXbox) {
+
+        if (isXbox)
+        {
+            if (!didShowXboxWelcomeMessage && !AppSettings().IgnoreXboxWelcomeMessage())
+            {
+                didShowXboxWelcomeMessage = true;
+                ShowXboxHelp();
+            }
+        }
+        else
+        {
             if (!AppSettings().OnboardMessageDisplayed())
             {
                 AppSettings().OnboardMessageDisplayed(true);
                 AppSettings().Save(ApplicationData::Current().LocalSettings());
-                const hstring id = L"Welcome";
-                auto trackedWindow = WindowHelper::GetTrackedWindow(id);
-                if (trackedWindow != nullptr)
-                {
-                    trackedWindow.Activate();
-                    co_return;
-                }
-                Window window;
-                window.Title(L"Celestia");
-                SafeWebUserControl userControl{ CelestiaWinUI::CommonWebUserControlArgs(GetURIForPath(L"/help/welcome"), single_threaded_vector<hstring>(), appCore, renderer, L"", nullptr, [weak_window{make_weak(window)}]()
-                    {
-                        return weak_window.get();
-                    }) };
-                window.Content(userControl);
-                WindowHelper::SetWindowIcon(window);
-                WindowHelper::ResizeWindow(window, 400, 600);
-                WindowHelper::TrackWindow(window, id);
-                window.Activate();
+                ShowNonXboxHelp();
                 co_return;
             }
 
@@ -874,6 +885,7 @@ namespace winrt::CelestiaWinUI::implementation
                             }) };
                         window.Content(userControl);
                         WindowHelper::SetWindowIcon(window);
+                        WindowHelper::SetWindowFlowDirection(window);
                         WindowHelper::ResizeWindow(window, 400, 600);
                         WindowHelper::TrackWindow(window, item.ID());
                         window.Activate();
@@ -882,17 +894,6 @@ namespace winrt::CelestiaWinUI::implementation
                 }
             }
             catch (hresult_error const&) {}
-        }
-        if (isXbox && !didShowXboxWelcomeMessage && !AppSettings().IgnoreXboxWelcomeMessage())
-        {
-            didShowXboxWelcomeMessage = true;
-            CelestiaWinUI::WelcomeDialog welcomeDialog;
-            co_await ContentDialogHelper::ShowContentDialogAsync(Content(), welcomeDialog);
-            if (welcomeDialog.ShouldNotShowMessageAgain())
-            {
-                AppSettings().IgnoreXboxWelcomeMessage(true);
-                AppSettings().Save(ApplicationData::Current().LocalSettings());
-            }
         }
     }
 
@@ -1012,6 +1013,7 @@ namespace winrt::CelestiaWinUI::implementation
         TourGuideWindow window{ appCore.Destinations(), appCore, renderer };
         window.Title(LocalizationHelper::Localize(L"Tour Guide"));
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 600, 400);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1023,6 +1025,7 @@ namespace winrt::CelestiaWinUI::implementation
         InfoWindow window{ appCore, selection };
         window.Title(appCore.Simulation().Universe().NameForSelection(selection));
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 400);
         window.Activate();
     }
@@ -1041,6 +1044,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Title(LocalizationHelper::Localize(L"Eclipse Finder"));
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1075,6 +1079,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Title(LocalizationHelper::Localize(L"Star Browser"));
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 600, 400);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1094,6 +1099,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Title(LocalizationHelper::Localize(L"Bookmark Organizer"));
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1113,6 +1119,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Title(LocalizationHelper::Localize(L"Add Bookmark"));
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1134,6 +1141,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Title(LocalizationHelper::Localize(L"Settings"));
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1157,6 +1165,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Content(userControl);
         window.Title(LocalizationHelper::Localize(L"Manage Add-ons"));
         WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
@@ -1172,6 +1181,41 @@ namespace winrt::CelestiaWinUI::implementation
         appWindow.SetPresenter(isFullScreen ? AppWindowPresenterKind::Default : AppWindowPresenterKind::FullScreen);
         isFullScreen = !isFullScreen;
         MenuBar().Visibility(isFullScreen ? Visibility::Collapsed : Visibility::Visible);
+    }
+
+    fire_and_forget MainWindow::ShowXboxHelp()
+    {
+        CelestiaWinUI::WelcomeDialog welcomeDialog;
+        co_await ContentDialogHelper::ShowContentDialogAsync(Content(), welcomeDialog);
+        if (welcomeDialog.ShouldNotShowMessageAgain())
+        {
+            AppSettings().IgnoreXboxWelcomeMessage(true);
+            AppSettings().Save(ApplicationData::Current().LocalSettings());
+        }
+    }
+
+    void MainWindow::ShowNonXboxHelp()
+    {
+        const hstring id = L"Welcome";
+        auto trackedWindow = WindowHelper::GetTrackedWindow(id);
+        if (trackedWindow != nullptr)
+        {
+            trackedWindow.Activate();
+            return;
+        }
+        Window window;
+        window.Title(L"Celestia");
+        SafeWebUserControl userControl{ CelestiaWinUI::CommonWebUserControlArgs(GetURIForPath(L"/help/welcome"), single_threaded_vector<hstring>(), appCore, renderer, L"", nullptr, [weak_window{make_weak(window)}]()
+            {
+                return weak_window.get();
+            })
+        };
+        window.Content(userControl);
+        WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowFlowDirection(window);
+        WindowHelper::ResizeWindow(window, 400, 600);
+        WindowHelper::TrackWindow(window, id);
+        window.Activate();
     }
 
     void MainWindow::AppCore_ShowContextMenu(IInspectable const&, ShowContextMenuArgs const& args)
