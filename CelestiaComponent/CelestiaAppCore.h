@@ -315,6 +315,9 @@ namespace winrt::CelestiaComponent::implementation
         int32_t ScriptSystemAccessPolicy();
         void ScriptSystemAccessPolicy(int32_t scriptSystemAccessPolicy);
 
+        CelestiaComponent::CelestiaLayoutDirection LayoutDirection();
+        void LayoutDirection(CelestiaComponent::CelestiaLayoutDirection layoutDirection);
+
         event_token ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const&);
         void ShowContextMenu(event_token const&);
 

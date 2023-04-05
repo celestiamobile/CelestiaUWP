@@ -217,6 +217,7 @@ namespace CelestiaUWP
                 }
 
                 LocalizationHelper.Locale = CelestiaAppCore.Language;
+                mAppCore.LayoutDirection = flowDirection == "RightToLeft" ? CelestiaLayoutDirection.RTL : CelestiaLayoutDirection.LTR;
                 UpdateScale();
 
                 _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

@@ -648,10 +648,14 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
                     {
                         Windows::Foundation::DateTime dateTime = CelestiaHelper::DateTimeFromJulianDay(jd);
                         wstring str(dateFormatter.Format(dateTime));
+#ifdef USE_ICU
+                        return to_string(str);
+#else
                         // Remove hidden Unicode chracters
                         const std::ctype<wchar_t>& ct = std::use_facet<std::ctype<wchar_t>>(std::locale());
                         str.erase(std::remove_if(str.begin(), str.end(), [&ct](wchar_t ch) { return !ct.is(std::ctype<wchar_t>::print, ch); }), str.end());
                         return to_string(str);
+#endif
                     });
             }
             else
@@ -836,6 +840,16 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     void CelestiaAppCore::ScriptSystemAccessPolicy(int32_t scriptSystemAccessPolicy)
     {
         core->setScriptSystemAccessPolicy((CelestiaCore::ScriptSystemAccessPolicy)scriptSystemAccessPolicy);
+    }
+
+    CelestiaComponent::CelestiaLayoutDirection CelestiaAppCore::LayoutDirection()
+    {
+        return (CelestiaComponent::CelestiaLayoutDirection)core->getLayoutDirection();
+    }
+
+    void CelestiaAppCore::LayoutDirection(CelestiaComponent::CelestiaLayoutDirection layoutDirection)
+    {
+        core->setLayoutDirection((CelestiaCore::LayoutDirection)layoutDirection);
     }
 
     event_token CelestiaAppCore::ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const& handler)
