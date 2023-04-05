@@ -28,6 +28,7 @@
 using namespace winrt;
 using namespace CelestiaComponent;
 using namespace Windows::Foundation;
+using namespace Windows::Globalization;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
@@ -402,16 +403,9 @@ namespace winrt::CelestiaAppComponent::implementation
             }
             else
             {
-                std::wstring langW = std::wstring(lang);
-                std::wstring toReplace = L"_";
-                auto loc = langW.find_first_of(toReplace);
-                if (loc != std::wstring::npos)
-                {
-                    langW.replace(loc, toReplace.size(), L"-");
-                    lang = hstring(langW);
-                }
+                lang = LocalizationHelper::ToWindowsTag(lang);
             }
-            auto culture = Windows::Globalization::Language(lang);
+            auto culture = Language(lang);
             itemTitles.Append(culture.NativeName());
         }
     }
@@ -421,10 +415,10 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        auto selectedLang = appSettings.LanguageOverride();
+        auto selectedLang = ApplicationLanguages::PrimaryLanguageOverride();
         if (selectedLang.empty()) return 0;
         uint32_t index;
-        if (availableLanguages.IndexOf(selectedLang, index))
+        if (availableLanguages.IndexOf(LocalizationHelper::FromWindowsTag(selectedLang), index))
             return index + 1;
         return 0;
     }
@@ -435,10 +429,9 @@ namespace winrt::CelestiaAppComponent::implementation
         if (!hasCorrectValue)
             return;
         if (value == 0)
-            appSettings.LanguageOverride(L"");
+            ApplicationLanguages::PrimaryLanguageOverride(L"");
         else
-            appSettings.LanguageOverride(availableLanguages.GetAt(value - 1));
-        appSettings.Save(localSettings);
+            ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
     }
 
     hstring LanguageInt32Item::Title()

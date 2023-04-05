@@ -9,6 +9,8 @@ namespace winrt::CelestiaAppComponent::implementation
         static hstring Locale();
         static void Locale(hstring const& locale);
         static hstring Localize(hstring const& original);
+        static hstring FromWindowsTag(hstring const& tag);
+        static hstring ToWindowsTag(hstring const& locale);
     };
 }
 

@@ -23,6 +23,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
 using Windows.Foundation;
+using Windows.Globalization;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
@@ -127,8 +128,8 @@ namespace CelestiaUWP
         {
             scale = AppSettings.UseFullDPI ? ((int)Windows.Graphics.Display.DisplayInformation.GetForCurrentView().ResolutionScale) / 100.0f : 1.0f;
 
-            Windows.Storage.StorageFolder customDataFolder = null;
-            Windows.Storage.StorageFile customConfigFile = null;
+            StorageFolder customDataFolder = null;
+            StorageFile customConfigFile = null;
             try
             {
                 customDataFolder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync("Override");
@@ -140,11 +141,23 @@ namespace CelestiaUWP
             var configPath = customConfigFile != null ? customConfigFile.Path : defaultConfigFilePath;
 
             var localePath = defaultResourcePath + "\\locale";
-            var systemLocale = await GetLocale(localePath);
-            var locale = AppSettings.LanguageOverride;
-            if (locale == null)
-                locale = systemLocale;
 
+            // Migrate override language to system
+            var overrideLocaleLegacy = AppSettings.LanguageOverride;
+            if (overrideLocaleLegacy != null && overrideLocaleLegacy != "")
+            {
+                ApplicationLanguages.PrimaryLanguageOverride = LocalizationHelper.ToWindowsTag(overrideLocaleLegacy);
+                AppSettings.LanguageOverride = "";
+                AppSettings.Save(ApplicationData.Current.LocalSettings);
+                Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().Reset();
+                Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
+            }
+
+            var resourceLoader = ResourceLoader.GetForViewIndependentUse();
+            var flowDirection = resourceLoader.GetString("ApplicationFlowDirection");
+            FlowDirection = flowDirection == "RightToLeft" ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+
+            var locale = await GetLocale(localePath);
             await Task.Run(() => CreateExtraFolders());
 
             mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
@@ -1123,7 +1136,7 @@ namespace CelestiaUWP
                 ShowAddonManagement();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), async (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
             {
                 if (isXbox)
                     ShowXboxHelp();
@@ -1587,7 +1600,7 @@ namespace CelestiaUWP
         {
             try
             {
-                var originalFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                var originalFile = await StorageFile.GetFileFromPathAsync(path);
                 if (originalFile == null) return;
 
                 var savePicker = new Windows.Storage.Pickers.FileSavePicker
@@ -1599,7 +1612,7 @@ namespace CelestiaUWP
                 savePicker.FileTypeChoices.Add(LocalizationHelper.Localize("Image"), new List<string>() { ".png" });
                 // Default file name if the user does not type one in or select a file to replace
                 savePicker.SuggestedFileName = LocalizationHelper.Localize("Celestia Screenshot");
-                Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+                StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file == null) return;
 
                 await originalFile.CopyAndReplaceAsync(file);

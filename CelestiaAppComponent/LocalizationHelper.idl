@@ -5,5 +5,7 @@ namespace CelestiaAppComponent
     {
         static String Locale;
         static String Localize(String original);
+        static String FromWindowsTag(String tag);
+        static String ToWindowsTag(String locale);
     }
 }

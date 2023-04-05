@@ -24,4 +24,30 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         return CelestiaComponent::CelestiaAppCore::LocalizedString(original, L"celestia_ui");
     }
+
+    hstring LocalizationHelper::FromWindowsTag(hstring const& tag)
+    {
+        std::wstring langW = std::wstring(tag);
+        std::wstring toReplace = L"-";
+        auto loc = langW.find_first_of(toReplace);
+        if (loc != std::wstring::npos)
+        {
+            langW.replace(loc, toReplace.size(), L"_");
+            return hstring(langW);
+        }
+        return tag;
+    }
+
+    hstring LocalizationHelper::ToWindowsTag(hstring const& locale)
+    {
+        std::wstring langW = std::wstring(locale);
+        std::wstring toReplace = L"_";
+        auto loc = langW.find_first_of(toReplace);
+        if (loc != std::wstring::npos)
+        {
+            langW.replace(loc, toReplace.size(), L"-");
+            return hstring(langW);
+        }
+        return locale;
+    }
 }
