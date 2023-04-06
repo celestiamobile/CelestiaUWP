@@ -31,6 +31,7 @@
     <Midl Include="SettingItem.idl" />
     <Midl Include="ResourceManager.idl" />
     <Midl Include="ContentDialogHelper.idl" />
+    <Midl Include="BrowserItem.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />
