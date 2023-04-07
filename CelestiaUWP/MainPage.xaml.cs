@@ -1105,6 +1105,11 @@ namespace CelestiaUWP
             AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U });
             AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete });
             AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D });
+            viewItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(viewItem, LocalizationHelper.Localize("Toggle Fullscreen"), (sender, arg) =>
+            {
+                ToggleFullscreen();
+            }, new KeyboardAccelerator { Key = VirtualKey.F11 });
 
             var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
             AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
@@ -1345,6 +1350,15 @@ namespace CelestiaUWP
         void ShowEclipseFinder()
         {
             ShowPage(typeof(EclipseFinderPage), new Size(400, 0), (mAppCore, mRenderer));
+        }
+
+        void ToggleFullscreen()
+        {
+            var view = ApplicationView.GetForCurrentView();
+            if (view.IsFullScreenMode)
+                view.ExitFullScreenMode();
+            else
+                view.TryEnterFullScreenMode();
         }
 
         async void ShowTimeSetting()
