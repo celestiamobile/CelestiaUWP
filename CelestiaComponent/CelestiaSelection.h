@@ -29,7 +29,7 @@ namespace winrt::CelestiaComponent::implementation
         Selection AsSelection();
 
     private:
-        Selection::Type type;
+        SelectionType type;
         CelestiaComponent::CelestiaAstroObject object;
     };
 }

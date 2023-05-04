@@ -34,13 +34,13 @@ namespace winrt::CelestiaComponent::implementation
 		Selection s = get_self<CelestiaSelection>(selection)->AsSelection();
 		switch (s.getType())
 		{
-		case Selection::Type_Star:
+		case SelectionType::Star:
 			return get_self<CelestiaStarCatalog>(StarCatalog())->StarName(make<CelestiaStar>(s.star()));
-		case Selection::Type_Body:
-			return to_hstring(reinterpret_cast<Body*>(s.object())->getName(true));
-		case Selection::Type_DeepSky:
+		case SelectionType::Body:
+			return to_hstring(s.body()->getName(true));
+		case SelectionType::DeepSky:
 			return get_self<CelestiaDSOCatalog>(DSOCatalog())->DSOName(make<CelestiaDSO>(s.deepsky()));
-		case Selection::Type_Location:
+		case SelectionType::Location:
 			return to_hstring(s.location()->getName(true));
 		default:
 			return L"";

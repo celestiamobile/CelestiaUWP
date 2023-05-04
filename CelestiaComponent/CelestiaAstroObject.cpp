@@ -17,7 +17,7 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaAstroObject::CelestiaAstroObject(AstroObject* obj) : CelestiaAstroObjectT<CelestiaAstroObject>(), obj(obj)
+	CelestiaAstroObject::CelestiaAstroObject(void* obj) : CelestiaAstroObjectT<CelestiaAstroObject>(), obj(obj)
 	{
 	}
 }

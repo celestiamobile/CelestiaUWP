@@ -404,7 +404,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\value.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h" />
@@ -462,8 +461,10 @@
     <ClInclude Include="..\..\Celestia\src\celrender\boundariesrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\cometrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\eclipticlinerenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\gl\buffer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\gl\vertexobject.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\largestarrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h" />
-    <ClInclude Include="..\..\Celestia\src\celrender\vertexobject.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\script.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\scriptmaps.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\legacy\cmdparser.h" />
@@ -527,7 +528,6 @@
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\astroobj.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
@@ -641,8 +641,10 @@
     <ClCompile Include="..\..\Celestia\src\celrender\boundariesrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\cometrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\gl\buffer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\gl\vertexobject.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\largestarrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celrender\vertexobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\scriptmaps.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\legacy\cmdparser.cpp" />
