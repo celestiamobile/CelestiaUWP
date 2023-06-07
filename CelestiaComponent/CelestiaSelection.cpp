@@ -50,7 +50,7 @@ namespace winrt::CelestiaComponent::implementation
         case SelectionType::Star:
             return make<CelestiaStar>(sel.star());
         case SelectionType::DeepSky:
-            if (to_hstring(sel.deepsky()->getObjTypeName()) == L"galaxy")
+            if (sel.deepsky()->getObjType() == DeepSkyObjectType::Galaxy)
                 return make<CelestiaGalaxy>(reinterpret_cast<Galaxy*>(sel.deepsky()));
             return make<CelestiaDSO>(sel.deepsky());
         case SelectionType::Body:

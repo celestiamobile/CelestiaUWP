@@ -53,6 +53,9 @@
     <Filter Include="Celestia\celrender">
       <UniqueIdentifier>{bce64c6e-36d1-4d78-9d8b-b48432f72ae7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Celestia\celrender\gl">
+      <UniqueIdentifier>{bce64c6e-36d1-4d78-9d8b-b48432f72ae8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
@@ -197,6 +200,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\galaxy.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\galaxyform.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp">
@@ -540,6 +546,27 @@
     <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\galaxyrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\globularrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\largestarrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\gl\buffer.cpp">
+      <Filter>Celestia\celrender\gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\gl\vertexobject.cpp">
+      <Filter>Celestia\celrender\gl</Filter>
+    </ClCompile>
     <ClCompile Include="CelestiaTimeline.cpp" />
     <ClCompile Include="CelestiaExtension.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp">
@@ -766,6 +793,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\galaxy.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\galaxyform.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\geometry.h">
@@ -1130,6 +1160,30 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\eclipticlinerenderer.h">
       <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\galaxyrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\globularrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\largestarrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\nebularenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\rendererfwd.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\gl\buffer.h">
+      <Filter>Celestia\celrender\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\gl\vertexobject.h">
+      <Filter>Celestia\celrender\gl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\customorbittype.h">
       <Filter>Celestia\celephem</Filter>

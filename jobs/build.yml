@@ -54,14 +54,12 @@ jobs:
   - script: |
       cd Celestia
       git cherry-pick origin/angle-$(Build.SourceBranchName)
-      git cherry-pick origin/icu-windows-$(Build.SourceBranchName)
     displayName: 'Cherry-Pick Commits'
     condition: ne( variables['Build.Reason'], 'PullRequest' )
 
   - script: |
       cd Celestia
       git cherry-pick origin/angle-$(System.PullRequest.TargetBranch)
-      git cherry-pick origin/icu-windows-$(System.PullRequest.TargetBranch)
     displayName: 'Cherry-Pick Commits (PR)'
     condition: eq( variables['Build.Reason'], 'PullRequest' )
 

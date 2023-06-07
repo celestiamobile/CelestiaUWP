@@ -182,7 +182,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -199,7 +199,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -216,7 +216,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -233,7 +233,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -250,7 +250,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -267,7 +267,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -284,7 +284,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -301,7 +301,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -343,6 +343,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\framebuffer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\frametree.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\galaxy.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\galaxyform.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\geometry.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\globular.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glshader.h" />
@@ -461,10 +462,15 @@
     <ClInclude Include="..\..\Celestia\src\celrender\boundariesrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\cometrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\eclipticlinerenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\galaxyrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\globularrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\gl\buffer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\gl\vertexobject.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\largestarrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\nebularenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\rendererfwd.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\script.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\scriptmaps.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\legacy\cmdparser.h" />
@@ -544,6 +550,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\framebuffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\frametree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\galaxy.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\galaxyform.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\globular.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp" />
@@ -641,10 +648,14 @@
     <ClCompile Include="..\..\Celestia\src\celrender\boundariesrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\cometrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\eclipticlinerenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\galaxyrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\globularrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\gl\buffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\gl\vertexobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\largestarrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\scriptmaps.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\legacy\cmdparser.cpp" />

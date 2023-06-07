@@ -31,7 +31,7 @@ namespace winrt::CelestiaComponent::implementation
 	CelestiaComponent::CelestiaDSO CelestiaDSOCatalog::DSOAt(int32_t index)
 	{
         auto dso = db->getDSO(index);
-        if (to_hstring(dso->getObjTypeName()) == L"galaxy")
+        if (dso->getObjType() == DeepSkyObjectType::Galaxy)
             return make<CelestiaGalaxy>(reinterpret_cast<Galaxy *>(dso));
 		return make<CelestiaDSO>(dso);
 	}
