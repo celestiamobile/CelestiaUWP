@@ -151,9 +151,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\astroobj.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -532,9 +529,6 @@
       <Filter>Celestia\celscript\lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp">
-      <Filter>Celestia\celrender</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celrender\vertexobject.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\atmosphererenderer.cpp">
@@ -978,9 +972,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\value.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\vecgl.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -1147,9 +1138,6 @@
       <Filter>Celestia\celscript\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h">
-      <Filter>Celestia\celrender</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celrender\vertexobject.h">
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\atmosphererenderer.h">
