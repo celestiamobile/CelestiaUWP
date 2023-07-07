@@ -37,6 +37,24 @@ namespace winrt::CelestiaWinUI::implementation
         propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"RootItem"));
     }
 
+    void BrowserUserControl::Nav_BackRequested(IInspectable const&, Controls::NavigationViewBackRequestedEventArgs const&)
+    {
+        Container().Content(BrowserItemListContainer());
+        Nav().IsBackEnabled(false);
+    }
+
+    void BrowserUserControl::GetInfoButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto selectedItem = Tree().SelectedItem();
+        if (selectedItem == nullptr) return;
+        auto browserItem = selectedItem.try_as<BrowserItem>();
+        if (browserItem == nullptr) return;
+        auto selection = CelestiaSelection(browserItem.Item().Object());
+        InfoUserControl userControl{ appCore, selection };
+        Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);
+        Nav().IsBackEnabled(true);
+    }
+
     Collections::IObservableVector<BrowserItemTab> BrowserUserControl::RootItems()
     {
         return rootItems;
@@ -59,6 +77,10 @@ namespace winrt::CelestiaWinUI::implementation
 
     void BrowserUserControl::SetUpActions()
     {
+        Button getInfoButton;
+        getInfoButton.Content(box_value(LocalizationHelper::Localize(L"Get Info")));
+        getInfoButton.Click({ this, &BrowserUserControl::GetInfoButton_Click });
+        ButtonStack().Children().Append(getInfoButton);
         std::vector<std::pair<hstring, int16_t>> actions
         {
             { L"Go", (int16_t)103 },

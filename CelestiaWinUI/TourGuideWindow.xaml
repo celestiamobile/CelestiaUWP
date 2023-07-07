@@ -16,7 +16,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="{StaticResource BottomSpacing}"/>
+        <TextBlock x:Name="DescriptionText" IsTextSelectionEnabled="True" TextWrapping="Wrap" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="{StaticResource BottomSpacing}"/>
         <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True"></Button>
     </RelativePanel>
 </Window>

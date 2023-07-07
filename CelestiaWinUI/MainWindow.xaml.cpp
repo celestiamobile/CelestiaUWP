@@ -1022,7 +1022,9 @@ namespace winrt::CelestiaWinUI::implementation
     void MainWindow::ShowInfo(CelestiaSelection const& selection)
     {
         // No need for tracking...
-        InfoWindow window{ appCore, selection };
+        InfoUserControl userControl{ appCore, selection };
+        Window window;
+        window.Content(userControl);
         window.Title(appCore.Simulation().Universe().NameForSelection(selection));
         WindowHelper::SetWindowIcon(window);
         WindowHelper::SetWindowFlowDirection(window);
@@ -1267,7 +1269,7 @@ namespace winrt::CelestiaWinUI::implementation
                 }
                 menu.Items().Append(MenuFlyoutSeparator());
 
-                AppendItem(menu, LocalizationHelper::Localize(L"Show Info"), [this, selection](IInspectable const&, RoutedEventArgs const&)
+                AppendItem(menu, LocalizationHelper::Localize(L"Get Info"), [this, selection](IInspectable const&, RoutedEventArgs const&)
                     {
                         ShowInfo(selection);
                     });
