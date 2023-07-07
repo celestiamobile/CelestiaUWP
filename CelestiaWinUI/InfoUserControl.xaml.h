@@ -1,12 +1,12 @@
 #pragma once
 
-#include "InfoWindow.g.h"
+#include "InfoUserControl.g.h"
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    struct InfoWindow : InfoWindowT<InfoWindow>
+    struct InfoUserControl : InfoUserControlT<InfoUserControl>
     {
-        InfoWindow(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSelection const& selection);
+        InfoUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSelection const& selection);
 
     private:
         hstring GetBodyOverview(CelestiaComponent::CelestiaBody const& body, CelestiaComponent::CelestiaAppCore const& AppCore);
@@ -17,7 +17,7 @@ namespace winrt::CelestiaWinUI::implementation
 
 namespace winrt::CelestiaWinUI::factory_implementation
 {
-    struct InfoWindow : InfoWindowT<InfoWindow, implementation::InfoWindow>
+    struct InfoUserControl : InfoUserControlT<InfoUserControl, implementation::InfoUserControl>
     {
     };
 }

@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "InfoWindow.xaml.h"
-#if __has_include("InfoWindow.g.cpp")
-#include "InfoWindow.g.cpp"
+#include "InfoUserControl.xaml.h"
+#if __has_include("InfoUserControl.g.cpp")
+#include "InfoUserControl.g.cpp"
 #endif
 
 #include <fmt/printf.h>
@@ -16,7 +16,7 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    InfoWindow::InfoWindow(CelestiaAppCore const& appCore, CelestiaSelection const& selection)
+    InfoUserControl::InfoUserControl(CelestiaAppCore const& appCore, CelestiaSelection const& selection)
     {
         InitializeComponent();
         auto obj = selection.Object();

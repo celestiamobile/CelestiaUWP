@@ -192,7 +192,7 @@
     <Page Include="TourGuideWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="InfoWindow.xaml">
+    <Page Include="InfoUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EclipseFinderUserControl.xaml">
@@ -481,8 +481,8 @@
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="InfoWindow.xaml.h">
-      <DependentUpon>InfoWindow.xaml</DependentUpon>
+    <ClInclude Include="InfoUserControl.xaml.h">
+      <DependentUpon>InfoUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="EclipseFinderUserControl.xaml.h">
@@ -527,8 +527,8 @@
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="InfoWindow.xaml.cpp">
-      <DependentUpon>InfoWindow.xaml</DependentUpon>
+    <ClCompile Include="InfoUserControl.xaml.cpp">
+      <DependentUpon>InfoUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="EclipseFinderUserControl.xaml.cpp">
@@ -577,8 +577,8 @@
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
-    <Midl Include="InfoWindow.idl">
-      <DependentUpon>InfoWindow.xaml</DependentUpon>
+    <Midl Include="InfoUserControl.idl">
+      <DependentUpon>InfoUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="EclipseFinderUserControl.idl">
