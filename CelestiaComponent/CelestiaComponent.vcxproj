@@ -339,6 +339,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsorenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\frame.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\framebuffer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\frametree.h" />
@@ -369,9 +370,11 @@
     <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\parser.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\projectionmode.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rectangle.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\referencemark.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rendcontext.h" />
@@ -546,6 +549,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsorenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\frame.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\framebuffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\frametree.cpp" />
@@ -572,9 +576,11 @@
     <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\parser.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\projectionmode.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\render.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\renderglsl.cpp" />

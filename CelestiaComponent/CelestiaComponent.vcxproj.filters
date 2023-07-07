@@ -578,6 +578,15 @@
     <ClCompile Include="..\..\Celestia\src\celutil\unicode.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\projectionmode.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1208,6 +1217,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\unicode.h">
       <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\projectionmode.h">
+      <Filter>Celestia\celengine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
