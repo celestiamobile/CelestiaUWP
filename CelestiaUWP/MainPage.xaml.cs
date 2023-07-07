@@ -568,7 +568,7 @@ namespace CelestiaUWP
                       }
 
                       menu.Items.Add(new MenuFlyoutSeparator());
-                      AppendItem(menu, LocalizationHelper.Localize("Show Info"), (sender, arg) =>
+                      AppendItem(menu, LocalizationHelper.Localize("Get Info"), (sender, arg) =>
                       {
                           ShowInfo(selection);
                       });

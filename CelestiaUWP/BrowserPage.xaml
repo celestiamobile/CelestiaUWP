@@ -7,26 +7,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
-    <muxc:NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged">
+    <muxc:NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Visible" IsBackEnabled="False" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged" BackRequested="Nav_BackRequested">
         <muxc:NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="app:BrowserItemTab">
                 <muxc:NavigationViewItem Content="{x:Bind TabName, Mode=OneTime}"/>
             </DataTemplate>
         </muxc:NavigationView.MenuItemTemplate>
-        <RelativePanel Margin="{StaticResource Margin}">
-            <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                    <muxc:TreeView.ItemTemplate>
-                        <DataTemplate x:DataType="app:BrowserItem">
-                            <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
+        <Frame x:Name="Container">
+            <RelativePanel x:Name="BrowserItemListContainer" Margin="{StaticResource Margin}">
+                <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                    <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                        <muxc:TreeView.ItemTemplate>
+                            <DataTemplate x:DataType="app:BrowserItem">
+                                <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
                                IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
                                Content="{x:Bind ItemName}"/>
-                        </DataTemplate>
-                    </muxc:TreeView.ItemTemplate>
-                </muxc:TreeView>
-                <controls:WrapPanel Orientation="Horizontal" HorizontalSpacing="{StaticResource HorizontalSpacing}" VerticalSpacing="{StaticResource VerticalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                </controls:WrapPanel>
+                            </DataTemplate>
+                        </muxc:TreeView.ItemTemplate>
+                    </muxc:TreeView>
+                    <controls:WrapPanel Orientation="Horizontal" HorizontalSpacing="{StaticResource HorizontalSpacing}" VerticalSpacing="{StaticResource VerticalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    </controls:WrapPanel>
+                </RelativePanel>
             </RelativePanel>
-        </RelativePanel>
+        </Frame>
     </muxc:NavigationView>
 </Page>

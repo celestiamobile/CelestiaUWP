@@ -11,7 +11,7 @@
     <RelativePanel Margin="{StaticResource Margin}">
         <TextBlock x:Name="TitleText" Text="Select your destination:" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Style="{StaticResource SubtitleTextBlockStyle}" Margin="{StaticResource BottomSpacing}"></TextBlock>
         <ComboBox x:Name="DestinationSelection" ItemsSource="{x:Bind mDestinations}" DisplayMemberPath="Name" RelativePanel.Below="TitleText" RelativePanel.AlignLeftWithPanel="True" Margin="{StaticResource BottomSpacing}"></ComboBox>
-        <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" Text="{x:Bind ((celestia:CelestiaDestination)DestinationSelection.SelectedItem).Content, Mode=OneWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="{StaticResource BottomSpacing}"/>
+        <TextBlock x:Name="DescriptionText" IsTextSelectionEnabled="True" TextWrapping="Wrap" Text="{x:Bind ((celestia:CelestiaDestination)DestinationSelection.SelectedItem).Content, Mode=OneWay}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="DestinationSelection" Margin="{StaticResource BottomSpacing}"/>
         <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True"></Button>
     </RelativePanel>
 </Page>

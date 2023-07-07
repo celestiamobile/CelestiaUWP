@@ -11,6 +11,7 @@
 
 using CelestiaAppComponent;
 using CelestiaComponent;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
 using NavigationViewSelectionChangedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs;
+using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
 
 namespace CelestiaUWP
 {
@@ -175,7 +177,12 @@ namespace CelestiaUWP
                 DSORoot = dsoCategories.ToArray();
             }
             RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs")));
-
+            var getInfoButton = new Button
+            {
+                Content = LocalizationHelper.Localize("Get Info")
+            };
+            getInfoButton.Click += GetInfoButton_Click;
+            ButtonStack.Children.Add(getInfoButton);
             var actions = new (string, short)[]
                 {
                     ("Go", 103),
@@ -214,6 +221,21 @@ namespace CelestiaUWP
             Nav.SelectedItem = RootItems[0];
         }
 
+        private void GetInfoButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var selectedItem = Tree.SelectedItem;
+            if (selectedItem is BrowserItem item)
+            {
+                var obj = item.Item.Object;
+                if (obj != null)
+                {
+                    var selection = new CelestiaSelection(obj);
+                    Container.Navigate(typeof(InfoPage), (AppCore, selection));
+                    Nav.IsBackEnabled = true;
+                }
+            }
+        }
+
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             var item = args.SelectedItem;
@@ -228,6 +250,12 @@ namespace CelestiaUWP
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Nav_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            Container.Content = BrowserItemListContainer;
+            Nav.IsBackEnabled = false;
         }
     }
 }
