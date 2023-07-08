@@ -466,6 +466,13 @@ namespace CelestiaUWP
                       var menu = new MenuFlyout();
                       AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
+                      AppendItem(menu, LocalizationHelper.Localize("Get Info"), (sender, arg) =>
+                      {
+                          ShowInfo(selection);
+                      });
+
+                      menu.Items.Add(new MenuFlyoutSeparator());
+
                       var actions = new (string, short)[]
                       {
                         ("Go", 103),
@@ -566,12 +573,6 @@ namespace CelestiaUWP
                               menu.Items.Add(browserMenuItem);
                           }
                       }
-
-                      menu.Items.Add(new MenuFlyoutSeparator());
-                      AppendItem(menu, LocalizationHelper.Localize("Get Info"), (sender, arg) =>
-                      {
-                          ShowInfo(selection);
-                      });
 
                       menu.Items.Add(new MenuFlyoutSeparator());
 
