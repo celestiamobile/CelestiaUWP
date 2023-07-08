@@ -1086,6 +1086,19 @@ namespace CelestiaUWP
             {
                 ShowEclipseFinder();
             });
+            toolsItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(toolsItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
+            {
+                var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                queryItems.Add("lang", LocalizationHelper.Locale);
+                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
+                builder.Query = queryItems.ToString();
+                _ = Launcher.LaunchUriAsync(builder.Uri);
+            });
+            AppendItem(toolsItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
+            {
+                ShowAddonManagement();
+            });
 
             var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
             AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L });
@@ -1128,19 +1141,6 @@ namespace CelestiaUWP
             AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info"), (sender, arg) =>
             {
                 ShowOpenGLInfo();
-            });
-            helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
-            {
-                var queryItems = System.Web.HttpUtility.ParseQueryString("");
-                queryItems.Add("lang", LocalizationHelper.Locale);
-                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
-                builder.Query = queryItems.ToString();
-                _ = Launcher.LaunchUriAsync(builder.Uri);
-            });
-            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
-            {
-                ShowAddonManagement();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
