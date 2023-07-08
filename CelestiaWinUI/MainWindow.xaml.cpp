@@ -1230,6 +1230,14 @@ namespace winrt::CelestiaWinUI::implementation
                 MenuFlyout menu;
                 AppendItem(menu, appCore.Simulation().Universe().NameForSelection(selection), nullptr);
                 menu.Items().Append(MenuFlyoutSeparator());
+
+                AppendItem(menu, LocalizationHelper::Localize(L"Get Info"), [this, selection](IInspectable const&, RoutedEventArgs const&)
+                    {
+                        ShowInfo(selection);
+                    });
+
+                menu.Items().Append(MenuFlyoutSeparator());
+
                 std::vector<std::pair<hstring, int16_t>> actions = { {L"Go", (int16_t)103}, {L"Follow", (int16_t)102}, {L"Sync Orbit", (int16_t)121} };
                 for (const auto& [name, code] : actions)
                 {
@@ -1267,13 +1275,6 @@ namespace winrt::CelestiaWinUI::implementation
                         menu.Items().Append(browserMenuItem);
                     }
                 }
-                menu.Items().Append(MenuFlyoutSeparator());
-
-                AppendItem(menu, LocalizationHelper::Localize(L"Get Info"), [this, selection](IInspectable const&, RoutedEventArgs const&)
-                    {
-                        ShowInfo(selection);
-                    });
-
                 menu.Items().Append(MenuFlyoutSeparator());
 
                 if (appCore.Simulation().Universe().IsSelectionMarked(selection))
