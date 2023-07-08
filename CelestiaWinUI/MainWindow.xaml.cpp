@@ -492,6 +492,22 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 ShowEclipseFinder();
             });
+        toolsItem.Items().Append(MenuFlyoutSeparator());
+        AppendItem(toolsItem, LocalizationHelper::Localize(L"Get Add-ons"), [this](IInspectable const&, RoutedEventArgs const&)
+            {
+                std::map<hstring, hstring> content;
+                content.emplace(L"lang", LocalizationHelper::Locale());
+                auto encoder = Windows::Web::Http::HttpFormUrlEncodedContent(content);
+                hstring url = hstring(L"https://celestia.mobi/resources/categories") + L"?" + encoder.ToString();
+                Launcher::LaunchUriAsync(Uri(url));
+            });
+        if (!isXbox && resourceManager != nullptr)
+        {
+            AppendItem(toolsItem, LocalizationHelper::Localize(L"Installed Add-ons"), [this](IInspectable const&, RoutedEventArgs const&)
+                {
+                    ShowAddonManagement();
+                });
+        }
 
         MenuBarItem timeItem;
         timeItem.Title(LocalizationHelper::Localize(L"Time"));
@@ -548,22 +564,6 @@ namespace winrt::CelestiaWinUI::implementation
                             });
                     });
             });
-        helpItem.Items().Append(MenuFlyoutSeparator());
-        AppendItem(helpItem, LocalizationHelper::Localize(L"Get Add-ons"), [this](IInspectable const&, RoutedEventArgs const&)
-            {
-                std::map<hstring, hstring> content;
-                content.emplace(L"lang", LocalizationHelper::Locale());
-                auto encoder = Windows::Web::Http::HttpFormUrlEncodedContent(content);
-                hstring url = hstring(L"https://celestia.mobi/resources/categories") + L"?" + encoder.ToString();
-                Launcher::LaunchUriAsync(Uri(url));
-            });
-        if (!isXbox && resourceManager != nullptr)
-        {
-            AppendItem(helpItem, LocalizationHelper::Localize(L"Installed Add-ons"), [this](IInspectable const&, RoutedEventArgs const&)
-                {
-                    ShowAddonManagement();
-                });
-        }
         helpItem.Items().Append(MenuFlyoutSeparator());
         AppendItem(helpItem, LocalizationHelper::Localize(L"Celestia Help"), [this](IInspectable const&, RoutedEventArgs const&)
             {
