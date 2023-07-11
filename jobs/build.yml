@@ -90,7 +90,7 @@ jobs:
       feed: '9f9dcde1-dcba-4537-8214-71c8a03b99a0/14bb1031-e6b2-40ac-b287-73e7fcb5900e'
       view:
       definition: '4cdb44db-04e9-4260-9d08-43e13c6e4c99'
-      version: '1.0.1'
+      version: '1.0.2'
       extract: false
       downloadPath: '$(System.DefaultWorkingDirectory)'
     displayName: 'Download Dependencies'
