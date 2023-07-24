@@ -13,6 +13,7 @@ using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
 using Windows.Foundation;
@@ -1142,6 +1144,18 @@ namespace CelestiaUWP
             {
                 ShowAddonManagement();
             });
+            if (!isXbox)
+            {
+                helpItem.Items.Add(new MenuFlyoutSeparator());
+                AppendItem(helpItem, LocalizationHelper.Localize("Report a Bug"), (sender, arg) =>
+                {
+                    ReportBug();
+                });
+                AppendItem(helpItem, LocalizationHelper.Localize("Suggest a Feature"), (sender, arg) =>
+                {
+                    SuggestFeature();
+                });
+            }
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
             {
@@ -1224,6 +1238,94 @@ namespace CelestiaUWP
             var file = await picker.PickSingleFileAsync();
             if (file != null)
                 OpenFileIfReady(file);
+        }
+
+        async void ReportBug()
+        {
+            var tempFolder = ApplicationData.Current.TemporaryFolder;
+            try
+            {
+                // Create all the files that might be needed in a folder to avoid collision
+                var parentFolder = await tempFolder.CreateFolderAsync(GuidHelper.CreateNewGuid().ToString());
+                var screenshotFile = await parentFolder.CreateFileAsync("screenshot.png");
+                var renderInfoFile = await parentFolder.CreateFileAsync("renderinfo.txt");
+                var urlInfoFile = await parentFolder.CreateFileAsync("urlinfo.txt");
+                var systemInfoFile = await parentFolder.CreateFileAsync("systeminfo.txt");
+                var addonInfoFile = await parentFolder.CreateFileAsync("addoninfo.txt");
+                mRenderer.EnqueueTask(() =>
+                {
+                    var renderInfo = mAppCore.RenderInfo;
+                    var url = mAppCore.CurrentURL;
+                    bool saveScreenshotSuccess = mAppCore.SaveScreenshot(screenshotFile.Path);
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ReportBug(saveScreenshotSuccess ? screenshotFile : null, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
+                    });
+                });
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
+        }
+
+        async void ReportBug(StorageFile screenshotFile, StorageFile renderInfoFile, StorageFile urlInfoFile, StorageFile systemInfoFile, StorageFile addonInfoFile, string renderInfo, string url)
+        {
+            try
+            {
+                await FileIO.WriteTextAsync(renderInfoFile, renderInfo);
+                await FileIO.WriteTextAsync(urlInfoFile, url);
+                var addons = await resourceManager.InstalledItems();
+                var installedAddonList = "";
+                foreach (var addon in addons)
+                    installedAddonList += string.Format("{0}/{1}\n", addon.Name, addon.ID);
+                await FileIO.WriteTextAsync(addonInfoFile, installedAddonList);
+                var systemInfo = SystemInformation.Instance;
+                var systemInfoText = string.Format(
+                    "Operation System: {0}\nOperating System Version: {1}\nOperating System Architecture: {2}\nDevice Family: {3}\nDevice Model: {4}\nDevice Manufacturer: {5}",
+                    systemInfo.OperatingSystem,
+                    systemInfo.OperatingSystemVersion,
+                    systemInfo.OperatingSystemArchitecture,
+                    systemInfo.DeviceFamily,
+                    systemInfo.DeviceModel,
+                    systemInfo.DeviceManufacturer
+                );
+                await FileIO.WriteTextAsync(systemInfoFile, systemInfoText);
+                var emailMessage = new EmailMessage();
+                emailMessage.Subject = "Bug report for Celestia";
+                emailMessage.Body = "Please describe the issue and repro steps, if known.";
+                if (screenshotFile != null)
+                    emailMessage.Attachments.Add(new EmailAttachment(screenshotFile.Name, screenshotFile));
+                emailMessage.Attachments.Add(new EmailAttachment(renderInfoFile.Name, renderInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(urlInfoFile.Name, urlInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(systemInfoFile.Name, systemInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(addonInfoFile.Name, addonInfoFile));
+                await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
+        }
+
+        async void ReportBugOrSuggestFeatureFallback()
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://github.com/celestiamobile/celestia.mobi/issues"));
+        }
+
+        async void SuggestFeature()
+        {
+            try
+            {
+                var emailMessage = new EmailMessage();
+                emailMessage.Subject = "Feature suggestion for Celestia";
+                emailMessage.Body = "Please describe the feature you want to see in Celestia.";
+                await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
         }
 
         async void ShowXboxHelp()
