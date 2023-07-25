@@ -1282,7 +1282,8 @@ namespace CelestiaUWP
                 await FileIO.WriteTextAsync(addonInfoFile, installedAddonList);
                 var systemInfo = SystemInformation.Instance;
                 var systemInfoText = string.Format(
-                    "Operation System: {0}\nOperating System Version: {1}\nOperating System Architecture: {2}\nDevice Family: {3}\nDevice Model: {4}\nDevice Manufacturer: {5}",
+                    "Application Version: {0}\nOperation System: {1}\nOperating System Version: {2}\nOperating System Architecture: {3}\nDevice Family: {4}\nDevice Model: {5}\nDevice Manufacturer: {6}",
+                    systemInfo.ApplicationVersion,
                     systemInfo.OperatingSystem,
                     systemInfo.OperatingSystemVersion,
                     systemInfo.OperatingSystemArchitecture,
@@ -1292,8 +1293,8 @@ namespace CelestiaUWP
                 );
                 await FileIO.WriteTextAsync(systemInfoFile, systemInfoText);
                 var emailMessage = new EmailMessage();
-                emailMessage.Subject = "Bug report for Celestia";
-                emailMessage.Body = "Please describe the issue and repro steps, if known.";
+                emailMessage.Subject = LocalizationHelper.Localize("Bug report for Celestia");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the issue and repro steps, if known.");
                 if (screenshotFile != null)
                     emailMessage.Attachments.Add(new EmailAttachment(screenshotFile.Name, screenshotFile));
                 emailMessage.Attachments.Add(new EmailAttachment(renderInfoFile.Name, renderInfoFile));
@@ -1318,8 +1319,8 @@ namespace CelestiaUWP
             try
             {
                 var emailMessage = new EmailMessage();
-                emailMessage.Subject = "Feature suggestion for Celestia";
-                emailMessage.Body = "Please describe the feature you want to see in Celestia.";
+                emailMessage.Subject = LocalizationHelper.Localize("Feature suggestion for Celestia");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the feature you want to see in Celestia.");
                 await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             }
             catch
