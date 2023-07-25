@@ -11,6 +11,7 @@
 
 using CelestiaAppComponent;
 using System;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -28,7 +29,7 @@ namespace CelestiaUWP
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
 
-            VersionLabel.Text = string.Format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+            VersionLabel.Text = string.Format("Celestia {0}", SystemInformation.Instance.ApplicationVersion);
 
             LoadAuthorTranslator(authorFilePath, translatorFilePath);
         }

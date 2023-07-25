@@ -13,6 +13,7 @@ using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
 using Windows.Foundation;
@@ -99,6 +101,9 @@ namespace CelestiaUWP
         private float scale = 1.0f;
 
         private GamepadManager gamepadManager = null;
+
+        private static string FeedbackEmailAddress = "celestia.mobile@outlook.com";
+        private static string FeedbackGitHubLink = "https://celestia.mobi/feedback";
 
         public MainPage()
         {
@@ -1143,6 +1148,31 @@ namespace CelestiaUWP
                 ShowOpenGLInfo();
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
+            AppendItem(helpItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
+            {
+                var queryItems = System.Web.HttpUtility.ParseQueryString("");
+                queryItems.Add("lang", LocalizationHelper.Locale);
+                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
+                builder.Query = queryItems.ToString();
+                _ = Launcher.LaunchUriAsync(builder.Uri);
+            });
+            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
+            {
+                ShowAddonManagement();
+            });
+            if (!isXbox)
+            {
+                helpItem.Items.Add(new MenuFlyoutSeparator());
+                AppendItem(helpItem, LocalizationHelper.Localize("Report a Bug"), (sender, arg) =>
+                {
+                    ReportBug();
+                });
+                AppendItem(helpItem, LocalizationHelper.Localize("Suggest a Feature"), (sender, arg) =>
+                {
+                    SuggestFeature();
+                });
+            }
+            helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
             {
                 if (isXbox)
@@ -1224,6 +1254,97 @@ namespace CelestiaUWP
             var file = await picker.PickSingleFileAsync();
             if (file != null)
                 OpenFileIfReady(file);
+        }
+
+        async void ReportBug()
+        {
+            var tempFolder = ApplicationData.Current.TemporaryFolder;
+            try
+            {
+                // Create all the files that might be needed in a folder to avoid collision
+                var parentFolder = await tempFolder.CreateFolderAsync(GuidHelper.CreateNewGuid().ToString());
+                var screenshotFile = await parentFolder.CreateFileAsync("screenshot.png");
+                var renderInfoFile = await parentFolder.CreateFileAsync("renderinfo.txt");
+                var urlInfoFile = await parentFolder.CreateFileAsync("urlinfo.txt");
+                var systemInfoFile = await parentFolder.CreateFileAsync("systeminfo.txt");
+                var addonInfoFile = await parentFolder.CreateFileAsync("addoninfo.txt");
+                mRenderer.EnqueueTask(() =>
+                {
+                    var renderInfo = mAppCore.RenderInfo;
+                    var url = mAppCore.CurrentURL;
+                    bool saveScreenshotSuccess = mAppCore.SaveScreenshot(screenshotFile.Path);
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ReportBug(saveScreenshotSuccess ? screenshotFile : null, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
+                    });
+                });
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
+        }
+
+        async void ReportBug(StorageFile screenshotFile, StorageFile renderInfoFile, StorageFile urlInfoFile, StorageFile systemInfoFile, StorageFile addonInfoFile, string renderInfo, string url)
+        {
+            try
+            {
+                await FileIO.WriteTextAsync(renderInfoFile, renderInfo);
+                await FileIO.WriteTextAsync(urlInfoFile, url);
+                var addons = await resourceManager.InstalledItems();
+                var installedAddonList = "";
+                foreach (var addon in addons)
+                    installedAddonList += string.Format("{0}/{1}\n", addon.Name, addon.ID);
+                await FileIO.WriteTextAsync(addonInfoFile, installedAddonList);
+                var systemInfo = SystemInformation.Instance;
+                var systemInfoText = string.Format(
+                    "Application Version: {0}\nOperation System: {1}\nOperating System Version: {2}\nOperating System Architecture: {3}\nDevice Family: {4}\nDevice Model: {5}\nDevice Manufacturer: {6}",
+                    systemInfo.ApplicationVersion,
+                    systemInfo.OperatingSystem,
+                    systemInfo.OperatingSystemVersion,
+                    systemInfo.OperatingSystemArchitecture,
+                    systemInfo.DeviceFamily,
+                    systemInfo.DeviceModel,
+                    systemInfo.DeviceManufacturer
+                );
+                await FileIO.WriteTextAsync(systemInfoFile, systemInfoText);
+                var emailMessage = new EmailMessage();
+                emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
+                emailMessage.Subject = LocalizationHelper.Localize("Bug report for Celestia");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the issue and repro steps, if known.");
+                if (screenshotFile != null)
+                    emailMessage.Attachments.Add(new EmailAttachment(screenshotFile.Name, screenshotFile));
+                emailMessage.Attachments.Add(new EmailAttachment(renderInfoFile.Name, renderInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(urlInfoFile.Name, urlInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(systemInfoFile.Name, systemInfoFile));
+                emailMessage.Attachments.Add(new EmailAttachment(addonInfoFile.Name, addonInfoFile));
+                await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
+        }
+
+        async void ReportBugOrSuggestFeatureFallback()
+        {
+            await Launcher.LaunchUriAsync(new Uri(FeedbackGitHubLink));
+        }
+
+        async void SuggestFeature()
+        {
+            try
+            {
+                var emailMessage = new EmailMessage();
+                emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
+                emailMessage.Subject = LocalizationHelper.Localize("Feature suggestion for Celestia");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the feature you want to see in Celestia.");
+                await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+            }
+            catch
+            {
+                ReportBugOrSuggestFeatureFallback();
+            }
         }
 
         async void ShowXboxHelp()
