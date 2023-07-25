@@ -50,9 +50,12 @@ namespace CelestiaUWP.Web
 
         private async void EnsureWebView2()
         {
-            await WebView.EnsureCoreWebView2Async();
-            WebView.Source = initialUri;
-            WebView.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
+            try
+            {
+                await WebView.EnsureCoreWebView2Async();
+                WebView.Source = initialUri;
+                WebView.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
+            } catch {}
         }
 
         private void CoreWebView2_DOMContentLoaded(Microsoft.Web.WebView2.Core.CoreWebView2 sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs args)
