@@ -103,7 +103,7 @@ namespace CelestiaUWP
         private GamepadManager gamepadManager = null;
 
         private static string FeedbackEmailAddress = "celestia.mobile@outlook.com";
-        private static string FeedbackGitHubLink = "https://github.com/celestiamobile/celestia.mobi/issues";
+        private static string FeedbackGitHubLink = "https://celestia.mobi/feedback";
 
         public MainPage()
         {
