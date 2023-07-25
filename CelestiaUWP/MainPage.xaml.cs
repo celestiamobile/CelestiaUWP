@@ -102,6 +102,9 @@ namespace CelestiaUWP
 
         private GamepadManager gamepadManager = null;
 
+        private static string FeedbackEmailAddress = "celestia.mobile@outlook.com";
+        private static string FeedbackGitHubLink = "https://github.com/celestiamobile/celestia.mobi/issues";
+
         public MainPage()
         {
             CelestiaAppCore.SetUpLocale();
@@ -1293,6 +1296,7 @@ namespace CelestiaUWP
                 );
                 await FileIO.WriteTextAsync(systemInfoFile, systemInfoText);
                 var emailMessage = new EmailMessage();
+                emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
                 emailMessage.Subject = LocalizationHelper.Localize("Bug report for Celestia");
                 emailMessage.Body = LocalizationHelper.Localize("Please describe the issue and repro steps, if known.");
                 if (screenshotFile != null)
@@ -1311,7 +1315,7 @@ namespace CelestiaUWP
 
         async void ReportBugOrSuggestFeatureFallback()
         {
-            await Launcher.LaunchUriAsync(new Uri("https://github.com/celestiamobile/celestia.mobi/issues"));
+            await Launcher.LaunchUriAsync(new Uri(FeedbackGitHubLink));
         }
 
         async void SuggestFeature()
@@ -1319,6 +1323,7 @@ namespace CelestiaUWP
             try
             {
                 var emailMessage = new EmailMessage();
+                emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
                 emailMessage.Subject = LocalizationHelper.Localize("Feature suggestion for Celestia");
                 emailMessage.Body = LocalizationHelper.Localize("Please describe the feature you want to see in Celestia.");
                 await EmailManager.ShowComposeNewEmailAsync(emailMessage);
