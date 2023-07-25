@@ -1297,9 +1297,10 @@ namespace CelestiaUWP
                     installedAddonList += string.Format("{0}/{1}\n", addon.Name, addon.ID);
                 await FileIO.WriteTextAsync(addonInfoFile, installedAddonList);
                 var systemInfo = SystemInformation.Instance;
+                var version = systemInfo.ApplicationVersion;
                 var systemInfoText = string.Format(
-                    "Application Version: {0}\nOperation System: {1}\nOperating System Version: {2}\nOperating System Architecture: {3}\nDevice Family: {4}\nDevice Model: {5}\nDevice Manufacturer: {6}",
-                    systemInfo.ApplicationVersion,
+                    "Application Version: {0}.{1}.{2}.{3}\nOperation System: {4}\nOperating System Version: {5}\nOperating System Architecture: {7}\nDevice Family: {7}\nDevice Model: {8}\nDevice Manufacturer: {9}",
+                    version.Major, version.Minor, version.Build, version.Revision,
                     systemInfo.OperatingSystem,
                     systemInfo.OperatingSystemVersion,
                     systemInfo.OperatingSystemArchitecture,

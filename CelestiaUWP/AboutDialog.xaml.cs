@@ -25,11 +25,9 @@ namespace CelestiaUWP
             this.InitializeComponent();
             Title = LocalizationHelper.Localize("About Celestia");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
-            Package package = Package.Current;
-            PackageId packageId = package.Id;
-            PackageVersion version = packageId.Version;
+            var version = SystemInformation.Instance.ApplicationVersion;
 
-            VersionLabel.Text = string.Format("Celestia {0}", SystemInformation.Instance.ApplicationVersion);
+            VersionLabel.Text = string.Format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
 
             LoadAuthorTranslator(authorFilePath, translatorFilePath);
         }
