@@ -1299,7 +1299,7 @@ namespace CelestiaUWP
                 var systemInfo = SystemInformation.Instance;
                 var version = systemInfo.ApplicationVersion;
                 var systemInfoText = string.Format(
-                    "Application Version: {0}.{1}.{2}.{3}\nOperation System: {4}\nOperating System Version: {5}\nOperating System Architecture: {7}\nDevice Family: {7}\nDevice Model: {8}\nDevice Manufacturer: {9}",
+                    "Application Version: {0}.{1}.{2}.{3}\nOperating System: {4}\nOperating System Version: {5}\nOperating System Architecture: {7}\nDevice Family: {7}\nDevice Model: {8}\nDevice Manufacturer: {9}",
                     version.Major, version.Minor, version.Build, version.Revision,
                     systemInfo.OperatingSystem,
                     systemInfo.OperatingSystemVersion,
