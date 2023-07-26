@@ -21,7 +21,14 @@ namespace CelestiaUWP
     {
         public DateTimeOffset DisplayDate
         {
-            get => Date.Date.AddMinutes(Time.TotalMinutes);
+            get
+            {
+                try
+                {
+                    return Date.Date.AddMinutes(Time.TotalMinutes);
+                }
+                catch { return DateTime.Now; };
+            }
             set
             {
                 Date = value.Date;
