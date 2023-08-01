@@ -16,7 +16,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaStar : CelestiaAstroObject
     {
         String InfoURL{ get; };
-        CelestiaUniversalCoord PositionAtTime(Windows.Foundation.DateTime time);
+        CelestiaUniversalCoord PositionAtTime(Double julianDay);
         String SpectralType{ get; };
     }
 }

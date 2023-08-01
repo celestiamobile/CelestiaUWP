@@ -63,14 +63,14 @@ namespace winrt::CelestiaComponent::implementation
         return p;
     }
 
-    CelestiaComponent::CelestiaOrbit CelestiaBody::OrbitAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaOrbit CelestiaBody::OrbitAtTime(double julianDay)
     {
-        return make<CelestiaOrbit>((celestia::ephem::Orbit*)static_cast<Body*>(obj)->getOrbit(CelestiaHelper::JulianDayFromDateTime(time)));
+        return make<CelestiaOrbit>((celestia::ephem::Orbit*)static_cast<Body*>(obj)->getOrbit(julianDay));
     }
 
-    CelestiaComponent::CelestiaRotationModel CelestiaBody::RotationModelAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaRotationModel CelestiaBody::RotationModelAtTime(double julianDay)
     {
-        return make<CelestiaRotationModel>((celestia::ephem::RotationModel*)static_cast<Body*>(obj)->getRotationModel(CelestiaHelper::JulianDayFromDateTime(time)));
+        return make<CelestiaRotationModel>((celestia::ephem::RotationModel*)static_cast<Body*>(obj)->getRotationModel(julianDay));
     }
 
     bool CelestiaBody::HasRings()

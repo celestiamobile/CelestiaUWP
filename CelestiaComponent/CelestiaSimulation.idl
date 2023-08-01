@@ -22,6 +22,7 @@ namespace CelestiaComponent
     {
         CelestiaSelection Selection;
         Windows.Foundation.DateTime Time;
+        Double JulianDay;
         CelestiaUniverse Universe{ get; };
         CelestiaObserver ActiveObserver{ get; };
 

@@ -30,6 +30,8 @@ namespace winrt::CelestiaComponent::implementation
 
         Windows::Foundation::DateTime Time();
         void Time(Windows::Foundation::DateTime const& time);
+        double JulianDay();
+        void JulianDay(double jd);
 
         CelestiaComponent::CelestiaUniverse Universe();
         CelestiaComponent::CelestiaObserver ActiveObserver();

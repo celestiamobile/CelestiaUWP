@@ -24,8 +24,8 @@ namespace winrt::CelestiaComponent::implementation
         double ValidBeginTime();
         double ValidEndTime();
 
-        CelestiaComponent::CelestiaVector VelocityAtTime(Windows::Foundation::DateTime const& time);
-        CelestiaComponent::CelestiaVector PositionAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaVector VelocityAtTime(double julianDay);
+        CelestiaComponent::CelestiaVector PositionAtTime(double julianDay);
 
         celestia::ephem::Orbit* o;
     };

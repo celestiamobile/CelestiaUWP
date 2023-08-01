@@ -28,9 +28,9 @@ namespace winrt::CelestiaComponent::implementation
         double ValidBeginTime();
         double ValidEndTime();
 
-        CelestiaComponent::CelestiaVector AngularVelocityAtTime(Windows::Foundation::DateTime const& time);
-        CelestiaComponent::CelestiaVector EquatorOrientationAtTime(Windows::Foundation::DateTime const& time);
-        CelestiaComponent::CelestiaVector SpinAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaVector AngularVelocityAtTime(double julianDay);
+        CelestiaComponent::CelestiaVector EquatorOrientationAtTime(double julianDay);
+        CelestiaComponent::CelestiaVector SpinAtTime(double julianDay);
 
         celestia::ephem::RotationModel* r;
     };

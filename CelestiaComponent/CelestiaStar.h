@@ -24,7 +24,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaStar(Star* star);
         hstring InfoURL();
-        CelestiaComponent::CelestiaUniversalCoord PositionAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaUniversalCoord PositionAtTime(double julianDay);
         hstring SpectralType();
     };
 }

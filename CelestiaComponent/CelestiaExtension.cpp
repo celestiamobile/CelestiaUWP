@@ -1163,8 +1163,8 @@ namespace winrt::CelestiaComponent::implementation
 
         lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Spectral type: %s")), std::wstring(star.SpectralType())));
 
-        auto time = appCore.Simulation().Time();
-        auto celPos = star.PositionAtTime(time).OffsetFrom(CelestiaUniversalCoord::Zero());
+        auto julianDay = appCore.Simulation().JulianDay();
+        auto celPos = star.PositionAtTime(julianDay).OffsetFrom(CelestiaUniversalCoord::Zero());
         auto eqPos = CelestiaHelper::EclipticToEquatorial(CelestiaHelper::CelToJ2000Ecliptic(celPos));
         auto sph = CelestiaHelper::RectToSpherical(eqPos);
 

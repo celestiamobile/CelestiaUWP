@@ -20,7 +20,7 @@ namespace CelestiaComponent
         Double ValidBeginTime{ get; };
         Double ValidEndTime{ get; };
 
-        CelestiaVector VelocityAtTime(Windows.Foundation.DateTime time);
-        CelestiaVector PositionAtTime(Windows.Foundation.DateTime time);
+        CelestiaVector VelocityAtTime(Double julianDay);
+        CelestiaVector PositionAtTime(Double julianDay);
     }
 }

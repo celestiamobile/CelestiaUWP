@@ -48,7 +48,7 @@ namespace CelestiaComponent
         Single Radius{ get; };
         CelestiaTimeline Timeline{ get; };
 
-        CelestiaOrbit OrbitAtTime(Windows.Foundation.DateTime time);
-        CelestiaRotationModel RotationModelAtTime(Windows.Foundation.DateTime time);
+        CelestiaOrbit OrbitAtTime(Double julianDay);
+        CelestiaRotationModel RotationModelAtTime(Double julianDay);
     }
 }

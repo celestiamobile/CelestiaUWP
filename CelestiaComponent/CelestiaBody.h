@@ -39,8 +39,8 @@ namespace winrt::CelestiaComponent::implementation
         float Radius();
 
         CelestiaComponent::CelestiaPlanetarySystem System();
-        CelestiaComponent::CelestiaOrbit OrbitAtTime(Windows::Foundation::DateTime const& time);
-        CelestiaComponent::CelestiaRotationModel RotationModelAtTime(Windows::Foundation::DateTime const& time);
+        CelestiaComponent::CelestiaOrbit OrbitAtTime(double julianDay);
+        CelestiaComponent::CelestiaRotationModel RotationModelAtTime(double julianDay);
         CelestiaComponent::CelestiaTimeline Timeline();
 
         CelestiaComponent::CelestiaPlanetarySystem p {nullptr};

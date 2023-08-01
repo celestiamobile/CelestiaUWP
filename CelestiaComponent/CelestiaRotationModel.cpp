@@ -8,7 +8,6 @@
 //
 
 #include "pch.h"
-#include "CelestiaHelper.h"
 #include "CelestiaRotationModel.h"
 #include "CelestiaVector.h"
 #if __has_include("CelestiaRotationModel.g.cpp")
@@ -47,21 +46,21 @@ namespace winrt::CelestiaComponent::implementation
         return end;
     }
 
-    CelestiaComponent::CelestiaVector CelestiaRotationModel::AngularVelocityAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaVector CelestiaRotationModel::AngularVelocityAtTime(double julianDay)
     {
-        const Eigen::Vector3d v = r->angularVelocityAtTime(CelestiaHelper::JulianDayFromDateTime(time));
+        const Eigen::Vector3d v = r->angularVelocityAtTime(julianDay);
         return make<CelestiaVector>(v.x(), v.y(), v.z());
     }
 
-    CelestiaComponent::CelestiaVector CelestiaRotationModel::EquatorOrientationAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaVector CelestiaRotationModel::EquatorOrientationAtTime(double julianDay)
     {
-        const Eigen::Quaterniond v = r->equatorOrientationAtTime(CelestiaHelper::JulianDayFromDateTime(time));
+        const Eigen::Quaterniond v = r->equatorOrientationAtTime(julianDay);
         return make<CelestiaVector>(v.x(), v.y(), v.z(), v.w());
     }
 
-    CelestiaComponent::CelestiaVector CelestiaRotationModel::SpinAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaVector CelestiaRotationModel::SpinAtTime(double julianDay)
     {
-        const Eigen::Quaterniond v = r->spin(CelestiaHelper::JulianDayFromDateTime(time));
+        const Eigen::Quaterniond v = r->spin(julianDay);
         return make<CelestiaVector>(v.x(), v.y(), v.z(), v.w());
     }
 }

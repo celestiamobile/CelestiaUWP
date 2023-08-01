@@ -8,7 +8,6 @@
 //
 
 #include "pch.h"
-#include "CelestiaHelper.h"
 #include "CelestiaOrbit.h"
 #include "CelestiaVector.h"
 #if __has_include("CelestiaOrbit.g.cpp")
@@ -52,15 +51,15 @@ namespace winrt::CelestiaComponent::implementation
         return o->getBoundingRadius();
     }
 
-    CelestiaComponent::CelestiaVector CelestiaOrbit::VelocityAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaVector CelestiaOrbit::VelocityAtTime(double julianDay)
     {
-        const Eigen::Vector3d v = o->velocityAtTime(CelestiaHelper::JulianDayFromDateTime(time));
+        const Eigen::Vector3d v = o->velocityAtTime(julianDay);
         return make<CelestiaVector>(v.x(), v.y(), v.z());
     }
 
-    CelestiaComponent::CelestiaVector CelestiaOrbit::PositionAtTime(Windows::Foundation::DateTime const& time)
+    CelestiaComponent::CelestiaVector CelestiaOrbit::PositionAtTime(double julianDay)
     {
-        const Eigen::Vector3d v = o->positionAtTime(CelestiaHelper::JulianDayFromDateTime(time));
+        const Eigen::Vector3d v = o->positionAtTime(julianDay);
         return make<CelestiaVector>(v.x(), v.y(), v.z());
     }
 }

@@ -19,8 +19,8 @@ namespace CelestiaComponent
         Double ValidBeginTime{ get; };
         Double ValidEndTime{ get; };
 
-        CelestiaVector AngularVelocityAtTime(Windows.Foundation.DateTime time);
-        CelestiaVector EquatorOrientationAtTime(Windows.Foundation.DateTime time);
-        CelestiaVector SpinAtTime(Windows.Foundation.DateTime time);
+        CelestiaVector AngularVelocityAtTime(Double julianDay);
+        CelestiaVector EquatorOrientationAtTime(Double julianDay);
+        CelestiaVector SpinAtTime(Double julianDay);
     }
 }

@@ -43,6 +43,16 @@ namespace winrt::CelestiaComponent::implementation
         sim->setTime(CelestiaHelper::JulianDayFromDateTime(time));
     }
 
+    double CelestiaSimulation::JulianDay()
+    {
+        return sim->getTime();
+    }
+
+    void CelestiaSimulation::JulianDay(double jd)
+    {
+        sim->setTime(jd);
+    }
+
 	CelestiaComponent::CelestiaUniverse CelestiaSimulation::Universe()
 	{
 		if (u == nullptr)
