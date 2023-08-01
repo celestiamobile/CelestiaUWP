@@ -125,35 +125,35 @@
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)..\..\Celestia\thirdparty\miniaudio;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\..\Celestia\src;$(ProjectDir)$(GeneratedFilesDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <VcpkgTriplet>arm64-uwp</VcpkgTriplet>
