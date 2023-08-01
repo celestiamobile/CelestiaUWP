@@ -1088,9 +1088,9 @@ namespace winrt::CelestiaComponent::implementation
             lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Equatorial radius: %s")), radiusString));
         else
             lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Size: %s")), radiusString));
-        auto time = appCore.Simulation().Time();
-        auto orbit = body.OrbitAtTime(time);
-        auto rotation = body.RotationModelAtTime(time);
+        auto julianDay = appCore.Simulation().JulianDay();
+        auto orbit = body.OrbitAtTime(julianDay);
+        auto rotation = body.RotationModelAtTime(julianDay);
         auto orbitalPeriod = orbit.IsPeriodic() ? orbit.Period() : 0.0;
         if (rotation.IsPeriodic() && body.Type() != CelestiaBodyType::spacecraft)
         {

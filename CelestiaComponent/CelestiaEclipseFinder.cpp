@@ -39,11 +39,11 @@ namespace winrt::CelestiaComponent::implementation
         f = new EclipseFinder(reinterpret_cast<Body*>(get_self<CelestiaBody>(body)->obj), w);
 	}
 
-	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const& startTime, Windows::Foundation::DateTime const& endTime)
+	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, double startJulianDay, double endJulianDay)
 	{
         aborted = false;
         std::vector<Eclipse> results;
-        f->findEclipses(CelestiaHelper::JulianDayFromDateTime(startTime), CelestiaHelper::JulianDayFromDateTime(endTime), (int)kind, results);
+        f->findEclipses(startJulianDay, endJulianDay, static_cast<int>(kind), results);
 
         std::vector<CelestiaComponent::CelestiaEclipse> vec;
         for (Eclipse& result : results)
