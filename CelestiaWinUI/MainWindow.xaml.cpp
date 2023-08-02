@@ -4,6 +4,7 @@
 #include "MainWindow.g.cpp"
 #endif
 
+#include <fmt/format.h>
 #include <fmt/printf.h>
 #include <fmt/xchar.h>
 #include <shlobj_core.h>
@@ -564,6 +565,20 @@ namespace winrt::CelestiaWinUI::implementation
                             });
                     });
             });
+
+        if (!isXbox)
+        {
+            helpItem.Items().Append(MenuFlyoutSeparator());
+            AppendItem(helpItem, LocalizationHelper::Localize(L"Report a Bug"), [this](IInspectable const&, RoutedEventArgs const&)
+                {
+                    ReportBug();
+                });
+            AppendItem(helpItem, LocalizationHelper::Localize(L"Suggest a Feature"), [this](IInspectable const&, RoutedEventArgs const&)
+                {
+                    SuggestFeature();
+                });
+        }
+
         helpItem.Items().Append(MenuFlyoutSeparator());
         AppendItem(helpItem, LocalizationHelper::Localize(L"Celestia Help"), [this](IInspectable const&, RoutedEventArgs const&)
             {
@@ -939,7 +954,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::CaptureImage()
     {
-        auto tempFolder{ Windows::Storage::ApplicationData::Current().TemporaryFolder() };
+        auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
         auto path = tempFolder.Path() + L"\\" + to_hstring(GuidHelper::CreateNewGuid()) + L".png";
         renderer.EnqueueTask([this, path]()
             {
@@ -1213,6 +1228,81 @@ namespace winrt::CelestiaWinUI::implementation
         WindowHelper::ResizeWindow(window, 400, 600);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
+    }
+
+    fire_and_forget MainWindow::ReportBug()
+    {
+        auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
+        do
+        {
+             // Create all the files that might be needed in a folder to avoid collision
+            auto parentFolder = co_await tempFolder.CreateFolderAsync(to_hstring(GuidHelper::CreateNewGuid()));
+            auto screenshotFile = await parentFolder.CreateFileAsync(L"screenshot.png");
+            auto renderInfoFile = await parentFolder.CreateFileAsync(L"renderinfo.txt");
+            auto urlInfoFile = await parentFolder.CreateFileAsync(L"urlinfo.txt");
+            auto systemInfoFile = await parentFolder.CreateFileAsync(L"systeminfo.txt");
+            auto addonInfoFile = await parentFolder.CreateFileAsync(L"addoninfo.txt");
+            renderer.EnqueueTask([this, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile]()
+                {
+                    auto renderInfo = appCore.RenderInfo();
+                    auto url = appCore.CurrentURL();
+                    bool saveScreenshotSuccess = mAppCore.SaveScreenshot(screenshotFile.Path());
+                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ReportBug(saveScreenshotSuccess ? screenshotFile : nullptr, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
+                    });
+                });
+        }
+        catch (hresult_error const&)
+        {
+            ReportBugOrSuggestFeatureFallback();
+        }
+    }
+
+    fire_and_forget MainWindow::ReportBug(StorageFile const& screenshotFile, StorageFile const& renderInfoFile, StorageFile const& urlInfoFile, StorageFile const& systemInfoFile, StorageFile const& addonInfoFile, hstring const& renderInfo, string const& url)
+    {
+        try
+        {
+            co_await FileIO::WriteTextAsync(renderInfoFile, renderInfo);
+            co_await FileIO::WriteTextAsync(urlInfoFile, url);
+            auto addons = co_await resourceManager.InstalledItems();
+            hstring installedAddonList = L"";
+            for (const auto& addon : addons)
+                installedAddonList += fmt::format(L"{}/{}", addon.Name(), addon.ID());
+
+            co_await FileIO::WriteTextAsync(addonInfoFile, installedAddonList);
+            auto systemInfo = SystemInformation::Instance();
+            auto version = systemInfo.ApplicationVersion();
+            auto systemInfoText = hstring(fmt::format(
+                L"Application Version: {}.{}.{}.{}\nOperating System: {}\nOperating System Version: {}\nOperating System Architecture: {}\nDevice Family: {}\nDevice Model: {}\nDevice Manufacturer: {}",
+                version.Major(), version.Minor(), version.Build(), version.Revision(),
+                std::wstring(systemInfo.OperatingSystem()),
+                std::wstring(systemInfo.OperatingSystemVersion()),
+                std::wstring(to_hstring(systemInfo.OperatingSystemArchitecture())),
+                std::wstring(systemInfo.DeviceFamily()),
+                std::wstring(systemInfo.DeviceModel()),
+                std::wstring(systemInfo.DeviceManufacturer())
+            ));
+            co_await FileIO::WriteTextAsync(systemInfoFile, systemInfoText);
+        }
+        catch (hresult_error const&)
+        {
+            ReportBugOrSuggestFeatureFallback();
+        }
+    }
+
+    void MainWindow::SuggestFeature()
+    {
+
+
+    }
+
+    static hstring feedbackLinkAddress = L"https://celestia.mobi/feedback";
+    static hstring feedbackEmailAddress = L"celestia.mobile@outlook.com";
+
+    fire_and_forget MainWindow::ReportBugOrSuggestFeatureFallback()
+    {
+        co_await Launcher::LaunchUriAsync(Uri(feedbackLinkAddress));
     }
 
     void MainWindow::AppCore_ShowContextMenu(IInspectable const&, ShowContextMenuArgs const& args)
