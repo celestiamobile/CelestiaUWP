@@ -50,7 +50,7 @@ namespace winrt::CelestiaWinUI::implementation
         void SetUpGLViewInteractions();
         void PopulateMenuBar(hstring const& resourcePath);
         void ShowTimeSetting();
-        Windows::Foundation::IAsyncAction ShowTimeSetting(Windows::Foundation::DateTime const& original);
+        Windows::Foundation::IAsyncAction ShowTimeSetting(double julianDay);
         Windows::Foundation::IAsyncAction ShowGotoObject();
         Windows::Foundation::IAsyncAction ShowObjectNotFound();
         Windows::Foundation::IAsyncAction PickScript();

@@ -591,28 +591,23 @@ namespace winrt::CelestiaWinUI::implementation
     {
         renderer.EnqueueTask([this]()
             {
-                auto time = clock::now();
-                try
-                {
-                    time = appCore.Simulation().Time();
-                }
-                catch (hresult_error const&) {}
-                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, time]()
+                double julianDay = appCore.Simulation().JulianDay();
+                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, julianDay]()
                     {
-                        ShowTimeSetting(time);
+                        ShowTimeSetting(julianDay);
                     });
             });
     }
 
-    IAsyncAction MainWindow::ShowTimeSetting(DateTime const& original)
+    IAsyncAction MainWindow::ShowTimeSetting(double julianDay)
     {
-        TimeSettingDialog dialog{ original };
+        TimeSettingDialog dialog{ julianDay };
         if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) == ContentDialogResult::Primary)
         {
-            auto date = dialog.DisplayDate();
-            renderer.EnqueueTask([this, date]()
+            auto newDay = dialog.JulianDay();
+            renderer.EnqueueTask([this, newDay]()
                 {
-                    appCore.Simulation().Time(date);
+                    appCore.Simulation().JulianDay(newDay);
                 });
         }
     }

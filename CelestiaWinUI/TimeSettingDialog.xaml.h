@@ -6,7 +6,7 @@ namespace winrt::CelestiaWinUI::implementation
 {
     struct TimeSettingDialog : TimeSettingDialogT<TimeSettingDialog>
     {
-        TimeSettingDialog(Windows::Foundation::DateTime const& original);
+        TimeSettingDialog(double julianDay);
 
         Windows::Foundation::DateTime Date();
         void Date(Windows::Foundation::DateTime const&);
@@ -14,18 +14,25 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::TimeSpan Time();
         void Time(Windows::Foundation::TimeSpan const&);
 
+        double JulianDay();
+
         event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
         void PropertyChanged(event_token const& token) noexcept;
 
-        void CurrentTimeButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const& e);
+        void CurrentTimeButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        void JulianDayInput_TextChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::TextChangedEventArgs const&);
+        void TypeSelection_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const&);
 
-        Windows::Foundation::DateTime DisplayDate();
-        void DisplayDate(Windows::Foundation::DateTime const&);
+        void SetDisplayDate(Windows::Foundation::DateTime const&);
 
     private:
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
         Windows::Foundation::DateTime date;
         Windows::Foundation::TimeSpan time;
+        double julianDay;
+
+        void ValidateJulianDay();
+        void ValidateTime();
     };
 }
 

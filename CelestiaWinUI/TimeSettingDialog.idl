@@ -3,10 +3,10 @@ namespace CelestiaWinUI
     [default_interface]
     runtimeclass TimeSettingDialog : Microsoft.UI.Xaml.Controls.ContentDialog, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
-        TimeSettingDialog(Windows.Foundation.DateTime original);
+        TimeSettingDialog(Double julianDay);
 
         Windows.Foundation.DateTime Date;
         Windows.Foundation.TimeSpan Time;
-        Windows.Foundation.DateTime DisplayDate;
+        Double JulianDay{ get; };
     }
 }
