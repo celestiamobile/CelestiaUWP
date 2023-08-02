@@ -1146,7 +1146,7 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (startJulianDay < CelestiaHelper::MinRepresentableJulianDay() || startJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start julian day: %.4f")), startJulianDay));
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start Julian day: %.4f")), startJulianDay));
                 }
                 else
                 {
@@ -1158,7 +1158,7 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (endJulianDay < CelestiaHelper::MinRepresentableJulianDay() || endJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End julian day: %.4f")), endJulianDay));
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End Julian day: %.4f")), endJulianDay));
                 }
                 else
                 {

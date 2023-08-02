@@ -11,7 +11,6 @@
 
 using CelestiaAppComponent;
 using CelestiaComponent;
-using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
@@ -25,9 +24,12 @@ namespace CelestiaUWP
         {
             get
             {
-                if (TypeSelection.SelectedIndex == 0)
+                var selectedIndex = TypeSelection.SelectedIndex;
+                if (selectedIndex == 0)
                     return CelestiaHelper.JulianDayFromDateTime(Date.Date.AddMinutes(Time.TotalMinutes));
-                return julianDay;
+                if (selectedIndex == 1)
+                    return julianDay;
+                return 0.0;
             }
         }
 
@@ -59,18 +61,23 @@ namespace CelestiaUWP
             this.julianDay = julianDay;
             this.InitializeComponent();
             TypeSelection.ItemsSource = new string[] { LocalizationHelper.Localize("Picker"), LocalizationHelper.Localize("Julian Day") };
-            TypeSelection.SelectedIndex = 0;
             DatePicker.MaxYear = new DateTimeOffset(new DateTime(9999, 12, 30));
             DatePicker.MinYear = new DateTimeOffset(new DateTime(1, 1, 2));
             Title = LocalizationHelper.Localize("Set Time");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");
-            JulianDayInput.Text = julianDay.ToString();
+            JulianDayInput.Text = julianDay.ToString("0.0000");
             if (julianDay < CelestiaHelper.MinRepresentableJulianDay() || julianDay > CelestiaHelper.MaxRepresentableJulianDay())
+            {
                 SetDisplayDate(DateTime.Now);
+                TypeSelection.SelectedIndex = 1;
+            }
             else
+            {
                 SetDisplayDate(CelestiaHelper.DateTimeFromJulianDay(julianDay));
+                TypeSelection.SelectedIndex = 0;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -84,17 +91,23 @@ namespace CelestiaUWP
 
         private void TypeSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TypeSelection.SelectedIndex == 0)
+            var selectedIndex = TypeSelection.SelectedIndex;
+            if (selectedIndex == 0)
             {
                 PickerPanel.Visibility = Visibility.Visible;
                 JulianDayPanel.Visibility = Visibility.Collapsed;
                 ValidateTime();
             }
-            else
+            else if (selectedIndex == 1)
             {
                 PickerPanel.Visibility = Visibility.Collapsed;
                 JulianDayPanel.Visibility = Visibility.Visible;
                 ValidateJulianDay();
+            }
+            else
+            {
+                PickerPanel.Visibility = Visibility.Collapsed;
+                JulianDayPanel.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -148,7 +161,7 @@ namespace CelestiaUWP
             {
                 IsPrimaryButtonEnabled = false;
                 JulianDayErrorText.Visibility = Visibility.Visible;
-                JulianDayErrorText.Text = LocalizationHelper.Localize("Incorrect julian day string.");
+                JulianDayErrorText.Text = LocalizationHelper.Localize("Incorrect Julian day string.");
             }
         }
 
