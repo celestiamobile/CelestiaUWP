@@ -1147,19 +1147,6 @@ namespace CelestiaUWP
             {
                 ShowOpenGLInfo();
             });
-            helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
-            {
-                var queryItems = System.Web.HttpUtility.ParseQueryString("");
-                queryItems.Add("lang", LocalizationHelper.Locale);
-                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
-                builder.Query = queryItems.ToString();
-                _ = Launcher.LaunchUriAsync(builder.Uri);
-            });
-            AppendItem(helpItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
-            {
-                ShowAddonManagement();
-            });
             if (!isXbox)
             {
                 helpItem.Items.Add(new MenuFlyoutSeparator());
