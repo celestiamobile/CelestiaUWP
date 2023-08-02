@@ -53,6 +53,28 @@ namespace winrt::CelestiaAppComponent::implementation
         return operatingSystemArchitecture;
     }
 
+    hstring SystemInformation::OperatingSystemArchitectureString()
+    {
+        switch (operatingSystemArchitecture)
+        {
+        case Windows::System::ProcessorArchitecture::X86:
+            return L"X86";
+        case Windows::System::ProcessorArchitecture::Arm:
+            return L"ARM";
+        case Windows::System::ProcessorArchitecture::X64:
+            return L"X64";
+        case Windows::System::ProcessorArchitecture::Neutral:
+            return L"Neutral";
+        case Windows::System::ProcessorArchitecture::Arm64:
+            return L"ARM64";
+        case Windows::System::ProcessorArchitecture::X86OnArm64:
+            return L"X86OnARM64";
+        case Windows::System::ProcessorArchitecture::Unknown:
+        default:
+            return L"Unknown";
+        }
+    }
+
     hstring SystemInformation::DeviceModel()
     {
         return deviceModel;

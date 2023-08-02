@@ -8,6 +8,7 @@ namespace CelestiaAppComponent
         String OperatingSystem{ get; };
         String OperatingSystemVersion{ get; };
         Windows.System.ProcessorArchitecture OperatingSystemArchitecture{ get; };
+        String OperatingSystemArchitectureString{ get; };
         String DeviceModel{ get; };
         String DeviceManufacturer{ get; };
         String DeviceFamily{ get; };

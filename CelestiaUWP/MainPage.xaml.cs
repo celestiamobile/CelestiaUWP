@@ -1288,7 +1288,7 @@ namespace CelestiaUWP
                     version.Major, version.Minor, version.Build, version.Revision,
                     systemInfo.OperatingSystem,
                     systemInfo.OperatingSystemVersion,
-                    systemInfo.OperatingSystemArchitecture,
+                    systemInfo.OperatingSystemArchitectureString,
                     systemInfo.DeviceFamily,
                     systemInfo.DeviceModel,
                     systemInfo.DeviceManufacturer

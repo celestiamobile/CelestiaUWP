@@ -11,6 +11,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring OperatingSystem();
         hstring OperatingSystemVersion();
         Windows::System::ProcessorArchitecture OperatingSystemArchitecture();
+        hstring OperatingSystemArchitectureString();
         hstring DeviceModel();
         hstring DeviceManufacturer();
         hstring DeviceFamily();
