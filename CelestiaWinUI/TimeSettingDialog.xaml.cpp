@@ -4,18 +4,25 @@
 #include "TimeSettingDialog.g.cpp"
 #endif
 
+#include <fmt/format.h>
+#include <fmt/xchar.h>
+
 using namespace winrt;
 using namespace CelestiaAppComponent;
+using namespace CelestiaComponent;
 using namespace Microsoft::UI::Xaml;
 using namespace Windows::Foundation;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    TimeSettingDialog::TimeSettingDialog(DateTime const& original)
+    TimeSettingDialog::TimeSettingDialog(double julianDay) : julianDay(julianDay)
     {
         InitializeComponent();
+        auto types = single_threaded_observable_vector<hstring>({ LocalizationHelper::Localize(L"Picker"), LocalizationHelper::Localize(L"Julian Day") });
+        TypeSelection().ItemsSource(types);
+        TypeSelection().SelectedIndex(0);
 
-        // 9999/12/30 11:59:59 GMT
+        // 9999/12/30 23:59:59 GMT
         DateTime maxTime{ std::chrono::seconds{253402214399LL} };
         // 1/1/2 00:00:00 GMT
         DateTime minTime{ std::chrono::seconds{-2177366400LL} };
@@ -26,7 +33,11 @@ namespace winrt::CelestiaWinUI::implementation
         PrimaryButtonText(LocalizationHelper::Localize(L"OK"));
         SecondaryButtonText(LocalizationHelper::Localize(L"Cancel"));
         CurrentTimeButton().Content(box_value(LocalizationHelper::Localize(L"Set to Current Time")));
-        DisplayDate(original);
+        JulianDayInput().Text(hstring(fmt::to_wstring(julianDay)));
+        if (julianDay < CelestiaHelper::MinRepresentableJulianDay() || julianDay > CelestiaHelper::MaxRepresentableJulianDay())
+            SetDisplayDate(clock::now());
+        else
+            SetDisplayDate(CelestiaHelper::DateTimeFromJulianDay(julianDay));
     }
 
     DateTime TimeSettingDialog::Date()
@@ -37,6 +48,7 @@ namespace winrt::CelestiaWinUI::implementation
     void TimeSettingDialog::Date(DateTime const& value)
     {
         date = value;
+        ValidateTime();
     }
 
     TimeSpan TimeSettingDialog::Time()
@@ -47,11 +59,40 @@ namespace winrt::CelestiaWinUI::implementation
     void TimeSettingDialog::Time(TimeSpan const& value)
     {
         time = value;
+        ValidateTime();
+    }
+
+    double TimeSettingDialog::JulianDay()
+    {
+        if (TypeSelection().SelectedIndex() == 0)
+            return CelestiaHelper.JulianDayFromDateTime(Date() + Time());
+        return julianDay;
     }
 
     void TimeSettingDialog::CurrentTimeButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        DisplayDate(clock::now());
+        SetDisplayDate(clock::now());
+    }
+
+    void TimeSettingDialog::JulianDayInput_TextChanged(IInspectable const&, Controls::TextChangedEventArgs const&)
+    {
+        ValidateJulianDay();
+    }
+
+    void TimeSettingDialog::TypeSelection_SelectionChanged(IInspectable const&, Controls::SelectionChangedEventArgs const&)
+    {
+        if (TypeSelection().SelectedIndex() == 0)
+        {
+            PickerPanel().Visibility(Visibility::Visible);
+            JulianDayPanel().Visibility(Visibility::Collapsed);
+            ValidateTime();
+        }
+        else
+        {
+            PickerPanel().Visibility(Visibility::Collapsed);
+            JulianDayPanel().Visibility(Visibility::Visible);
+            ValidateJulianDay();
+        }
     }
 
     event_token TimeSettingDialog::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
@@ -64,29 +105,58 @@ namespace winrt::CelestiaWinUI::implementation
         propertyChangedEvent.remove(token);
     }
 
-    DateTime TimeSettingDialog::DisplayDate()
+    void TimeSettingDialog::SetDisplayDate(DateTime const& value)
     {
-        return Date() + Time();
+        try
+        {
+            auto midnight = CelestiaHelper::GetMidnight(value);
+            Date(midnight);
+            auto span = value - midnight;
+            Time(span);
+
+            propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Date"));
+            propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Time"));
+        }
+        catch (hresult_error const&)
+        {
+            SetDisplayDate(clock::now());
+        }
     }
 
-    void TimeSettingDialog::DisplayDate(DateTime const& value)
+    void TimeSettingDialog::ValidateJulianDay()
     {
-        auto timeT = clock::to_time_t(value);
-        tm localTime;
-        auto err = localtime_s(&localTime, &timeT);
-        if (err)
-            return;
+        if (TypeSelection().SelectedIndex() != 1) return;
+        auto str = winrt::to_string(JulianDayInput().Text());
+        double value = 0.0f;
+        auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
+        if (ec == std::errc {} && ptr == str.data() + str.size())
+        {
+            julianDay = value;
+            IsPrimaryButtonEnabled(true);
+            JulianDayErrorText().Visibility(Visibility::Collapsed);
+        }
+        else
+        {
+            IsPrimaryButtonEnabled(false);
+            JulianDayErrorText().Visibility(Visibility::Visible);
+            JulianDayErrorText().Text(LocalizationHelper::Localize(L"Incorrect julian day string."));
+        }
+    }
 
-        auto localMidnight = localTime;
-        localMidnight.tm_hour = 0;
-        localMidnight.tm_min = 0;
-        localMidnight.tm_sec = 0;
-        auto midnightTimeT = mktime(&localMidnight);
-        auto midnight = clock::from_time_t(midnightTimeT);
-        Date(midnight);
-        auto span = value - midnight;
-        Time(span);
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Date"));
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Time"));
+    void TimeSettingDialog::ValidateTime()
+    {
+        if (TypeSelection().SelectedIndex() != 0) return;
+        try
+        {
+            auto time = Date() + Time();
+            IsPrimaryButtonEnabled(true);
+            ErrorText().Visibility(Visibility::Collapsed);
+        }
+        catch (hresult_error const&)
+        {
+            IsPrimaryButtonEnabled(false);
+            ErrorText().Visibility(Visibility::Visible);
+            ErrorText().Text(LocalizationHelper::Localize(L"Selected time is out of range."));
+        }
     }
 }

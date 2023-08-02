@@ -7,6 +7,6 @@ namespace CelestiaWinUI
 
         Windows.Foundation.DateTime Date;
         Windows.Foundation.TimeSpan Time;
-        Windows.Foundation.DateTime DisplayDate;
+        Double JulianDay{ get; };
     }
 }

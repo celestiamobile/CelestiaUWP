@@ -124,7 +124,14 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget CommonWebUserControl::EnsureWebView2()
     {
-        co_await WebView().EnsureCoreWebView2Async();
+        try
+        {
+            co_await WebView().EnsureCoreWebView2Async();
+        }
+        catch (hresult_error const&)
+        {
+            return;
+        }
         webViewOpened = true;
         WebView().Source(initialUri);
         windowProvider().Closed([weak_this{ get_weak() }](IInspectable const&, WindowEventArgs const&)
