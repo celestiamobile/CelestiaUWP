@@ -112,7 +112,7 @@ namespace CelestiaUWP
             ComputeButton.Content = LocalizationHelper.Localize("Cancel");
             return await Task.Run(() =>
             {
-                var eclipses = eclipseFinder.Search(kind, CelestiaHelper.JulianDayFromDateTime(startTime), CelestiaHelper.JulianDayFromDateTime(endTime));
+                var eclipses = eclipseFinder.Search(kind, startTime, endTime);
                 eclipseFinder.Dispose();
                 Finder = null;
                 return eclipses ?? (new CelestiaEclipse[] { });

@@ -32,7 +32,7 @@ namespace winrt::CelestiaComponent::implementation
 		astro::Date astroDate(year, c.Month(), c.Day());
 		astroDate.hour = c.Hour();
 		astroDate.minute = c.Minute();
-		astroDate.seconds = c.Second();
+		astroDate.seconds = static_cast<double>(c.Second()) + static_cast<double>(c.Nanosecond()) / 1000000000.0;
 		return astro::UTCtoTDB(astroDate);
 	}
 
@@ -57,9 +57,58 @@ namespace winrt::CelestiaComponent::implementation
 		c.Day(astroDate.day);
 		c.Hour(astroDate.hour);
 		c.Minute(astroDate.minute);
-		c.Second((int32_t)floor(astroDate.seconds));
+		c.Second(static_cast<int32_t>(std::floor(astroDate.seconds)));
+        c.Nanosecond(static_cast<int32_t>((astroDate.seconds - std::floor(astroDate.seconds)) * 1000000000.0));
 		return c.GetDateTime();
 	}
+
+    double CelestiaHelper::MinRepresentableJulianDay()
+    {
+        static bool calculated = false;
+        static double jd = 0.0;
+        if (calculated)
+            return jd;
+
+        Windows::Globalization::Calendar c;
+        c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
+        c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
+        c.ChangeTimeZone(L"UTC");
+        c.Era(1);
+        c.Year(1);
+        c.Month(1);
+        c.Day(1);
+        c.Hour(12); // With this all timezone's min JD will be >= 1/1/1
+        c.Minute(0);
+        c.Second(0);
+        c.Nanosecond(0);
+        jd = JulianDayFromDateTime(c.GetDateTime());
+        calculated = true;
+        return jd;
+    }
+
+    double CelestiaHelper::MaxRepresentableJulianDay()
+    {
+        static bool calculated = false;
+        static double jd = 0.0;
+        if (calculated)
+            return jd;
+
+        Windows::Globalization::Calendar c;
+        c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
+        c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
+        c.ChangeTimeZone(L"UTC");
+        c.Era(1);
+        c.Year(9999);
+        c.Month(12);
+        c.Day(31);
+        c.Hour(11); // With this all timezone's max JD will be <= 9999/12/31
+        c.Minute(59);
+        c.Second(59);
+        c.Nanosecond(0); // Avoid rounding and exceeds 11:59:59
+        jd = JulianDayFromDateTime(c.GetDateTime());
+        calculated = true;
+        return jd;
+    }
 
     CelestiaComponent::CelestiaVector CelestiaHelper::CelToJ2000Ecliptic(CelestiaComponent::CelestiaVector const& cel)
     {

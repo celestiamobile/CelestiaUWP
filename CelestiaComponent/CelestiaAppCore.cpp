@@ -646,6 +646,8 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
             {
                 core->setCustomDateFormatter([](double jd)
                     {
+                        if (jd < CelestiaHelper::MinRepresentableJulianDay() || jd > CelestiaHelper::MaxRepresentableJulianDay())
+                            return std::string{};
                         Windows::Foundation::DateTime dateTime = CelestiaHelper::DateTimeFromJulianDay(jd);
                         wstring str(dateFormatter.Format(dateTime));
 #ifdef USE_ICU

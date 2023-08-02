@@ -1486,21 +1486,14 @@ namespace CelestiaUWP
 
         async void ShowTimeSetting()
         {
-            var time = DateTimeOffset.Now;
-            try
-            {
-                time = mAppCore.Simulation.Time;
-            }
-            catch {} // Catch all exceptions
-
-            var dialog = new TimeSettingDialog(time);
+            var dialog = new TimeSettingDialog(mAppCore.Simulation.JulianDay);
             var result = await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
             if (result == ContentDialogResult.Primary)
             {
-                var date = dialog.DisplayDate;
+                var julianDay = dialog.JulianDay;
                 mRenderer.EnqueueTask(() =>
                 {
-                    mAppCore.Simulation.Time = date;
+                    mAppCore.Simulation.JulianDay = julianDay;
                 });
             }
         }

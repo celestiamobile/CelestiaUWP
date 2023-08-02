@@ -27,20 +27,14 @@ namespace winrt::CelestiaComponent::implementation
     {
     }
 
-    IReference<DateTime> CelestiaTimelinePhase::StartTime()
+    double CelestiaTimelinePhase::StartJulianDay()
     {
-        auto startTime = tp->startTime();
-        if (std::isinf(startTime))
-            return nullptr;
-        return CelestiaHelper::DateTimeFromJulianDay(startTime);
+        return tp->startTime();
     }
 
-    IReference<DateTime> CelestiaTimelinePhase::EndTime()
+    double CelestiaTimelinePhase::EndJulianDay()
     {
-        auto endTime = tp->endTime();
-        if (std::isinf(endTime))
-            return nullptr;
-        return CelestiaHelper::DateTimeFromJulianDay(endTime);
+        return tp->endTime();
     }
 
     CelestiaTimeline::CelestiaTimeline(const Timeline* t) : t(t)

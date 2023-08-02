@@ -19,8 +19,8 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaTimelinePhase(TimelinePhase::SharedConstPtr const &tp);
 
-        Windows::Foundation::IReference<Windows::Foundation::DateTime> StartTime();
-        Windows::Foundation::IReference<Windows::Foundation::DateTime> EndTime();
+        double StartJulianDay();
+        double EndJulianDay();
     private:
         TimelinePhase::SharedConstPtr tp;
     };

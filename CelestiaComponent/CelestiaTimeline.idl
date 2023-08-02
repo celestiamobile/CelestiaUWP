@@ -14,8 +14,8 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaTimelinePhase
     {
-        Windows.Foundation.IReference<Windows.Foundation.DateTime> StartTime{ get; };
-        Windows.Foundation.IReference<Windows.Foundation.DateTime> EndTime{ get; };
+        Double StartJulianDay{ get; };
+        Double EndJulianDay{ get; };
     }
 
     [default_interface]

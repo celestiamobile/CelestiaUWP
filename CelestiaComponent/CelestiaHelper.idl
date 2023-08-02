@@ -16,6 +16,8 @@ namespace CelestiaComponent
     {
         static Double JulianDayFromDateTime(Windows.Foundation.DateTime dateTime);
         static Windows.Foundation.DateTime DateTimeFromJulianDay(Double julianDay);
+        static Double MinRepresentableJulianDay();
+        static Double MaxRepresentableJulianDay();
 
         static CelestiaVector CelToJ2000Ecliptic(CelestiaVector cel);
         static CelestiaVector EclipticToEquatorial(CelestiaVector ecliptic);

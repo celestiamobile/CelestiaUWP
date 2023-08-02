@@ -10,6 +10,8 @@
 //
 
 using CelestiaAppComponent;
+using CelestiaComponent;
+using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
 using Windows.UI.Xaml;
@@ -19,56 +21,56 @@ namespace CelestiaUWP
 {
     public sealed partial class TimeSettingDialog : ContentDialog, INotifyPropertyChanged
     {
-        public DateTimeOffset DisplayDate
+        public double JulianDay
         {
             get
             {
-                try
-                {
-                    return Date.Date.AddMinutes(Time.TotalMinutes);
-                }
-                catch { return DateTime.Now; };
-            }
-            set
-            {
-                Date = value.Date;
-                var time = value.TimeOfDay;
-                Time = new TimeSpan(time.Hours, time.Minutes, 0);
+                if (TypeSelection.SelectedIndex == 0)
+                    return CelestiaHelper.JulianDayFromDateTime(Date.Date.AddMinutes(Time.TotalMinutes));
+                return julianDay;
             }
         }
 
-        private DateTimeOffset mDate;
-        private TimeSpan mTime;
+        private DateTimeOffset PickerDate;
+        private TimeSpan PickerTime;
+        private double julianDay;
 
         private DateTimeOffset Date
         {
-            get => mDate;
+            get => PickerDate;
             set
             {
-                mDate = value;
-                OnPropertyChanged("mDate");
+                PickerDate = value;
+                ValidateTime();
             }
         }
         private TimeSpan Time
         {
-            get => mTime;
+            get => PickerTime;
             set
             {
-                mTime = value;
-                OnPropertyChanged("mTime");
+                PickerTime = value;
+                ValidateTime();
             }
         }
 
-        public TimeSettingDialog(DateTimeOffset original)
+        public TimeSettingDialog(double julianDay)
         {
+            this.julianDay = julianDay;
             this.InitializeComponent();
+            TypeSelection.ItemsSource = new string[] { LocalizationHelper.Localize("Picker"), LocalizationHelper.Localize("Julian Day") };
+            TypeSelection.SelectedIndex = 0;
             DatePicker.MaxYear = new DateTimeOffset(new DateTime(9999, 12, 30));
             DatePicker.MinYear = new DateTimeOffset(new DateTime(1, 1, 2));
             Title = LocalizationHelper.Localize("Set Time");
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");
-            DisplayDate = original;
+            JulianDayInput.Text = julianDay.ToString();
+            if (julianDay < CelestiaHelper.MinRepresentableJulianDay() || julianDay > CelestiaHelper.MaxRepresentableJulianDay())
+                SetDisplayDate(DateTime.Now);
+            else
+                SetDisplayDate(CelestiaHelper.DateTimeFromJulianDay(julianDay));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -80,9 +82,79 @@ namespace CelestiaUWP
             }
         }
 
+        private void TypeSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TypeSelection.SelectedIndex == 0)
+            {
+                PickerPanel.Visibility = Visibility.Visible;
+                JulianDayPanel.Visibility = Visibility.Collapsed;
+                ValidateTime();
+            }
+            else
+            {
+                PickerPanel.Visibility = Visibility.Collapsed;
+                JulianDayPanel.Visibility = Visibility.Visible;
+                ValidateJulianDay();
+            }
+        }
+
+        private void SetDisplayDate(DateTimeOffset value)
+        {
+            try
+            {
+                Date = value.Date;
+                var time = value.TimeOfDay;
+                Time = new TimeSpan(time.Hours, time.Minutes, 0);
+                OnPropertyChanged("Date");
+                OnPropertyChanged("Time");
+            }
+            catch
+            {
+                SetDisplayDate(DateTime.Now);
+            }
+        }
+
         private void CurrentTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            DisplayDate = DateTime.Now;
+            SetDisplayDate(DateTime.Now);
+        }
+
+        private void ValidateTime()
+        {
+            if (TypeSelection.SelectedIndex != 0) return;
+            try
+            {
+                DateTimeOffset time = PickerDate.Date.AddMinutes(PickerTime.TotalMinutes);
+                IsPrimaryButtonEnabled = true;
+                ErrorText.Visibility = Visibility.Collapsed;
+            }
+            catch
+            {
+                IsPrimaryButtonEnabled = false;
+                ErrorText.Visibility= Visibility.Visible;
+                ErrorText.Text = LocalizationHelper.Localize("Selected time is out of range.");
+            }
+        }
+        private void ValidateJulianDay()
+        {
+            if (TypeSelection.SelectedIndex != 1) return;
+            try
+            {
+                julianDay = Convert.ToDouble(JulianDayInput.Text);
+                IsPrimaryButtonEnabled = true;
+                JulianDayErrorText.Visibility = Visibility.Collapsed;
+            }
+            catch
+            {
+                IsPrimaryButtonEnabled = false;
+                JulianDayErrorText.Visibility = Visibility.Visible;
+                JulianDayErrorText.Text = LocalizationHelper.Localize("Incorrect julian day string.");
+            }
+        }
+
+        private void JulianDayInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidateJulianDay();
         }
     }
 }

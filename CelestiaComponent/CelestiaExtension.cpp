@@ -1140,17 +1140,31 @@ namespace winrt::CelestiaComponent::implementation
             using namespace Windows::Globalization::DateTimeFormatting;
             DateTimeFormatter dateFormatter{ L"shortdate shorttime" };
 
-            auto startTime = timeline.PhaseAtIndex(0).StartTime();
-            auto endTime = timeline.PhaseAtIndex(0).EndTime();
-            if (startTime)
+            auto startJulianDay = timeline.PhaseAtIndex(0).StartJulianDay();
+            auto endJulianDay = timeline.PhaseAtIndex(0).EndJulianDay();
+            if (!std::isinf(startJulianDay))
             {
-                auto time = startTime.Value();
-                lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start time: %s")), std::wstring(dateFormatter.Format(time))));
+                if (startJulianDay < CelestiaHelper::MinRepresentableJulianDay() || startJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
+                {
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start julian day: %.4f")), startJulianDay));
+                }
+                else
+                {
+                    auto startTime = CelestiaHelper::DateTimeFromJulianDay(startJulianDay);
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start time: %s")), std::wstring(dateFormatter.Format(startTime))));
+                }
             }
-            if (endTime)
+            if (!std::isinf(endJulianDay))
             {
-                auto time = endTime.Value();
-                lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End time: %s")), std::wstring(dateFormatter.Format(time))));
+                if (endJulianDay < CelestiaHelper::MinRepresentableJulianDay() || endJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
+                {
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End julian day: %.4f")), endJulianDay));
+                }
+                else
+                {
+                    auto endTime = CelestiaHelper::DateTimeFromJulianDay(endJulianDay);
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End time: %s")), std::wstring(dateFormatter.Format(endTime))));
+                }
             }
         }
 
