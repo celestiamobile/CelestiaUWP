@@ -11,9 +11,7 @@
 
 using CelestiaAppComponent;
 using CelestiaComponent;
-using CelestiaUWP.Helper;
 using CelestiaUWP.Web;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;

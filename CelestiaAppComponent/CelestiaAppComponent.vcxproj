@@ -180,6 +180,9 @@
     <ClInclude Include="BrowserItem.h">
       <DependentUpon>BrowserItem.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SystemInformation.h">
+      <DependentUpon>SystemInformation.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -224,6 +227,9 @@
     <ClCompile Include="BrowserItem.cpp">
       <DependentUpon>BrowserItem.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SystemInformation.cpp">
+      <DependentUpon>SystemInformation.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +246,7 @@
     <Midl Include="ResourceManager.idl" />
     <Midl Include="ContentDialogHelper.idl" />
     <Midl Include="BrowserItem.idl" />
+    <Midl Include="SystemInformation.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />

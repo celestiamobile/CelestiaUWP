@@ -11,8 +11,6 @@
 
 using CelestiaAppComponent;
 using System;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 

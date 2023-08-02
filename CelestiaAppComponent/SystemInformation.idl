@@ -1,0 +1,15 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass SystemInformation
+    {
+        static SystemInformation Instance{ get; };
+        Windows.ApplicationModel.PackageVersion ApplicationVersion{ get; };
+        String OperatingSystem{ get; };
+        String OperatingSystemVersion{ get; };
+        Windows.System.ProcessorArchitecture OperatingSystemArchitecture{ get; };
+        String DeviceModel{ get; };
+        String DeviceManufacturer{ get; };
+        String DeviceFamily{ get; };
+    }
+}
