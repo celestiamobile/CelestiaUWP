@@ -12,6 +12,7 @@
 using CelestiaAppComponent;
 using CelestiaComponent;
 using System.Threading.Tasks;
+using Windows.Globalization.NumberFormatting;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
@@ -29,22 +30,32 @@ namespace CelestiaUWP
         private CelestiaAppCore appCore;
         private CelestiaRenderer renderer;
 
+        private readonly NumberFormatter = new DecimalFormatter();
+
         public float? Latitude
         {
-            get => float.TryParse(LatitudeString, out float result) ? result : (float?)null;
-            set => LatitudeString = value == null ? "" : ((float)value).ToString();
+            get
+            {
+                var result = NumberFormatter.ParseDouble(LatitudeString);
+                return result == null ? null : (float?)result;
+            }
+            set => LatitudeString = value == null ? "" : NumberFormatter.FormatDouble(Math.Round((double)value, 2));
         }
 
         public float? Longitude
         {
-            get => float.TryParse(LongitudeString, out float result) ? result : (float?)null;
-            set => LongitudeString = value == null ? "" : ((float)value).ToString();
+            get
+            {
+                var result = NumberFormatter.ParseDouble(LongitudeString);
+                return result == null ? null : (float?)result;
+            }
+            set => LongitudeString = value == null ? "" : NumberFormatter.FormatDouble(Math.Round((double)value, 2));
         }
 
         public double? Distance
         {
-            get => double.TryParse(DistanceString, out double result) ? result : (double?)null;
-            set => DistanceString = value == null ? "" : ((double)value).ToString();
+            get => NumberFormatter.ParseDouble(DistanceString);
+            set => DistanceString = value == null ? "" : NumberFormatter.FormatDouble(Math.Round((double)value, 2));
         }
 
         public int Unit = 1;

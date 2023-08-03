@@ -13,6 +13,7 @@ using CelestiaAppComponent;
 using CelestiaComponent;
 using System;
 using System.ComponentModel;
+using Windows.Globalization.NumberFormatting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -36,6 +37,8 @@ namespace CelestiaUWP
         private DateTimeOffset PickerDate;
         private TimeSpan PickerTime;
         private double julianDay;
+
+        private readonly NumberFormatter NumberFormatter = new DecimalFormatter();
 
         private DateTimeOffset Date
         {
@@ -67,7 +70,7 @@ namespace CelestiaUWP
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time");
-            JulianDayInput.Text = julianDay.ToString("0.0000");
+            JulianDayInput.Text = NumberFormatter.FormatDouble(Math.Round(julianDay, 4));
             if (julianDay < CelestiaHelper.MinRepresentableJulianDay() || julianDay > CelestiaHelper.MaxRepresentableJulianDay())
             {
                 SetDisplayDate(DateTime.Now);
@@ -148,20 +151,22 @@ namespace CelestiaUWP
                 ErrorText.Text = LocalizationHelper.Localize("Selected time is out of range.");
             }
         }
+
         private void ValidateJulianDay()
         {
             if (TypeSelection.SelectedIndex != 1) return;
-            try
-            {
-                julianDay = Convert.ToDouble(JulianDayInput.Text);
-                IsPrimaryButtonEnabled = true;
-                JulianDayErrorText.Visibility = Visibility.Collapsed;
-            }
-            catch
+            var day = NumberFormatter.ParseDouble(JulianDayInput.Text);
+            if (day == null)
             {
                 IsPrimaryButtonEnabled = false;
                 JulianDayErrorText.Visibility = Visibility.Visible;
                 JulianDayErrorText.Text = LocalizationHelper.Localize("Incorrect Julian day string.");
+            }
+            else
+            {
+                julianDay = (double)day;
+                IsPrimaryButtonEnabled = true;
+                JulianDayErrorText.Visibility = Visibility.Collapsed;
             }
         }
 
