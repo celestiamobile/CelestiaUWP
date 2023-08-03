@@ -10,6 +10,7 @@
 using namespace std;
 using namespace winrt;
 using namespace Windows::System;
+using namespace Windows::Globalization::NumberFormatting;
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -1070,19 +1071,22 @@ namespace winrt::CelestiaComponent::implementation
         std::wstring radiusString = L"";
         const float oneMiInKm = 1.609344f;
         const float oneFtInKm = 0.0003048f;
+        DecimalFormatter numberFormatter;
+        numberFormatter.FractionDigits(0);
+        numberFormatter.IsGrouped(true);
         if (appCore.MeasurementSystem() == (int32_t)CelestiaMeasurementSystem::Imperial)
         {
             if (radius > oneMiInKm)
-                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%d mi")), (int)(radius / oneMiInKm));
+                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%s mi")), std::wstring(numberFormatter.FormatInt(static_cast<int64_t>(radius / oneMiInKm))));
             else
-                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%d ft")), (int)(radius / oneFtInKm));
+                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%s ft")), std::wstring(numberFormatter.FormatInt(static_cast<int64_t>(radius / oneFtInKm))));
         }
         else
         {
             if (radius > 1.0f)
-                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%d km")), (int)radius);
+                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%s km")), std::wstring(numberFormatter.FormatInt(static_cast<int64_t>(radius))));
             else
-                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%d m")), (int)(radius * 1000.0f));
+                radiusString = fmt::sprintf(std::wstring(localizationProvider(L"%s m")), std::wstring(numberFormatter.FormatInt(static_cast<int64_t>(radius * 1000.0f))));
         }
         if (body.IsEllipsoid())
             lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Equatorial radius: %s")), radiusString));
@@ -1111,17 +1115,19 @@ namespace winrt::CelestiaComponent::implementation
                 rotPeriod *= 24;
                 dayLength *= 24;
 
-                unitTemplate = localizationProvider(L"%.2f hours");
+                unitTemplate = localizationProvider(L"%s hours");
             }
             else
             {
-                unitTemplate = localizationProvider(L"%.2f days");
+                unitTemplate = localizationProvider(L"%s days");
             }
-            lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Sidereal rotation period: %s")), fmt::sprintf(std::wstring(unitTemplate), rotPeriod)));
+            rotPeriod = std::round(rotPeriod * 100.0) / 100.0;
+            dayLength = std::round(dayLength * 100.0) / 100.0;
+            lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Sidereal rotation period: %s")), fmt::sprintf(std::wstring(unitTemplate), std::wstring(numberFormatter.FormatDouble(rotPeriod)))));
 
             if (dayLength != 0.0)
             {
-                lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Length of day: %s")), fmt::sprintf(std::wstring(unitTemplate), dayLength)));
+                lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Length of day: %s")), fmt::sprintf(std::wstring(unitTemplate), std::wstring(numberFormatter.FormatDouble(dayLength)))));
             }
         }
         if (body.HasRings())
@@ -1146,7 +1152,8 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (startJulianDay < CelestiaHelper::MinRepresentableJulianDay() || startJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start Julian day: %.4f")), startJulianDay));
+                    startJulianDay = std::round(startJulianDay * 10000.0) / 10000.0;
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"Start Julian day: %s")), std::wstring(numberFormatter.FormatDouble(startJulianDay))));
                 }
                 else
                 {
@@ -1158,7 +1165,8 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (endJulianDay < CelestiaHelper::MinRepresentableJulianDay() || endJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End Julian day: %.4f")), endJulianDay));
+                    endJulianDay = std::round(endJulianDay * 10000.0) / 10000.0;
+                    lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"End Julian day: %s")), std::wstring(numberFormatter.FormatDouble(endJulianDay))));
                 }
                 else
                 {
@@ -1182,11 +1190,17 @@ namespace winrt::CelestiaComponent::implementation
         auto eqPos = CelestiaHelper::EclipticToEquatorial(CelestiaHelper::CelToJ2000Ecliptic(celPos));
         auto sph = CelestiaHelper::RectToSpherical(eqPos);
 
+        DecimalFormatter numberFormatter;
+        numberFormatter.FractionDigits(0);
+        numberFormatter.IsGrouped(true);
+
         CelestiaDMS hms{ sph.X() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
+        double seconds = std::round(hms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.Hours())), std::wstring(numberFormatter.FormatInt(hms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        seconds = std::round(dms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }
@@ -1202,20 +1216,28 @@ namespace winrt::CelestiaComponent::implementation
         auto eqPos = CelestiaHelper::EclipticToEquatorial(CelestiaHelper::CelToJ2000Ecliptic(celPos));
         auto sph = CelestiaHelper::RectToSpherical(eqPos);
 
+        DecimalFormatter numberFormatter;
+        numberFormatter.FractionDigits(0);
+        numberFormatter.IsGrouped(true);
+
         CelestiaDMS hms{ sph.X() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %dh %dm %.2fs")), hms.Hours(), hms.Minutes(), hms.Seconds()));
+        double seconds = std::round(hms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.Hours())), std::wstring(numberFormatter.FormatInt(hms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ sph.Y() };
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        seconds = std::round(dms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
         dms = CelestiaDMS(sph.X());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        seconds = std::round(dms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         dms = CelestiaDMS(sph.Y());
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %d\u00b0 %d\u2032 %.2f\u2033")), dms.Hours(), dms.Minutes(), dms.Seconds()));
+        seconds = std::round(dms.Seconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }

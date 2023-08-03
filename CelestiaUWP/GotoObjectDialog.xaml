@@ -22,9 +22,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <AutoSuggestBox x:Name="ObjectNameText" Grid.Row="0" TextChanged="ObjectNameText_TextChanged" Grid.Column="0" Grid.ColumnSpan="2"></AutoSuggestBox>
-        <TextBox x:Name="LatitudeText" Grid.Row="1" Text="{x:Bind LatitudeString, Mode=TwoWay}"></TextBox>
-        <TextBox x:Name="LongitudeText" Grid.Row="1" Text="{x:Bind LongitudeString, Mode=TwoWay}" Grid.Column="1"></TextBox>
-        <TextBox x:Name="DistanceText" Grid.Row="2" Text="{x:Bind DistanceString, Mode=TwoWay}"></TextBox>
+        <TextBox x:Name="LatitudeText" Grid.Row="1" TextChanged="LatitudeText_TextChanged"/>
+        <TextBox x:Name="LongitudeText" Grid.Row="1" Grid.Column="1" TextChanged="LongitudeText_TextChanged"/>
+        <TextBox x:Name="DistanceText" Grid.Row="2" TextChanged="DistanceText_TextChanged"/>
         <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{x:Bind Units}" SelectedIndex="{x:Bind Unit, Mode=TwoWay}"></ComboBox>
     </Grid>
 </ContentDialog>

@@ -11,7 +11,9 @@
 
 using CelestiaAppComponent;
 using CelestiaComponent;
+using System;
 using System.Threading.Tasks;
+using Windows.Globalization.NumberFormatting;
 using Windows.UI.Xaml.Controls;
 
 namespace CelestiaUWP
@@ -22,30 +24,29 @@ namespace CelestiaUWP
         {
             get => ObjectNameText.Text;
         }
-        public string LongitudeString = "";
-        public string LatitudeString = "";
-        public string DistanceString = "";
 
         private CelestiaAppCore appCore;
         private CelestiaRenderer renderer;
 
-        public float? Latitude
+        private readonly DecimalFormatter NumberFormatter = new DecimalFormatter();
+
+        public float Latitude
         {
-            get => float.TryParse(LatitudeString, out float result) ? result : (float?)null;
-            set => LatitudeString = value == null ? "" : ((float)value).ToString();
+            get => LatitudeValue ?? 0.0f;
+        }
+        public float Longitude
+        {
+            get => LongitudeValue ?? 0.0f;
         }
 
-        public float? Longitude
+        public double Distance
         {
-            get => float.TryParse(LongitudeString, out float result) ? result : (float?)null;
-            set => LongitudeString = value == null ? "" : ((float)value).ToString();
+            get => DistanceValue ?? 8.0;
         }
 
-        public double? Distance
-        {
-            get => double.TryParse(DistanceString, out double result) ? result : (double?)null;
-            set => DistanceString = value == null ? "" : ((double)value).ToString();
-        }
+        private float? LatitudeValue = 0.0f;
+        private float? LongitudeValue = 0.0f;
+        private double? DistanceValue = 8.0f;
 
         public int Unit = 1;
         private readonly string[] Units = new string[]
@@ -57,6 +58,8 @@ namespace CelestiaUWP
 
         public GotoObjectDialog(CelestiaAppCore appCore, CelestiaRenderer renderer)
         {
+            NumberFormatter.FractionDigits = 0;
+            NumberFormatter.IsGrouped = false;
             this.appCore = appCore;
             this.renderer = renderer;
             this.InitializeComponent();
@@ -64,9 +67,66 @@ namespace CelestiaUWP
             PrimaryButtonText = LocalizationHelper.Localize("OK");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel");
             ObjectNameText.PlaceholderText = LocalizationHelper.Localize("Object Name");
+            LongitudeText.Text = NumberFormatter.FormatDouble((double)Longitude);
+            LatitudeText.Text = NumberFormatter.FormatDouble((double)Latitude);
+            DistanceText.Text = NumberFormatter.FormatDouble(Distance);
             LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude");
             LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude");
             DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance");
+        }
+
+        private void LongitudeText_TextChanged(object sender, TextChangedEventArgs args)
+        {
+            var value = NumberFormatter.ParseDouble(LongitudeText.Text);
+            if (value != null)
+            {
+                var floatValue = (float)value;
+                if (floatValue >= -180.0f && floatValue <= 180.0f)
+                    LongitudeValue = floatValue;
+                else
+                    LongitudeValue = null;
+            }
+            else
+            {
+                LongitudeValue = null;
+            }
+            Validate();
+        }
+
+        private void LatitudeText_TextChanged(object sender, TextChangedEventArgs args)
+        {
+            var value = NumberFormatter.ParseDouble(LatitudeText.Text);
+            if (value != null)
+            {
+                var floatValue = (float)value;
+                if (floatValue >= -90.0f && floatValue <= 90.0f)
+                    LatitudeValue = floatValue;
+                else
+                    LatitudeValue = null;
+            }
+            else
+            {
+                LatitudeValue = null;
+            }
+            Validate();
+        }
+
+        private void DistanceText_TextChanged(object sender, TextChangedEventArgs args)
+        {
+            var value = NumberFormatter.ParseDouble(DistanceText.Text);
+            if (value != null)
+            {
+                var doubleValue = (double)value;
+                if (doubleValue >= 0.0)
+                    DistanceValue = doubleValue;
+                else
+                    DistanceValue = null;
+            }
+            else
+            {
+                DistanceValue = null;
+            }
+            Validate();
         }
 
         private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -96,6 +156,14 @@ namespace CelestiaUWP
                 promise.SetResult(result);
             });
             return await promise.Task;
+        }
+
+        private void Validate()
+        {
+            if (LongitudeValue != null && LatitudeValue != null && DistanceValue != null)
+                IsPrimaryButtonEnabled = true;
+            else
+                IsPrimaryButtonEnabled = false;
         }
     }
 }
