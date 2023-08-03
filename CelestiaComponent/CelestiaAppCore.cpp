@@ -126,7 +126,7 @@ namespace winrt::CelestiaComponent::implementation
         core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
         core->getRenderer()->setStarStyle(DEFAULT_STAR_STYLE);
         core->getRenderer()->setResolution(DEFAULT_TEXTURE_RESOLUTION);
-        core->getRenderer()->setStarColorTable(GetStarColorTable(DEFAULT_STARS_COLOR));
+        core->getRenderer()->setStarColorTable(DEFAULT_STARS_COLOR);
 
         core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
 
@@ -591,12 +591,12 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     int32_t CelestiaAppCore::StarColors()
     {
-        return static_cast<int32_t>(core->getRenderer()->getStarColorTable()->type());
+        return static_cast<int32_t>(core->getRenderer()->getStarColorTable());
     }
 
     void CelestiaAppCore::StarColors(int32_t starColors)
     {
-        core->getRenderer()->setStarColorTable(GetStarColorTable(static_cast<ColorTableType>(starColors)));
+        core->getRenderer()->setStarColorTable(static_cast<ColorTableType>(starColors));
     }
 
     int32_t CelestiaAppCore::HudDetail()
