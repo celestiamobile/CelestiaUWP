@@ -292,9 +292,6 @@ namespace winrt::CelestiaComponent::implementation
                     renderer->Lock();
                     renderer->Wait();
 
-                    if (renderer->engineStartedCalled)
-                        renderer->FlushTasks();
-
                     switch (renderer->msg)
                     {
                     case CelestiaRenderer::MSG_WINDOW_SET:
@@ -307,14 +304,20 @@ namespace winrt::CelestiaComponent::implementation
 
                     bool needsDrawn = false;
                     if (renderer->engineStartedCalled && renderer->surface != EGL_NO_SURFACE && renderer->core)
-                    {
-                        renderer->ResizeIfNeeded();
                         needsDrawn = true;
-                    }
+                    auto [tasks, prerenderTask] = RetrieveAndResetTasks();
+
                     renderer->Unlock();
+
+
+                    for (const auto& task : tasks)
+                        task();
+                    if (preRenderTask != nullptr)
+                        prerenderTask();
 
                     if (needsDrawn)
                     {
+                        renderer->ResizeIfNeeded();
                         renderer->TickAndDraw();
                         if (!eglSwapBuffers(renderer->display, renderer->surface))
                             printf("eglSwapBuffers() returned error %d", eglGetError());
@@ -399,13 +402,13 @@ namespace winrt::CelestiaComponent::implementation
         Unlock();
     }
 
-    void CelestiaRenderer::FlushTasks()
+    std::pair<std::vector<CelestiaComponent::CelestiaRendererTask>, CelestiaComponent::CelestiaRendererTask> CelestiaRenderer::RetrieveAndResetTasks()
     {
-        for (auto task : tasks)
-            task();
+        if (!engineStartedCalled)
+            return { {}, nullptr };
+        auto tasksCopy = tasks;
         tasks.clear();
-        if (preRenderTask)
-            preRenderTask();
+        return {tasksCopy, preRenderTask};
     }
 
     void CelestiaRenderer::MakeContextCurrent()

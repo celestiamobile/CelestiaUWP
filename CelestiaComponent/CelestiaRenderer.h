@@ -41,7 +41,7 @@ namespace winrt::CelestiaComponent::implementation
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
-        void FlushTasks();
+        std::pair<std::vector<CelestiaComponent::CelestiaRendererTask>, CelestiaComponent::CelestiaRendererTask> RetrieveAndResetTasks();
 
         void MakeContextCurrent();
 
