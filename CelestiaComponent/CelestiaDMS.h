@@ -20,14 +20,14 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaDMS(double decimal);
 
         int32_t Degrees();
-        int32_t Hours();
         int32_t Minutes();
         double Seconds();
+        int32_t HMSHours();
+        int32_t HMSMinutes();
+        double HMSSeconds();
         double Decimal();
-
-        int32_t degrees;
-        int32_t minutes;
-        double seconds;
+    private:
+        int32_t decimal;
     };
 }
 

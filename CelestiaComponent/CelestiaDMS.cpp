@@ -18,42 +18,71 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaDMS::CelestiaDMS(int32_t degrees, int32_t minutes, double seconds) : CelestiaDMST<CelestiaDMS>(), degrees(degrees), minutes(minutes), seconds(seconds)
+    CelestiaDMS::CelestiaDMS(int32_t degrees, int32_t minutes, double seconds) : CelestiaDMST<CelestiaDMS>()
     {
+        decimal = astro::degMinSecToDecimal(static_cast<int>(degrees), static_cast<int>(minutes), static_cast<double>(seconds));
     }
 
-    CelestiaDMS::CelestiaDMS(double decimal) : CelestiaDMST<CelestiaDMS>()
+    CelestiaDMS::CelestiaDMS(double decimal) : CelestiaDMST<CelestiaDMS>(), decimal(decimal)
     {
-        int degrees, minutes;
-        double seconds;
-        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
-        this->degrees = degrees;
-        this->minutes = minutes;
-        this->seconds = seconds;
     }
 
     int32_t CelestiaDMS::Degrees()
     {
-        return degrees;
-    }
-
-    int32_t CelestiaDMS::Hours()
-    {
-        return degrees;
+        int degrees;
+        int minutes;
+        double seconds;
+        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        return static_cast<int32_t>(degrees);
     }
 
     int32_t CelestiaDMS::Minutes()
     {
-        return minutes;
+        int degrees;
+        int minutes;
+        double seconds;
+        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        return static_cast<int32_t>(minutes);
     }
 
     double CelestiaDMS::Seconds()
     {
+        int degrees;
+        int minutes;
+        double seconds;
+        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        return seconds;
+    }
+
+    int32_t CelestiaDMS::HMSHours()
+    {
+        int hours;
+        int minutes;
+        double seconds;
+        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
+        return static_cast<int32_t>(hours);
+    }
+
+    int32_t CelestiaDMS::HMSMinutes()
+    {
+        int hours;
+        int minutes;
+        double seconds;
+        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
+        return static_cast<int32_t>(minutes);
+    }
+
+    double CelestiaDMS::HMSSeconds()
+    {
+        int hours;
+        int minutes;
+        double seconds;
+        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
         return seconds;
     }
 
     double CelestiaDMS::Decimal()
     {
-        return astro::degMinSecToDecimal(degrees, minutes, seconds);
+        return decimal;
     }
 }

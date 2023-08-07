@@ -16,9 +16,11 @@ namespace CelestiaComponent
         CelestiaDMS(Double decimal);
 
         Int32 Degrees{ get; };
-        Int32 Hours{ get; };
         Int32 Minutes{ get; };
         Double Seconds{ get; };
+        Int32 HMSHours{ get; };
+        Int32 HMSMinutes{ get; };
+        Double HMSSeconds{ get; };
         Double Decimal{ get; };
     }
 }

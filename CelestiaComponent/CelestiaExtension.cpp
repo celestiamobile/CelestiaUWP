@@ -1195,12 +1195,12 @@ namespace winrt::CelestiaComponent::implementation
         numberFormatter.IsGrouped(true);
 
         CelestiaDMS hms{ sph.X() };
-        double seconds = std::round(hms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.Hours())), std::wstring(numberFormatter.FormatInt(hms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.HMSHours())), std::wstring(numberFormatter.FormatInt(hms.HMSMinutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ sph.Y() };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }
@@ -1221,23 +1221,23 @@ namespace winrt::CelestiaComponent::implementation
         numberFormatter.IsGrouped(true);
 
         CelestiaDMS hms{ sph.X() };
-        double seconds = std::round(hms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.Hours())), std::wstring(numberFormatter.FormatInt(hms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"RA: %sh %sm %ss")), std::wstring(numberFormatter.FormatInt(hms.HMSHours())), std::wstring(numberFormatter.FormatInt(hms.HMSMinutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ sph.Y() };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"DEC: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
         dms = CelestiaDMS(sph.X());
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"L: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         dms = CelestiaDMS(sph.Y());
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Hours())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
+        lines.push_back(fmt::sprintf(std::wstring(localizationProvider(L"B: %s\u00b0 %s\u2032 %s\u2033")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }
