@@ -65,7 +65,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto appCore = context.AppCore();
         context.Renderer().EnqueueTask([appCore]()
             {
-                appCore.CharEnter(100);
+                appCore.RunDemo();
             });
     }
 

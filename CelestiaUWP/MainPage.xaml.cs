@@ -1139,7 +1139,13 @@ namespace CelestiaUWP
             });
 
             var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help"));
-            AppendCharEnterItem(helpItem, LocalizationHelper.Localize("Run Demo"), 100, new KeyboardAccelerator() { Key = VirtualKey.D });
+            AppendItem(helpItem, LocalizationHelper.Localize("Run Demo"), (sender, arg) =>
+            {
+                mRenderer.EnqueueTask(() =>
+                {
+                    mAppCore.RunDemo();
+                });
+            });
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info"), (sender, arg) =>
             {

@@ -80,6 +80,7 @@ namespace winrt::CelestiaComponent::implementation
         void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
         void ClearFonts();
         void RunScript(hstring const& path);
+        void RunDemo();
         void GoToURL(hstring const& url);
         bool SaveScreenshot(hstring const& filePath);
         com_array<CelestiaComponent::CelestiaDestination> Destinations();

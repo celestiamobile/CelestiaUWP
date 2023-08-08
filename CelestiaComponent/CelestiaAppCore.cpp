@@ -313,6 +313,16 @@ namespace winrt::CelestiaComponent::implementation
         core->runScript(to_string(path));
     }
 
+    void CelestiaAppCore::RunDemo()
+    {
+        const auto& demoScriptFile = core->getConfig()->demoScriptFile;
+        if (!demoScriptFile.empty())
+        {
+            core->cancelScript();
+            core->runScript(demoScriptFile);
+        }
+    }
+
     void CelestiaAppCore::GoToURL(hstring const& url)
     {
         core->goToUrl(to_string(url));
