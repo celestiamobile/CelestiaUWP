@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="LocalizationHelper.idl" />
+    <Midl Include="PathHelper.idl" />
     <Midl Include="RequestResult.idl" />
     <Midl Include="GuideItem.idl" />
     <Midl Include="ResourceItem.idl" />

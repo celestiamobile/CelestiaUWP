@@ -80,12 +80,12 @@ namespace CelestiaUWP
 
         private string defaultResourcePath
         {
-            get { return defaultParentPath + "\\CelestiaResources"; }
+            get { return PathHelper.Combine(defaultParentPath, "CelestiaResources"); }
         }
 
         private string defaultConfigFilePath
         {
-            get { return defaultResourcePath + "\\celestia.cfg"; }
+            get { return PathHelper.Combine(defaultResourcePath, "celestia.cfg"); }
         }
 
         private string[] AvailableLanguages;
@@ -135,7 +135,7 @@ namespace CelestiaUWP
             StorageFile customConfigFile = null;
             try
             {
-                customDataFolder = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFolderAsync("Override");
+                customDataFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Override");
                 customConfigFile = await customDataFolder.GetFileAsync("celestia.cfg");
             }
             catch { }
@@ -143,7 +143,7 @@ namespace CelestiaUWP
             var resourcePath = customDataFolder != null ? customDataFolder.Path : defaultResourcePath;
             var configPath = customConfigFile != null ? customConfigFile.Path : defaultConfigFilePath;
 
-            var localePath = defaultResourcePath + "\\locale";
+            var localePath = PathHelper.Combine(defaultResourcePath, "locale");
 
             // Migrate override language to system
             var overrideLocaleLegacy = AppSettings.LanguageOverride;
@@ -179,7 +179,7 @@ namespace CelestiaUWP
                 }
 
                 Directory.SetCurrentDirectory(resourcePath);
-                CelestiaAppCore.SetLocaleDirectory(resourcePath + "\\locale", locale);
+                CelestiaAppCore.SetLocaleDirectory(PathHelper.Combine(resourcePath, "locale"), locale);
                 if (!mAppCore.StartSimulation(configPath, extraPaths.ToArray(), progressCallback) && (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath))
                 {
                     if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
@@ -190,7 +190,7 @@ namespace CelestiaUWP
                             await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration."));
                         });
                         Directory.SetCurrentDirectory(defaultResourcePath);
-                        CelestiaAppCore.SetLocaleDirectory(defaultResourcePath + "\\locale", locale);
+                        CelestiaAppCore.SetLocaleDirectory(PathHelper.Combine(defaultResourcePath, "locale"), locale);
                         if (!mAppCore.StartSimulation(defaultConfigFilePath, extraPaths.ToArray(), progressCallback))
                         {
                             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -264,12 +264,12 @@ namespace CelestiaUWP
             var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
             var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
 
-            var pathPrefix = defaultResourcePath + "\\fonts\\";
+            var pathPrefix = PathHelper.Combine(defaultResourcePath, "fonts");
             mAppCore.ClearFonts();
-            mAppCore.SetFont(pathPrefix + font.Item1, font.Item2, 9);
-            mAppCore.SetTitleFont(pathPrefix + font.Item3, font.Item4, 15);
-            mAppCore.SetRenderFont(pathPrefix + font.Item1, font.Item2, 9, CelestiaFontStyle.Normal);
-            mAppCore.SetRenderFont(pathPrefix + font.Item3, font.Item4, 15, CelestiaFontStyle.Large);
+            mAppCore.SetFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9);
+            mAppCore.SetTitleFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15);
+            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9, CelestiaFontStyle.Normal);
+            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15, CelestiaFontStyle.Large);
         }
 
         private void ShowLoadingFailure()
@@ -948,7 +948,7 @@ namespace CelestiaUWP
             {
                 Text = LocalizationHelper.Localize("Scripts")
             };
-            var scripts = CelestiaAppCore.ReadScripts(resourcePath + "\\scripts", true);
+            var scripts = CelestiaAppCore.ReadScripts(PathHelper.Combine(resourcePath, "scripts"), true);
             if (scripts != null)
             {
                 foreach (var script in scripts)
@@ -1564,7 +1564,7 @@ namespace CelestiaUWP
 
         async void ShowAboutDialog()
         {
-            var dialog = new AboutDialog(defaultResourcePath + "\\AUTHORS", defaultResourcePath + "\\TRANSLATORS");
+            var dialog = new AboutDialog(PathHelper.Combine(defaultResourcePath, "AUTHORS"), PathHelper.Combine(defaultResourcePath, "TRANSLATORS"));
             await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
         }
 
@@ -1691,8 +1691,8 @@ namespace CelestiaUWP
 
         private void CaptureImage()
         {
-            var tempFolder = Windows.Storage.ApplicationData.Current.TemporaryFolder;
-            var path = tempFolder.Path + "\\" + GuidHelper.CreateNewGuid().ToString() + ".png";
+            var tempFolder = ApplicationData.Current.TemporaryFolder;
+            var path = PathHelper.Combine(tempFolder.Path, GuidHelper.CreateNewGuid().ToString() + ".png");
             mRenderer.EnqueueTask(() =>
             {
                 mAppCore.Draw();

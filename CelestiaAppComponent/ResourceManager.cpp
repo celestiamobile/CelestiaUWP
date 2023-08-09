@@ -216,7 +216,17 @@ namespace winrt::CelestiaAppComponent::implementation
 
     hstring ResourceManager::ItemPath(CelestiaAppComponent::ResourceItem const& item)
     {
-        return addonFolder.Path() + L"\\" + item.ID();
+        return PathHelper::Combine(addonFolder.Path(), item.ID());
+    }
+
+    hstring ResourceManager::ScriptPath(CelestiaAppComponent::ResourceItem const& item)
+    {
+        if (item.Type() != L"script")
+            return L"";
+        auto scriptFileName = item.MainScriptName();
+        if (scriptFileName.empty())
+            return L"";
+        return PathHelper::Combine(ItemPath(item), scriptFileName);
     }
 
     bool DirectoryExists(hstring const& path)

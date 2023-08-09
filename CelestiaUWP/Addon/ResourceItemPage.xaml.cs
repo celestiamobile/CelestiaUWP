@@ -143,11 +143,10 @@ namespace CelestiaUWP.Addon
 
             if (Item.Type == "script")
             {
-                var mainScriptName = Item.MainScriptName;
-                if (State == ResourceItemState.Installed && mainScriptName != null)
+                if (State == ResourceItemState.Installed)
                 {
-                    var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
-                    if (File.Exists(path))
+                    var path = ResourceManager.ScriptPath(Item);
+                    if (!string.IsNullOrEmpty(path) && File.Exists(path))
                     {
                         GoButton.Visibility = Visibility.Visible;
                     }
@@ -221,10 +220,8 @@ namespace CelestiaUWP.Addon
         {
             if (Item.Type == "script")
             {
-                var mainScriptName = Item.MainScriptName;
-                if (mainScriptName == null) return;
-                var path = ResourceManager.ItemPath(Item) + "\\" + mainScriptName;
-                if (File.Exists(path))
+                var path = ResourceManager.ScriptPath(Item);
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
                 {
                     Renderer.EnqueueTask(() =>
                     {

@@ -38,6 +38,7 @@ namespace winrt::CelestiaAppComponent::implementation
         ResourceManager(Windows::Storage::StorageFolder const& parentFolder);
 
         hstring ItemPath(CelestiaAppComponent::ResourceItem const& item);
+        hstring ScriptPath(CelestiaAppComponent::ResourceItem const& item);
         CelestiaAppComponent::ResourceItemState StateForItem(CelestiaAppComponent::ResourceItem const& item);
         void Download(CelestiaAppComponent::ResourceItem const& item);
         Windows::Foundation::IAsyncAction DownloadAsync(CelestiaAppComponent::ResourceItem const item);

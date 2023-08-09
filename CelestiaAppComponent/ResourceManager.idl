@@ -34,6 +34,7 @@ namespace CelestiaAppComponent
         ResourceManager(Windows.Storage.StorageFolder parentFolder);
 
         String ItemPath(ResourceItem item);
+        String ScriptPath(ResourceItem item);
         ResourceItemState StateForItem(ResourceItem item);
         Windows.Foundation.IAsyncAction DownloadAsync(ResourceItem item);
         void Download(ResourceItem item);

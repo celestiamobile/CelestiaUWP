@@ -1,0 +1,8 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass PathHelper
+    {
+        static String Combine(String path1, String path2);
+    }
+}
