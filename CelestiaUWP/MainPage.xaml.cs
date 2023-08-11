@@ -252,8 +252,8 @@ namespace CelestiaUWP
 
         private void UpdateScale()
         {
-            mAppCore.SetDPI((int)(96 * scale));
-            mAppCore.PickTolerance = 4.0f * scale;
+            mAppCore.SetDPI((int)(96.0f * scale));
+            mAppCore.PickTolerance = (float)AppSettings.PickSensitivity * scale;
             var fontMap = new Dictionary<string, (string, int, string, int)>()
                 {
                     { "ja", ("NotoSansCJK-Regular.ttc", 0, "NotoSansCJK-Bold.ttc", 0) },

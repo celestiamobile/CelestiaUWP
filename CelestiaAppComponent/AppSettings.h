@@ -26,6 +26,9 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring LastNewsID();
         void LastNewsID(hstring const&);
 
+        double PickSensitivity();
+        void PickSensitivity(double);
+
         CelestiaComponent::CelestiaGamepadAction GamepadRemapA();
         void GamepadRemapA(CelestiaComponent::CelestiaGamepadAction);
 
@@ -74,6 +77,8 @@ namespace winrt::CelestiaAppComponent::implementation
         int32_t GetInt32(CelestiaAppComponent::AppSettingInt32Entry entry);
         void SetString(CelestiaAppComponent::AppSettingStringEntry entry, hstring const& value);
         hstring GetString(CelestiaAppComponent::AppSettingStringEntry entry);
+        void SetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry, double value);
+        double GetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry);
 
         void Save(Windows::Storage::ApplicationDataContainer const& settings);
 
@@ -84,6 +89,7 @@ namespace winrt::CelestiaAppComponent::implementation
         bool onboardMessageDisplayed{ false };
         hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
+        double pickSensitivity{ 4.0 };
 
         CelestiaComponent::CelestiaGamepadAction gamepadRemapA{ CelestiaComponent::CelestiaGamepadAction::MoveSlower };
         CelestiaComponent::CelestiaGamepadAction gamepadRemapB{ CelestiaComponent::CelestiaGamepadAction::None };
