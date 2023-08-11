@@ -864,6 +864,16 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         core->setLayoutDirection((CelestiaCore::LayoutDirection)layoutDirection);
     }
 
+    float CelestiaAppCore::PickTolerance()
+    {
+        return core->getPickTolerance();
+    }
+
+    void CelestiaAppCore::PickTolerance(float pickTolerance)
+    {
+        core->setPickTolerance(pickTolerance);
+    }
+
     event_token CelestiaAppCore::ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const& handler)
     {
         return showContextMenuEvent.add(handler);

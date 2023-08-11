@@ -319,6 +319,9 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaLayoutDirection LayoutDirection();
         void LayoutDirection(CelestiaComponent::CelestiaLayoutDirection layoutDirection);
 
+        float PickTolerance();
+        void PickTolerance(float pickTolerance);
+
         event_token ShowContextMenu(Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs> const&);
         void ShowContextMenu(event_token const&);
 

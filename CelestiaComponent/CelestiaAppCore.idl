@@ -258,6 +258,8 @@ namespace CelestiaComponent
         Int32 TemperatureScale;
         Int32 ScriptSystemAccessPolicy;
 
+        Single PickTolerance;
+
         CelestiaLayoutDirection LayoutDirection;
 
         event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
