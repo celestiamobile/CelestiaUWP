@@ -82,6 +82,13 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
+    runtimeclass AppSettingsDoubleItem : SettingDoubleItem
+    {
+        AppSettingsDoubleItem(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingDoubleEntry entry, Double minValue, Double maxValue, Double step, Windows.Storage.ApplicationDataContainer localSettings);
+        AppSettingsDoubleItem(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingDoubleEntry entry, Double minValue, Double maxValue, Double step, Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
     runtimeclass LanguageInt32Item : SettingInt32Item
     {
         LanguageInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, Windows.Foundation.Collections.IVector<String> availableLanguages, Windows.Storage.ApplicationDataContainer localSettings);

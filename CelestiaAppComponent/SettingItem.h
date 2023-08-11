@@ -14,6 +14,7 @@
 #include "AppCoreSingleItem.g.h"
 #include "AppSettingsBooleanItem.g.h"
 #include "AppSettingsInt32Item.g.h"
+#include "AppSettingsDoubleItem.g.h"
 #include "LanguageInt32Item.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
@@ -178,6 +179,29 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring note;
     };
 
+    struct AppSettingsDoubleItem : AppSettingsDoubleItemT<AppSettingsDoubleItem, SettingDoubleItem>
+    {
+        AppSettingsDoubleItem(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        double Value();
+        void Value(double);
+        double MinValue();
+        double MaxValue();
+        double Step();
+        hstring Title();
+        hstring Note();
+        bool NoteVisibility();
+
+    private:
+        CelestiaAppComponent::AppSettings appSettings;
+        hstring title;
+        double minValue;
+        double maxValue;
+        double step;
+        CelestiaAppComponent::AppSettingDoubleEntry entry;
+        Windows::Storage::ApplicationDataContainer localSettings;
+        hstring note;
+    };
+
     struct LanguageInt32Item : LanguageInt32ItemT<LanguageInt32Item, SettingInt32Item>
     {
         LanguageInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, Windows::Storage::ApplicationDataContainer const& localSettings);
@@ -224,6 +248,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     };
 
     struct AppSettingsInt32Item : AppSettingsInt32ItemT<AppSettingsInt32Item, implementation::AppSettingsInt32Item>
+    {
+    };
+
+    struct AppSettingsDoubleItem : AppSettingsDoubleItemT<AppSettingsDoubleItem, implementation::AppSettingsDoubleItem>
     {
     };
 

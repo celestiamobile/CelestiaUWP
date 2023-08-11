@@ -31,6 +31,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto lastNewsIDResult = propertySet.TryLookup(L"LastNewsID");
         if (enableMSAAResult)
             lastNewsID = unbox_value_or(lastNewsIDResult, lastNewsID);
+        auto pickSensitivityResult = propertySet.TryLookup(L"PickSensitivity");
+        if (pickSensitivityResult)
+            pickSensitivity = unbox_value_or(pickSensitivityResult, pickSensitivity);
         auto gamepadRemapAResult = propertySet.TryLookup(L"GamepadRemapA");
         if (gamepadRemapAResult)
             gamepadRemapA = static_cast<CelestiaGamepadAction>(unbox_value_or(gamepadRemapAResult, static_cast<int>(gamepadRemapA)));
@@ -133,6 +136,16 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::LastNewsID(hstring const& value)
     {
         lastNewsID = value;
+    }
+
+    double AppSettings::PickSensitivity()
+    {
+        return pickSensitivity;
+    }
+
+    void AppSettings::PickSensitivity(double value)
+    {
+        pickSensitivity = value;
     }
 
     CelestiaGamepadAction AppSettings::GamepadRemapA()
@@ -429,6 +442,29 @@ namespace winrt::CelestiaAppComponent::implementation
         }
     }
 
+    void AppSettings::SetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry, double value)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingDoubleEntry::PickSensitivity:
+            PickSensitivity(value);
+            break;
+        default:
+            break;
+        }
+    }
+
+    double AppSettings::GetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry)
+    {
+        switch (entry)
+        {
+        case CelestiaAppComponent::AppSettingDoubleEntry::PickSensitivity:
+            return PickSensitivity();
+        default:
+            return 0.0;
+        }
+    }
+
     void AppSettings::Save(Windows::Storage::ApplicationDataContainer const& settings)
     {
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
@@ -437,6 +473,7 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"OnboardMessageDisplayed", box_value(onboardMessageDisplayed));
         settings.Values().Insert(L"LanguageOverride", box_value(languageOverride));
         settings.Values().Insert(L"LastNewsID", box_value(lastNewsID));
+        settings.Values().Insert(L"PickSensitivity", box_value(pickSensitivity));
         settings.Values().Insert(L"GamepadRemapA", box_value(static_cast<int>(gamepadRemapA)));
         settings.Values().Insert(L"GamepadRemapB", box_value(static_cast<int>(gamepadRemapB)));
         settings.Values().Insert(L"GamepadRemapX", box_value(static_cast<int>(gamepadRemapX)));

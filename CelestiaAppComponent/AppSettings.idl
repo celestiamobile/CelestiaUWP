@@ -32,6 +32,11 @@ namespace CelestiaAppComponent
         LastNewsID,
     };
 
+    enum AppSettingDoubleEntry
+    {
+        PickSensitivity,
+    };
+
     [default_interface]
     runtimeclass AppSettings
     {
@@ -42,6 +47,7 @@ namespace CelestiaAppComponent
         Boolean OnboardMessageDisplayed;
         String LanguageOverride;
         String LastNewsID;
+        Double PickSensitivity;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapA;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapB;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapX;
@@ -61,6 +67,8 @@ namespace CelestiaAppComponent
         Int32 GetInt32(AppSettingInt32Entry entry);
         void SetString(AppSettingStringEntry entry, String value);
         String GetString(AppSettingStringEntry entry);
+        void SetDouble(AppSettingDoubleEntry entry, Double value);
+        Double GetDouble(AppSettingDoubleEntry entry);
 
         Boolean GamepadInvertX;
         Boolean GamepadInvertY;

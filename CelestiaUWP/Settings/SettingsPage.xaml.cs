@@ -29,6 +29,7 @@ namespace CelestiaUWP.Settings
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Labels"), "labels"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Renderer"), "renderer"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Time & Region"), "region"),
+            new Helper.NavigationViewItem(LocalizationHelper.Localize("Interaction"), "interaction"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Game Controller"), "gamepad"),
             new Helper.NavigationViewItem(LocalizationHelper.Localize("Advanced"), "advanced"),
         };
@@ -229,6 +230,14 @@ namespace CelestiaUWP.Settings
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }
+            else if (item.Tag == "interaction")
+            {
+                var items = new SettingBaseItem[]
+                {
+                    new AppSettingsDoubleItem(LocalizationHelper.Localize("Sensitivity"), AppSettings, AppSettingDoubleEntry.PickSensitivity, 1.0, 20.0, 1.0, localSettings, LocalizationHelper.Localize("Sensitivity for object selection")),
+                };
+                Container.Navigate(typeof(SettingsCommonPage), items);
+            }
             else if (item.Tag == "gamepad")
             {
                 var actions = new []
@@ -280,7 +289,7 @@ namespace CelestiaUWP.Settings
                         new OptionPair(0, LocalizationHelper.Localize("Ask")),
                         new OptionPair(1, LocalizationHelper.Localize("Allow")),
                         new OptionPair(2, LocalizationHelper.Localize("Deny")),
-                    }, localSettings, LocalizationHelper.Localize("This policy decides whether Lua scripts have access to the files on the system or not.")),
+                    }, localSettings, LocalizationHelper.Localize("Lua scripts' access to the file system")),
                 };
                 Container.Navigate(typeof(SettingsCommonPage), items);
             }

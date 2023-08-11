@@ -21,6 +21,9 @@
 #if __has_include("AppSettingsInt32Item.g.cpp")
 #include "AppSettingsInt32Item.g.cpp"
 #endif
+#if __has_include("AppSettingsDoubleItem.g.cpp")
+#include "AppSettingsDoubleItem.g.cpp"
+#endif
 #if __has_include("LanguageInt32Item.g.cpp")
 #include "LanguageInt32Item.g.cpp"
 #endif
@@ -199,43 +202,14 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        switch (entry)
-        {
-        case CelestiaAppComponent::AppSettingBooleanEntry::UseFullDPI:
-            return appSettings.UseFullDPI();
-        case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
-            return appSettings.EnableMSAA();
-        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
-            return appSettings.GamepadInvertX();
-        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
-            return appSettings.GamepadInvertY();
-        default:
-            break;
-        }
-        return false;
+        return appSettings.GetBoolean(entry);
     }
 
     void AppSettingsBooleanItem::IsEnabled(bool value)
     {
         if (!hasCorrectValue)
             return;
-        switch (entry)
-        {
-        case CelestiaAppComponent::AppSettingBooleanEntry::UseFullDPI:
-            appSettings.UseFullDPI(value);
-            break;
-        case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
-            appSettings.EnableMSAA(value);
-            break;
-        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertX:
-            appSettings.GamepadInvertX(value);
-            break;
-        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
-            appSettings.GamepadInvertY(value);
-            break;
-        default:
-            return;
-        }
+        appSettings.SetBoolean(entry, value);
         appSettings.Save(localSettings);
     }
 
@@ -267,48 +241,7 @@ namespace winrt::CelestiaAppComponent::implementation
         if (!hasCorrectValue)
             hasCorrectValue = true;
 
-        int32_t value = 0;
-        switch (entry)
-        {
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapA:
-            value = static_cast<int32_t>(appSettings.GamepadRemapA());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapB:
-            value = static_cast<int32_t>(appSettings.GamepadRemapB());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapX:
-            value = static_cast<int32_t>(appSettings.GamepadRemapX());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapY:
-            value = static_cast<int32_t>(appSettings.GamepadRemapY());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLT:
-            value = static_cast<int32_t>(appSettings.GamepadRemapLT());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRT:
-            value = static_cast<int32_t>(appSettings.GamepadRemapRT());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLB:
-            value = static_cast<int32_t>(appSettings.GamepadRemapLB());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRB:
-            value = static_cast<int32_t>(appSettings.GamepadRemapRB());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadUp:
-            value = static_cast<int32_t>(appSettings.GamepadRemapDpadUp());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadDown:
-            value = static_cast<int32_t>(appSettings.GamepadRemapDpadDown());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadLeft:
-            value = static_cast<int32_t>(appSettings.GamepadRemapDpadLeft());
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
-            value = static_cast<int32_t>(appSettings.GamepadRemapDpadRight());
-            break;
-        default:
-            break;
-        }
+        int32_t value = appSettings.GetInt32(entry);
         for (uint32_t i = 0; i < options.Size(); i += 1)
             if (options.GetAt(i).Value() == value)
                 return i;
@@ -322,47 +255,7 @@ namespace winrt::CelestiaAppComponent::implementation
             return;
 
         auto actualValue = options.GetAt(value).Value();
-        switch (entry)
-        {
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapA:
-            appSettings.GamepadRemapA(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapB:
-            appSettings.GamepadRemapB(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapX:
-            appSettings.GamepadRemapX(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapY:
-            appSettings.GamepadRemapY(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLT:
-            appSettings.GamepadRemapLT(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRT:
-            appSettings.GamepadRemapRT(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapLB:
-            appSettings.GamepadRemapLB(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapRB:
-            appSettings.GamepadRemapRB(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadUp:
-            appSettings.GamepadRemapDpadUp(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadDown:
-            appSettings.GamepadRemapDpadDown(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadLeft:
-            appSettings.GamepadRemapDpadLeft(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
-            appSettings.GamepadRemapDpadRight(static_cast<CelestiaGamepadAction>(actualValue));
-            break;
-        default:
-            return;
-        }
+        appSettings.SetInt32(entry, actualValue);
         appSettings.Save(localSettings);
     }
 
@@ -382,6 +275,59 @@ namespace winrt::CelestiaAppComponent::implementation
     }
 
     bool AppSettingsInt32Item::NoteVisibility()
+    {
+        return !note.empty();
+    }
+
+    AppSettingsDoubleItem::AppSettingsDoubleItem(hstring const& title, AppSettings const& appSettings, AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appSettings(appSettings), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
+    {
+    }
+
+    double AppSettingsDoubleItem::Value()
+    {
+        // Must be queried before setting
+        if (!hasCorrectValue)
+            hasCorrectValue = true;
+
+        return appSettings.GetDouble(entry);
+    }
+
+    void AppSettingsDoubleItem::Value(double value)
+    {
+        // Must be queried before setting
+        if (!hasCorrectValue)
+            return;
+
+        appSettings.SetDouble(entry, value);
+        appSettings.Save(localSettings);
+    }
+
+    double AppSettingsDoubleItem::MinValue()
+    {
+        return minValue;
+    }
+
+    double AppSettingsDoubleItem::MaxValue()
+    {
+        return maxValue;
+    }
+
+    double AppSettingsDoubleItem::Step()
+    {
+        return step;
+    }
+
+    hstring AppSettingsDoubleItem::Title()
+    {
+        return title;
+    }
+
+    hstring AppSettingsDoubleItem::Note()
+    {
+        return note;
+    }
+
+    bool AppSettingsDoubleItem::NoteVisibility()
     {
         return !note.empty();
     }

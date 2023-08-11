@@ -178,6 +178,7 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsBooleanItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreInt32Item" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsInt32Item" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettingsDoubleItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.LanguageInt32Item" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppCoreSingleItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadProgressArgs" ThreadingModel="both" />
