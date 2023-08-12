@@ -12,6 +12,8 @@
 using CelestiaAppComponent;
 using CelestiaComponent;
 using CelestiaUWP.Web;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -1260,6 +1262,7 @@ namespace CelestiaUWP
                 var urlInfoFile = await parentFolder.CreateFileAsync("urlinfo.txt");
                 var systemInfoFile = await parentFolder.CreateFileAsync("systeminfo.txt");
                 var addonInfoFile = await parentFolder.CreateFileAsync("addoninfo.txt");
+                var crashInfoFile = await parentFolder.CreateFileAsync("crashinfo.txt");
                 mRenderer.EnqueueTask(() =>
                 {
                     var renderInfo = mAppCore.RenderInfo;
@@ -1267,7 +1270,7 @@ namespace CelestiaUWP
                     bool saveScreenshotSuccess = mAppCore.SaveScreenshot(screenshotFile.Path);
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        ReportBug(saveScreenshotSuccess ? screenshotFile : null, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
+                        ReportBug(saveScreenshotSuccess ? screenshotFile : null, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, crashInfoFile, renderInfo, url);
                     });
                 });
             }
@@ -1277,7 +1280,7 @@ namespace CelestiaUWP
             }
         }
 
-        async void ReportBug(StorageFile screenshotFile, StorageFile renderInfoFile, StorageFile urlInfoFile, StorageFile systemInfoFile, StorageFile addonInfoFile, string renderInfo, string url)
+        async void ReportBug(StorageFile screenshotFile, StorageFile renderInfoFile, StorageFile urlInfoFile, StorageFile systemInfoFile, StorageFile addonInfoFile, StorageFile crashInfoFile, string renderInfo, string url)
         {
             try
             {
@@ -1287,6 +1290,9 @@ namespace CelestiaUWP
                 var installedAddonList = "";
                 foreach (var addon in addons)
                     installedAddonList += string.Format("{0}/{1}\n", addon.Name, addon.ID);
+                var lastCrash = await Crashes.GetLastSessionCrashReportAsync();
+                if (lastCrash != null)
+                    await FileIO.WriteTextAsync(crashInfoFile, lastCrash.Id);
                 await FileIO.WriteTextAsync(addonInfoFile, installedAddonList);
                 var systemInfo = SystemInformation.Instance;
                 var version = systemInfo.ApplicationVersion;
@@ -1310,7 +1316,10 @@ namespace CelestiaUWP
                 emailMessage.Attachments.Add(new EmailAttachment(renderInfoFile.Name, renderInfoFile));
                 emailMessage.Attachments.Add(new EmailAttachment(urlInfoFile.Name, urlInfoFile));
                 emailMessage.Attachments.Add(new EmailAttachment(systemInfoFile.Name, systemInfoFile));
-                emailMessage.Attachments.Add(new EmailAttachment(addonInfoFile.Name, addonInfoFile));
+                if (!string.IsNullOrEmpty(installedAddonList))
+                    emailMessage.Attachments.Add(new EmailAttachment(addonInfoFile.Name, addonInfoFile));
+                if (lastCrash != null)
+                    emailMessage.Attachments.Add(new EmailAttachment(crashInfoFile.Name, crashInfoFile));
                 await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             }
             catch
