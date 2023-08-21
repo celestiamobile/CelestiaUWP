@@ -112,25 +112,28 @@ namespace winrt::CelestiaComponent::implementation
         bool success = core->initRenderer();
 
         // start with default values
-        const int DEFAULT_ORBIT_MASK = Body::Planet | Body::Moon | Body::Stellar;
-        const int DEFAULT_LABEL_MODE = 2176;
-        const float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
-        const float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
-        const Renderer::StarStyle DEFAULT_STAR_STYLE = Renderer::FuzzyPointStars;
-        const ColorTableType DEFAULT_STARS_COLOR = ColorTableType::Blackbody_D65;
-        const unsigned int DEFAULT_TEXTURE_RESOLUTION = medres;
+        constexpr int DEFAULT_ORBIT_MASK = Body::Planet | Body::Moon | Body::Stellar;
+        constexpr int DEFAULT_LABEL_MODE = 2176;
+        constexpr float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
+        constexpr float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
+        constexpr Renderer::StarStyle DEFAULT_STAR_STYLE = Renderer::FuzzyPointStars;
+        constexpr ColorTableType DEFAULT_STARS_COLOR = ColorTableType::Blackbody_D65;
+        constexpr unsigned int DEFAULT_TEXTURE_RESOLUTION = medres;
+        constexpr float DEFAULT_TINT_SATURATION = 0.5f;
 
         core->getRenderer()->setRenderFlags(Renderer::DefaultRenderFlags);
         core->getRenderer()->setOrbitMask(DEFAULT_ORBIT_MASK);
         core->getRenderer()->setLabelMode(DEFAULT_LABEL_MODE);
         core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
+        core->getRenderer()->setTintSaturation(DEFAULT_TINT_SATURATION);
         core->getRenderer()->setStarStyle(DEFAULT_STAR_STYLE);
         core->getRenderer()->setResolution(DEFAULT_TEXTURE_RESOLUTION);
         core->getRenderer()->setStarColorTable(DEFAULT_STARS_COLOR);
 
         core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
 
-        core->getRenderer()->setSolarSystemMaxDistance((core->getConfig()->SolarSystemMaxDistance));
+        core->getRenderer()->setSolarSystemMaxDistance((core->getConfig()->renderDetails.SolarSystemMaxDistance));
+        core->getRenderer()->setShadowMapSize(core->getConfig()->renderDetails.ShadowMapSize);
 
         return success;
     }
@@ -315,7 +318,7 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::RunDemo()
     {
-        const auto& demoScriptFile = core->getConfig()->demoScriptFile;
+        const auto& demoScriptFile = core->getConfig()->paths.demoScriptFile;
         if (!demoScriptFile.empty())
         {
             core->cancelScript();
