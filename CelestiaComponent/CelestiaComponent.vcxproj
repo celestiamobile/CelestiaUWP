@@ -334,6 +334,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\console.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dateformatter.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
@@ -544,6 +545,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\console.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dateformatter.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />

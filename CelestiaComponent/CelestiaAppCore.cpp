@@ -622,64 +622,14 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
         core->setHudDetail(hudDetail);
     }
 
-    Windows::Globalization::DateTimeFormatting::DateTimeFormatter CelestiaAppCore::dateFormatter = nullptr;
-
     int32_t CelestiaAppCore::DateFormat()
     {
-        return (int32_t)core->getDateFormat();
+        return static_cast<int32_t>(core->getDateFormat());
     }
 
     void CelestiaAppCore::DateFormat(int32_t dateFormat)
     {
-        auto format = (astro::Date::Format)dateFormat;
-        core->setDateFormat(format);
-        if (format == astro::Date::Locale)
-        {
-            if (!dateFormatter)
-            {
-                try
-                {
-                    wchar_t locale[LOCALE_NAME_MAX_LENGTH];
-                    int result = ResolveLocaleName(CelestiaAppCore::Language().c_str(), locale, LOCALE_NAME_MAX_LENGTH);
-                    vector<hstring> locales;
-                    auto h = to_hstring(locale);
-                    if (result > 0)
-                    {
-                        locales.push_back(locale);
-                        dateFormatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"dayofweek.abbreviated day month.abbreviated year hour minute second", locales);
-                    }
-                    else
-                    {
-                        dateFormatter = Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"dayofweek.abbreviated day month.abbreviated year hour minute second");
-                    }
-                }
-                catch (hresult_error const&) {}
-            }
-            if (dateFormatter)
-            {
-                core->setCustomDateFormatter([](double jd)
-                    {
-                        if (jd < CelestiaHelper::MinRepresentableJulianDay() || jd > CelestiaHelper::MaxRepresentableJulianDay())
-                            return std::string{};
-                        Windows::Foundation::DateTime dateTime = CelestiaHelper::DateTimeFromJulianDay(jd);
-                        wstring str(dateFormatter.Format(dateTime));
-#ifdef USE_ICU
-                        return to_string(str);
-#else
-                        // Remove hidden Unicode chracters
-                        const std::ctype<wchar_t>& ct = std::use_facet<std::ctype<wchar_t>>(std::locale());
-                        str.erase(std::remove_if(str.begin(), str.end(), [&ct](wchar_t ch) { return !ct.is(std::ctype<wchar_t>::print, ch); }), str.end());
-                        return to_string(str);
-#endif
-                    });
-            }
-            else
-                core->setCustomDateFormatter(nullptr);
-        }
-        else
-        {
-            core->setCustomDateFormatter(nullptr);
-        }
+        core->setDateFormat(static_cast<astro::Date::Format>(dateFormat));
     }
 
     float CelestiaAppCore::AmbientLightLevel()
