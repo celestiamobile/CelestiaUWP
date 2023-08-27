@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <AutoSuggestBox x:Name="ObjectNameText" Grid.Row="0" TextChanged="ObjectNameText_TextChanged" Grid.Column="0" Grid.ColumnSpan="2"></AutoSuggestBox>
+        <AutoSuggestBox x:Name="ObjectNameText" Grid.Row="0" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen" Grid.Column="0" Grid.ColumnSpan="2"></AutoSuggestBox>
         <TextBox x:Name="LatitudeText" Grid.Row="1" TextChanged="LatitudeText_TextChanged"/>
         <TextBox x:Name="LongitudeText" Grid.Row="1" Grid.Column="1" TextChanged="LongitudeText_TextChanged"/>
         <TextBox x:Name="DistanceText" Grid.Row="2" TextChanged="DistanceText_TextChanged"/>

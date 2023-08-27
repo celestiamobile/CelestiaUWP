@@ -25,8 +25,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
-        <AutoSuggestBox x:Name="ReferenceNameText" Visibility="{x:Bind RefObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
-        <AutoSuggestBox x:Name="TargetNameText" Visibility="{x:Bind TargetObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged"/>
+        <AutoSuggestBox x:Name="ReferenceNameText" Visibility="{x:Bind RefObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen"/>
+        <AutoSuggestBox x:Name="TargetNameText" Visibility="{x:Bind TargetObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen"/>
         <TextBlock x:Name="LearnMoreHint"/>
     </StackPanel>
 </ContentDialog>
