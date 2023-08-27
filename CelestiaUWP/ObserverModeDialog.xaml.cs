@@ -59,14 +59,18 @@ namespace CelestiaUWP
 
         private CoordinateSystem selectedCoordinateSystem = CoordinateSystem.Universal;
 
-        public string ReferenceObjectName
+        public string ReferenceObjectPath
         {
-            get { return ReferenceNameText.Visibility == Visibility.Visible ? ReferenceNameText.Text : ""; }
+            get { return ReferenceNameText.Visibility == Visibility.Visible ? referenceObjectPath : ""; }
         }
-        public string TargetObjectName
+        public string TargetObjectPath
         {
-            get { return TargetNameText.Visibility == Visibility.Visible ? TargetNameText.Text : ""; }
+            get { return TargetNameText.Visibility == Visibility.Visible ? targetObjectPath : ""; }
         }
+        private string referenceObjectValidInput = "";
+        private string targetObjectValidInput= "";
+        private string referenceObjectPath = "";
+        private string targetObjectPath = "";
 
         public CoordinateSystem SelectedCoordinateSystem
         {
@@ -119,11 +123,21 @@ namespace CelestiaUWP
 
         private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
-
             var text = sender.Text;
+            var isReference = sender == ReferenceNameText;
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+            if (isReference)
+                referenceObjectPath = text;
+            else
+                targetObjectPath = text;
+
+
             if (text == "")
             {
+                if (isReference)
+                    referenceObjectValidInput = "";
+                else
+                    targetObjectValidInput = "";
                 sender.ItemsSource = new string[] { };
                 return;
             }
@@ -131,8 +145,36 @@ namespace CelestiaUWP
             var results = await GetCompletion(sender.Text);
             if (sender.Text != text) return;
 
+            if (isReference)
+                referenceObjectValidInput = text;
+            else
+                targetObjectValidInput = text;
             sender.ItemsSource = results;
         }
+
+        private void ObjectNameText_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var selected = args.SelectedItem as string;
+            var isReference = sender == ReferenceNameText;
+            var validInput = isReference ? referenceObjectValidInput : targetObjectValidInput;
+            var lastSeparatorPosition = validInput.LastIndexOf('/');
+            if (lastSeparatorPosition != -1)
+            {
+                var path = validInput.Substring(0, lastSeparatorPosition + 1) + selected;
+                if (isReference)
+                    referenceObjectPath = path;
+                else
+                    targetObjectPath = path;
+            }
+            else
+            {
+                if (isReference)
+                    referenceObjectPath = selected;
+                else
+                    targetObjectPath = selected;
+            }
+        }
+
         private async Task<string[]> GetCompletion(string key)
         {
             var simulation = appCore.Simulation;

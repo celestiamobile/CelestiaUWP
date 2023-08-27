@@ -20,10 +20,8 @@ namespace CelestiaUWP
 {
     public sealed partial class GotoObjectDialog : ContentDialog
     {
-        public string Text
-        {
-            get => ObjectNameText.Text;
-        }
+        public string ObjectPath = "";
+        private string validInput = "";
 
         private CelestiaAppCore appCore;
         private CelestiaRenderer renderer;
@@ -131,19 +129,32 @@ namespace CelestiaUWP
 
         private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
-
             var text = sender.Text;
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+            ObjectPath = text;
+
             if (text == "")
             {
                 sender.ItemsSource = new string[] { };
+                validInput = "";
                 return;
             }
 
             var results = await GetCompletion(sender.Text);
             if (sender.Text != text) return;
 
+            validInput = text;
             sender.ItemsSource = results;
+        }
+
+        private void ObjectNameText_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var selected = args.SelectedItem as string;
+            var lastSeparatorPosition = validInput.LastIndexOf('/');
+            if (lastSeparatorPosition == -1)
+                ObjectPath = selected;
+            else
+                ObjectPath = validInput.Substring(0, lastSeparatorPosition + 1) + selected;
         }
 
         private async Task<string[]> GetCompletion(string key)

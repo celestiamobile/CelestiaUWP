@@ -1425,12 +1425,12 @@ namespace CelestiaUWP
             var result = await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
             if (result == ContentDialogResult.Primary)
             {
-                var objectName = dialog.Text;
+                var objectPath = dialog.ObjectPath;
                 var latitude = dialog.Latitude;
                 var longitude = dialog.Longitude;
                 var distance = dialog.Distance;
                 var unit = (CelestiaGotoLocationDistanceUnit)dialog.Unit;
-                var selection = mAppCore.Simulation.Find(objectName);
+                var selection = mAppCore.Simulation.Find(objectPath);
                 if (selection.IsEmpty)
                 {
                     ShowObjectNotFound();
@@ -1456,12 +1456,12 @@ namespace CelestiaUWP
             var dialog = new ObserverModeDialog(mAppCore, mRenderer);
             if (await ContentDialogHelper.ShowContentDialogAsync(this, dialog) != ContentDialogResult.Primary) return;
             var coordinateSystem = dialog.SelectedCoordinateSystem;
-            var referenceName = dialog.ReferenceObjectName;
-            var targetName = dialog.TargetObjectName;
+            var referencePath = dialog.ReferenceObjectPath;
+            var targetPath = dialog.TargetObjectPath;
             mRenderer.EnqueueTask(() =>
             {
-                var referenceObject = referenceName.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(referenceName);
-                var targetObject = targetName.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(targetName);
+                var referenceObject = referencePath.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(referencePath);
+                var targetObject = targetPath.Length == 0 ? new CelestiaSelection() : mAppCore.Simulation.Find(targetPath);
                 mAppCore.Simulation.ActiveObserver.SetFrame(coordinateSystem, referenceObject, targetObject);
             });
         }
