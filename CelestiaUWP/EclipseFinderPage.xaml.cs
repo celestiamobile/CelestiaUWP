@@ -31,8 +31,8 @@ namespace CelestiaUWP
         private bool FindSolar = true;
         private bool FindLunar = true;
 
-        private int SelectedObjectIndex = 0;
-        private readonly string[] AvailableObjects = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia-data"), CelestiaAppCore.LocalizedString("Jupiter", "celestia-data") };
+        private readonly string[] AvailableObjectNames = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia-data"), CelestiaAppCore.LocalizedString("Jupiter", "celestia-data") };
+        private readonly string[] AvailableObjectPaths = new string[] { "Sol/Earth", "Sol/Jupiter" };
 
         private CelestiaEclipseFinder Finder;
         private CelestiaEclipse[] Eclipses
@@ -46,8 +46,6 @@ namespace CelestiaUWP
         }
 
         private CelestiaEclipse[] eclipses = new CelestiaEclipse[] { };
-
-        private int SelectedEclipseIndex = -1;
 
         public EclipseFinderPage()
         {
@@ -95,7 +93,11 @@ namespace CelestiaUWP
             else
                 kind = CelestiaEclipseKind.Lunar;
 
-            var body = AppCore.Simulation.Find(AvailableObjects[SelectedObjectIndex]).Object;
+            var selectedIndex = ObjectChooser.SelectedIndex;
+            if (selectedIndex < 0)
+                return;
+
+            var body = AppCore.Simulation.Find(AvailableObjectPaths[selectedIndex]).Object;
             if (body == null || !(body is CelestiaBody))
                 return;
 
@@ -121,12 +123,13 @@ namespace CelestiaUWP
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedEclipseIndex < 0)
+            var selectedEclipse = ResultList.SelectedItem;
+            if (selectedEclipse == null)
                 return;
 
+            var eclipse = (CelestiaEclipse)selectedEclipse;
             Renderer.EnqueueTask(() =>
             {
-                var eclipse = Eclipses[SelectedEclipseIndex];
                 AppCore.Simulation.GoToEclipse(eclipse);
             });
         }

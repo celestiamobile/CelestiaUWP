@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <RelativePanel Margin="{StaticResource Margin}">
-        <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" SelectedIndex="{x:Bind SelectedEclipseIndex, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+        <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="celestia:CelestiaEclipse">
                     <RelativePanel>
@@ -48,7 +48,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Object:" x:Name="ObjectHint" Grid.Column="0" VerticalAlignment="Center"/>
-                <ComboBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjects}" SelectedIndex="{x:Bind SelectedObjectIndex, Mode=TwoWay}" Grid.Column="1"/>
+                <ComboBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjectNames}" Grid.Column="1"/>
                 <CheckBox Content="Solar" IsChecked="{x:Bind FindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
                 <CheckBox Content="Lunar" IsChecked="{x:Bind FindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
             </Grid>
