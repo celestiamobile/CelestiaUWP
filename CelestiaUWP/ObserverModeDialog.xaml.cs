@@ -67,8 +67,6 @@ namespace CelestiaUWP
         {
             get { return TargetNameText.Visibility == Visibility.Visible ? targetObjectPath : ""; }
         }
-        private string referenceObjectValidInput = "";
-        private string targetObjectValidInput= "";
         private string referenceObjectPath = "";
         private string targetObjectPath = "";
 
@@ -134,56 +132,45 @@ namespace CelestiaUWP
 
             if (text == "")
             {
-                if (isReference)
-                    referenceObjectValidInput = "";
-                else
-                    targetObjectValidInput = "";
-                sender.ItemsSource = new string[] { };
+                sender.ItemsSource = new SearchObjectEntry[] { };
                 return;
             }
 
             var results = await GetCompletion(sender.Text);
             if (sender.Text != text) return;
 
-            if (isReference)
-                referenceObjectValidInput = text;
-            else
-                targetObjectValidInput = text;
             sender.ItemsSource = results;
         }
 
         private void ObjectNameText_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            var selected = args.SelectedItem as string;
+            var selected = args.SelectedItem as SearchObjectEntry;
             var isReference = sender == ReferenceNameText;
-            var validInput = isReference ? referenceObjectValidInput : targetObjectValidInput;
-            var lastSeparatorPosition = validInput.LastIndexOf('/');
-            if (lastSeparatorPosition != -1)
-            {
-                var path = validInput.Substring(0, lastSeparatorPosition + 1) + selected;
-                if (isReference)
-                    referenceObjectPath = path;
-                else
-                    targetObjectPath = path;
-            }
+            if (isReference)
+                referenceObjectPath = selected.Path;
             else
-            {
-                if (isReference)
-                    referenceObjectPath = selected;
-                else
-                    targetObjectPath = selected;
-            }
+                targetObjectPath = selected.Path;
+            sender.Text = selected.Name;
         }
 
-        private async Task<string[]> GetCompletion(string key)
+        private async Task<SearchObjectEntry[]> GetCompletion(string key)
         {
             var simulation = appCore.Simulation;
-            var promise = new TaskCompletionSource<string[]>();
+            var promise = new TaskCompletionSource<SearchObjectEntry[]>();
             renderer.EnqueueTask(() =>
+            {
+                var lastSeparatorPosition = key.LastIndexOf('/');
+                var prefix = "";
+                if (lastSeparatorPosition != -1)
+                    prefix = key.Substring(0, lastSeparatorPosition + 1);
+                var completions = simulation.GetCompletion(key) ?? (new string[] { });
+                var results = new SearchObjectEntry[completions.Length];
+                for (int i = 0; i < completions.Length; i++)
                 {
-                    var result = simulation.GetCompletion(key) ?? (new string[] { });
-                    promise.SetResult(result);
-                });
+                    results[i] = new SearchObjectEntry(completions[i], prefix + completions[i]);
+                }
+                promise.SetResult(results);
+            });
             return await promise.Task;
         }
 

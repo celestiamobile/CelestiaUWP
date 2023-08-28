@@ -183,6 +183,9 @@
     <ClInclude Include="BrowserItem.h">
       <DependentUpon>BrowserItem.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SearchObjectEntry.h">
+      <DependentUpon>SearchObjectEntry.idl</DependentUpon>
+    </ClInclude>
     <ClInclude Include="SystemInformation.h">
       <DependentUpon>SystemInformation.idl</DependentUpon>
     </ClInclude>
@@ -233,6 +236,9 @@
     <ClCompile Include="BrowserItem.cpp">
       <DependentUpon>BrowserItem.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SearchObjectEntry.cpp">
+      <DependentUpon>SearchObjectEntry.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="SystemInformation.cpp">
       <DependentUpon>SystemInformation.idl</DependentUpon>
     </ClCompile>
@@ -253,6 +259,7 @@
     <Midl Include="ResourceManager.idl" />
     <Midl Include="ContentDialogHelper.idl" />
     <Midl Include="BrowserItem.idl" />
+    <Midl Include="SearchObjectEntry.idl" />
     <Midl Include="SystemInformation.idl" />
   </ItemGroup>
   <ItemGroup>

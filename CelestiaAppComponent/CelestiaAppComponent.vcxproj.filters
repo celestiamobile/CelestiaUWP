@@ -33,6 +33,7 @@
     <Midl Include="ResourceManager.idl" />
     <Midl Include="ContentDialogHelper.idl" />
     <Midl Include="BrowserItem.idl" />
+    <Midl Include="SearchObjectEntry.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />

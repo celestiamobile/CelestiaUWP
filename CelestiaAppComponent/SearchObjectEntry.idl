@@ -1,0 +1,10 @@
+namespace CelestiaAppComponent
+{
+    [default_interface]
+    runtimeclass SearchObjectEntry
+    {
+        SearchObjectEntry(String name, String path);
+        String Name{ get; };
+        String Path{ get; };
+    }
+}

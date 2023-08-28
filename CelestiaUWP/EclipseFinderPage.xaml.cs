@@ -31,8 +31,9 @@ namespace CelestiaUWP
         private bool FindSolar = true;
         private bool FindLunar = true;
 
-        private readonly string[] AvailableObjectNames = new string[] { CelestiaAppCore.LocalizedString("Earth", "celestia-data"), CelestiaAppCore.LocalizedString("Jupiter", "celestia-data") };
-        private readonly string[] AvailableObjectPaths = new string[] { "Sol/Earth", "Sol/Jupiter" };
+        private string objectPath = "";
+
+        private readonly SearchObjectEntry[] AvailableObjects = new SearchObjectEntry[] { new SearchObjectEntry(CelestiaAppCore.LocalizedString("Earth", "celestia-data"), "Sol/Earth"), new SearchObjectEntry(CelestiaAppCore.LocalizedString("Jupiter", "celestia-data"), "Sol/Jupiter") };
 
         private CelestiaEclipseFinder Finder;
         private CelestiaEclipse[] Eclipses
@@ -57,6 +58,9 @@ namespace CelestiaUWP
             ObjectHint.Text = LocalizationHelper.Localize("Object:");
             SolarEclipseButton.Content = LocalizationHelper.Localize("Solar");
             LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
+            var obj = AvailableObjects[0];
+            ObjectChooser.Text = obj.Name;
+            objectPath = obj.Path;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -93,11 +97,7 @@ namespace CelestiaUWP
             else
                 kind = CelestiaEclipseKind.Lunar;
 
-            var selectedIndex = ObjectChooser.SelectedIndex;
-            if (selectedIndex < 0)
-                return;
-
-            var body = AppCore.Simulation.Find(AvailableObjectPaths[selectedIndex]).Object;
+            var body = AppCore.Simulation.Find(objectPath).Object;
             if (body == null || !(body is CelestiaBody))
                 return;
 
@@ -142,6 +142,19 @@ namespace CelestiaUWP
         static public string GetEclipseDescription(CelestiaBody occulter, CelestiaBody receiver)
         {
             return occulter.Name + " - " + receiver.Name;
+        }
+
+        private void ObjectChooser_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+            objectPath = sender.Text;
+        }
+
+        private void ObjectChooser_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var selected = args.SelectedItem as SearchObjectEntry;
+            objectPath = selected.Path;
+            sender.Text = selected.Name;
         }
     }
 }
