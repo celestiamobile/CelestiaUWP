@@ -351,7 +351,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\glshader.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\hash.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\image.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\location.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h" />
@@ -445,7 +444,9 @@
     <ClInclude Include="..\..\Celestia\src\celestia\url.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\view.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h" />
+    <ClInclude Include="..\..\Celestia\src\celimage\image.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h" />
+    <ClInclude Include="..\..\Celestia\src\celimage\pixelformat.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\distance.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\ellipsoid.h" />
     <ClInclude Include="..\..\Celestia\src\celmath\frustum.h" />
@@ -562,7 +563,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\image.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\location.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp" />
@@ -643,6 +643,7 @@
     <ClCompile Include="..\..\Celestia\src\celimage\bmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\dds.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\dds_decompress.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celimage\image.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\jpeg.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\png.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp" />

@@ -220,9 +220,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\image.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\location.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -484,6 +481,9 @@
       <Filter>Celestia\celimage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celimage\dds_decompress.cpp">
+      <Filter>Celestia\celimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celimage\image.cpp">
       <Filter>Celestia\celimage</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celimage\jpeg.cpp">
@@ -822,9 +822,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\hash.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\image.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -1104,7 +1101,13 @@
     <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h">
       <Filter>Celestia\celimage</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celimage\image.h">
+      <Filter>Celestia\celimage</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h">
+      <Filter>Celestia\celimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celimage\pixelformat.h">
       <Filter>Celestia\celimage</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h">
