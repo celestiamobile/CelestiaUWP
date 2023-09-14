@@ -1,16 +1,16 @@
-SET ProjectDir=%~1
+SET SolutionDir=%~1
 SET OutDir=%~2
 
 ECHO Converting PO files...
 
 SET CELESTIA_ROOT=%OutDir%\CelestiaResources
-SET CELESTIA_REPO_ROOT=%ProjectDir%\..\..\Celestia
+SET CELESTIA_REPO_ROOT=%SolutionDir%\..\Celestia
 
 IF NOT EXIST "%CELESTIA_ROOT%" MKDIR "%CELESTIA_ROOT%"
 
-SET CELESTIA_CONTENT_REPO_ROOT=%ProjectDir%\..\..\CelestiaContent
+SET CELESTIA_CONTENT_REPO_ROOT=%SolutionDir%\..\CelestiaContent
 
-SET CELESTIA_LOCALIZATION_REPO_ROOT=%ProjectDir%\..\..\CelestiaLocalization
+SET CELESTIA_LOCALIZATION_REPO_ROOT=%SolutionDir%\..\CelestiaLocalization
 
 SET LOCALE_ROOT=%CELESTIA_ROOT%\locale
 SET CELESTIA_TEMP_DIR=%TEMP%\celestia
@@ -42,6 +42,6 @@ SET PO=%~3
 SET LANG=%~4
 SET LANG_ROOT=%LOCALE_ROOT%\%LANG%\LC_MESSAGES
 IF NOT EXIST "%LANG_ROOT%" MKDIR "%LANG_ROOT%"
-"%ProjectDir%\tools\msgmerge.exe" --quiet --output-file="%CELESTIA_TEMP_DIR%\%LANG%.po" --lang=%LANG% --sort-output "%PO%" "%POT%"
-"%ProjectDir%\tools\msgfmt.exe" -o "%LANG_ROOT%\%NAME%.mo" "%CELESTIA_TEMP_DIR%\%LANG%.po"
+"%SolutionDir%\tools\msgmerge.exe" --quiet --output-file="%CELESTIA_TEMP_DIR%\%LANG%.po" --lang=%LANG% --sort-output "%PO%" "%POT%"
+"%SolutionDir%\tools\msgfmt.exe" -o "%LANG_ROOT%\%NAME%.mo" "%CELESTIA_TEMP_DIR%\%LANG%.po"
 GOTO:EOF
