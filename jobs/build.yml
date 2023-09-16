@@ -70,8 +70,11 @@ jobs:
     condition: eq( variables['Build.Reason'], 'PullRequest' )
 
   - script: |
-      cd Celestia/src/celscript/legacy
+      cd $(System.DefaultWorkingDirectory)\Celestia\src\celscript\legacy
       "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" commands.gperf -m4 --output-file=commands.inc
+      cd $(System.DefaultWorkingDirectory)\Celestia\src\celephem
+      "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" customrotation.gperf -m4 --output-file=customrotation.inc
+      "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" customorbit.gperf -m4 --output-file=customorbit.inc
     displayName: 'Running gperf'
 
   - pwsh: |

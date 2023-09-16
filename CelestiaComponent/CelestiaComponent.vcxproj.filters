@@ -1191,9 +1191,6 @@
     <ClInclude Include="..\..\Celestia\src\celrender\gl\vertexobject.h">
       <Filter>Celestia\celrender\gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celephem\customorbittype.h">
-      <Filter>Celestia\celephem</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>

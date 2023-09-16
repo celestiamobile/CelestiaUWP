@@ -412,7 +412,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\customorbit.h" />
-    <ClInclude Include="..\..\Celestia\src\celephem\customorbittype.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\customrotation.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\jpleph.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\nutation.h" />
