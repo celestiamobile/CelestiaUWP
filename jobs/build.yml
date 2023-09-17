@@ -75,6 +75,8 @@ jobs:
       cd $(System.DefaultWorkingDirectory)\Celestia\src\celephem
       "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" customrotation.gperf -m4 --output-file=customrotation.inc
       "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" customorbit.gperf -m4 --output-file=customorbit.inc
+      cd $(System.DefaultWorkingDirectory)\Celestia\src\celengine
+      "$(System.DefaultWorkingDirectory)\CelestiaUWP\tools\gperf.exe" location.gperf -m4 --output-file=location.inc
     displayName: 'Running gperf'
 
   - pwsh: |
