@@ -30,11 +30,6 @@ jobs:
       FOR /R $(System.ArtifactsDirectory)\$(publishType) %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
     displayName: 'Create Symbols Directory'
 
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '14.9.0'
-    displayName: 'Install Node'
-
   - script: |
       npm install -g appcenter-cli
     displayName: 'Install AppCenter-CLI'
