@@ -74,7 +74,7 @@ jobs:
     displayName: 'Running gperf'
 
   - pwsh: |
-      (Get-Content CelestiaUWP\App.xaml.cs) -replace 'APPCENTER-APP-ID', '06fcb18f-a477-4b2d-9cd9-f1b37135c16b' | Out-File -encoding UTF8 CelestiaUWP\App.xaml.cs
+      (Get-Content CelestiaUWP\App.xaml.cs) -replace 'APPCENTER-APP-ID', '$(APPCENTER_SECRET)' | Out-File -encoding UTF8 CelestiaUWP\App.xaml.cs
       Write-Host "New Content:"
       Get-Content CelestiaUWP\App.xaml.cs
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
