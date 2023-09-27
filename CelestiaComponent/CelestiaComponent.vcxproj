@@ -651,6 +651,7 @@
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celmodel\tangents.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\asterismrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\atmosphererenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\boundariesrenderer.cpp" />

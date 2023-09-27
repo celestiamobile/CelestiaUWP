@@ -103,6 +103,9 @@
     <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp">
       <Filter>Celestia\celmodel</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celmodel\tangents.cpp">
+      <Filter>Celestia\celmodel</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp">
       <Filter>Celestia\celmath</Filter>
     </ClCompile>
