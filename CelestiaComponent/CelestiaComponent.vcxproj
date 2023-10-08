@@ -515,6 +515,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\intrusiveptr.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128util.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />

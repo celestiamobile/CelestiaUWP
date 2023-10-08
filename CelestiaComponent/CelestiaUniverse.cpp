@@ -201,17 +201,16 @@ namespace winrt::CelestiaComponent::implementation
 		}
 
 		std::vector<CelestiaComponent::CelestiaBrowserItem> locs;
-		std::vector<Location*>* locations = b->getLocations();
-		if (locations != nullptr)
+		auto locations = b->getLocations();
+		if (locations.has_value() && !locations->empty())
 		{
-			for (std::vector<Location*>::const_iterator iter = locations->begin();
-				iter != locations->end(); iter++)
+			for (const auto loc : *locations)
 			{
-				hstring name = to_hstring((*iter)->getName(true));
+				hstring name = to_hstring(loc->getName(true));
 				if (name.empty())
 					continue;
 
-				auto item = make<CelestiaBrowserItem>(name, make<CelestiaLocation>(*iter), provider, false);
+				auto item = make<CelestiaBrowserItem>(name, make<CelestiaLocation>(loc), provider, false);
 				locs.push_back(item);
 			}
 			if (locs.size() > 0)
