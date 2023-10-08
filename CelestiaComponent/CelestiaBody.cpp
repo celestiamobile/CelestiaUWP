@@ -35,18 +35,14 @@ namespace winrt::CelestiaComponent::implementation
 
 	com_array<hstring> CelestiaBody::AlternateSurfaceNames()
 	{
-		std::vector<std::string>* altSurfaces = static_cast<Body*>(obj)->getAlternateSurfaceNames();
+		auto altSurfaces = static_cast<Body*>(obj)->getAlternateSurfaceNames();
 		std::vector<hstring> results;
-		if (altSurfaces)
+		if (altSurfaces.has_value() && !altSurfaces->empty())
 		{
-			if (altSurfaces->size() > 0)
+			for (const auto &surface : *altSurfaces)
 			{
-				for (unsigned int i = 0; i < altSurfaces->size(); ++i)
-				{
-					results.push_back(to_hstring((*altSurfaces)[i]));
-				}
+				results.push_back(to_hstring(surface));
 			}
-			delete altSurfaces;
 		}
 		return com_array<hstring>(results);
 	}

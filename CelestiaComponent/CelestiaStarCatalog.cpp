@@ -33,6 +33,6 @@ namespace winrt::CelestiaComponent::implementation
 
 	hstring CelestiaStarCatalog::StarName(CelestiaComponent::CelestiaStar const& star)
 	{
-		return to_hstring(db->getStarName(*reinterpret_cast<Star*>(get_self<CelestiaStar>(star)->obj), true));
+		return to_hstring(db->getStarName(*reinterpret_cast<Star*>(get_self<CelestiaStar>(star)->obj)));
 	}
 }

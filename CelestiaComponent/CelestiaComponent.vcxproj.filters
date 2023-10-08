@@ -630,7 +630,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\range.h">
+    <ClInclude Include="..\..\Celestia\src\celutil\ranges.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h">

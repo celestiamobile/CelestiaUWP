@@ -38,6 +38,6 @@ namespace winrt::CelestiaComponent::implementation
 
 	hstring CelestiaDSOCatalog::DSOName(CelestiaComponent::CelestiaDSO const& DSO)
 	{
-		return to_hstring(db->getDSOName(reinterpret_cast<DeepSkyObject*>(get_self<CelestiaDSO>(DSO)->obj), true));
+		return to_hstring(db->getDSOName(reinterpret_cast<DeepSkyObject*>(get_self<CelestiaDSO>(DSO)->obj)));
 	}
 }
