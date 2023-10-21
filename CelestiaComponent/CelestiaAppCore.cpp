@@ -629,7 +629,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     void CelestiaAppCore::DateFormat(int32_t dateFormat)
     {
-        core->setDateFormat(static_cast<astro::Date::Format>(dateFormat));
+        core->setDateFormat(static_cast<celestia::astro::Date::Format>(dateFormat));
     }
 
     float CelestiaAppCore::AmbientLightLevel()

@@ -20,7 +20,7 @@ namespace winrt::CelestiaComponent::implementation
 {
     CelestiaDMS::CelestiaDMS(int32_t degrees, int32_t minutes, double seconds) : CelestiaDMST<CelestiaDMS>()
     {
-        decimal = astro::degMinSecToDecimal(static_cast<int>(degrees), static_cast<int>(minutes), static_cast<double>(seconds));
+        decimal = celestia::astro::degMinSecToDecimal(static_cast<int>(degrees), static_cast<int>(minutes), static_cast<double>(seconds));
     }
 
     CelestiaDMS::CelestiaDMS(double decimal) : CelestiaDMST<CelestiaDMS>(), decimal(decimal)
@@ -32,7 +32,7 @@ namespace winrt::CelestiaComponent::implementation
         int degrees;
         int minutes;
         double seconds;
-        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        celestia::astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
         return static_cast<int32_t>(degrees);
     }
 
@@ -41,7 +41,7 @@ namespace winrt::CelestiaComponent::implementation
         int degrees;
         int minutes;
         double seconds;
-        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        celestia::astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
         return static_cast<int32_t>(minutes);
     }
 
@@ -50,7 +50,7 @@ namespace winrt::CelestiaComponent::implementation
         int degrees;
         int minutes;
         double seconds;
-        astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
+        celestia::astro::decimalToDegMinSec(decimal, degrees, minutes, seconds);
         return seconds;
     }
 
@@ -59,7 +59,7 @@ namespace winrt::CelestiaComponent::implementation
         int hours;
         int minutes;
         double seconds;
-        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
+        celestia::astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
         return static_cast<int32_t>(hours);
     }
 
@@ -68,7 +68,7 @@ namespace winrt::CelestiaComponent::implementation
         int hours;
         int minutes;
         double seconds;
-        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
+        celestia::astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
         return static_cast<int32_t>(minutes);
     }
 
@@ -77,7 +77,7 @@ namespace winrt::CelestiaComponent::implementation
         int hours;
         int minutes;
         double seconds;
-        astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
+        celestia::astro::decimalToHourMinSec(decimal, hours, minutes, seconds);
         return seconds;
     }
 

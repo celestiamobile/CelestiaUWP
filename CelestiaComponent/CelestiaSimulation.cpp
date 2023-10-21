@@ -117,7 +117,7 @@ namespace winrt::CelestiaComponent::implementation
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::KM:
                 distance = distanceValue;
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::AU:
-                distance = astro::AUtoKilometers(distanceValue);
+                distance = celestia::astro::AUtoKilometers(distanceValue);
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::Radii:
                 distance = radius * distanceValue;
             }

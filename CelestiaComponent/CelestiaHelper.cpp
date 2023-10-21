@@ -29,11 +29,11 @@ namespace winrt::CelestiaComponent::implementation
 		int era = c.Era();
 		int year = c.Year();
 		if (era < 1) year = 1 - year;
-		astro::Date astroDate(year, c.Month(), c.Day());
+		celestia::astro::Date astroDate(year, c.Month(), c.Day());
 		astroDate.hour = c.Hour();
 		astroDate.minute = c.Minute();
 		astroDate.seconds = static_cast<double>(c.Second()) + static_cast<double>(c.Nanosecond()) / 1000000000.0;
-		return astro::UTCtoTDB(astroDate);
+		return celestia::astro::UTCtoTDB(astroDate);
 	}
 
 	Windows::Foundation::DateTime CelestiaHelper::DateTimeFromJulianDay(double julianDay)
@@ -42,7 +42,7 @@ namespace winrt::CelestiaComponent::implementation
 		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
 		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
 		c.ChangeTimeZone(L"UTC");
-        astro::Date astroDate = astro::TDBtoUTC(julianDay);
+        celestia::astro::Date astroDate = celestia::astro::TDBtoUTC(julianDay);
 		int year = astroDate.year;
 
 		int era = 1;
@@ -121,7 +121,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         auto obj = get_self<CelestiaVector>(ecliptic);
         auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
-        auto transformed = astro::eclipticToEquatorial(v);
+        auto transformed = celestia::astro::eclipticToEquatorial(v);
         return make<CelestiaVector>(transformed.x(), transformed.y(), transformed.z());
     }
 
@@ -129,7 +129,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         auto obj = get_self<CelestiaVector>(equatorial);
         auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
-        auto transformed = astro::equatorialToGalactic(v);
+        auto transformed = celestia::astro::equatorialToGalactic(v);
         return make<CelestiaVector>(transformed.x(), transformed.y(), transformed.z());
     }
 
@@ -147,6 +147,6 @@ namespace winrt::CelestiaComponent::implementation
 
     double CelestiaHelper::AUToKilometers(double au)
     {
-        return astro::AUtoKilometers(au);
+        return celestia::astro::AUtoKilometers(au);
     }
 }
