@@ -35,7 +35,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct ResourceManager : ResourceManagerT<ResourceManager>
     {
-        ResourceManager(Windows::Storage::StorageFolder const& parentFolder);
+        ResourceManager(Windows::Storage::StorageFolder const& addonFolder, Windows::Storage::StorageFolder const& scriptFolder);
 
         hstring ItemPath(CelestiaAppComponent::ResourceItem const& item);
         hstring ScriptPath(CelestiaAppComponent::ResourceItem const& item);
@@ -56,6 +56,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         Windows::Storage::StorageFolder addonFolder;
+        Windows::Storage::StorageFolder scriptFolder;
         std::unordered_map<hstring, Windows::Foundation::IAsyncAction> tasks;
 
         event<Windows::Foundation::EventHandler<CelestiaAppComponent::ResourceManagerDownloadProgressArgs>> downloadProgressUpdateEvent;

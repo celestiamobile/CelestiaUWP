@@ -4,6 +4,7 @@
 #include "ResourceManager.g.cpp"
 #endif
 
+#include <unordered_set>
 #include <filesystem>
 #include <zip.h>
 
@@ -15,7 +16,25 @@ using namespace Windows::Web::Http;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
-    ResourceManager::ResourceManager(StorageFolder const& parentFolder) : addonFolder(parentFolder)
+    IAsyncAction CopyFolder(StorageFolder source, StorageFolder destination)
+    {
+        auto cancellation = co_await get_cancellation_token();
+        for (const auto& file : co_await source.GetFilesAsync())
+        {
+            if (cancellation())
+                throw_hresult(E_ABORT);
+            co_await file.CopyAsync(destination, file.Name(), NameCollisionOption::ReplaceExisting);
+        }
+        for (const auto& folder : co_await source.GetFoldersAsync())
+        {
+            if (cancellation())
+                throw_hresult(E_ABORT);
+            auto newFolder = co_await destination.CreateFolderAsync(folder.Name(), CreationCollisionOption::OpenIfExists);
+            co_await CopyFolder(folder, newFolder);
+        }
+    }
+
+    ResourceManager::ResourceManager(StorageFolder const& addonFolder, StorageFolder const& scriptFolder) : addonFolder(addonFolder), scriptFolder(scriptFolder)
     {
     }
 
@@ -192,7 +211,7 @@ namespace winrt::CelestiaAppComponent::implementation
             co_await Uninstall(item);
 
             // Create directory
-            auto destinationFolder = co_await addonFolder.CreateFolderAsync(item.ID(), CreationCollisionOption::OpenIfExists);
+            auto destinationFolder = co_await (item.Type() == L"script" ? scriptFolder : addonFolder).CreateFolderAsync(item.ID(), CreationCollisionOption::OpenIfExists);
             // Extract the archive
             co_await Unzip(tempFile.Path(), destinationFolder);
             // Create description file
@@ -216,6 +235,8 @@ namespace winrt::CelestiaAppComponent::implementation
 
     hstring ResourceManager::ItemPath(CelestiaAppComponent::ResourceItem const& item)
     {
+        if (item.Type() == L"script")
+            return PathHelper::Combine(scriptFolder.Path(), item.ID());
         return PathHelper::Combine(addonFolder.Path(), item.ID());
     }
 
@@ -264,6 +285,27 @@ namespace winrt::CelestiaAppComponent::implementation
     IAsyncOperation<Collections::IVector<CelestiaAppComponent::ResourceItem>> ResourceManager::InstalledItems()
     {
         auto items = single_threaded_vector<CelestiaAppComponent::ResourceItem>();
+        std::unordered_set<hstring> trackedIds;
+        // Parse script folder first, because add-on folder might need migration
+        try
+        {
+            for (const auto& folder : co_await scriptFolder.GetFoldersAsync())
+            {
+                try
+                {
+                    auto descriptionFile = co_await folder.GetFileAsync(L"description.json");
+                    auto fileContent = co_await FileIO::ReadTextAsync(descriptionFile);
+                    auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
+                    if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && parsedItem.Type() == L"script")
+                    {
+                        items.Append(parsedItem);
+                        trackedIds.insert(parsedItem.ID());
+                    }
+                }
+                catch (hresult_error const&) {}
+            }
+        }
+        catch (hresult_error const&) {}
         try
         {
             for (const auto& folder : co_await addonFolder.GetFoldersAsync())
@@ -273,9 +315,24 @@ namespace winrt::CelestiaAppComponent::implementation
                     auto descriptionFile = co_await folder.GetFileAsync(L"description.json");
                     auto fileContent = co_await FileIO::ReadTextAsync(descriptionFile);
                     auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
-                    if (parsedItem != nullptr)
+                    if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && trackedIds.find(parsedItem.ID()) == trackedIds.end())
                     {
-                        items.Append(parsedItem);
+                        if (parsedItem.Type() == L"scripts")
+                        {
+                            // Perform migration by moving folder to scripts folder
+                            try
+                            {
+                                auto destinationFolder = co_await scriptFolder.CreateFolderAsync(parsedItem.ID(), CreationCollisionOption::OpenIfExists);
+                                co_await CopyFolder(folder, destinationFolder);
+                                co_await folder.DeleteAsync();
+                                items.Append(parsedItem);
+                            }
+                            catch (hresult_error const&) {}
+                        }
+                        else 
+                        {
+                            items.Append(parsedItem);
+                        }
                     }
                 }
                 catch (hresult_error const&) {}

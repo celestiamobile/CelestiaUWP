@@ -130,6 +130,9 @@
     <ClCompile Include="..\..\Celestia\src\celephem\rotation.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\sampfile.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celephem\samporbit.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
@@ -724,6 +727,9 @@
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\rotation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\sampfile.h">
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\samporbit.h">

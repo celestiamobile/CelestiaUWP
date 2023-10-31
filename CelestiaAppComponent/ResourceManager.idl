@@ -31,7 +31,7 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass ResourceManager
     {
-        ResourceManager(Windows.Storage.StorageFolder parentFolder);
+        ResourceManager(Windows.Storage.StorageFolder addonFolder, Windows.Storage.StorageFolder scriptFolder);
 
         String ItemPath(ResourceItem item);
         String ScriptPath(ResourceItem item);
