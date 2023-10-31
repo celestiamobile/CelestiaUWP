@@ -49,7 +49,8 @@ namespace CelestiaUWP
 
         private StorageFolder mExtraAddonFolder = null;
         private string mExtraAddonFolderPath = "";
-        private string mExtraScriptFolder;
+        private StorageFolder mExtraScriptFolder = null;
+        private string mExtraScriptFolderPath = "";
 
         private StorageFile ScriptFileToOpen;
         private Uri URLToOpen;
@@ -229,7 +230,7 @@ namespace CelestiaUWP
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
                     if (mExtraAddonFolder != null)
-                        resourceManager = new CelestiaAppComponent.ResourceManager(mExtraAddonFolder);
+                        resourceManager = new CelestiaAppComponent.ResourceManager(mExtraAddonFolder, mExtraScriptFolder);
                     SetUpGLViewInteractions();
                     PopulateMenuBar(resourcePath);
                 });
@@ -453,8 +454,8 @@ namespace CelestiaUWP
                 var mainFolder = await folder.CreateFolderAsync("CelestiaResources", Windows.Storage.CreationCollisionOption.OpenIfExists);
                 mExtraAddonFolder = await mainFolder.CreateFolderAsync("extras", Windows.Storage.CreationCollisionOption.OpenIfExists);
                 mExtraAddonFolderPath = mExtraAddonFolder.Path;
-                var scriptFolder = await mainFolder.CreateFolderAsync("scripts", Windows.Storage.CreationCollisionOption.OpenIfExists);
-                mExtraScriptFolder = scriptFolder.Path;
+                mExtraScriptFolder = await mainFolder.CreateFolderAsync("scripts", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                mExtraScriptFolderPath = mExtraScriptFolder.Path;
             } catch { }
         }
 
@@ -964,7 +965,7 @@ namespace CelestiaUWP
             }
             if (mExtraScriptFolder != null)
             {
-                var extraScripts = CelestiaAppCore.ReadScripts(mExtraScriptFolder, true);
+                var extraScripts = CelestiaAppCore.ReadScripts(mExtraScriptFolderPath, true);
                 if (extraScripts != null)
                 {
                     foreach (var script in extraScripts)

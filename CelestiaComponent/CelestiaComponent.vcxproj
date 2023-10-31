@@ -418,6 +418,7 @@
     <ClInclude Include="..\..\Celestia\src\celephem\orbit.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\precession.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\rotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\sampfile.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\samporbit.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\samporient.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\scriptobject.h" />
@@ -618,6 +619,7 @@
     <ClCompile Include="..\..\Celestia\src\celephem\orbit.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\precession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\rotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\sampfile.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\samporbit.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\samporient.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\scriptobject.cpp" />
