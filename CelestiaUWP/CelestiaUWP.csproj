@@ -415,6 +415,7 @@
     <Folder Include="CelestiaResources\locale\hu\LC_MESSAGES\" />
     <Folder Include="CelestiaResources\locale\it\LC_MESSAGES\" />
     <Folder Include="CelestiaResources\locale\ja\LC_MESSAGES\" />
+    <Folder Include="CelestiaResources\locale\ka\LC_MESSAGES\" />
     <Folder Include="CelestiaResources\locale\ko\LC_MESSAGES\" />
     <Folder Include="CelestiaResources\locale\lt\LC_MESSAGES\" />
     <Folder Include="CelestiaResources\locale\lv\LC_MESSAGES\" />
@@ -475,6 +476,9 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\ja\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\ka\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\ko\Resources.resw" />
@@ -538,6 +542,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <AppxBundleAutoResourcePackageQualifiers>Scale</AppxBundleAutoResourcePackageQualifiers>
-    <AppxDefaultResourceQualifiers>Language=ar;be;bg;de;el;en;es;fr;gl;hu;it;ja;ko;lt;lv;nb;nl;pl;pt;pt-BR;ro;ru;sk;sv;tr;uk;zh-CN;zh-TW</AppxDefaultResourceQualifiers>
+    <AppxDefaultResourceQualifiers>Language=ar;be;bg;de;el;en;es;fr;gl;hu;it;ja;ka;ko;lt;lv;nb;nl;pl;pt;pt-BR;ro;ru;sk;sv;tr;uk;zh-CN;zh-TW</AppxDefaultResourceQualifiers>
   </PropertyGroup>
 </Project>
