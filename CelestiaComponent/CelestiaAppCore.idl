@@ -127,10 +127,9 @@ namespace CelestiaComponent
         void JoystickButtonDown(CelestiaJoystickButton button);
         void JoystickButtonUp(CelestiaJoystickButton button);
         void JoystickAxis(CelestiaJoystickAxis axis, Single amount);
-        void SetFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
-        void SetTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
+        void SetHudFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
+        void SetHudTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);
-        void ClearFonts();
         void RunScript(String path);
         void RunDemo();
         void GoToURL(String url);

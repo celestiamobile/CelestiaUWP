@@ -8,6 +8,9 @@
     <Filter Include="Celestia">
       <UniqueIdentifier>{363e8197-8db4-4b24-914b-1f2c5f40d9fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Celestia\celastro">
+      <UniqueIdentifier>{58dcb2bb-c354-4048-94a2-ec8a708272d9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Celestia\celcompat">
       <UniqueIdentifier>{d63ed3ab-8848-4524-8197-4640f69b64db}</UniqueIdentifier>
     </Filter>
@@ -152,9 +155,6 @@
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp">
@@ -439,7 +439,13 @@
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\hud.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\url.cpp">
@@ -447,6 +453,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp">
       <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\viewmanager.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\windowmetrics.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celastro\astro.cpp">
+      <Filter>Celestia\celastro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celastro\date.cpp">
+      <Filter>Celestia\celastro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celastro\units.cpp">
+      <Filter>Celestia\celastro</Filter>
     </ClCompile>
     <ClCompile Include="CelestiaAppCore.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
@@ -754,9 +775,6 @@
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\astro.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h">
@@ -1089,16 +1107,31 @@
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\hud.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\textinput.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\timeinfo.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\url.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\view.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\viewmanager.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\windowmetrics.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\spiceinterface.h">
@@ -1244,6 +1277,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\projectionmode.h">
       <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celastro\astro.h">
+      <Filter>Celestia\celastro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celastro\date.h">
+      <Filter>Celestia\celastro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celastro\units.h">
+      <Filter>Celestia\celastro</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

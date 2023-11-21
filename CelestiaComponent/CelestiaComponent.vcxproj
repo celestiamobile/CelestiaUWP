@@ -318,13 +318,15 @@
   <ItemGroup>
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsmodel.h" />
     <ClInclude Include="..\..\Celestia\src\cel3ds\3dsread.h" />
+    <ClInclude Include="..\..\Celestia\src\celastro\astro.h" />
+    <ClInclude Include="..\..\Celestia\src\celastro\date.h" />
+    <ClInclude Include="..\..\Celestia\src\celastro\units.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\astro.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\atmosphere.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\axisarrow.h" />
@@ -437,12 +439,17 @@
     <ClInclude Include="..\..\Celestia\src\celestia\eclipsefinder.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\favorites.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\hud.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\textinput.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\timeinfo.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\url.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\view.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\viewmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\windowmetrics.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\image.h" />
     <ClInclude Include="..\..\Celestia\src\celimage\imageformats.h" />
@@ -537,9 +544,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsmodel.cpp" />
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celastro\astro.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celastro\date.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celastro\units.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\astro.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
@@ -637,11 +646,15 @@
     <ClCompile Include="..\..\Celestia\src\celestia\eclipsefinder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\hud.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\url.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\viewmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\windowmetrics.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\bmp.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\dds.cpp" />
     <ClCompile Include="..\..\Celestia\src\celimage\dds_decompress.cpp" />

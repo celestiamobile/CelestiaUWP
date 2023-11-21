@@ -291,24 +291,19 @@ namespace winrt::CelestiaComponent::implementation
         core->joystickAxis((int)axis, amount);
     }
 
-    void CelestiaAppCore::SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
+    void CelestiaAppCore::SetHudFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
     {
-        core->setFont(to_string(fontPath), collectionIndex, fontSize);
+        core->setHudFont(to_string(fontPath), collectionIndex, fontSize);
     }
 
-    void CelestiaAppCore::SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
+    void CelestiaAppCore::SetHudTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
     {
-        core->setTitleFont(to_string(fontPath), collectionIndex, fontSize);
+        core->setHudTitleFont(to_string(fontPath), collectionIndex, fontSize);
     }
 
     void CelestiaAppCore::SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle)
     {
         core->setRendererFont(to_string(fontPath), collectionIndex, fontSize, (Renderer::FontStyle)fontStyle);
-    }
-
-    void CelestiaAppCore::ClearFonts()
-    {
-        core->clearFonts();
     }
 
     void CelestiaAppCore::RunScript(hstring const& path)
@@ -784,7 +779,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     void CelestiaAppCore::MeasurementSystem(int32_t measurementSystem)
     {
-        core->setMeasurementSystem((CelestiaCore::MeasurementSystem)measurementSystem);
+        core->setMeasurementSystem(static_cast<celestia::MeasurementSystem>(measurementSystem));
     }
 
     int32_t CelestiaAppCore::TemperatureScale()
@@ -794,7 +789,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     void CelestiaAppCore::TemperatureScale(int32_t temperatureScale)
     {
-        core->setTemperatureScale((CelestiaCore::TemperatureScale)temperatureScale);
+        core->setTemperatureScale(static_cast<celestia::TemperatureScale>(temperatureScale));
     }
 
     int32_t CelestiaAppCore::ScriptSystemAccessPolicy()
@@ -814,12 +809,12 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 
     void CelestiaAppCore::LayoutDirection(CelestiaComponent::CelestiaLayoutDirection layoutDirection)
     {
-        core->setLayoutDirection((CelestiaCore::LayoutDirection)layoutDirection);
+        core->setLayoutDirection(static_cast<celestia::LayoutDirection>(layoutDirection));
     }
 
     float CelestiaAppCore::PickTolerance()
     {
-        return core->getPickTolerance();
+        return 1.0f;
     }
 
     void CelestiaAppCore::PickTolerance(float pickTolerance)

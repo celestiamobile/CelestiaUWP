@@ -270,9 +270,8 @@ namespace CelestiaUWP
             var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
 
             var pathPrefix = PathHelper.Combine(defaultResourcePath, "fonts");
-            mAppCore.ClearFonts();
-            mAppCore.SetFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9);
-            mAppCore.SetTitleFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15);
+            mAppCore.SetHudFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9);
+            mAppCore.SetHudTitleFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15);
             mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9, CelestiaFontStyle.Normal);
             mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15, CelestiaFontStyle.Large);
         }

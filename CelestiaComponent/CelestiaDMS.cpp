@@ -8,7 +8,7 @@
 //
 
 #include "pch.h"
-#include <celengine/astro.h>
+#include <celastro/astro.h>
 #include "CelestiaDMS.h"
 #if __has_include("CelestiaDMS.g.cpp")
 #include "CelestiaDMS.g.cpp"

@@ -75,10 +75,9 @@ namespace winrt::CelestiaComponent::implementation
         void JoystickButtonDown(CelestiaComponent::CelestiaJoystickButton button);
         void JoystickButtonUp(CelestiaComponent::CelestiaJoystickButton button);
         void JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount);
-        void SetFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
-        void SetTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
+        void SetHudFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
+        void SetHudTitleFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize);
         void SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle);
-        void ClearFonts();
         void RunScript(hstring const& path);
         void RunDemo();
         void GoToURL(hstring const& url);
