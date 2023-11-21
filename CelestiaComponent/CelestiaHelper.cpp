@@ -8,6 +8,7 @@
 //
 
 #include "pch.h"
+#include <celastro/astro.h>
 #include <celastro/date.h>
 #include "CelestiaHelper.h"
 #include "CelestiaVector.h"
