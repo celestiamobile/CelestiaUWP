@@ -18,6 +18,18 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
+    public class NewBookmarkParameter
+    {
+        public CelestiaAppCore AppCore;
+        public CelestiaRenderer Renderer;
+
+        public NewBookmarkParameter(CelestiaAppCore appCore, CelestiaRenderer renderer)
+        {
+            this.AppCore = appCore;
+            this.Renderer = renderer;
+        }
+    }
+
     public sealed partial class NewBookmarkPage : Page
     {
         private string NameText;
@@ -33,10 +45,10 @@ namespace CelestiaUWP
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
-            AppCore = parameter.Item1;
-            Renderer= parameter.Item2;
-            Organizer.Navigate(typeof(BookmarkOrganizerPage), parameter);
+            var parameter = (NewBookmarkParameter)e.Parameter;
+            AppCore = parameter.AppCore;
+            Renderer= parameter.Renderer;
+            Organizer.Navigate(typeof(BookmarkOrganizerPage), new BookmarkOrganizerParameter(AppCore, Renderer, true));
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)

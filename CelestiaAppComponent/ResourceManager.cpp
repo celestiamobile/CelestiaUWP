@@ -16,6 +16,11 @@ using namespace Windows::Web::Http;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
+    bool CompareResourceItems(const CelestiaAppComponent::ResourceItem& lhs, const CelestiaAppComponent::ResourceItem& rhs)
+    {
+        return CompareStringEx(nullptr, SORT_DIGITSASNUMBERS, lhs.Name().c_str(), lhs.Name().size(), rhs.Name().c_str(), rhs.Name().size(), nullptr, nullptr, 0) == CSTR_LESS_THAN;
+    }
+
     ResourceManager::ResourceManager(StorageFolder const& addonFolder, StorageFolder const& scriptFolder) : addonFolder(addonFolder), scriptFolder(scriptFolder)
     {
     }
@@ -266,7 +271,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     IAsyncOperation<Collections::IVector<CelestiaAppComponent::ResourceItem>> ResourceManager::InstalledItems()
     {
-        auto items = single_threaded_vector<CelestiaAppComponent::ResourceItem>();
+        std::vector<CelestiaAppComponent::ResourceItem> items;
         try
         {
             for (const auto& folder : co_await scriptFolder.GetFoldersAsync())
@@ -278,7 +283,7 @@ namespace winrt::CelestiaAppComponent::implementation
                     auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
                     if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && parsedItem.Type() == L"script")
                     {
-                        items.Append(parsedItem);
+                        items.push_back(parsedItem);
                     }
                 }
                 catch (hresult_error const&) {}
@@ -296,14 +301,16 @@ namespace winrt::CelestiaAppComponent::implementation
                     auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
                     if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && parsedItem.Type() != L"script")
                     {
-                        items.Append(parsedItem);
+                        items.push_back(parsedItem);
                     }
                 }
                 catch (hresult_error const&) {}
             }
         }
         catch (hresult_error const&) {}
-        co_return items;
+        std::sort(items.begin(), items.end(), CompareResourceItems);
+        
+        co_return single_threaded_vector<CelestiaAppComponent::ResourceItem>({ items.begin(), items.end() });
     }
 
     event_token ResourceManager::DownloadProgressUpdate(EventHandler<CelestiaAppComponent::ResourceManagerDownloadProgressArgs> const& handler)

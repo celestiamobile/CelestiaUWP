@@ -19,15 +19,18 @@ using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.Navigati
 
 namespace CelestiaUWP.Addon
 {
-    public delegate void ShowItemHandler(ResourceItem category);
+    public delegate void ShowItemHandler(ResourceItem item);
+    public delegate void GetAddonsHandler();
 
     public class InstalledListParameter
     {
-        public ShowItemHandler Handler;
         public ResourceManager ResourceManager;
-        public InstalledListParameter(ShowItemHandler handler, ResourceManager resourceManager)
+        public ShowItemHandler ShowItemHandler;
+        public GetAddonsHandler GetAddonsHandler;
+        public InstalledListParameter(ResourceManager resourceManager, ShowItemHandler showItemHandler, GetAddonsHandler getAddonsHandler)
         {
-            this.Handler = handler;
+            this.ShowItemHandler = showItemHandler;
+            this.GetAddonsHandler = getAddonsHandler;
             this.ResourceManager = resourceManager;
         }
     }
@@ -37,11 +40,14 @@ namespace CelestiaUWP.Addon
         public CelestiaAppCore AppCore;
         public CelestiaRenderer Renderer;
         public ResourceManager ResourceManager;
-        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceManager resourceManager)
+        public GetAddonsHandler GetAddonsHandler;
+
+        public ResourceManagerPageParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, ResourceManager resourceManager, GetAddonsHandler getAddonsHandler)
         {
             this.AppCore = appCore;
             this.Renderer = renderer;
             this.ResourceManager = resourceManager;
+            this.GetAddonsHandler = getAddonsHandler;
         }
     }
 
@@ -60,11 +66,11 @@ namespace CelestiaUWP.Addon
             var parameter = (ResourceManagerPageParameter)e.Parameter;
             AppCore = parameter.AppCore;
             Renderer = parameter.Renderer;
-            ResourceManager= parameter.ResourceManager;
-            Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter(delegate (ResourceItem item)
+            ResourceManager = parameter.ResourceManager;
+            Container.Navigate(typeof(InstalledItemListPage), new InstalledListParameter(ResourceManager, delegate (ResourceItem item)
             {
                 ShowItem(item);
-            }, ResourceManager));
+            }, parameter.GetAddonsHandler));
         }
 
         private void ShowItem(ResourceItem item)

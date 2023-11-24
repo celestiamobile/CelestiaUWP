@@ -22,7 +22,8 @@ namespace CelestiaUWP.Addon
 {
     public sealed partial class InstalledItemListPage : Page, INotifyPropertyChanged
     {
-        private ShowItemHandler Handler;
+        private ShowItemHandler ShowItemHandler;
+        private GetAddonsHandler GetAddonsHandler;
         private ResourceManager ResourceManager;
         private ResourceItem[] mItems = new ResourceItem[] { };
 
@@ -40,19 +41,31 @@ namespace CelestiaUWP.Addon
         {
             this.InitializeComponent();
             Title.Text = LocalizationHelper.Localize("Installed");
+            EmptyHintText.Text = LocalizationHelper.Localize("Enhance Celestia with online add-ons");
+            EmptyHintButton.Content = LocalizationHelper.Localize("Get Add-ons");
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var parameter = e.Parameter as InstalledListParameter;
-            Handler = parameter.Handler;
+            ShowItemHandler = parameter.ShowItemHandler;
+            GetAddonsHandler = parameter.GetAddonsHandler;
             ResourceManager = parameter.ResourceManager;
             LoadItems();
         }
 
         private async void LoadItems()
         {
+            LoadingIndicator.Visibility = Visibility.Visible;
+            EmptyHint.Visibility = Visibility.Collapsed;
+            ItemList.Visibility = Visibility.Collapsed;
             var items = await ResourceManager.InstalledItems();
             Items = items.ToArray();
+            LoadingIndicator.Visibility = Visibility.Collapsed;
+            if (Items.Length == 0)
+                EmptyHint.Visibility = Visibility.Visible;
+            else
+                ItemList.Visibility = Visibility.Visible;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -63,11 +76,17 @@ namespace CelestiaUWP.Addon
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         private void ItemList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ResourceItem;
             if (item == null) return;
-            Handler(item);
+            ShowItemHandler(item);
+        }
+
+        private void GetAddonButton_Click(object sender, RoutedEventArgs e)
+        {
+            GetAddonsHandler();
         }
     }
 }

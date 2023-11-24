@@ -1096,11 +1096,7 @@ namespace CelestiaUWP
             toolsItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(toolsItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
             {
-                var queryItems = System.Web.HttpUtility.ParseQueryString("");
-                queryItems.Add("lang", LocalizationHelper.Locale);
-                var builder = new UriBuilder("https://celestia.mobi/resources/categories");
-                builder.Query = queryItems.ToString();
-                _ = Launcher.LaunchUriAsync(builder.Uri);
+                ShowOnlineAddons();
             });
             AppendItem(toolsItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
             {
@@ -1540,12 +1536,12 @@ namespace CelestiaUWP
 
         void ShowBookmarkOrganizer()
         {
-            ShowPage(typeof(BookmarkOrganizerPage), new Size(400, 0), (mAppCore, mRenderer));
+            ShowPage(typeof(BookmarkOrganizerPage), new Size(400, 0), new BookmarkOrganizerParameter(mAppCore, mRenderer, false));
         }
 
         void ShowNewBookmark()
         {
-            ShowPage(typeof(NewBookmarkPage), new Size(400, 0), (mAppCore, mRenderer));
+            ShowPage(typeof(NewBookmarkPage), new Size(400, 0), new NewBookmarkParameter(mAppCore, mRenderer));
         }
         void ShowOpenGLInfo()
         {
@@ -1568,9 +1564,21 @@ namespace CelestiaUWP
             await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
         }
 
+        void ShowOnlineAddons()
+        {
+            var queryItems = System.Web.HttpUtility.ParseQueryString("");
+            queryItems.Add("lang", LocalizationHelper.Locale);
+            var builder = new UriBuilder("https://celestia.mobi/resources/categories");
+            builder.Query = queryItems.ToString();
+            _ = Launcher.LaunchUriAsync(builder.Uri);
+        }
+
         void ShowAddonManagement()
         {
-            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, resourceManager));
+            ShowPage(typeof(Addon.ResourceManagerPage), new Size(450, 0), new Addon.ResourceManagerPageParameter(mAppCore, mRenderer, resourceManager, delegate ()
+            {
+                ShowOnlineAddons();
+            }));
         }
 
         async void ShowAboutDialog()
