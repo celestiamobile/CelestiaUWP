@@ -20,10 +20,24 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP
 {
+    public class BookmarkOrganizerParameter
+    {
+        public CelestiaAppCore AppCore;
+        public CelestiaRenderer Renderer;
+        public bool CanAddNewBookmarks;
+        public BookmarkOrganizerParameter(CelestiaAppCore appCore, CelestiaRenderer renderer, bool canAddNewBookmarks)
+        {
+            this.AppCore = appCore;
+            this.Renderer = renderer;
+            this.CanAddNewBookmarks = canAddNewBookmarks;
+        }
+    }
+
     public sealed partial class BookmarkOrganizerPage : Page
     {
         private CelestiaAppCore AppCore = null;
         private CelestiaRenderer Renderer = null;
+        private bool CanAddNewBookmarks = false;
 
         private IObservableVector<BookmarkNode> bookmarks = BookmarkHelper.CreateEmptyList();
         private IBindableObservableVector Bookmarks = null;
@@ -31,6 +45,7 @@ namespace CelestiaUWP
         private DispatcherTimer saveTimer = null;
         private bool isSaving = false;
         private bool isRead = false;
+
         public BookmarkOrganizerPage()
         {
             Bookmarks = BookmarkHelper.ConvertToBindable(bookmarks);
@@ -41,13 +56,16 @@ namespace CelestiaUWP
             DeleteButton.Content = LocalizationHelper.Localize("Delete");
             GoButton.Content = LocalizationHelper.Localize("Go");
             RenameButton.Content = LocalizationHelper.Localize("Rename");
+            EmptyHintText.Text = LocalizationHelper.Localize("No saved bookmarks");
             Unloaded += BookmarkOrganizerPage_Unloaded;
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = ((CelestiaAppCore, CelestiaRenderer))e.Parameter;
-            AppCore = parameter.Item1;
-            Renderer = parameter.Item2;
+            var parameter = (BookmarkOrganizerParameter)e.Parameter;
+            AppCore = parameter.AppCore;
+            Renderer = parameter.Renderer;
+            CanAddNewBookmarks = parameter.CanAddNewBookmarks;
             ReadBookmarks();
             saveTimer = new DispatcherTimer();
             saveTimer.Interval = TimeSpan.FromSeconds(10);
@@ -95,6 +113,8 @@ namespace CelestiaUWP
                     listToAddTo.Add(bookmark);
                 }
             }
+            EmptyHintText.Visibility = Visibility.Collapsed;
+            Tree.Visibility = Visibility.Visible;
         }
 
         private void NewFolderButton_Click(object sender, RoutedEventArgs e)
@@ -150,6 +170,12 @@ namespace CelestiaUWP
                 bookmarks.Remove(bookmark);
             else
                 parent.Children.Remove(bookmark);
+
+            if (bookmarks.Count == 0)
+            {
+                EmptyHintText.Visibility = Visibility.Visible;
+                Tree.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
@@ -167,6 +193,9 @@ namespace CelestiaUWP
 
         async private void ReadBookmarks()
         {
+            LoadingIndicator.Visibility = Visibility.Visible;
+            EmptyHintText.Visibility = Visibility.Collapsed;
+            Tree.Visibility = Visibility.Collapsed;
             bookmarks.Clear();
             var items = await BookmarkHelper.ReadBookmarks();
             foreach (var item in items)
@@ -174,6 +203,9 @@ namespace CelestiaUWP
                 bookmarks.Add(item);
             }
             isRead = true;
+            LoadingIndicator.Visibility = Visibility.Collapsed;
+            EmptyHintText.Visibility = bookmarks.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            Tree.Visibility = bookmarks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         async private void WriteBookmarks()

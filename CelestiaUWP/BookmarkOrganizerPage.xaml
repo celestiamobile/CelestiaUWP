@@ -11,14 +11,17 @@
     Unloaded="BookmarkOrganizerPage_Unloaded">
 
     <RelativePanel Margin="{StaticResource Margin}">
-        <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Margin="{StaticResource RightSpacing}" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
-            <muxc:TreeView.ItemTemplate>
-                <DataTemplate x:DataType="app:BookmarkNode">
-                    <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}"
-                               Content="{x:Bind Name}"/>
-                </DataTemplate>
-            </muxc:TreeView.ItemTemplate>
-        </muxc:TreeView>
+        <RelativePanel Margin="{StaticResource RightSpacing}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.LeftOf="ButtonStack">
+            <muxc:TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" Visibility="Collapsed" ItemsSource="{x:Bind Bookmarks, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <muxc:TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="app:BookmarkNode">
+                        <muxc:TreeViewItem ItemsSource="{x:Bind BindableChildren}" Content="{x:Bind Name}"/>
+                    </DataTemplate>
+                </muxc:TreeView.ItemTemplate>
+            </muxc:TreeView>
+            <TextBlock x:Name="EmptyHintText" Visibility="Collapsed" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <muxc:ProgressRing x:Name="LoadingIndicator" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
         <StackPanel x:Name="ButtonStack" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" >
             <Button Content="New Folder" x:Name="NewFolderButton" Click="NewFolderButton_Click" HorizontalAlignment="Center" Width="100"></Button>
             <Button Content="Rename" x:Name="RenameButton" Click="RenameButton_Click" HorizontalAlignment="Center" Width="100"></Button>

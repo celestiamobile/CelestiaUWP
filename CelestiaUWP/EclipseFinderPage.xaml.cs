@@ -58,6 +58,7 @@ namespace CelestiaUWP
             ObjectHint.Text = LocalizationHelper.Localize("Object:");
             SolarEclipseButton.Content = LocalizationHelper.Localize("Solar");
             LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
+            EmptyHintText.Text = LocalizationHelper.Localize("Find eclipses for an object in a time range");
             var obj = AvailableObjects[0];
             ObjectChooser.Text = obj.Name;
             objectPath = obj.Path;
@@ -76,7 +77,6 @@ namespace CelestiaUWP
             {
                 Finder.Abort();
                 Finder = null;
-                ComputeButton.Content = LocalizationHelper.Localize("Compute");
                 return;
             }
             if (StartTime == null || EndTime == null)
@@ -101,9 +101,22 @@ namespace CelestiaUWP
             if (body == null || !(body is CelestiaBody))
                 return;
 
+            ComputeButton.Content = LocalizationHelper.Localize("Cancel");
+            EmptyHintText.Visibility = Visibility.Collapsed;
+            LoadingIndicator.Visibility = Visibility.Visible;
+            ResultList.Visibility = Visibility.Collapsed;
             var eclipses = await Compute((CelestiaBody)body, kind, startTime, endTime);
             Eclipses = eclipses;
-
+            LoadingIndicator.Visibility = Visibility.Collapsed;
+            if (eclipses.Length == 0)
+            {
+                EmptyHintText.Text = LocalizationHelper.Localize("No eclipse is found for the given object in the time range");
+                EmptyHintText.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ResultList.Visibility = Visibility.Visible;
+            }
             ComputeButton.Content = LocalizationHelper.Localize("Compute");
         }
 
@@ -111,7 +124,6 @@ namespace CelestiaUWP
         {
             var eclipseFinder = new CelestiaEclipseFinder(body);
             Finder = eclipseFinder;
-            ComputeButton.Content = LocalizationHelper.Localize("Cancel");
             return await Task.Run(() =>
             {
                 var eclipses = eclipseFinder.Search(kind, startTime, endTime);

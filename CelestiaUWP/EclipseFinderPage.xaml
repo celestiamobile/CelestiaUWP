@@ -8,6 +8,7 @@
     xmlns:helper="using:CelestiaUWP.Helper"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -20,18 +21,22 @@
         </ResourceDictionary>
     </Page.Resources>
     <RelativePanel Margin="{StaticResource Margin}">
-        <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="celestia:CelestiaEclipse">
-                    <RelativePanel>
-                        <TextBlock Text="{x:Bind local:EclipseFinderPage.GetEclipseDescription(Occulter, Receiver)}" RelativePanel.AlignLeftWithPanel="True"
-                                Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{x:Bind StartTime, Converter={StaticResource TimeStringConverter}, Mode=OneTime}" RelativePanel.AlignRightWithPanel="True"
-                                Grid.Column="2" VerticalAlignment="Center"/>
-                    </RelativePanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+            <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="celestia:CelestiaEclipse">
+                        <RelativePanel>
+                            <TextBlock Text="{x:Bind local:EclipseFinderPage.GetEclipseDescription(Occulter, Receiver)}" RelativePanel.AlignLeftWithPanel="True"
+                                    Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind StartTime, Converter={StaticResource TimeStringConverter}, Mode=OneTime}" RelativePanel.AlignRightWithPanel="True"
+                                    Grid.Column="2" VerticalAlignment="Center"/>
+                        </RelativePanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock x:Name="EmptyHintText" Visibility="Visible" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <muxc:ProgressRing x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
         <StackPanel x:Name="ControlContainer" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" Margin="{StaticResource TopSpacing}"  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
             <RelativePanel>
                 <TextBlock Text="Start time:" x:Name="StartTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
