@@ -360,7 +360,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         Lock();
         suspendedFlag = false;
-        WakeAllConditionVariable(&resumeCond);
+        WakeConditionVariable(&resumeCond);
         Unlock();
     }
 
