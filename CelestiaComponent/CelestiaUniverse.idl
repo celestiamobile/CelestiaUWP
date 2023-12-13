@@ -13,6 +13,7 @@ import "CelestiaBrowserItem.idl";
 import "CelestiaSelection.idl";
 import "CelestiaStarCatalog.idl";
 import "CelestiaDSOCatalog.idl";
+import "CelestiaStarBrowser.idl";
 
 namespace CelestiaComponent
 {
@@ -49,5 +50,6 @@ namespace CelestiaComponent
 
         CelestiaStarCatalog StarCatalog{ get; };
         CelestiaDSOCatalog DSOCatalog{ get; };
+        CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type);
     }
 }

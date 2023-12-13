@@ -16,6 +16,7 @@
 #include "CelestiaSelection.h"
 #include "CelestiaStarCatalog.h"
 #include "CelestiaDSOCatalog.h"
+#include "CelestiaStarBrowser.h"
 #include "CelestiaUniverse.g.h"
 
 namespace winrt::CelestiaComponent::implementation
@@ -37,6 +38,8 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaStarCatalog StarCatalog();
         CelestiaComponent::CelestiaDSOCatalog DSOCatalog();
+
+        CelestiaComponent::CelestiaStarBrowser StarBrowser(CelestiaComponent::CelestiaStarBrowserType type);
 
         Universe* u;
 
