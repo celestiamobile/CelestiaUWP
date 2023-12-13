@@ -70,11 +70,6 @@ namespace winrt::CelestiaComponent::implementation
         return make<CelestiaSelection>(sim->findObjectFromPath(to_string(name), true));
     }
 
-    CelestiaComponent::CelestiaStarBrowser CelestiaSimulation::StarBrowser(CelestiaComponent::CelestiaStarBrowserType type)
-    {
-        return make<CelestiaStarBrowser>(new ::StarBrowser(sim, (int)type));
-    }
-
     void CelestiaSimulation::GoToDestination(CelestiaComponent::CelestiaDestination const& destination)
     {
         auto d = get_self<CelestiaDestination>(destination);

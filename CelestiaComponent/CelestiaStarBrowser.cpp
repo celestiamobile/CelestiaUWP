@@ -19,24 +19,21 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaStarBrowser::CelestiaStarBrowser(StarBrowser* sb) : CelestiaStarBrowserT<CelestiaStarBrowser>(), sb(sb)
+	CelestiaStarBrowser::CelestiaStarBrowser(celestia::engine::StarBrowser* sb) : CelestiaStarBrowserT<CelestiaStarBrowser>(), sb(sb)
 	{
 	}
 
 	com_array<CelestiaComponent::CelestiaStar> CelestiaStarBrowser::Stars()
 	{
-        std::vector<const Star*>* stars = sb->listStars(BROWSER_MAX_STAR_COUNT);
-        if (stars == nullptr)
+        std::vector<celestia::engine::StarBrowserRecord> records;
+        sb->populate(records);
+        if (records.empty())
             return com_array<CelestiaComponent::CelestiaStar>();
 
         std::vector<CelestiaComponent::CelestiaStar> starVec;
-        for (int i = 0; i < stars->size(); i++)
-        {
-            Star* aStar = (Star*)(*stars)[i];
-            starVec.push_back(make<CelestiaStar>(aStar));
-        }
+        for (const auto &record : records)
+            starVec.push_back(make<CelestiaStar>(const_cast<Star*>(record.star)));
 
-        delete stars;
         return com_array<CelestiaComponent::CelestiaStar>(starVec);
 	}
 

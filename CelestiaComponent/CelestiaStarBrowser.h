@@ -17,13 +17,13 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaStarBrowser : CelestiaStarBrowserT<CelestiaStarBrowser>
     {
-        CelestiaStarBrowser(StarBrowser* sb);
+        CelestiaStarBrowser(celestia::engine::StarBrowser* sb);
         com_array<CelestiaComponent::CelestiaStar> Stars();
 
         void Close();
         ~CelestiaStarBrowser();
 
     private:
-        StarBrowser* sb;
+        celestia::engine::StarBrowser* sb;
     };
 }

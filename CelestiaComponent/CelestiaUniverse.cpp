@@ -240,4 +240,31 @@ namespace winrt::CelestiaComponent::implementation
 			dsoCatalog = make<CelestiaDSOCatalog>(u->getDSOCatalog());
 		return dsoCatalog;
 	}
+
+    CelestiaComponent::CelestiaStarBrowser CelestiaUniverse::StarBrowser(CelestiaComponent::CelestiaStarBrowserType type)
+    {
+        auto b = new celestia::engine::StarBrowser(u);
+        switch (type)
+        {
+        case CelestiaComponent::CelestiaStarBrowserType::Nearest:
+            b->setComparison(celestia::engine::StarBrowser::Comparison::Nearest);
+            b->setFilter(celestia::engine::StarBrowser::Filter::Visible);
+            break;
+        case CelestiaComponent::CelestiaStarBrowserType::Brighter:
+            b->setComparison(celestia::engine::StarBrowser::Comparison::ApparentMagnitude);
+            b->setFilter(celestia::engine::StarBrowser::Filter::Visible);
+            break;
+        case CelestiaComponent::CelestiaStarBrowserType::Brightest:
+            b->setComparison(celestia::engine::StarBrowser::Comparison::AbsoluteMagnitude);
+            b->setFilter(celestia::engine::StarBrowser::Filter::Visible);
+            break;
+        case CelestiaComponent::CelestiaStarBrowserType::WithPlants:
+            b->setComparison(celestia::engine::StarBrowser::Comparison::Nearest);
+            b->setFilter(celestia::engine::StarBrowser::Filter::WithPlanets);
+            break;
+        default:
+            break;
+        }
+        return make<CelestiaStarBrowser>(b);
+    }
 }
