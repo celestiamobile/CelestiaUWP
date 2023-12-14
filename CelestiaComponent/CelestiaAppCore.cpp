@@ -14,6 +14,7 @@
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
 #endif
+#include <icu.h>
 #include "CelestiaAppCore.h"
 #include "CelestiaSelection.h"
 #if __has_include("CelestiaAppCore.g.cpp")
@@ -387,6 +388,8 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
+        UErrorCode status = U_ZERO_ERROR;
+        uloc_setDefault(to_string(locale).c_str(), &status);
 #ifdef ENABLE_NLS
         _putenv_s("LANG", to_string(locale).c_str());
         std::string dir = to_string(localeDirectory);
