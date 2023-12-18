@@ -35,6 +35,9 @@ using namespace Windows::Globalization;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
+    CRITICAL_SECTION appCoreCritSection;
+    bool appCoreCritSectionInitialized = false;
+
     SettingHeaderItem::SettingHeaderItem(hstring const& title) : title(title) {};
 
     hstring SettingHeaderItem::Title()
@@ -54,8 +57,13 @@ namespace winrt::CelestiaAppComponent::implementation
         return name;
     }
 
-    AppCoreBooleanItem::AppCoreBooleanItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), title(title), entry(entry), localSettings(localSettings), note(note)
+    AppCoreBooleanItem::AppCoreBooleanItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), localSettings(localSettings), note(note)
     {
+        if (!appCoreCritSectionInitialized)
+        {
+            InitializeCriticalSection(&appCoreCritSection);
+            appCoreCritSectionInitialized = true;
+        }
     }
 
     bool AppCoreBooleanItem::IsEnabled()
@@ -63,14 +71,31 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        return CelestiaExtension::GetCelestiaBooleanValue(appCore, entry);
+        std::optional<bool> savedValue;
+        EnterCriticalSection(&appCoreCritSection);
+        savedValue = cachedValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        return savedValue.value_or(CelestiaExtension::GetCelestiaBooleanValue(appCore, entry));
     }
 
     void AppCoreBooleanItem::IsEnabled(bool value)
     {
         if (!hasCorrectValue)
             return;
-        CelestiaExtension::SetCelestiaBooleanValue(appCore, entry, value);
+        EnterCriticalSection(&appCoreCritSection);
+        cachedValue = value;
+        LeaveCriticalSection(&appCoreCritSection);
+        renderer.EnqueueTask([weak_this{ get_weak() }, value]
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this)
+                    return;
+
+                CelestiaExtension::SetCelestiaBooleanValue(strong_this->appCore, strong_this->entry, value);
+                EnterCriticalSection(&appCoreCritSection);
+                strong_this->cachedValue = std::nullopt;
+                LeaveCriticalSection(&appCoreCritSection);
+            });
         auto key = CelestiaExtension::GetNameByBooleanEntry(entry);
         if (!key.empty())
             localSettings.Values().Insert(key, box_value(value));
@@ -91,8 +116,13 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppCoreInt32Item::AppCoreInt32Item(hstring const& title, CelestiaAppCore const& appCore, CelestiaSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
+    AppCoreInt32Item::AppCoreInt32Item(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
     {
+        if (!appCoreCritSectionInitialized)
+        {
+            InitializeCriticalSection(&appCoreCritSection);
+            appCoreCritSectionInitialized = true;
+        }
         itemTitles = single_threaded_observable_vector<hstring>();
         for (auto const& option : options)
             itemTitles.Append(option.Name());
@@ -103,7 +133,11 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        auto value = CelestiaExtension::GetCelestiaInt32Value(appCore, entry);
+        std::optional<int32_t> savedValue;
+        EnterCriticalSection(&appCoreCritSection);
+        savedValue = cachedValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        auto value = savedValue.value_or(CelestiaExtension::GetCelestiaInt32Value(appCore, entry));
         for (uint32_t i = 0; i < options.Size(); i += 1)
             if (options.GetAt(i).Value() == value)
                 return i;
@@ -115,7 +149,20 @@ namespace winrt::CelestiaAppComponent::implementation
         if (!hasCorrectValue)
             return;
         auto actualValue = options.GetAt(value).Value();
-        CelestiaExtension::SetCelestiaInt32Value(appCore, entry, actualValue);
+        EnterCriticalSection(&appCoreCritSection);
+        cachedValue = actualValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        renderer.EnqueueTask([weak_this{ get_weak() }, actualValue]
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this)
+                    return;
+
+                CelestiaExtension::SetCelestiaInt32Value(strong_this->appCore, strong_this->entry, actualValue);
+                EnterCriticalSection(&appCoreCritSection);
+                strong_this->cachedValue = std::nullopt;
+                LeaveCriticalSection(&appCoreCritSection);
+            });
         auto key = CelestiaExtension::GetNameByInt32Entry(entry);
         if (!key.empty())
             localSettings.Values().Insert(key, box_value(actualValue));
@@ -141,8 +188,13 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
+    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
     {
+        if (!appCoreCritSectionInitialized)
+        {
+            InitializeCriticalSection(&appCoreCritSection);
+            appCoreCritSectionInitialized = true;
+        }
     }
 
     double AppCoreSingleItem::Value()
@@ -150,17 +202,34 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        return (double)CelestiaExtension::GetCelestiaSingleValue(appCore, entry);
+        std::optional<float> savedValue;
+        EnterCriticalSection(&appCoreCritSection);
+        savedValue = cachedValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        return static_cast<double>(savedValue.value_or(CelestiaExtension::GetCelestiaSingleValue(appCore, entry)));
     }
 
     void AppCoreSingleItem::Value(double value)
     {
         if (!hasCorrectValue)
             return;
-        CelestiaExtension::SetCelestiaSingleValue(appCore, entry, (float)value);
+        EnterCriticalSection(&appCoreCritSection);
+        cachedValue = static_cast<float>(value);
+        LeaveCriticalSection(&appCoreCritSection);
+        renderer.EnqueueTask([weak_this{ get_weak() }, value]
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this)
+                    return;
+
+                CelestiaExtension::SetCelestiaSingleValue(strong_this->appCore, strong_this->entry, static_cast<float>(value));
+                EnterCriticalSection(&appCoreCritSection);
+                strong_this->cachedValue = std::nullopt;
+                LeaveCriticalSection(&appCoreCritSection);
+            });
         auto key = CelestiaExtension::GetNameBySingleEntry(entry);
         if (!key.empty())
-            localSettings.Values().Insert(key, box_value((float)value));
+            localSettings.Values().Insert(key, box_value(static_cast<float>(value)));
     }
 
     hstring AppCoreSingleItem::Title()

@@ -56,8 +56,8 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass AppCoreBooleanItem : SettingBooleanItem
     {
-        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings);
-        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings, String note);
+        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreBooleanItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingBooleanEntry entry, Windows.Storage.ApplicationDataContainer localSettings, String note);
     }
 
     [default_interface]
@@ -70,8 +70,8 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass AppCoreInt32Item : SettingInt32Item
     {
-        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings);
-        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings, String note);
+        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreInt32Item(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Windows.Storage.ApplicationDataContainer localSettings, String note);
     }
 
     [default_interface]
@@ -97,7 +97,7 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass AppCoreSingleItem : SettingDoubleItem
     {
-        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings);
-        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings, String note);
+        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings, String note);
     }
 }

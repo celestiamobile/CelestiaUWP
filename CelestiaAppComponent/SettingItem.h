@@ -84,7 +84,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct AppCoreBooleanItem : AppCoreBooleanItemT<AppCoreBooleanItem, SettingBooleanItem>
     {
-        AppCoreBooleanItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreBooleanItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         bool IsEnabled();
         void IsEnabled(bool);
         hstring Title();
@@ -93,15 +93,17 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
+        CelestiaComponent::CelestiaRenderer renderer;
         hstring title;
         CelestiaComponent::CelestiaSettingBooleanEntry entry;
         Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
+        std::optional<bool> cachedValue{ std::nullopt };
     };
 
     struct AppCoreInt32Item : AppCoreInt32ItemT<AppCoreInt32Item, SettingInt32Item>
     {
-        AppCoreInt32Item(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreInt32Item(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         int32_t Value();
         void Value(int32_t);
         hstring Title();
@@ -111,17 +113,19 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
+        CelestiaComponent::CelestiaRenderer renderer;
         hstring title;
         CelestiaComponent::CelestiaSettingInt32Entry entry;
         Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> options;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
         Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
+        std::optional<int32_t> cachedValue{ std::nullopt };
     };
 
     struct AppCoreSingleItem : AppCoreSingleItemT<AppCoreSingleItem, SettingDoubleItem>
     {
-        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         double Value();
         void Value(double);
         hstring Title();
@@ -133,6 +137,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
+        CelestiaComponent::CelestiaRenderer renderer;
         hstring title;
         CelestiaComponent::CelestiaSettingSingleEntry entry;
         float minValue;
@@ -140,6 +145,7 @@ namespace winrt::CelestiaAppComponent::implementation
         float step;
         Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
+        std::optional<float> cachedValue{ std::nullopt };
     };
 
     struct AppSettingsBooleanItem : AppSettingsBooleanItemT<AppSettingsBooleanItem, SettingBooleanItem>

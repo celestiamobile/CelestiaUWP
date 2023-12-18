@@ -11,6 +11,7 @@
 
 using CelestiaAppComponent;
 using CelestiaComponent;
+using CelestiaUWP.Settings;
 using CelestiaUWP.Web;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
@@ -1498,7 +1499,7 @@ namespace CelestiaUWP
 
         void ShowSettings()
         {
-            ShowPage(typeof(Settings.SettingsPage), new Size(500, 0), (mAppCore, AppSettings, AvailableLanguages));
+            ShowPage(typeof(Settings.SettingsPage), new Size(500, 0), new SettingsArgs(mAppCore, mRenderer, AppSettings, AvailableLanguages));
         }
 
         void ShowPage(Type pageType, Size size, object parameter)
