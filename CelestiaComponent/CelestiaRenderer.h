@@ -11,11 +11,9 @@
 
 #include <celestia/celestiacore.h>
 
-#ifndef EGL_EGL_PROTOTYPES
-#define EGL_EGL_PROTOTYPES 1
-#endif
-
-#include <EGL/egl.h>
+#include <epoxy/wgl.h>
+#include <d3d11.h>
+#include <dxgi1_2.h>
 #include <thread>
 #include <mutex>
 #include "CelestiaRenderer.g.h"
@@ -27,9 +25,10 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
 
         bool Initialize();
+        bool Prepare();
         void Destroy();
-        inline void ResizeIfNeeded();
-        inline void TickAndDraw() const;
+        inline bool ResizeIfNeeded();
+        inline void TickAndDraw();
         void Start();
         void Stop();
         inline void Lock();
@@ -43,7 +42,8 @@ namespace winrt::CelestiaComponent::implementation
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
         std::pair<std::vector<CelestiaComponent::CelestiaRendererTask>, CelestiaComponent::CelestiaRendererTask> RetrieveAndResetTasks();
 
-        void MakeContextCurrent();
+        int32_t StartReadingBackBuffer();
+        void EndReadingBackBuffer(int32_t);
 
         CelestiaCore* core = nullptr;
 
@@ -57,19 +57,46 @@ namespace winrt::CelestiaComponent::implementation
         bool enableMultisample = false;
         bool engineStartedCalled = false;
 
-        EGLDisplay display = EGL_NO_DISPLAY;
-        EGLSurface surface = EGL_NO_SURFACE;
-        EGLContext context = EGL_NO_CONTEXT;
-        EGLConfig config{};
-        EGLint format{};
+        winrt::com_ptr<ID3D11Device> device{ nullptr };
+        winrt::com_ptr<ID3D11DeviceContext> deviceContext{ nullptr };
+        winrt::com_ptr<IDXGIFactory2> dxgiFactory{ nullptr };
+        winrt::com_ptr<IDXGISwapChain1> swapChain{ nullptr };
+        winrt::com_ptr<ID3D11RenderTargetView> renderTarget{ nullptr };
+
+        winrt::com_ptr<ID3D11VertexShader> vertexShader{ nullptr };
+        winrt::com_ptr<ID3D11PixelShader> pixelShader{ nullptr };
+        winrt::com_ptr<ID3D11InputLayout> vertexLayout{ nullptr };
+        winrt::com_ptr<ID3D11Buffer> vertexBuffer{ nullptr };
+        UINT vertexStride{ 0 };
+        UINT vertexOffset{ 0 };
+
+        winrt::com_ptr<ID3D11SamplerState> linearSamplerState{ nullptr };
+        winrt::com_ptr<ID3D11ShaderResourceView> textureResource{ nullptr };
+
+        HWND glWindow{ nullptr };
+        HDC glDC{ nullptr };
+        HANDLE glDeviceHandle{ nullptr };
+        HGLRC glContext{ nullptr };
+        GLuint depthRenderBuffer{ 0 };
+        GLuint frameBuffer{ 0 };
+        GLuint sampleFrameBuffer{ 0 };
+        GLuint sampleColorBuffer{ 0 };
+        GLuint sampleDepthBuffer{ 0 };
+        GLuint glTexture{ 0 };
+
+        HANDLE interopColorHandle{ nullptr };
 
     private:
         bool suspendedFlag = false;
         CRITICAL_SECTION msgCritSection;
         CONDITION_VARIABLE resumeCond;
 
+        int newWindowWidth = 0;
+        int newWindowHeight = 0;
         int currentWindowWidth = 0;
         int currentWindowHeight = 0;
+        int currentWindowWidthScaled = 0;
+        int currentWindowHeightScaled = 0;
         float windowScale = 1.0f;
 
         Microsoft::UI::Xaml::Controls::SwapChainPanel window{ nullptr };

@@ -971,8 +971,10 @@ namespace winrt::CelestiaWinUI::implementation
         auto path = PathHelper::Combine(tempFolder.Path(), to_hstring(GuidHelper::CreateNewGuid()) + L".png");
         renderer.EnqueueTask([this, path]()
             {
-                appCore.Draw();
-                if (appCore.SaveScreenshot(path))
+                int32_t oldFBO = renderer.StartReadingBackBuffer();
+                bool success = appCore.SaveScreenshot(path);
+                renderer.EndReadingBackBuffer(oldFBO);
+                if (success)
                 {
                     DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, path]()
                         {
@@ -1281,7 +1283,9 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     auto renderInfo = appCore.RenderInfo();
                     auto url = appCore.CurrentURL();
+                    int32_t oldFBO = renderer.StartReadingBackBuffer();
                     bool saveScreenshotSuccess = appCore.SaveScreenshot(screenshotFilePath);
+                    renderer.EndReadingBackBuffer(oldFBO);
                     DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url, saveScreenshotSuccess]()
                     {
                         ReportBug(saveScreenshotSuccess ? screenshotFile : nullptr, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);

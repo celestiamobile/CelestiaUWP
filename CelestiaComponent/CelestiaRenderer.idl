@@ -24,6 +24,7 @@ namespace CelestiaComponent
         void SetCorePointer(Int64 core);
         void EnqueueTask(CelestiaRendererTask task);
         void SetPreRenderTask(CelestiaRendererTask task);
-        void MakeContextCurrent();
+        Int32 StartReadingBackBuffer();
+        void EndReadingBackBuffer(Int32 oldBuffer);
     }
 }

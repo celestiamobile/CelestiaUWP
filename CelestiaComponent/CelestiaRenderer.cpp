@@ -13,29 +13,10 @@
 #include "CelestiaRenderer.g.cpp"
 #endif
 
-#ifndef EGL_EGLEXT_PROTOTYPES
-#define EGL_EGLEXT_PROTOTYPES
-#endif
-
-#include <EGL/eglext.h>
-#include <EGL/eglplatform.h>
-
-static const wchar_t EGLNativeWindowTypeProperty[] = L"EGLNativeWindowTypeProperty";
-static const wchar_t EGLRenderResolutionScaleProperty[] = L"EGLRenderResolutionScaleProperty";
-
-#define EGL_PLATFORM_ANGLE_ANGLE 0x3202
-#define EGL_PLATFORM_ANGLE_TYPE_ANGLE 0x3203
-#define EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE 0x3204
-#define EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE 0x3205
-#define EGL_PLATFORM_ANGLE_TYPE_DEFAULT_ANGLE 0x3206
-#define EGL_PLATFORM_ANGLE_DEBUG_LAYERS_ENABLED_ANGLE 0x3451
-#define EGL_PLATFORM_ANGLE_TYPE_D3D9_ANGLE 0x3207
-#define EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE 0x3208
-#define EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE 0x3209
-#define EGL_PLATFORM_ANGLE_DEVICE_TYPE_HARDWARE_ANGLE 0x320A
-#define EGL_PLATFORM_ANGLE_DEVICE_TYPE_WARP_ANGLE 0x320B
-#define EGL_PLATFORM_ANGLE_DEVICE_TYPE_REFERENCE_ANGLE 0x320C
-#define EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE 0x320F
+#include <dxgi1_3.h>
+#include <d3dcompiler.h>
+#include <microsoft.ui.xaml.media.dxinterop.h>
+#include <winrt/Microsoft.UI.Dispatching.h>
 
 using namespace std;
 
@@ -52,219 +33,509 @@ namespace winrt::CelestiaComponent::implementation
 
     bool CelestiaRenderer::Initialize()
     {
-        if (context == EGL_NO_CONTEXT)
+        if (dxgiFactory == nullptr)
+            if (FAILED(CreateDXGIFactory2(0, IID_PPV_ARGS(dxgiFactory.put()))))
+                return false;
+
+        if (device == nullptr || deviceContext == nullptr)
         {
-            printf("Initializing context");
-
-            const EGLint multisampleAttribs[] =
-            {
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-                EGL_BLUE_SIZE, 8,
-                EGL_GREEN_SIZE, 8,
-                EGL_RED_SIZE, 8,
-                EGL_DEPTH_SIZE, 16,
-                EGL_SAMPLES, 4,
-                EGL_SAMPLE_BUFFERS, 1,
-                EGL_NONE
-            };
-            const EGLint attribs[] =
-            {
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-                EGL_BLUE_SIZE, 8,
-                EGL_GREEN_SIZE, 8,
-                EGL_RED_SIZE, 8,
-                EGL_DEPTH_SIZE, 16,
-                EGL_NONE
-            };
-
-            const EGLint defaultDisplayAttributes[] =
-            {
-                // These are the default display attributes, used to request ANGLE's D3D11 renderer.
-                // eglInitialize will only succeed with these attributes if the hardware supports D3D11 Feature Level 10_0+.
-                EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
-
-                // EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE is an option that enables ANGLE to automatically call 
-                // the IDXGIDevice3::Trim method on behalf of the application when it gets suspended. 
-                // Calling IDXGIDevice3::Trim when an application is suspended is a Windows Store application certification requirement.
-                EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_NONE,
-            };
-
-            const EGLint fl9_3DisplayAttributes[] =
-            {
-                // These can be used to request ANGLE's D3D11 renderer, with D3D11 Feature Level 9_3.
-                // These attributes are used if the call to eglInitialize fails with the default display attributes.
-                EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
-                EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9,
-                EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3,
-                EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_NONE,
-            };
-
-            const EGLint warpDisplayAttributes[] =
-            {
-                // These attributes can be used to request D3D11 WARP.
-                // They are used if eglInitialize fails with both the default display attributes and the 9_3 display attributes.
-                EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
-                EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_WARP_ANGLE,
-                EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_NONE,
-            };
-
-            display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, defaultDisplayAttributes);
-            if (display == EGL_NO_DISPLAY)
-            {
-                printf("eglGetDisplay() returned error %d", eglGetError());
+            D3D_FEATURE_LEVEL levels[] = { D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0 };
+            D3D_FEATURE_LEVEL supportedFeatureLevel;
+            UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#ifdef _DEBUG
+            creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+            if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, creationFlags, levels, ARRAYSIZE(levels), D3D11_SDK_VERSION, device.put(), &supportedFeatureLevel, deviceContext.put())))
                 return false;
-            }
-
-            if (eglInitialize(display, nullptr, nullptr) == EGL_FALSE)
-            {
-                // This tries to initialize EGL to D3D11 Feature Level 9_3, if 10_0+ is unavailable (e.g. on some mobile devices).
-                Destroy();
-                display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY,
-                    fl9_3DisplayAttributes);
-                if (display == EGL_NO_DISPLAY)
-                {
-                    printf("eglGetDisplay() returned error %d", eglGetError());
-                    return false;
-                }
-
-                if (eglInitialize(display, nullptr, nullptr) == EGL_FALSE)
-                {
-                    Destroy();
-
-                    // This initializes EGL to D3D11 Feature Level 11_0 on WARP, if 9_3+ is unavailable on the default GPU.
-                    display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY,
-                        warpDisplayAttributes);
-                    if (display == EGL_NO_DISPLAY)
-                    {
-                        printf("eglGetDisplay() returned error %d", eglGetError());
-                        return false;
-                    }
-
-                    if (eglInitialize(display, nullptr, nullptr) == EGL_FALSE)
-                    {
-                        // If all of the calls to eglInitialize returned EGL.FALSE then an error has occurred.
-                        Destroy();
-                        printf("eglInitialize() returned error %d", eglGetError());
-                        return false;
-                    }
-                }
-            }
-
-            EGLint numConfigs;
-            if (enableMultisample) {
-                // Try to enable multisample but fallback if not available
-                if (!eglChooseConfig(display, multisampleAttribs, &config, 1, &numConfigs) && !eglChooseConfig(display, attribs, &config, 1, &numConfigs))
-                {
-                    printf("eglChooseConfig() returned error %d", eglGetError());
-                    Destroy();
-                    return false;
-                }
-            }
-            else {
-                if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
-                {
-                    printf("eglChooseConfig() returned error %d", eglGetError());
-                    Destroy();
-                    return false;
-                }
-            }
-
-            if (!eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format))
-            {
-                printf("eglGetConfigAttrib() returned error %d", eglGetError());
-                Destroy();
-                return false;
-            }
-
-            const EGLint contextAttributes[] =
-            {
-                    EGL_CONTEXT_CLIENT_VERSION, 3,
-                    EGL_NONE
-            };
-
-            if (!(context = eglCreateContext(display, config, nullptr, contextAttributes)))
-            {
-                printf("eglCreateContext() returned error %d", eglGetError());
-                Destroy();
-                return false;
-            }
         }
 
-        if (surface != EGL_NO_SURFACE)
+        if (swapChain == nullptr)
         {
-            eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-            eglDestroySurface(display, surface);
-            surface = EGL_NO_SURFACE;
+            DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
+            ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+            swapChainDesc.Width = std::max(currentWindowWidthScaled, 1);
+            swapChainDesc.Height = std::max(currentWindowHeightScaled, 1);
+            swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+            swapChainDesc.Stereo = false;
+            swapChainDesc.SampleDesc.Count = 1;
+            swapChainDesc.SampleDesc.Quality = 0;
+            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+            swapChainDesc.BufferCount = 2;
+            swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+            swapChainDesc.Flags = {};
+
+            if (FAILED(dxgiFactory->CreateSwapChainForComposition(device.get(), &swapChainDesc, nullptr, swapChain.put())))
+                return false;
+
+            // Set swapchain on main thread
+            HANDLE waitEvent = CreateEventExW(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_ALL_ACCESS);
+            if (waitEvent == nullptr)
+                return false;
+
+            auto panelNative = window.as<ISwapChainPanelNative>();
+            auto currentSwapChain = swapChain;
+            HRESULT setSwapChainResult = E_FAIL;
+            window.DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [panelNative, currentSwapChain, waitEvent, &setSwapChainResult]
+                {
+                    setSwapChainResult = panelNative->SetSwapChain(currentSwapChain.get());
+                    SetEvent(waitEvent);
+                });
+
+            auto waitResult = WaitForSingleObjectEx(waitEvent, 10 * 1000, true);
+            CloseHandle(waitEvent);
+
+            if (waitResult != WAIT_OBJECT_0 || FAILED(setSwapChainResult))
+                return false;
         }
 
-        if (window)
+        if (glContext == nullptr)
         {
-            const EGLint surfaceAttributes[] =
+            glWindow = CreateWindowExW(0, L"STATIC", L"Temp", WS_OVERLAPPED, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, nullptr, nullptr, nullptr, nullptr);
+            if (glWindow == nullptr)
+                return false;
+
+            glDC = GetDC(glWindow);
+            if (glDC == nullptr)
+                return false;
+
+            PIXELFORMATDESCRIPTOR pfd;
+            ZeroMemory(&pfd, sizeof(pfd));
+            pfd.nSize = sizeof(pfd);
+            pfd.nVersion = 1;
+            pfd.dwFlags = PFD_SUPPORT_OPENGL;
+            pfd.iPixelType = PFD_TYPE_RGBA;
+            pfd.iLayerType = PFD_MAIN_PLANE;
+            auto format = ChoosePixelFormat(glDC, &pfd);
+            DescribePixelFormat(glDC, format, sizeof(pfd), &pfd);
+            SetPixelFormat(glDC, format, &pfd);
+            HGLRC tempGLContext = wglCreateContext(glDC);
+            wglMakeCurrent(glDC, tempGLContext);
+
+            int attrib[] =
             {
-                EGL_NONE
+                WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
+                WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+                0
             };
 
-            Windows::Foundation::Collections::PropertySet propertySet;
-            propertySet.Insert(EGLNativeWindowTypeProperty, window);
-            propertySet.Insert(EGLRenderResolutionScaleProperty, Windows::Foundation::PropertyValue::CreateSingle(windowScale));
-            EGLNativeWindowType win = reinterpret_cast<EGLNativeWindowType>(get_abi(propertySet));
+            auto newGLContext = wglCreateContextAttribsARB(glDC, nullptr, attrib);
+            if (newGLContext != nullptr)
+                wglMakeCurrent(glDC, newGLContext);
+            wglDeleteContext(tempGLContext);
+            glContext = newGLContext;
 
-            if (!(surface = eglCreateWindowSurface(display, config, win, surfaceAttributes)))
-            {
-                printf("eglCreateWindowSurface() returned error %d", eglGetError());
-                Destroy();
+            if (glContext == nullptr)
                 return false;
-            }
-
-            if (!eglMakeCurrent(display, surface, surface, context))
-            {
-                printf("eglMakeCurrent() returned error %d", eglGetError());
-                Destroy();
-                return false;
-            }
         }
+
+        if (glDeviceHandle == nullptr)
+        {
+            auto handle = wglDXOpenDeviceNV(device.get());
+            if (handle == nullptr)
+                return false;
+
+            glDeviceHandle = handle;
+        }
+
+        if (frameBuffer == 0)
+            glGenFramebuffers(1, &frameBuffer);
+
         return true;
     }
 
     void CelestiaRenderer::Destroy()
     {
-        if (context != EGL_NO_CONTEXT)
+        if (interopColorHandle != nullptr)
         {
-            eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-            eglDestroyContext(display, context);
-            if (surface != EGL_NO_SURFACE)
-                eglDestroySurface(display, surface);
-            eglTerminate(display);
+            wglDXUnregisterObjectNV(glDeviceHandle, interopColorHandle);
+            interopColorHandle = nullptr;
         }
-        display = EGL_NO_DISPLAY;
-        surface = EGL_NO_SURFACE;
-        context = EGL_NO_CONTEXT;
+
+        if (glDeviceHandle != nullptr)
+        {
+            wglDXCloseDeviceNV(glDeviceHandle);
+            glDeviceHandle = nullptr;
+        }
+
+        if (sampleColorBuffer != 0)
+        {
+            glDeleteRenderbuffers(1, &sampleColorBuffer);
+            sampleColorBuffer = 0;
+        }
+
+        if (sampleDepthBuffer != 0)
+        {
+            glDeleteRenderbuffers(1, &sampleDepthBuffer);
+            sampleDepthBuffer = 0;
+        }
+
+        if (sampleFrameBuffer != 0)
+        {
+            glDeleteFramebuffers(1, &sampleFrameBuffer);
+            sampleFrameBuffer = 0;
+        }
+
+        if (depthRenderBuffer != 0)
+        {
+            glDeleteRenderbuffers(1, &depthRenderBuffer);
+            depthRenderBuffer = 0;
+        }
+
+        if (glTexture != 0)
+        {
+            glDeleteTextures(1, &glTexture);
+            glTexture = 0;
+        }
+
+        if (frameBuffer != 0)
+        {
+            glDeleteFramebuffers(1, &frameBuffer);
+            frameBuffer = 0;
+        }
+
+        if (glContext != nullptr)
+        {
+            wglDeleteContext(glContext);
+            glContext = nullptr;
+        }
+
+        if (glDC != nullptr)
+        {
+            ReleaseDC(glWindow, glDC);
+            glDC = nullptr;
+        }
+
+        if (glWindow != nullptr)
+        {
+            DestroyWindow(glWindow);
+            glWindow = nullptr;
+        }
+
+        linearSamplerState = nullptr;
+        textureResource = nullptr;
+
+        vertexBuffer = nullptr;
+        vertexLayout = nullptr;
+
+        vertexShader = nullptr;
+        pixelShader = nullptr;
+
+        renderTarget = nullptr;
+
+        swapChain = nullptr;
+
+        device = nullptr;
+        deviceContext = nullptr;
+        dxgiFactory = nullptr;
+
+        vertexStride = 0;
+        vertexOffset = 0;
+
         currentWindowWidth = 0;
         currentWindowHeight = 0;
+        currentWindowWidthScaled = 0;
+        currentWindowHeightScaled = 0;
+        newWindowWidth = 0;
+        newWindowHeight = 0;
     }
 
-    inline void CelestiaRenderer::ResizeIfNeeded()
+    inline bool CelestiaRenderer::ResizeIfNeeded()
     {
-        EGLint windowWidth;
-        EGLint windowHeight;
-        if (!eglQuerySurface(display, surface, EGL_WIDTH, &windowWidth) || !eglQuerySurface(display, surface, EGL_HEIGHT, &windowHeight))
-            return;
-
-        if (currentWindowHeight != windowHeight || currentWindowWidth != windowWidth)
+        if (renderTarget == nullptr || (currentWindowHeight != newWindowHeight || currentWindowWidth != newWindowWidth))
         {
-            core->resize((GLsizei)windowWidth, (GLsizei)windowHeight);
-            currentWindowWidth = windowWidth;
-            currentWindowHeight = windowHeight;
+            currentWindowWidth = newWindowWidth;
+            currentWindowHeight = newWindowHeight;
+
+            currentWindowWidthScaled = static_cast<int>(newWindowWidth * windowScale);
+            currentWindowHeightScaled = static_cast<int>(newWindowHeight * windowScale);
+
+            deviceContext->Flush();
+
+            if (interopColorHandle != nullptr)
+                wglDXUnregisterObjectNV(glDeviceHandle, interopColorHandle);
+
+            if (glTexture != 0)
+                glDeleteTextures(1, &glTexture);
+
+            renderTarget = nullptr;
+
+            swapChain->ResizeBuffers(2, static_cast<UINT>(currentWindowWidthScaled), static_cast<UINT>(currentWindowHeightScaled), DXGI_FORMAT_B8G8R8A8_UNORM, 0);
+
+            winrt::com_ptr<ID3D11Texture2D> backBuffer = nullptr;
+            if (FAILED(swapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer))))
+                return false;
+
+            if (FAILED(device->CreateRenderTargetView(backBuffer.get(), nullptr, renderTarget.put())))
+                return false;
+
+            D3D11_VIEWPORT viewport = {};
+            viewport.TopLeftX = 0;
+            viewport.TopLeftY = 0;
+            viewport.Width = static_cast<float>(currentWindowWidthScaled);
+            viewport.Height = static_cast<float>(currentWindowHeightScaled);
+            viewport.MinDepth = 0.0f;
+            viewport.MaxDepth = 1.0f;
+
+            const auto renderTargets = renderTarget.get();
+            deviceContext->OMSetRenderTargets(1, &renderTargets, nullptr);
+            deviceContext->RSSetViewports(1, &viewport);
+
+            D3D11_TEXTURE2D_DESC textureDesc;
+            backBuffer->GetDesc(&textureDesc);
+            textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+            textureDesc.CPUAccessFlags = 0;
+            textureDesc.Usage = D3D11_USAGE_DEFAULT;
+            textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+            textureDesc.Width = currentWindowWidthScaled;
+            textureDesc.Height = currentWindowHeightScaled;
+
+            winrt::com_ptr<ID3D11Texture2D> backBufferTexture = nullptr;
+            if (FAILED(device->CreateTexture2D(&textureDesc, nullptr, backBufferTexture.put())))
+                return false;
+
+            D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+            srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+            srvDesc.Format = textureDesc.Format;
+            srvDesc.Texture2D.MipLevels = textureDesc.MipLevels;
+
+            if (FAILED(device->CreateShaderResourceView(backBufferTexture.get(), &srvDesc, textureResource.put())))
+                return false;
+
+            glGenTextures(1, &glTexture);
+            interopColorHandle = wglDXRegisterObjectNV(glDeviceHandle, backBufferTexture.get(), glTexture, GL_TEXTURE_2D, WGL_ACCESS_READ_WRITE_NV);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexture, 0);
+
+            if (enableMSAA)
+            {
+                GLint samples;
+                glGetIntegerv(GL_MAX_SAMPLES, &samples);
+
+                if (sampleFrameBuffer == 0)
+                    glGenFramebuffers(1, &sampleFrameBuffer);
+
+                glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
+
+                if (sampleColorBuffer == 0)
+                    glGenRenderbuffers(1, &sampleColorBuffer);
+                if (sampleDepthBuffer == 0)
+                    glGenRenderbuffers(1, &sampleDepthBuffer);
+
+                glBindRenderbuffer(GL_RENDERBUFFER, sampleColorBuffer);
+                glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_RGBA8, currentWindowWidthScaled, currentWindowHeightScaled);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, sampleColorBuffer);
+                glBindRenderbuffer(GL_RENDERBUFFER, sampleDepthBuffer);
+                glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH_COMPONENT24, currentWindowWidthScaled, currentWindowHeightScaled);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, sampleDepthBuffer);
+            }
+            else
+            {
+                if (depthRenderBuffer == 0)
+                    glGenRenderbuffers(1, &depthRenderBuffer);
+                glBindRenderbuffer(GL_RENDERBUFFER, depthRenderBuffer);
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, currentWindowWidthScaled, currentWindowHeightScaled);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
+            }
+
+            core->resize(static_cast<GLsizei>(currentWindowWidthScaled), static_cast<GLsizei>(currentWindowHeightScaled));
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
+
+        return true;
     }
 
-    inline void CelestiaRenderer::TickAndDraw() const
+    bool CelestiaRenderer::Prepare()
     {
+        const char* simpleD3D11VertexShader = R"(
+struct VSInput
+{
+    float3 position: POSITION;
+    float2 texCoord: TEXCOORD0;
+};
+
+struct VSOutput
+{
+    float4 position: SV_Position;
+    float2 texCoord: TEXCOORD0;
+};
+
+VSOutput Main(VSInput input)
+{
+    VSOutput output = (VSOutput)0;
+    output.position = float4(input.position, 1.0);
+    output.texCoord = input.texCoord;
+    return output;
+}
+		)";
+
+        const char* simpleD3D11PixelShader = R"(
+struct PSInput
+{
+    float4 position: SV_Position;
+    float2 texCoord: TEXCOORD0;
+};
+
+sampler LinearSampler : register(s0);
+
+Texture2D Texture : register(t0);
+
+struct PSOutput
+{
+    float4 color: SV_Target0;
+};
+
+PSOutput Main(PSInput input)
+{
+    PSOutput output = (PSOutput)0;
+    output.color = Texture.Sample(LinearSampler, input.texCoord);
+    return output;
+}
+        )";
+
+        winrt::com_ptr<ID3DBlob> vertexShaderBlob = nullptr;
+        if (FAILED(D3DCompile2(simpleD3D11VertexShader, strlen(simpleD3D11VertexShader), nullptr, nullptr, nullptr, "Main", "vs_4_0", 0, 0, 0, nullptr, 0, vertexShaderBlob.put(), nullptr)))
+            return false;
+
+        if (FAILED(device->CreateVertexShader(vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), nullptr, vertexShader.put())))
+            return false;
+
+        winrt::com_ptr<ID3DBlob> pixelShaderBlob = nullptr;
+        if (FAILED(D3DCompile2(simpleD3D11PixelShader, strlen(simpleD3D11PixelShader), nullptr, nullptr, nullptr, "Main", "ps_4_0", 0, 0, 0, nullptr, 0, pixelShaderBlob.put(), nullptr)))
+            return false;
+
+        if (FAILED(device->CreatePixelShader(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), nullptr, pixelShader.put())))
+            return false;
+
+        using Position = DirectX::XMFLOAT3;
+        using TexCoord = DirectX::XMFLOAT2;
+
+        struct VertexPositionColor
+        {
+            Position position;
+            TexCoord texCoord;
+        };
+
+        constexpr D3D11_INPUT_ELEMENT_DESC vertexInputLayoutInfo[] = {
+        {
+            "POSITION",
+            0,
+            DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
+            0,
+            offsetof(VertexPositionColor, position),
+            D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
+            0
+        },
+        {
+            "TEXCOORD",
+            0,
+            DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT,
+            0,
+            offsetof(VertexPositionColor, texCoord),
+            D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
+            0
+        } };
+
+        if (FAILED(device->CreateInputLayout(
+            vertexInputLayoutInfo,
+            _countof(vertexInputLayoutInfo),
+            vertexShaderBlob->GetBufferPointer(),
+            vertexShaderBlob->GetBufferSize(),
+            vertexLayout.put())))
+        {
+            return false;
+        }
+
+        constexpr VertexPositionColor vertices[] =
+        {
+            { Position{ -1.0f,  1.0f, 0.0f }, TexCoord(0.0f, 1.0f) },
+            { Position{  1.0f,  1.0f, 0.0f }, TexCoord(1.0f, 1.0f) },
+            { Position{  1.0f, -1.0f, 0.0f }, TexCoord(1.0f, 0.0f) },
+            { Position{ -1.0f,  1.0f, 0.0f }, TexCoord(0.0f, 1.0f) },
+            { Position{  1.0f, -1.0f, 0.0f }, TexCoord(1.0f, 0.0f) },
+            { Position{ -1.0f, -1.0f, 0.0f }, TexCoord(0.0f, 0.0f) },
+        };
+
+        D3D11_BUFFER_DESC bufferInfo = {};
+        bufferInfo.ByteWidth = sizeof(vertices);
+        bufferInfo.Usage = D3D11_USAGE::D3D11_USAGE_IMMUTABLE;
+        bufferInfo.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+
+        D3D11_SUBRESOURCE_DATA resourceData = {};
+        resourceData.pSysMem = vertices;
+        if (FAILED(device->CreateBuffer(
+            &bufferInfo,
+            &resourceData,
+            vertexBuffer.put())))
+        {
+            return false;
+        }
+
+        vertexStride = sizeof(VertexPositionColor);
+        vertexOffset = 0;
+
+        D3D11_SAMPLER_DESC linearSamplerStateDescriptor = {};
+        linearSamplerStateDescriptor.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+        linearSamplerStateDescriptor.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+        linearSamplerStateDescriptor.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+        linearSamplerStateDescriptor.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+
+        if (FAILED(device->CreateSamplerState(
+            &linearSamplerStateDescriptor,
+            linearSamplerState.put())))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    inline void CelestiaRenderer::TickAndDraw()
+    {
+        wglDXLockObjectsNV(glDeviceHandle, 1, &interopColorHandle);
+
+        if (enableMSAA)
+            glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
+        else
+            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
         core->tick();
         core->draw();
+
+        if (enableMSAA)
+        {
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, sampleFrameBuffer);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+            glBlitFramebuffer(0, 0, currentWindowWidthScaled, currentWindowHeightScaled, 0, 0, currentWindowWidthScaled, currentWindowHeightScaled, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        wglDXUnlockObjectsNV(glDeviceHandle, 1, &interopColorHandle);
+
+        constexpr float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        deviceContext->ClearRenderTargetView(renderTarget.get(), clearColor);
+
+        const auto renderTargets = renderTarget.get();
+        deviceContext->OMSetRenderTargets(1, &renderTargets, nullptr);
+
+        deviceContext->IASetInputLayout(vertexLayout.get());
+        const auto vertexBuffers = vertexBuffer.get();
+        deviceContext->IASetVertexBuffers(0, 1, &vertexBuffers, &vertexStride, &vertexOffset);
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+        deviceContext->VSSetShader(vertexShader.get(), nullptr, 0);
+        deviceContext->PSSetShader(pixelShader.get(), nullptr, 0);
+
+        const auto samplerStates = linearSamplerState.get();
+        deviceContext->PSSetSamplers(0, 1, &samplerStates);
+
+        const auto textureResources = textureResource.get();
+        deviceContext->PSSetShaderResources(0, 1, &textureResources);
+
+        deviceContext->Draw(6, 0);
     }
 
 	void CelestiaRenderer::Start()
@@ -280,8 +551,10 @@ namespace winrt::CelestiaComponent::implementation
             {
                 while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
                 {
-                    if (surface != EGL_NO_SURFACE && !engineStartedCalled)
+                    if (swapChain != nullptr && !engineStartedCalled)
                     {
+                        if (!Prepare())
+                            break;
                         bool started = engineStarted();
                         if (!started)
                             break;
@@ -306,12 +579,11 @@ namespace winrt::CelestiaComponent::implementation
                         break;
 
                     bool needsDrawn = false;
-                    if (engineStartedCalled && surface != EGL_NO_SURFACE && core != nullptr)
+                    if (engineStartedCalled && swapChain != nullptr && core != nullptr)
                         needsDrawn = true;
                     auto [tasks, prerenderTask] = RetrieveAndResetTasks();
 
                     Unlock();
-
 
                     for (const auto& task : tasks)
                         task();
@@ -320,10 +592,11 @@ namespace winrt::CelestiaComponent::implementation
 
                     if (needsDrawn)
                     {
-                        ResizeIfNeeded();
+                        if (!ResizeIfNeeded())
+                            break;
                         TickAndDraw();
-                        if (!eglSwapBuffers(display, surface))
-                            printf("eglSwapBuffers() returned error %d", eglGetError());
+
+                        swapChain->Present(1, 0);
                     }
                 }
                 Destroy();
@@ -381,7 +654,21 @@ namespace winrt::CelestiaComponent::implementation
         msg = CelestiaRenderer::MSG_WINDOW_SET;
         window = surface;
         windowScale = scale;
+        newWindowWidth = surface.ActualWidth();
+        newWindowHeight = surface.ActualHeight();
         Unlock();
+
+        window.SizeChanged([weak_this{ get_weak() }](IInspectable const& sender, Microsoft::UI::Xaml::SizeChangedEventArgs const&)
+            {
+                if (auto strong_this = weak_this.get())
+                {
+                    strong_this->Lock();
+                    auto panel = sender.as<Microsoft::UI::Xaml::Controls::SwapChainPanel>();
+                    strong_this->newWindowWidth = panel.ActualWidth();
+                    strong_this->newWindowHeight = panel.ActualHeight();
+                    strong_this->Unlock();
+                }
+            });
     }
 
     void CelestiaRenderer::SetCorePointer(int64_t core)
@@ -414,8 +701,17 @@ namespace winrt::CelestiaComponent::implementation
         return {tasksCopy, preRenderTask};
     }
 
-    void CelestiaRenderer::MakeContextCurrent()
+    int32_t CelestiaRenderer::StartReadingBackBuffer()
     {
-        eglMakeCurrent(display, surface, surface, context);
+        GLint oldFboId = 0;
+        glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &oldFboId);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, frameBuffer);
+        glReadBuffer(GL_COLOR_ATTACHMENT0);
+        return static_cast<int32_t>(oldFboId);
+    }
+
+    void CelestiaRenderer::EndReadingBackBuffer(int32_t oldBuffer)
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, static_cast<GLuint>(oldBuffer));
     }
 }
