@@ -104,9 +104,9 @@ namespace winrt::CelestiaAppComponent::implementation
         if (!hasCorrectValue)
             hasCorrectValue = true;
         auto value = CelestiaExtension::GetCelestiaInt32Value(appCore, entry);
-        for (auto const& option : options)
-            if (option.Value() == value)
-                return value;
+        for (uint32_t i = 0; i < options.Size(); i += 1)
+            if (options.GetAt(i).Value() == value)
+                return i;
         return 0;
     }
 
