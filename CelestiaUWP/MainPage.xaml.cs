@@ -1715,7 +1715,6 @@ namespace CelestiaUWP
             var path = PathHelper.Combine(tempFolder.Path, GuidHelper.CreateNewGuid().ToString() + ".png");
             mRenderer.EnqueueTask(() =>
             {
-                mAppCore.Draw();
                 if (mAppCore.SaveScreenshot(path))
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

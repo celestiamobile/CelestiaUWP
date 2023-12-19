@@ -278,7 +278,6 @@ namespace winrt::CelestiaComponent::implementation
         // Create a task for rendering that will be run on a background thread.
         auto workItemHandler = Windows::System::Threading::WorkItemHandler([this](Windows::Foundation::IAsyncAction action)
             {
-                auto renderer = this;
                 while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
                 {
                     if (surface != EGL_NO_SURFACE && !engineStartedCalled)
