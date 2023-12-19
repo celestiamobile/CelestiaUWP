@@ -212,25 +212,11 @@ namespace winrt::CelestiaComponent::implementation
             glWindow = nullptr;
         }
 
-        linearSamplerState = nullptr;
-        textureResource = nullptr;
-
-        vertexBuffer = nullptr;
-        vertexLayout = nullptr;
-
-        vertexShader = nullptr;
-        pixelShader = nullptr;
-
-        renderTarget = nullptr;
-
         swapChain = nullptr;
 
         device = nullptr;
         deviceContext = nullptr;
         dxgiFactory = nullptr;
-
-        vertexStride = 0;
-        vertexOffset = 0;
 
         currentWindowWidth = 0;
         currentWindowHeight = 0;
@@ -242,7 +228,7 @@ namespace winrt::CelestiaComponent::implementation
 
     inline bool CelestiaRenderer::ResizeIfNeeded()
     {
-        if (renderTarget == nullptr || (currentWindowHeight != newWindowHeight || currentWindowWidth != newWindowWidth))
+        if (frameBuffer == 0 || (currentWindowHeight != newWindowHeight || currentWindowWidth != newWindowWidth))
         {
             currentWindowWidth = newWindowWidth;
             currentWindowHeight = newWindowHeight;
@@ -258,15 +244,10 @@ namespace winrt::CelestiaComponent::implementation
             if (glTexture != 0)
                 glDeleteTextures(1, &glTexture);
 
-            renderTarget = nullptr;
-
             swapChain->ResizeBuffers(2, static_cast<UINT>(currentWindowWidthScaled), static_cast<UINT>(currentWindowHeightScaled), DXGI_FORMAT_B8G8R8A8_UNORM, 0);
 
             winrt::com_ptr<ID3D11Texture2D> backBuffer = nullptr;
             if (FAILED(swapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer))))
-                return false;
-
-            if (FAILED(device->CreateRenderTargetView(backBuffer.get(), nullptr, renderTarget.put())))
                 return false;
 
             D3D11_VIEWPORT viewport = {};
@@ -277,33 +258,10 @@ namespace winrt::CelestiaComponent::implementation
             viewport.MinDepth = 0.0f;
             viewport.MaxDepth = 1.0f;
 
-            const auto renderTargets = renderTarget.get();
-            deviceContext->OMSetRenderTargets(1, &renderTargets, nullptr);
             deviceContext->RSSetViewports(1, &viewport);
 
-            D3D11_TEXTURE2D_DESC textureDesc;
-            backBuffer->GetDesc(&textureDesc);
-            textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-            textureDesc.CPUAccessFlags = 0;
-            textureDesc.Usage = D3D11_USAGE_DEFAULT;
-            textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-            textureDesc.Width = currentWindowWidthScaled;
-            textureDesc.Height = currentWindowHeightScaled;
-
-            winrt::com_ptr<ID3D11Texture2D> backBufferTexture = nullptr;
-            if (FAILED(device->CreateTexture2D(&textureDesc, nullptr, backBufferTexture.put())))
-                return false;
-
-            D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-            srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-            srvDesc.Format = textureDesc.Format;
-            srvDesc.Texture2D.MipLevels = textureDesc.MipLevels;
-
-            if (FAILED(device->CreateShaderResourceView(backBufferTexture.get(), &srvDesc, textureResource.put())))
-                return false;
-
             glGenTextures(1, &glTexture);
-            interopColorHandle = wglDXRegisterObjectNV(glDeviceHandle, backBufferTexture.get(), glTexture, GL_TEXTURE_2D, WGL_ACCESS_READ_WRITE_NV);
+            interopColorHandle = wglDXRegisterObjectNV(glDeviceHandle, backBuffer.get(), glTexture, GL_TEXTURE_2D, WGL_ACCESS_READ_WRITE_NV);
 
             glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexture, 0);
@@ -349,146 +307,6 @@ namespace winrt::CelestiaComponent::implementation
 
     bool CelestiaRenderer::Prepare()
     {
-        const char* simpleD3D11VertexShader = R"(
-struct VSInput
-{
-    float3 position: POSITION;
-    float2 texCoord: TEXCOORD0;
-};
-
-struct VSOutput
-{
-    float4 position: SV_Position;
-    float2 texCoord: TEXCOORD0;
-};
-
-VSOutput Main(VSInput input)
-{
-    VSOutput output = (VSOutput)0;
-    output.position = float4(input.position, 1.0);
-    output.texCoord = input.texCoord;
-    return output;
-}
-		)";
-
-        const char* simpleD3D11PixelShader = R"(
-struct PSInput
-{
-    float4 position: SV_Position;
-    float2 texCoord: TEXCOORD0;
-};
-
-sampler LinearSampler : register(s0);
-
-Texture2D Texture : register(t0);
-
-struct PSOutput
-{
-    float4 color: SV_Target0;
-};
-
-PSOutput Main(PSInput input)
-{
-    PSOutput output = (PSOutput)0;
-    output.color = Texture.Sample(LinearSampler, input.texCoord);
-    return output;
-}
-        )";
-
-        winrt::com_ptr<ID3DBlob> vertexShaderBlob = nullptr;
-        if (FAILED(D3DCompile2(simpleD3D11VertexShader, strlen(simpleD3D11VertexShader), nullptr, nullptr, nullptr, "Main", "vs_4_0", 0, 0, 0, nullptr, 0, vertexShaderBlob.put(), nullptr)))
-            return false;
-
-        if (FAILED(device->CreateVertexShader(vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), nullptr, vertexShader.put())))
-            return false;
-
-        winrt::com_ptr<ID3DBlob> pixelShaderBlob = nullptr;
-        if (FAILED(D3DCompile2(simpleD3D11PixelShader, strlen(simpleD3D11PixelShader), nullptr, nullptr, nullptr, "Main", "ps_4_0", 0, 0, 0, nullptr, 0, pixelShaderBlob.put(), nullptr)))
-            return false;
-
-        if (FAILED(device->CreatePixelShader(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), nullptr, pixelShader.put())))
-            return false;
-
-        using Position = DirectX::XMFLOAT3;
-        using TexCoord = DirectX::XMFLOAT2;
-
-        struct VertexPositionColor
-        {
-            Position position;
-            TexCoord texCoord;
-        };
-
-        constexpr D3D11_INPUT_ELEMENT_DESC vertexInputLayoutInfo[] = {
-        {
-            "POSITION",
-            0,
-            DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,
-            0,
-            offsetof(VertexPositionColor, position),
-            D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
-            0
-        },
-        {
-            "TEXCOORD",
-            0,
-            DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT,
-            0,
-            offsetof(VertexPositionColor, texCoord),
-            D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA,
-            0
-        } };
-
-        if (FAILED(device->CreateInputLayout(
-            vertexInputLayoutInfo,
-            _countof(vertexInputLayoutInfo),
-            vertexShaderBlob->GetBufferPointer(),
-            vertexShaderBlob->GetBufferSize(),
-            vertexLayout.put())))
-        {
-            return false;
-        }
-
-        constexpr VertexPositionColor vertices[] =
-        {
-            { Position{ -1.0f,  1.0f, 0.0f }, TexCoord(0.0f, 1.0f) },
-            { Position{  1.0f,  1.0f, 0.0f }, TexCoord(1.0f, 1.0f) },
-            { Position{  1.0f, -1.0f, 0.0f }, TexCoord(1.0f, 0.0f) },
-            { Position{ -1.0f,  1.0f, 0.0f }, TexCoord(0.0f, 1.0f) },
-            { Position{  1.0f, -1.0f, 0.0f }, TexCoord(1.0f, 0.0f) },
-            { Position{ -1.0f, -1.0f, 0.0f }, TexCoord(0.0f, 0.0f) },
-        };
-
-        D3D11_BUFFER_DESC bufferInfo = {};
-        bufferInfo.ByteWidth = sizeof(vertices);
-        bufferInfo.Usage = D3D11_USAGE::D3D11_USAGE_IMMUTABLE;
-        bufferInfo.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-
-        D3D11_SUBRESOURCE_DATA resourceData = {};
-        resourceData.pSysMem = vertices;
-        if (FAILED(device->CreateBuffer(
-            &bufferInfo,
-            &resourceData,
-            vertexBuffer.put())))
-        {
-            return false;
-        }
-
-        vertexStride = sizeof(VertexPositionColor);
-        vertexOffset = 0;
-
-        D3D11_SAMPLER_DESC linearSamplerStateDescriptor = {};
-        linearSamplerStateDescriptor.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
-        linearSamplerStateDescriptor.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-        linearSamplerStateDescriptor.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-        linearSamplerStateDescriptor.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-
-        if (FAILED(device->CreateSamplerState(
-            &linearSamplerStateDescriptor,
-            linearSamplerState.put())))
-        {
-            return false;
-        }
-
         return true;
     }
 
@@ -514,28 +332,6 @@ PSOutput Main(PSInput input)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         wglDXUnlockObjectsNV(glDeviceHandle, 1, &interopColorHandle);
-
-        constexpr float clearColor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-        deviceContext->ClearRenderTargetView(renderTarget.get(), clearColor);
-
-        const auto renderTargets = renderTarget.get();
-        deviceContext->OMSetRenderTargets(1, &renderTargets, nullptr);
-
-        deviceContext->IASetInputLayout(vertexLayout.get());
-        const auto vertexBuffers = vertexBuffer.get();
-        deviceContext->IASetVertexBuffers(0, 1, &vertexBuffers, &vertexStride, &vertexOffset);
-        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-        deviceContext->VSSetShader(vertexShader.get(), nullptr, 0);
-        deviceContext->PSSetShader(pixelShader.get(), nullptr, 0);
-
-        const auto samplerStates = linearSamplerState.get();
-        deviceContext->PSSetSamplers(0, 1, &samplerStates);
-
-        const auto textureResources = textureResource.get();
-        deviceContext->PSSetShaderResources(0, 1, &textureResources);
-
-        deviceContext->Draw(6, 0);
     }
 
 	void CelestiaRenderer::Start()

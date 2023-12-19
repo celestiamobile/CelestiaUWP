@@ -61,17 +61,6 @@ namespace winrt::CelestiaComponent::implementation
         winrt::com_ptr<ID3D11DeviceContext> deviceContext{ nullptr };
         winrt::com_ptr<IDXGIFactory2> dxgiFactory{ nullptr };
         winrt::com_ptr<IDXGISwapChain1> swapChain{ nullptr };
-        winrt::com_ptr<ID3D11RenderTargetView> renderTarget{ nullptr };
-
-        winrt::com_ptr<ID3D11VertexShader> vertexShader{ nullptr };
-        winrt::com_ptr<ID3D11PixelShader> pixelShader{ nullptr };
-        winrt::com_ptr<ID3D11InputLayout> vertexLayout{ nullptr };
-        winrt::com_ptr<ID3D11Buffer> vertexBuffer{ nullptr };
-        UINT vertexStride{ 0 };
-        UINT vertexOffset{ 0 };
-
-        winrt::com_ptr<ID3D11SamplerState> linearSamplerState{ nullptr };
-        winrt::com_ptr<ID3D11ShaderResourceView> textureResource{ nullptr };
 
         HWND glWindow{ nullptr };
         HDC glDC{ nullptr };
