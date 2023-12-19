@@ -281,33 +281,37 @@ namespace winrt::CelestiaComponent::implementation
                 auto renderer = this;
                 while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
                 {
-                    if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
+                    if (surface != EGL_NO_SURFACE && !engineStartedCalled)
                     {
-                        bool started = renderer->engineStarted();
+                        bool started = engineStarted();
                         if (!started)
                             break;
-                        renderer->engineStartedCalled = true;
+                        engineStartedCalled = true;
                     }
 
-                    renderer->Lock();
-                    renderer->Wait();
+                    Lock();
+                    Wait();
 
-                    switch (renderer->msg)
+                    bool shouldQuit = false;
+                    switch (msg)
                     {
                     case CelestiaRenderer::MSG_WINDOW_SET:
-                        renderer->Initialize();
+                        shouldQuit = !Initialize();
                         break;
                     default:
                         break;
                     }
-                    renderer->msg = CelestiaRenderer::MSG_NONE;
+                    msg = CelestiaRenderer::MSG_NONE;
+
+                    if (shouldQuit)
+                        break;
 
                     bool needsDrawn = false;
-                    if (renderer->engineStartedCalled && renderer->surface != EGL_NO_SURFACE && renderer->core)
+                    if (engineStartedCalled && surface != EGL_NO_SURFACE && core != nullptr)
                         needsDrawn = true;
                     auto [tasks, prerenderTask] = RetrieveAndResetTasks();
 
-                    renderer->Unlock();
+                    Unlock();
 
 
                     for (const auto& task : tasks)
@@ -317,13 +321,13 @@ namespace winrt::CelestiaComponent::implementation
 
                     if (needsDrawn)
                     {
-                        renderer->ResizeIfNeeded();
-                        renderer->TickAndDraw();
-                        if (!eglSwapBuffers(renderer->display, renderer->surface))
+                        ResizeIfNeeded();
+                        TickAndDraw();
+                        if (!eglSwapBuffers(display, surface))
                             printf("eglSwapBuffers() returned error %d", eglGetError());
                     }
                 }
-                renderer->Destroy();
+                Destroy();
             });
 
         // Run task on a dedicated high priority background thread.
