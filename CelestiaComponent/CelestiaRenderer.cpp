@@ -176,12 +176,6 @@ namespace winrt::CelestiaComponent::implementation
             sampleFrameBuffer = 0;
         }
 
-        if (depthRenderBuffer != 0)
-        {
-            glDeleteRenderbuffers(1, &depthRenderBuffer);
-            depthRenderBuffer = 0;
-        }
-
         if (glTexture != 0)
         {
             glDeleteTextures(1, &glTexture);
@@ -266,20 +260,19 @@ namespace winrt::CelestiaComponent::implementation
             glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glTexture, 0);
 
+            if (sampleFrameBuffer == 0)
+                glGenFramebuffers(1, &sampleFrameBuffer);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
+            if (sampleColorBuffer == 0)
+                glGenRenderbuffers(1, &sampleColorBuffer);
+            if (sampleDepthBuffer == 0)
+                glGenRenderbuffers(1, &sampleDepthBuffer);
+
             if (enableMSAA)
             {
                 GLint samples;
                 glGetIntegerv(GL_MAX_SAMPLES, &samples);
-
-                if (sampleFrameBuffer == 0)
-                    glGenFramebuffers(1, &sampleFrameBuffer);
-
-                glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
-
-                if (sampleColorBuffer == 0)
-                    glGenRenderbuffers(1, &sampleColorBuffer);
-                if (sampleDepthBuffer == 0)
-                    glGenRenderbuffers(1, &sampleDepthBuffer);
 
                 glBindRenderbuffer(GL_RENDERBUFFER, sampleColorBuffer);
                 glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_RGBA8, currentWindowWidthScaled, currentWindowHeightScaled);
@@ -290,11 +283,12 @@ namespace winrt::CelestiaComponent::implementation
             }
             else
             {
-                if (depthRenderBuffer == 0)
-                    glGenRenderbuffers(1, &depthRenderBuffer);
-                glBindRenderbuffer(GL_RENDERBUFFER, depthRenderBuffer);
+                glBindRenderbuffer(GL_RENDERBUFFER, sampleColorBuffer);
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, currentWindowWidthScaled, currentWindowHeightScaled);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, sampleColorBuffer);
+                glBindRenderbuffer(GL_RENDERBUFFER, sampleDepthBuffer);
                 glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, currentWindowWidthScaled, currentWindowHeightScaled);
-                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, sampleDepthBuffer);
             }
 
             core->resize(static_cast<GLsizei>(currentWindowWidthScaled), static_cast<GLsizei>(currentWindowHeightScaled));
@@ -314,20 +308,14 @@ namespace winrt::CelestiaComponent::implementation
     {
         wglDXLockObjectsNV(glDeviceHandle, 1, &interopColorHandle);
 
-        if (enableMSAA)
-            glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
-        else
-            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, sampleFrameBuffer);
 
         core->tick();
         core->draw();
 
-        if (enableMSAA)
-        {
-            glBindFramebuffer(GL_READ_FRAMEBUFFER, sampleFrameBuffer);
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
-            glBlitFramebuffer(0, 0, currentWindowWidthScaled, currentWindowHeightScaled, 0, 0, currentWindowWidthScaled, currentWindowHeightScaled, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-        }
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, sampleFrameBuffer);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+        glBlitFramebuffer(0, 0, currentWindowWidthScaled, currentWindowHeightScaled, 0, currentWindowHeightScaled, currentWindowWidthScaled, 0, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

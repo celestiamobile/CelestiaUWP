@@ -66,7 +66,6 @@ namespace winrt::CelestiaComponent::implementation
         HDC glDC{ nullptr };
         HANDLE glDeviceHandle{ nullptr };
         HGLRC glContext{ nullptr };
-        GLuint depthRenderBuffer{ 0 };
         GLuint frameBuffer{ 0 };
         GLuint sampleFrameBuffer{ 0 };
         GLuint sampleColorBuffer{ 0 };
