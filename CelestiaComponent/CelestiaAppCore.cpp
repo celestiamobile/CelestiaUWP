@@ -424,11 +424,10 @@ namespace winrt::CelestiaComponent::implementation
 
     com_array<CelestiaComponent::CelestiaScript> CelestiaAppCore::ReadScripts(hstring const& directory, bool deepScan)
     {
-        std::vector<ScriptMenuItem>* results = ScanScriptsDirectory(to_string(directory), deepScan ? true : false);
+        auto results = ScanScriptsDirectory(to_string(directory), deepScan ? true : false);
         std::vector<CelestiaComponent::CelestiaScript> vector;
-        for (unsigned int i = 0; i < results->size(); ++i)
+        for (const auto &result : results)
         {
-            auto result = (*results)[i];
             vector.push_back(make<implementation::CelestiaScript>(result));
         }
         return com_array(vector);
