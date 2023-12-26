@@ -9,8 +9,10 @@
 
 #include "pch.h"
 #include <celestia/celestiastate.h>
-#include <celestia/url.h>
+#include <celestia/configfile.h>
 #include <celestia/helper.h>
+#include <celestia/progressnotifier.h>
+#include <celestia/url.h>
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
 #endif

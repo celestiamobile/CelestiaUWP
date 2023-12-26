@@ -442,6 +442,15 @@
     <ClCompile Include="..\..\Celestia\src\celestia\hud.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\loaddso.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\loadsso.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\loadstars.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
@@ -1086,6 +1095,9 @@
     <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h">
       <Filter>Celestia\celscript\lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\catalogloader.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\celestiacore.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
@@ -1110,7 +1122,19 @@
     <ClInclude Include="..\..\Celestia\src\celestia\hud.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\loaddso.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\loadsso.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\loadstars.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\progressnotifier.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h">

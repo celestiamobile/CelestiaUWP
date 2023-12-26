@@ -432,6 +432,7 @@
     <ClInclude Include="..\..\Celestia\src\celephem\vsop87.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\xyzvbinary.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\audiosession.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\catalogloader.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\celestiacore.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\celestiastate.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\configfile.h" />
@@ -440,8 +441,12 @@
     <ClInclude Include="..\..\Celestia\src\celestia\favorites.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\hud.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\loaddso.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\loadsso.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\loadstars.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\progressnotifier.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\textinput.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h" />
@@ -647,6 +652,9 @@
     <ClCompile Include="..\..\Celestia\src\celestia\favorites.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\helper.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\hud.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\loaddso.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\loadsso.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\loadstars.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp" />
