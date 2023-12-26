@@ -95,6 +95,6 @@ namespace winrt::CelestiaAppComponent::implementation
         static CelestiaAppComponent::SystemInformation instance = nullptr;
         if (instance == nullptr)
             instance = make<SystemInformation>();
-        return instance;;
+        return instance;
     }
 }

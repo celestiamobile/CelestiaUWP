@@ -80,7 +80,7 @@ namespace winrt::CelestiaAppComponent::implementation
     private:
         int32_t value;
         hstring name;
-    };;
+    };
 
     struct AppCoreBooleanItem : AppCoreBooleanItemT<AppCoreBooleanItem, SettingBooleanItem>
     {
