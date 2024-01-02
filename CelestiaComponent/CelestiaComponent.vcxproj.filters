@@ -64,6 +64,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\dateformatter.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -176,9 +179,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\dateformatter.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp">
@@ -651,6 +651,9 @@
     <ClInclude Include="..\..\Celestia\src\celutil\color.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\dateformatter.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\filetype.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
@@ -682,6 +685,9 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\timer.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\uniquedel.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h">
@@ -811,9 +817,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\dateformatter.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h">

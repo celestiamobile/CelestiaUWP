@@ -336,7 +336,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\console.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\dateformatter.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
@@ -519,6 +518,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\color.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\dateformatter.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\filetype.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\flag.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\formatnum.h" />
@@ -540,6 +540,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tzutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\unicode.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\uniquedel.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\watcher.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\winutil.h" />
@@ -561,7 +562,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\console.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\dateformatter.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />
@@ -711,6 +711,7 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\dateformatter.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
