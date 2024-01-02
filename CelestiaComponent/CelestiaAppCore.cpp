@@ -393,13 +393,12 @@ namespace winrt::CelestiaComponent::implementation
         UErrorCode status = U_ZERO_ERROR;
         uloc_setDefault(to_string(locale).c_str(), &status);
 #ifdef ENABLE_NLS
-        _putenv_s("LANG", to_string(locale).c_str());
-        std::string dir = to_string(localeDirectory);
-        bindtextdomain("celestia", dir.c_str());
+        _wputenv_s(L"LANG", locale.c_str());
+        wbindtextdomain("celestia", localeDirectory.c_str());
         bind_textdomain_codeset("celestia", "UTF-8");
-        bindtextdomain("celestia-data", dir.c_str());
+        wbindtextdomain("celestia-data", localeDirectory.c_str());
         bind_textdomain_codeset("celestia-data", "UTF-8");
-        bindtextdomain("celestia_ui", dir.c_str());
+        wbindtextdomain("celestia_ui", localeDirectory.c_str());
         bind_textdomain_codeset("celestia_ui", "UTF-8");
         textdomain("celestia");
 #endif
