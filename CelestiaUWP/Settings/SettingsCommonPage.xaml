@@ -4,13 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:app="using:CelestiaAppComponent"
     xmlns:local="using:CelestiaUWP.Settings"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
         <x:Double x:Key="InternalSpacing">4</x:Double>
         <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
-            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -27,7 +28,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
-            <Grid RowSpacing="{StaticResource InternalSpacing}">
+            <Grid RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -40,7 +41,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
-            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}">
+            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -57,7 +58,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="HeaderItemTemplate" x:DataType="app:SettingHeaderItem">
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}" Margin="{StaticResource ListItemMargin}"/>
         </DataTemplate>
 
         <local:SettingsItemTemplateSelector x:Key="SettingsItemTemplateSelector"
@@ -66,11 +67,16 @@
             Selection="{StaticResource SelectionItemTemplate}"
             Header="{StaticResource HeaderItemTemplate}"/>
     </Page.Resources>
-    <Grid>
+    <RelativePanel>
+        <muxc:InfoBar x:Name="RestartHint" IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}" IsClosable="False" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
         <ListView
-          SelectionMode="None"
-          ItemsSource = "{x:Bind Items}"
-          ItemTemplateSelector = "{StaticResource SettingsItemTemplateSelector}">
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="RestartHint"
+            SelectionMode="None"
+            ItemsSource = "{x:Bind Items}"
+            ItemTemplateSelector = "{StaticResource SettingsItemTemplateSelector}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -78,5 +84,5 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-    </Grid>
+    </RelativePanel>
 </Page>

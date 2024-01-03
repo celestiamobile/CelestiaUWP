@@ -13,6 +13,7 @@
 #include <celestia/helper.h>
 #include <celestia/progressnotifier.h>
 #include <celestia/url.h>
+#include <celutil/flag.h>
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
 #endif
@@ -579,6 +580,22 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     FEATUREMETHODS(Farrum)
     FEATUREMETHODS(EruptiveCenter)
     FEATUREMETHODS(Other)
+
+#define INTERACTIONMETHODS(flag) \
+bool CelestiaAppCore::Enable##flag() \
+{ \
+    return celestia::util::is_set(core->getInteractionFlags(), CelestiaCore::InteractionFlags::flag); \
+} \
+void CelestiaAppCore::Enable##flag(bool value) \
+{ \
+    auto flags = core->getInteractionFlags(); \
+    celestia::util::set_or_unset(flags, CelestiaCore::InteractionFlags::flag, value); \
+    core->setInteractionFlags(flags); \
+}
+
+    INTERACTIONMETHODS(ReverseWheel)
+    INTERACTIONMETHODS(RayBasedDragging)
+    INTERACTIONMETHODS(FocusZooming)
 
     int32_t CelestiaAppCore::Resolution()
     {

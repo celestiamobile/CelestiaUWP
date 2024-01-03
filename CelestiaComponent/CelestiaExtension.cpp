@@ -214,6 +214,12 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels;
         else if (name == L"ShowOtherLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels;
+        else if (name == L"EnableReverseWheel")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel;
+        else if (name == L"EnableRayBasedDragging")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging;
+        else if (name == L"EnableFocusZooming")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming;
         return CelestiaComponent::CelestiaSettingBooleanEntry::None;
     }
 
@@ -433,6 +439,12 @@ namespace winrt::CelestiaComponent::implementation
             return L"ShowEruptiveCenterLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             return L"ShowOtherLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel:
+            return L"EnableReverseWheel";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging:
+            return L"EnableRayBasedDragging";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
+            return L"EnableFocusZooming";
         default:
             break;
         }
@@ -751,6 +763,15 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             appCore.ShowOtherLabels(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel:
+            appCore.EnableReverseWheel(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging:
+            appCore.EnableRayBasedDragging(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
+            appCore.EnableFocusZooming(value);
+            break;
         default:
             break;
         }
@@ -995,6 +1016,12 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.ShowEruptiveCenterLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             return appCore.ShowOtherLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel:
+            return appCore.EnableReverseWheel();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging:
+            return appCore.EnableRayBasedDragging();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
+            return appCore.EnableFocusZooming();
         default:
             break;
         }

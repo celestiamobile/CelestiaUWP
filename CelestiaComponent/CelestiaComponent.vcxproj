@@ -182,7 +182,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -199,7 +199,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -216,7 +216,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -233,7 +233,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -250,7 +250,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -267,7 +267,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -284,7 +284,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -301,7 +301,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;ENABLE_FOCUS_ZOOMING;ENABLE_RAY_BASED_DRAGGING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;GL_ES;PORTABLE_BUILD;ENABLE_NLS;USE_SPICE;USE_MINIAUDIO;CELX;USE_ICU;HAVE_WIN_ICU_COMBINED_HEADER;HAVE_MESHOPTIMIZER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>

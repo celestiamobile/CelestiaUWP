@@ -16,6 +16,17 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CelestiaUWP.Settings
 {
+    public class SettingsParameter
+    {
+        public SettingBaseItem[] Items;
+        public bool ShowRestartHint;
+        public SettingsParameter(SettingBaseItem[] items, bool showRestartHint)
+        {
+            this.Items = items;
+            this.ShowRestartHint = showRestartHint;
+        }
+    }
+
     public class SettingsItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Toggle { get; set; }
@@ -50,15 +61,19 @@ namespace CelestiaUWP.Settings
     public sealed partial class SettingsCommonPage : Page
     {
         private SettingBaseItem[] Items;
+        private bool ShowRestartHint;
 
         public SettingsCommonPage()
         {
             this.InitializeComponent();
+            RestartHint.Title = LocalizationHelper.Localize("Some configurations will take effect after a restart.");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Items = (SettingBaseItem[])e.Parameter;
+            var parameter = (SettingsParameter)e.Parameter;
+            Items = parameter.Items;
+            ShowRestartHint = parameter.ShowRestartHint;
         }
     }
 }

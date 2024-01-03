@@ -113,6 +113,9 @@ namespace CelestiaComponent
         ShowFarrumLabels,
         ShowEruptiveCenterLabels,
         ShowOtherLabels,
+        EnableReverseWheel,
+        EnableRayBasedDragging,
+        EnableFocusZooming,
     };
 
     enum CelestiaSettingInt32Entry

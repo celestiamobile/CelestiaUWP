@@ -252,6 +252,10 @@ namespace CelestiaComponent
         Boolean ShowPlanetographicGrid;
         Boolean ShowTerminator;
 
+        Boolean EnableReverseWheel;
+        Boolean EnableRayBasedDragging;
+        Boolean EnableFocusZooming;
+
         Int32 TimeZone;
         Int32 MeasurementSystem;
         Int32 TemperatureScale;

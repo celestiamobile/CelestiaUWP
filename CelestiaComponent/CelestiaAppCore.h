@@ -305,6 +305,13 @@ namespace winrt::CelestiaComponent::implementation
         bool ShowTerminator();
         void ShowTerminator(bool showTerminator);
 
+        bool EnableReverseWheel();
+        void EnableReverseWheel(bool value);
+        bool EnableRayBasedDragging();
+        void EnableRayBasedDragging(bool value);
+        bool EnableFocusZooming();
+        void EnableFocusZooming(bool value);
+
         int32_t TimeZone();
         void TimeZone(int32_t timeZone);
 

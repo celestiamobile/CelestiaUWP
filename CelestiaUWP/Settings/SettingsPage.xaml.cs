@@ -104,7 +104,7 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Cloud Shadows"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowCloudShadows, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Night Lights"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowNightMaps, localSettings),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, false));
             }
             else if (item.Tag == "guides")
             {
@@ -139,7 +139,7 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Markers"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowMarkers, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Ecliptic Line"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowEcliptic, localSettings)
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, false));
             }
             else if (item.Tag == "labels")
             {
@@ -173,7 +173,7 @@ namespace CelestiaUWP.Settings
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Volcanoes"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowEruptiveCenterLabels, localSettings),
                     new AppCoreBooleanItem(LocalizationHelper.Localize("Other"), AppCore, Renderer, CelestiaSettingBooleanEntry.ShowOtherLabels, localSettings)
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, false));
             }
             else if (item.Tag == "renderer")
             {
@@ -206,7 +206,7 @@ namespace CelestiaUWP.Settings
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("HiDPI"), AppSettings, AppSettingBooleanEntry.UseFullDPI, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Anti-aliasing"), AppSettings, AppSettingBooleanEntry.EnableMSAA, localSettings),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, true));
             }
             else if (item.Tag == "region")
             {
@@ -246,15 +246,18 @@ namespace CelestiaUWP.Settings
                     }, localSettings),
                     new LanguageInt32Item(LocalizationHelper.Localize("Language"), AppSettings, AvailableLanguages, localSettings),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, true));
             }
             else if (item.Tag == "interaction")
             {
                 var items = new SettingBaseItem[]
                 {
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Reverse Mouse Wheel"), AppCore, Renderer, CelestiaSettingBooleanEntry.EnableReverseWheel, localSettings),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Ray-Based Dragging"), AppCore, Renderer, CelestiaSettingBooleanEntry.EnableRayBasedDragging, localSettings, LocalizationHelper.Localize("Dragging behavior based on change of pick rays instead of screen coordinates")),
+                    new AppCoreBooleanItem(LocalizationHelper.Localize("Focus Zooming"), AppCore, Renderer, CelestiaSettingBooleanEntry.EnableFocusZooming, localSettings, LocalizationHelper.Localize("Zooming behavior keeping the original focus location on screen")),
                     new AppSettingsDoubleItem(LocalizationHelper.Localize("Sensitivity"), AppSettings, AppSettingDoubleEntry.PickSensitivity, 1.0, 20.0, 1.0, localSettings, LocalizationHelper.Localize("Sensitivity for object selection")),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, true));
             }
             else if (item.Tag == "gamepad")
             {
@@ -295,7 +298,7 @@ namespace CelestiaUWP.Settings
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Horizontally"), AppSettings, AppSettingBooleanEntry.GamepadInvertX, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Vertically"), AppSettings, AppSettingBooleanEntry.GamepadInvertY, localSettings),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, false));
             }
             else if (item.Tag == "advanced")
             {
@@ -309,7 +312,7 @@ namespace CelestiaUWP.Settings
                         new OptionPair(2, LocalizationHelper.Localize("Deny")),
                     }, localSettings, LocalizationHelper.Localize("Lua scripts' access to the file system")),
                 };
-                Container.Navigate(typeof(SettingsCommonPage), items);
+                Container.Navigate(typeof(SettingsCommonPage), new SettingsParameter(items, false));
             }
         }
 
