@@ -594,6 +594,9 @@
     <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\gl\binder.cpp">
+      <Filter>Celestia\celrender\gl</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\gl\buffer.cpp">
       <Filter>Celestia\celrender\gl</Filter>
     </ClCompile>
@@ -1256,6 +1259,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\rendererfwd.h">
       <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\gl\binder.h">
+      <Filter>Celestia\celrender\gl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\gl\buffer.h">
       <Filter>Celestia\celrender\gl</Filter>
