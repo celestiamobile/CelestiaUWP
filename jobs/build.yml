@@ -43,31 +43,13 @@ jobs:
 
   - script: |
       cd CelestiaUWP
-      git config --global user.email "name@name.com"
-      git config --global user.name "Name Name"
-      git cherry-pick origin/nuget-dependencies-$(Build.SourceBranchName)
-    displayName: 'Cherry-Pick Pre-built Nuget Changes'
-    condition: ne( variables['Build.Reason'], 'PullRequest' )
-
-  - script: |
-      cd CelestiaUWP
-      git config --global user.email "name@name.com"
-      git config --global user.name "Name Name"
-      git cherry-pick origin/nuget-dependencies-$(System.PullRequest.TargetBranch)
-    displayName: 'Cherry-Pick Pre-built Nuget Changes (PR)'
-    condition: eq( variables['Build.Reason'], 'PullRequest' )
+      git apply patches/nuget/nuget.patch --ignore-whitespace --whitespace=nowarn
+    displayName: 'Apply Nuget Patches'
 
   - script: |
       cd Celestia
-      git cherry-pick origin/angle-$(Build.SourceBranchName)
-    displayName: 'Cherry-Pick Commits'
-    condition: ne( variables['Build.Reason'], 'PullRequest' )
-
-  - script: |
-      cd Celestia
-      git cherry-pick origin/angle-$(System.PullRequest.TargetBranch)
-    displayName: 'Cherry-Pick Commits (PR)'
-    condition: eq( variables['Build.Reason'], 'PullRequest' )
+      git apply ../CelestiaUWP/patches/angle/celestia.patch --ignore-whitespace --whitespace=nowarn
+    displayName: 'Apply ANGLE Patches'
 
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\run_gperf.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"
