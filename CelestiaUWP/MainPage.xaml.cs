@@ -269,12 +269,12 @@ namespace CelestiaUWP
                 };
             var defaultFont = ("NotoSans-Regular.ttf", 0, "NotoSans-Bold.ttf", 0);
             var font = fontMap.GetValueOrDefault(LocalizationHelper.Locale, defaultFont);
-
+            var textScaleFactor = new UISettings().TextScaleFactor;
             var pathPrefix = PathHelper.Combine(defaultResourcePath, "fonts");
-            mAppCore.SetHudFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9);
-            mAppCore.SetHudTitleFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15);
-            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, 9, CelestiaFontStyle.Normal);
-            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, 15, CelestiaFontStyle.Large);
+            mAppCore.SetHudFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, (int)(9 * textScaleFactor));
+            mAppCore.SetHudTitleFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, (int)(15 * textScaleFactor));
+            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item1), font.Item2, (int)(9 * textScaleFactor), CelestiaFontStyle.Normal);
+            mAppCore.SetRenderFont(PathHelper.Combine(pathPrefix, font.Item3), font.Item4, (int)(15 * textScaleFactor), CelestiaFontStyle.Large);
         }
 
         private void ShowLoadingFailure()
