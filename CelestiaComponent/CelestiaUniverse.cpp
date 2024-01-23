@@ -241,9 +241,10 @@ namespace winrt::CelestiaComponent::implementation
 		return dsoCatalog;
 	}
 
-    CelestiaComponent::CelestiaStarBrowser CelestiaUniverse::StarBrowser(CelestiaComponent::CelestiaStarBrowserType type)
+    CelestiaComponent::CelestiaStarBrowser CelestiaUniverse::StarBrowser(CelestiaComponent::CelestiaStarBrowserType type, CelestiaComponent::CelestiaObserver const& observer)
     {
         auto b = new celestia::engine::StarBrowser(u);
+        auto o = get_self<CelestiaObserver>(observer)->o;
         switch (type)
         {
         case CelestiaComponent::CelestiaStarBrowserType::Nearest:
@@ -265,6 +266,8 @@ namespace winrt::CelestiaComponent::implementation
         default:
             break;
         }
+        b->setPosition(o->getPosition());
+        b->setTime(o->getTime());
         return make<CelestiaStarBrowser>(b);
     }
 }

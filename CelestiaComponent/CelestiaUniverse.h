@@ -10,13 +10,14 @@
 #pragma once
 
 #include <celengine/universe.h>
-#include "CelestiaStar.h"
+#include "CelestiaDSOCatalog.h"
 #include "CelestiaBody.h"
 #include "CelestiaBrowserItem.h"
+#include "CelestiaObserver.h"
 #include "CelestiaSelection.h"
-#include "CelestiaStarCatalog.h"
-#include "CelestiaDSOCatalog.h"
+#include "CelestiaStar.h"
 #include "CelestiaStarBrowser.h"
+#include "CelestiaStarCatalog.h"
 #include "CelestiaUniverse.g.h"
 
 namespace winrt::CelestiaComponent::implementation
@@ -39,7 +40,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaStarCatalog StarCatalog();
         CelestiaComponent::CelestiaDSOCatalog DSOCatalog();
 
-        CelestiaComponent::CelestiaStarBrowser StarBrowser(CelestiaComponent::CelestiaStarBrowserType type);
+        CelestiaComponent::CelestiaStarBrowser StarBrowser(CelestiaComponent::CelestiaStarBrowserType type, CelestiaComponent::CelestiaObserver const& observer);
 
         Universe* u;
 

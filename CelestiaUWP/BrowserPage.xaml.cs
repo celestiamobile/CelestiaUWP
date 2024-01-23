@@ -52,6 +52,10 @@ namespace CelestiaUWP
             AppCore = parameter.Item1;
             Renderer = parameter.Item2;
 
+            var simulation = AppCore.Simulation;
+            var universe = simulation.Universe;
+            var observer = simulation.ActiveObserver;
+
             if (SolRoot == null)
             {
                 // Static should just initialize once
@@ -61,7 +65,7 @@ namespace CelestiaUWP
                     var solStar = sol.Object;
                     if (solStar is CelestiaStar)
                     {
-                        SolRoot = new BrowserItem[] { new BrowserItem(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false)) };
+                        SolRoot = new BrowserItem[] { new BrowserItem(new CelestiaBrowserItem(universe.StarCatalog.StarName((CelestiaStar)solStar), solStar, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false)) };
                     }
                 }
             }
@@ -70,20 +74,20 @@ namespace CelestiaUWP
 
             if (BrightestStars == null)
             {
-                var bsb = AppCore.Simulation.Universe.StarBrowser(CelestiaStarBrowserType.Brightest);
+                var bsb = universe.StarBrowser(CelestiaStarBrowserType.Brightest, observer);
                 var brightest = bsb.Stars;
                 bsb.Dispose();
                 var s = new List<CelestiaBrowserItem>();
                 foreach (var star in brightest)
                 {
-                    s.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, true));
+                    s.Add(new CelestiaBrowserItem(universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, true));
                 }
                 BrightestStars = new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s.ToArray(), true));
             }
 
-            var nsb = AppCore.Simulation.Universe.StarBrowser(CelestiaStarBrowserType.Nearest);
-            var bsb2 = AppCore.Simulation.Universe.StarBrowser(CelestiaStarBrowserType.Brighter);
-            var hsb = AppCore.Simulation.Universe.StarBrowser(CelestiaStarBrowserType.WithPlants);
+            var nsb = universe.StarBrowser(CelestiaStarBrowserType.Nearest, observer);
+            var bsb2 = universe.StarBrowser(CelestiaStarBrowserType.Brighter, observer);
+            var hsb = universe.StarBrowser(CelestiaStarBrowserType.WithPlants, observer);
             var nearest = nsb.Stars;
             var brighter = bsb2.Stars;
             var hasPlanets = hsb.Stars;
@@ -96,15 +100,15 @@ namespace CelestiaUWP
             var s3 = new List<CelestiaBrowserItem>();
             foreach (var star in nearest)
             {
-                s1.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
+                s1.Add(new CelestiaBrowserItem(universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
             foreach (var star in brighter)
             {
-                s2.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
+                s2.Add(new CelestiaBrowserItem(universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
             foreach (var star in hasPlanets)
             {
-                s3.Add(new CelestiaBrowserItem(AppCore.Simulation.Universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
+                s3.Add(new CelestiaBrowserItem(universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, false));
             }
             StarRoot = new BrowserItem[]
             {
@@ -144,7 +148,7 @@ namespace CelestiaUWP
                     LocalizationHelper.Localize("Open Clusters"),
                     LocalizationHelper.Localize("Unknown"),
                 };
-                var dsoCatalog = AppCore.Simulation.Universe.DSOCatalog;
+                var dsoCatalog = universe.DSOCatalog;
                 for (int i = 0; i < dsoCatalog.Count; i++)
                 {
                     var dso = dsoCatalog.DSOAt(i);

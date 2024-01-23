@@ -7,13 +7,14 @@
 // of the License, or (at your option) any later version.
 //
 
-import "CelestiaStar.idl";
 import "CelestiaBody.idl";
 import "CelestiaBrowserItem.idl";
+import "CelestiaObserver.idl";
 import "CelestiaSelection.idl";
+import "CelestiaStar.idl";
+import "CelestiaStarBrowser.idl";
 import "CelestiaStarCatalog.idl";
 import "CelestiaDSOCatalog.idl";
-import "CelestiaStarBrowser.idl";
 
 namespace CelestiaComponent
 {
@@ -50,6 +51,6 @@ namespace CelestiaComponent
 
         CelestiaStarCatalog StarCatalog{ get; };
         CelestiaDSOCatalog DSOCatalog{ get; };
-        CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type);
+        CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type, CelestiaObserver observer);
     }
 }
