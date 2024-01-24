@@ -193,9 +193,6 @@
     <Compile Include="Web\SafeWebPage.xaml.cs">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WelcomeDialog.xaml.cs">
-      <DependentUpon>WelcomeDialog.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -349,10 +346,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Web\SafeWebPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WelcomeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

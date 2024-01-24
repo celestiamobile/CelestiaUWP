@@ -56,7 +56,6 @@ namespace CelestiaUWP
         private StorageFile ScriptFileToOpen;
         private Uri URLToOpen;
         private bool ReadyForInput = false;
-        private bool DidShowXboxWelcomeMessage = false;
         private bool isMouseHidden = false;
 
         private AppSettings _appSetting;
@@ -1167,10 +1166,7 @@ namespace CelestiaUWP
             helpItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
             {
-                if (isXbox)
-                    ShowXboxHelp();
-                else
-                    ShowNonXboxHelp();
+                ShowHelp();
             });
             AppendItem(helpItem, LocalizationHelper.Localize("About Celestia"), (sender, arg) =>
             {
@@ -1347,43 +1343,19 @@ namespace CelestiaUWP
             }
         }
 
-        async void ShowXboxHelp()
-        {
-            var welcomeDialog = new WelcomeDialog();
-            await ContentDialogHelper.ShowContentDialogAsync(this, welcomeDialog);
-
-            if (welcomeDialog.ShouldNotShowMessageAgain)
-            {
-                AppSettings.IgnoreXboxWelcomeMessage = true;
-                AppSettings.Save(ApplicationData.Current.LocalSettings);
-            }
-        }
-
-        void ShowNonXboxHelp()
+        void ShowHelp()
         {
             ShowPage(typeof(SafeWebPage), new Size(450, 0), GenerateWebArgsForPath("/help/welcome"));
         }
 
         bool ShowHelpIfNeeded()
         {
-            if (!isXbox)
+            if (!AppSettings.OnboardMessageDisplayed)
             {
-                if (!AppSettings.OnboardMessageDisplayed)
-                {
-                    AppSettings.OnboardMessageDisplayed = true;
-                    AppSettings.Save(ApplicationData.Current.LocalSettings);
-                    ShowNonXboxHelp();
-                    return true;
-                }
-            }
-            else
-            {
-                if (!DidShowXboxWelcomeMessage && !AppSettings.IgnoreXboxWelcomeMessage)
-                {
-                    DidShowXboxWelcomeMessage = true;
-                    ShowXboxHelp();
-                    return true;
-                }
+                AppSettings.OnboardMessageDisplayed = true;
+                AppSettings.Save(ApplicationData.Current.LocalSettings);
+                ShowHelp();
+                return true;
             }
             return false;
         }
