@@ -21,8 +21,8 @@ namespace CelestiaUWP
         public AboutDialog(string authorFilePath, string translatorFilePath)
         {
             this.InitializeComponent();
-            Title = LocalizationHelper.Localize("About Celestia");
-            PrimaryButtonText = LocalizationHelper.Localize("OK");
+            Title = LocalizationHelper.Localize("About Celestia", "");
+            PrimaryButtonText = LocalizationHelper.Localize("OK", "");
             var version = SystemInformation.Instance.ApplicationVersion;
 
             VersionLabel.Text = string.Format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
@@ -37,11 +37,11 @@ namespace CelestiaUWP
                 var authorFile = await StorageFile.GetFileFromPathAsync(authorFilePath);
                 var authorContent = await FileIO.ReadTextAsync(authorFile);
                 AuthorLabel.Text = authorContent;
-                AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:");
+                AuthorTitleLabel.Text = LocalizationHelper.Localize("Authors:", "");
                 var tanslatorFile = await StorageFile.GetFileFromPathAsync(translatorFilePath);
                 var translatorContent = await FileIO.ReadTextAsync(tanslatorFile);
                 TranslatorLabel.Text = translatorContent;
-                TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:");
+                TranslatorTitleLabel.Text = LocalizationHelper.Localize("Translators:", "");
             }
             catch { };
 

@@ -51,14 +51,14 @@ namespace CelestiaUWP
         public EclipseFinderPage()
         {
             this.InitializeComponent();
-            GoButton.Content = LocalizationHelper.Localize("Set Date and Go to Planet");
-            ComputeButton.Content = LocalizationHelper.Localize("Compute");
-            StartTimeHint.Text = LocalizationHelper.Localize("Start time:");
-            EndTimeHint.Text = LocalizationHelper.Localize("End time:");
-            ObjectHint.Text = LocalizationHelper.Localize("Object:");
-            SolarEclipseButton.Content = LocalizationHelper.Localize("Solar");
-            LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar");
-            EmptyHintText.Text = LocalizationHelper.Localize("Find eclipses for an object in a time range");
+            GoButton.Content = LocalizationHelper.Localize("Set Date and Go to Planet", "");
+            ComputeButton.Content = LocalizationHelper.Localize("Compute", "");
+            StartTimeHint.Text = LocalizationHelper.Localize("Start time:", "");
+            EndTimeHint.Text = LocalizationHelper.Localize("End time:", "");
+            ObjectHint.Text = LocalizationHelper.Localize("Object:", "");
+            SolarEclipseButton.Content = LocalizationHelper.Localize("Solar", "");
+            LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar", "");
+            EmptyHintText.Text = LocalizationHelper.Localize("Find eclipses for an object in a time range", "");
             var obj = AvailableObjects[0];
             ObjectChooser.Text = obj.Name;
             objectPath = obj.Path;
@@ -101,7 +101,7 @@ namespace CelestiaUWP
             if (body == null || !(body is CelestiaBody))
                 return;
 
-            ComputeButton.Content = LocalizationHelper.Localize("Cancel");
+            ComputeButton.Content = LocalizationHelper.Localize("Cancel", "");
             EmptyHintText.Visibility = Visibility.Collapsed;
             LoadingIndicator.Visibility = Visibility.Visible;
             ResultList.Visibility = Visibility.Collapsed;
@@ -110,14 +110,14 @@ namespace CelestiaUWP
             LoadingIndicator.Visibility = Visibility.Collapsed;
             if (eclipses.Length == 0)
             {
-                EmptyHintText.Text = LocalizationHelper.Localize("No eclipse is found for the given object in the time range");
+                EmptyHintText.Text = LocalizationHelper.Localize("No eclipse is found for the given object in the time range", "");
                 EmptyHintText.Visibility = Visibility.Visible;
             }
             else
             {
                 ResultList.Visibility = Visibility.Visible;
             }
-            ComputeButton.Content = LocalizationHelper.Localize("Compute");
+            ComputeButton.Content = LocalizationHelper.Localize("Compute", "");
         }
 
         private async Task<CelestiaEclipse[]> Compute(CelestiaBody body, CelestiaEclipseKind kind, DateTime startTime, DateTime endTime)

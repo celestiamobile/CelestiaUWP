@@ -49,9 +49,9 @@ namespace CelestiaUWP
         public int Unit = 1;
         private readonly string[] Units = new string[]
         {
-            LocalizationHelper.Localize("km"),
-            LocalizationHelper.Localize("radii"),
-            LocalizationHelper.Localize("au")
+            LocalizationHelper.Localize("km", ""),
+            LocalizationHelper.Localize("radii", ""),
+            LocalizationHelper.Localize("au", "")
         };
 
         public GotoObjectDialog(CelestiaAppCore appCore, CelestiaRenderer renderer)
@@ -61,16 +61,16 @@ namespace CelestiaUWP
             this.appCore = appCore;
             this.renderer = renderer;
             this.InitializeComponent();
-            Title = LocalizationHelper.Localize("Go to Object");
-            PrimaryButtonText = LocalizationHelper.Localize("OK");
-            SecondaryButtonText = LocalizationHelper.Localize("Cancel");
-            ObjectNameText.PlaceholderText = LocalizationHelper.Localize("Object Name");
+            Title = LocalizationHelper.Localize("Go to Object", "");
+            PrimaryButtonText = LocalizationHelper.Localize("OK", "");
+            SecondaryButtonText = LocalizationHelper.Localize("Cancel", "");
+            ObjectNameText.PlaceholderText = LocalizationHelper.Localize("Object Name", "");
             LongitudeText.Text = NumberFormatter.FormatDouble((double)Longitude);
             LatitudeText.Text = NumberFormatter.FormatDouble((double)Latitude);
             DistanceText.Text = NumberFormatter.FormatDouble(Distance);
-            LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude");
-            LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude");
-            DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance");
+            LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude", "");
+            LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude", "");
+            DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance", "");
         }
 
         private void LongitudeText_TextChanged(object sender, TextChangedEventArgs args)

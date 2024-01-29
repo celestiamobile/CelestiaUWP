@@ -430,7 +430,8 @@ namespace winrt::CelestiaComponent::implementation
 #ifdef ENABLE_NLS
         if (original.empty())
             return original;
-        const char *aux = fmt::format("{}\004{}", to_string(context).c_str(), to_string(original).c_str());
+        std::string auxStr = fmt::format("{}\004{}", to_string(context).c_str(), to_string(original).c_str());
+        const char *aux = auxStr.c_str();
         const char *translation = dgettext(to_string(domain).c_str(), aux);
         return translation == aux ? original : to_hstring(translation);
 #else

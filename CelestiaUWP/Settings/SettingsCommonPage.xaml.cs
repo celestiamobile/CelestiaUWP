@@ -66,7 +66,7 @@ namespace CelestiaUWP.Settings
         public SettingsCommonPage()
         {
             this.InitializeComponent();
-            RestartHint.Title = LocalizationHelper.Localize("Some configurations will take effect after a restart.");
+            RestartHint.Title = LocalizationHelper.Localize("Some configurations will take effect after a restart.", "");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

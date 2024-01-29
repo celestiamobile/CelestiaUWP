@@ -18,7 +18,7 @@ namespace winrt::CelestiaAppComponent::implementation
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(message));
-        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK"));
+        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
         dialog.IsSecondaryButtonEnabled(false);
         co_await ShowContentDialogAsync(element, dialog);
     }
@@ -28,8 +28,8 @@ namespace winrt::CelestiaAppComponent::implementation
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(message));
-        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK"));
-        dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel"));
+        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
+        dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
         dialog.IsSecondaryButtonEnabled(true);
         auto result{ co_await ShowContentDialogAsync(element, dialog) };
         co_return result == ContentDialogResult::Primary;
@@ -40,8 +40,8 @@ namespace winrt::CelestiaAppComponent::implementation
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(message));
-        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK"));
-        dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel"));
+        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
+        dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
         dialog.IsSecondaryButtonEnabled(true);
         TextBox textBox;
         dialog.Content(textBox);
@@ -57,7 +57,7 @@ namespace winrt::CelestiaAppComponent::implementation
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(title));
-        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK"));
+        dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
         dialog.IsSecondaryButtonEnabled(false);
         TextBox textBox;
         textBox.TextWrapping(TextWrapping::Wrap);

@@ -70,7 +70,7 @@ namespace CelestiaUWP
                 }
             }
             if (SolRoot != null)
-                RootItems.Add(new BrowserItemTab(SolRoot, LocalizationHelper.Localize("Solar System")));
+                RootItems.Add(new BrowserItemTab(SolRoot, LocalizationHelper.Localize("Solar System", "")));
 
             if (BrightestStars == null)
             {
@@ -82,7 +82,7 @@ namespace CelestiaUWP
                 {
                     s.Add(new CelestiaBrowserItem(universe.StarCatalog.StarName(star), star, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, AppCore); }, true));
                 }
-                BrightestStars = new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)"), s.ToArray(), true));
+                BrightestStars = new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars (Absolute Magnitude)", ""), s.ToArray(), true));
             }
 
             var nsb = universe.StarBrowser(CelestiaStarBrowserType.Nearest, observer);
@@ -112,12 +112,12 @@ namespace CelestiaUWP
             }
             StarRoot = new BrowserItem[]
             {
-                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars"), s1.ToArray(), true)),
-                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars"), s2.ToArray(), true)),
+                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Nearest Stars", ""), s1.ToArray(), true)),
+                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Brightest Stars", ""), s2.ToArray(), true)),
                 BrightestStars,
-                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets"), s3.ToArray(), true)),
+                new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets", ""), s3.ToArray(), true)),
             };
-            RootItems.Add(new BrowserItemTab(StarRoot, LocalizationHelper.Localize("Stars")));
+            RootItems.Add(new BrowserItemTab(StarRoot, LocalizationHelper.Localize("Stars", "")));
 
             if (DSORoot == null)
             {
@@ -139,14 +139,14 @@ namespace CelestiaUWP
                 }
                 var categoryNames = new string[]
                 {
-                    LocalizationHelper.Localize("Galaxies (Barred Spiral)"),
-                    LocalizationHelper.Localize("Galaxies (Spiral)"),
-                    LocalizationHelper.Localize("Galaxies (Elliptical)"),
-                    LocalizationHelper.Localize("Galaxies (Irregular)"),
-                    LocalizationHelper.Localize("Nebulae"),
-                    LocalizationHelper.Localize("Globulars"),
-                    LocalizationHelper.Localize("Open Clusters"),
-                    LocalizationHelper.Localize("Unknown"),
+                    LocalizationHelper.Localize("Galaxies (Barred Spiral)", ""),
+                    LocalizationHelper.Localize("Galaxies (Spiral)", ""),
+                    LocalizationHelper.Localize("Galaxies (Elliptical)", ""),
+                    LocalizationHelper.Localize("Galaxies (Irregular)", ""),
+                    LocalizationHelper.Localize("Nebulae", ""),
+                    LocalizationHelper.Localize("Globulars", ""),
+                    LocalizationHelper.Localize("Open Clusters", ""),
+                    LocalizationHelper.Localize("Unknown", ""),
                 };
                 var dsoCatalog = universe.DSOCatalog;
                 for (int i = 0; i < dsoCatalog.Count; i++)
@@ -174,21 +174,21 @@ namespace CelestiaUWP
                 }
                 DSORoot = dsoCategories.ToArray();
             }
-            RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs")));
+            RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs", "")));
             var getInfoButton = new Button
             {
-                Content = LocalizationHelper.Localize("Get Info")
+                Content = LocalizationHelper.Localize("Get Info", "")
             };
             getInfoButton.Click += GetInfoButton_Click;
             ButtonStack.Children.Add(getInfoButton);
             var actions = new (string, short)[]
                 {
-                    (LocalizationHelper.Localize("Go"), 103),
-                    (LocalizationHelper.Localize("Follow"), 102),
-                    (LocalizationHelper.Localize("Sync Orbit"), 121),
-                    (LocalizationHelper.Localize("Lock Phase"), 58),
-                    (LocalizationHelper.Localize("Chase"), 34),
-                    (LocalizationHelper.Localize("Track"), 116)
+                    (LocalizationHelper.Localize("Go", ""), 103),
+                    (LocalizationHelper.Localize("Follow", ""), 102),
+                    (LocalizationHelper.Localize("Sync Orbit", ""), 121),
+                    (LocalizationHelper.Localize("Lock Phase", ""), 58),
+                    (LocalizationHelper.Localize("Chase", ""), 34),
+                    (LocalizationHelper.Localize("Track", ""), 116)
                 };
             foreach (var action in actions)
             {
