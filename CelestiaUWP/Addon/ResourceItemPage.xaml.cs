@@ -65,8 +65,8 @@ namespace CelestiaUWP.Addon
         public ResourceItemPage()
         {
             this.InitializeComponent();
-            GoButton.Content = LocalizationHelper.Localize("Go");
-            ActionButton.Content = LocalizationHelper.Localize("Install");
+            GoButton.Content = LocalizationHelper.Localize("Go", "");
+            ActionButton.Content = LocalizationHelper.Localize("Install", "");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -123,21 +123,21 @@ namespace CelestiaUWP.Addon
 
         private void UpdateState()
         {
-            GoButton.Content = Item.Type == "script" ? LocalizationHelper.Localize("Run") :LocalizationHelper.Localize("Go");
+            GoButton.Content = Item.Type == "script" ? LocalizationHelper.Localize("Run", "") :LocalizationHelper.Localize("Go", "");
 
             switch (State)
             {
                 case ResourceItemState.Downloading:
                     InstallProgressBar.Visibility = Visibility.Visible;
-                    ActionButton.Content = LocalizationHelper.Localize("Cancel");
+                    ActionButton.Content = LocalizationHelper.Localize("Cancel", "");
                     break;
                 case ResourceItemState.Installed:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
-                    ActionButton.Content = LocalizationHelper.Localize("Uninstall");
+                    ActionButton.Content = LocalizationHelper.Localize("Uninstall", "");
                     break;
                 case ResourceItemState.None:
                     InstallProgressBar.Visibility = Visibility.Collapsed;
-                    ActionButton.Content = LocalizationHelper.Localize("Install");
+                    ActionButton.Content = LocalizationHelper.Localize("Install", "");
                     break;
             }
 
@@ -236,7 +236,7 @@ namespace CelestiaUWP.Addon
             var selection = AppCore.Simulation.Find(Item.DemoObjectName);
             if (selection.IsEmpty)
             {
-                await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+                await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found.", ""));
                 return;
             }
 

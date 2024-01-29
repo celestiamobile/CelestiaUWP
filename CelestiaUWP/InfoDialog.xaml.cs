@@ -21,7 +21,7 @@ namespace CelestiaUWP
         public InfoDialog(string text)
         {
             this.InitializeComponent();
-            PrimaryButtonText = LocalizationHelper.Localize("OK");
+            PrimaryButtonText = LocalizationHelper.Localize("OK", "");
             Text = text;
         }
 

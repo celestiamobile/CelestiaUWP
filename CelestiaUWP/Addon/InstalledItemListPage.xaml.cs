@@ -40,9 +40,9 @@ namespace CelestiaUWP.Addon
         public InstalledItemListPage()
         {
             this.InitializeComponent();
-            Title.Text = LocalizationHelper.Localize("Installed");
-            EmptyHintText.Text = LocalizationHelper.Localize("Enhance Celestia with online add-ons");
-            EmptyHintButton.Content = LocalizationHelper.Localize("Get Add-ons");
+            Title.Text = LocalizationHelper.Localize("Installed", "");
+            EmptyHintText.Text = LocalizationHelper.Localize("Enhance Celestia with online add-ons", "");
+            EmptyHintButton.Content = LocalizationHelper.Localize("Get Add-ons", "");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

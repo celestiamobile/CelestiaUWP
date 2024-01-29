@@ -40,7 +40,7 @@ namespace CelestiaUWP
         {
             this.InitializeComponent();
 
-            ConfirmButton.Content = LocalizationHelper.Localize("OK");
+            ConfirmButton.Content = LocalizationHelper.Localize("OK", "");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

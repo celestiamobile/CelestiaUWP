@@ -171,7 +171,7 @@ namespace CelestiaUWP
                 {
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        LoadingText.Text = string.Format(LocalizationHelper.Localize("Loading: %s").Replace("%s", "{0}"), progress);
+                        LoadingText.Text = string.Format(LocalizationHelper.Localize("Loading: %s", "").Replace("%s", "{0}"), progress);
                     });
                 }
 
@@ -184,7 +184,7 @@ namespace CelestiaUWP
                         // Try to restore originial settings
                         _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                         {
-                            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration."));
+                            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration.", ""));
                         });
                         Directory.SetCurrentDirectory(defaultResourcePath);
                         CelestiaAppCore.SetLocaleDirectory(PathHelper.Combine(defaultResourcePath, "locale"), locale);
@@ -272,7 +272,7 @@ namespace CelestiaUWP
 
         private void ShowLoadingFailure()
         {
-            LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…");
+            LoadingText.Text = LocalizationHelper.Localize("Loading Celestia failed…", "");
         }
 
         private async void OpenFileOrURL()
@@ -287,7 +287,7 @@ namespace CelestiaUWP
                 try
                 {
                     var copiedFile = await scriptFile.CopyAsync(tempFolder, GuidHelper.CreateNewGuid().ToString() + fileExtension, Windows.Storage.NameCollisionOption.ReplaceExisting);
-                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?")))
+                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Run script?", "")))
                     {
                         mRenderer.EnqueueTask(() =>
                         {
@@ -338,7 +338,7 @@ namespace CelestiaUWP
                 }
                 else if (url.Scheme == "cel")
                 {
-                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?")))
+                    if (await ContentDialogHelper.ShowOption(this, LocalizationHelper.Localize("Open URL?", "")))
                     {
                         mRenderer.EnqueueTask(() =>
                         {
@@ -467,7 +467,7 @@ namespace CelestiaUWP
                       var menu = new MenuFlyout();
                       AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
                       menu.Items.Add(new MenuFlyoutSeparator());
-                      AppendItem(menu, LocalizationHelper.Localize("Get Info"), (sender, arg) =>
+                      AppendItem(menu, LocalizationHelper.Localize("Get Info", ""), (sender, arg) =>
                       {
                           ShowInfo(selection);
                       });
@@ -476,9 +476,9 @@ namespace CelestiaUWP
 
                       var actions = new (string, short)[]
                       {
-                        (LocalizationHelper.Localize("Go"), 103),
-                        (LocalizationHelper.Localize("Follow"), 102),
-                        (LocalizationHelper.Localize("Sync Orbit"), 121),
+                        (LocalizationHelper.Localize("Go", ""), 103),
+                        (LocalizationHelper.Localize("Follow", ""), 102),
+                        (LocalizationHelper.Localize("Sync Orbit", ""), 121),
                       };
 
                       foreach (var action in actions)
@@ -502,9 +502,9 @@ namespace CelestiaUWP
 
                               var altSur = new MenuFlyoutSubItem
                               {
-                                  Text = LocalizationHelper.Localize("Alternate Surfaces")
+                                  Text = LocalizationHelper.Localize("Alternate Surfaces", "")
                               };
-                              AppendSubItem(altSur, LocalizationHelper.Localize("Default"), (sender, arg) =>
+                              AppendSubItem(altSur, LocalizationHelper.Localize("Default", ""), (sender, arg) =>
                               {
                                   mRenderer.EnqueueTask(() =>
                                   {
@@ -529,17 +529,17 @@ namespace CelestiaUWP
                           menu.Items.Add(new MenuFlyoutSeparator());
                           var refMarkMenu = new MenuFlyoutSubItem
                           {
-                              Text = LocalizationHelper.Localize("Reference Vectors")
+                              Text = LocalizationHelper.Localize("Reference Vectors", "")
                           };
 
                           var refMarkMenuActions = new (string, string)[]
                           {
-                              (LocalizationHelper.Localize("Show Body Axes"), "ShowBodyAxes"),
-                              (LocalizationHelper.Localize("Show Frame Axes"), "ShowFrameAxes"),
-                              (LocalizationHelper.Localize("Show Sun Direction"), "ShowSunDirection"),
-                              (LocalizationHelper.Localize("Show Velocity Vector"), "ShowVelocityVector"),
-                              (LocalizationHelper.Localize("Show Planetographic Grid"), "ShowPlanetographicGrid"),
-                              (LocalizationHelper.Localize("Show Terminator"), "ShowTerminator")
+                              (LocalizationHelper.Localize("Show Body Axes", ""), "ShowBodyAxes"),
+                              (LocalizationHelper.Localize("Show Frame Axes", ""), "ShowFrameAxes"),
+                              (LocalizationHelper.Localize("Show Sun Direction", ""), "ShowSunDirection"),
+                              (LocalizationHelper.Localize("Show Velocity Vector", ""), "ShowVelocityVector"),
+                              (LocalizationHelper.Localize("Show Planetographic Grid", ""), "ShowPlanetographicGrid"),
+                              (LocalizationHelper.Localize("Show Terminator", ""), "ShowTerminator")
                           };
 
                           foreach (var action in refMarkMenuActions)
@@ -579,7 +579,7 @@ namespace CelestiaUWP
 
                       if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
                       {
-                          AppendItem(menu, LocalizationHelper.Localize("Unmark"), (sender, arg) =>
+                          AppendItem(menu, LocalizationHelper.Localize("Unmark", ""), (sender, arg) =>
                           {
                               mRenderer.EnqueueTask(() =>
                               {
@@ -591,22 +591,22 @@ namespace CelestiaUWP
                       {
                           string[] markers = new string[]
                           {
-                              LocalizationHelper.Localize("Diamond"),
-                              LocalizationHelper.Localize("Triangle"),
-                              LocalizationHelper.Localize("Filled Square"),
-                              LocalizationHelper.Localize("Plus"),
-                              LocalizationHelper.Localize("X"),
-                              LocalizationHelper.Localize("Left Arrow"),
-                              LocalizationHelper.Localize("Right Arrow"),
-                              LocalizationHelper.Localize("Up Arrow"),
-                              LocalizationHelper.Localize("Down Arrow"),
-                              LocalizationHelper.Localize("Circle"),
-                              LocalizationHelper.Localize("Disk"),
-                              LocalizationHelper.Localize("Crosshair")
+                              LocalizationHelper.Localize("Diamond", ""),
+                              LocalizationHelper.Localize("Triangle", ""),
+                              LocalizationHelper.Localize("Filled Square", ""),
+                              LocalizationHelper.Localize("Plus", ""),
+                              LocalizationHelper.Localize("X", ""),
+                              LocalizationHelper.Localize("Left Arrow", ""),
+                              LocalizationHelper.Localize("Right Arrow", ""),
+                              LocalizationHelper.Localize("Up Arrow", ""),
+                              LocalizationHelper.Localize("Down Arrow", ""),
+                              LocalizationHelper.Localize("Circle", ""),
+                              LocalizationHelper.Localize("Disk", ""),
+                              LocalizationHelper.Localize("Crosshair", "")
                           };
                           var action = new MenuFlyoutSubItem
                           {
-                              Text = LocalizationHelper.Localize("Mark")
+                              Text = LocalizationHelper.Localize("Mark", "")
                           };
                           for (int i = 0; i < markers.Length; i += 1)
                           {
@@ -950,16 +950,16 @@ namespace CelestiaUWP
             var isFullScreen = ApplicationView.GetForCurrentView().IsFullScreenMode;
             MenuBar.Visibility = (isFullScreen || isXbox) ? Visibility.Collapsed : Visibility.Visible;
 
-            var fileItem = CreateMenuBarItem(LocalizationHelper.Localize("File"));
+            var fileItem = CreateMenuBarItem(LocalizationHelper.Localize("File", ""));
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Run Script…"), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Run Script…", ""), (sender, arg) =>
             {
                 PickScript();
             });
 
             var scriptsItem = new MenuFlyoutSubItem
             {
-                Text = LocalizationHelper.Localize("Scripts")
+                Text = LocalizationHelper.Localize("Scripts", "")
             };
             var scripts = CelestiaAppCore.ReadScripts(PathHelper.Combine(resourcePath, "scripts"), true);
             if (scripts != null)
@@ -990,14 +990,14 @@ namespace CelestiaUWP
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Capture Image"), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Capture Image", ""), (sender, arg) =>
             {
                 CaptureImage();
             }, new KeyboardAccelerator() { Key = VirtualKey.F10 });
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Copy URL"), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Copy URL", ""), (sender, arg) =>
             {
                 DataPackage dataPackage = new DataPackage
                 {
@@ -1006,7 +1006,7 @@ namespace CelestiaUWP
                 dataPackage.SetText(mAppCore.CurrentURL);
                 Clipboard.SetContent(dataPackage);
             }, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.C });
-            AppendItem(fileItem, LocalizationHelper.Localize("Paste URL"), async (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Paste URL", ""), async (sender, arg) =>
             {
                 DataPackageView dataPackageView = Clipboard.GetContent();
                 if (dataPackageView.Contains(StandardDataFormats.Text))
@@ -1021,7 +1021,7 @@ namespace CelestiaUWP
 
             fileItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Settings"), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Settings", ""), (sender, arg) =>
             {
                 ShowSettings();
             });
@@ -1029,7 +1029,7 @@ namespace CelestiaUWP
 
             if (!isXbox)
             {
-                AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder"), async (sender, arg) =>
+                AppendItem(fileItem, LocalizationHelper.Localize("Open Custom Folder", ""), async (sender, arg) =>
                 {
                     await Launcher.LaunchFolderAsync(Windows.Storage.ApplicationData.Current.LocalFolder);
                 });
@@ -1037,7 +1037,7 @@ namespace CelestiaUWP
                 fileItem.Items.Add(new MenuFlyoutSeparator());
             }
 
-            AppendItem(fileItem, LocalizationHelper.Localize("Exit"), (sender, arg) =>
+            AppendItem(fileItem, LocalizationHelper.Localize("Exit", ""), (sender, arg) =>
             {
                 Application.Current.Exit();
             });
@@ -1057,14 +1057,14 @@ namespace CelestiaUWP
                 }, keyboardAccelerator);
             }
 
-            var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation"));
+            var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation", ""));
 
-            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol"), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
-            AppendItem(navigationItem, LocalizationHelper.Localize("Select Object"), (sender, arg) =>
+            AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol", ""), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
+            AppendItem(navigationItem, LocalizationHelper.Localize("Select Object", ""), (sender, arg) =>
             {
                 ShowSelectObject();
             });
-            AppendItem(navigationItem, LocalizationHelper.Localize("Go to Object"), (sender, arg) =>
+            AppendItem(navigationItem, LocalizationHelper.Localize("Go to Object", ""), (sender, arg) =>
             {
                 ShowGotoObject();
             });
@@ -1072,83 +1072,83 @@ namespace CelestiaUWP
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
             var actions = new (string, short)[] {
-                    (LocalizationHelper.Localize("Center Selection"), 99),
-                    (LocalizationHelper.Localize("Go to Selection"), 103),
-                    (LocalizationHelper.Localize("Follow Selection"), 102),
-                    (LocalizationHelper.Localize("Sync Orbit Selection"), 121),
-                    (LocalizationHelper.Localize("Track Selection"), 116)
+                    (LocalizationHelper.Localize("Center Selection", ""), 99),
+                    (LocalizationHelper.Localize("Go to Selection", ""), 103),
+                    (LocalizationHelper.Localize("Follow Selection", ""), 102),
+                    (LocalizationHelper.Localize("Sync Orbit Selection", ""), 121),
+                    (LocalizationHelper.Localize("Track Selection", ""), 116)
                 };
             foreach (var action in actions)
             {
                 AppendCharEnterItem(navigationItem, action.Item1, action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
+            AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode", ""), (s,
                 e) =>
             {
                  ShowObserverMode();
             });
 
-            var toolsItem = CreateMenuBarItem(LocalizationHelper.Localize("Tools"));
-            AppendItem(toolsItem, LocalizationHelper.Localize("Tour Guide"), (sender, arg) =>
+            var toolsItem = CreateMenuBarItem(LocalizationHelper.Localize("Tools", ""));
+            AppendItem(toolsItem, LocalizationHelper.Localize("Tour Guide", ""), (sender, arg) =>
             {
                 ShowTourGuide();
             });
-            AppendItem(toolsItem, LocalizationHelper.Localize("Star Browser"), (sender, arg) =>
+            AppendItem(toolsItem, LocalizationHelper.Localize("Star Browser", ""), (sender, arg) =>
             {
                 ShowBrowser();
             });
-            AppendItem(toolsItem, LocalizationHelper.Localize("Eclipse Finder"), (sender, arg) =>
+            AppendItem(toolsItem, LocalizationHelper.Localize("Eclipse Finder", ""), (sender, arg) =>
             {
                 ShowEclipseFinder();
             });
             toolsItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(toolsItem, LocalizationHelper.Localize("Get Add-ons"), (sender, arg) =>
+            AppendItem(toolsItem, LocalizationHelper.Localize("Get Add-ons", ""), (sender, arg) =>
             {
                 ShowOnlineAddons();
             });
-            AppendItem(toolsItem, LocalizationHelper.Localize("Installed Add-ons"), (sender, arg) =>
+            AppendItem(toolsItem, LocalizationHelper.Localize("Installed Add-ons", ""), (sender, arg) =>
             {
                 ShowAddonManagement();
             });
 
-            var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time"));
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster"), 108, new KeyboardAccelerator() { Key = VirtualKey.L });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower"), 107, new KeyboardAccelerator() { Key = VirtualKey.K });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze"), 32, new KeyboardAccelerator() { Key = VirtualKey.Space });
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Real Time"), 33);
-            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time"), 106, new KeyboardAccelerator() { Key = VirtualKey.J });
+            var timeItem = CreateMenuBarItem(LocalizationHelper.Localize("Time", ""));
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Faster", ""), 108, new KeyboardAccelerator() { Key = VirtualKey.L });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("10x Slower", ""), 107, new KeyboardAccelerator() { Key = VirtualKey.K });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Freeze", ""), 32, new KeyboardAccelerator() { Key = VirtualKey.Space });
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Real Time", ""), 33);
+            AppendCharEnterItem(timeItem, LocalizationHelper.Localize("Reverse Time", ""), 106, new KeyboardAccelerator() { Key = VirtualKey.J });
 
             timeItem.Items.Add(new MenuFlyoutSeparator());
 
-            AppendItem(timeItem, LocalizationHelper.Localize("Set Time…"), (sender, arg) =>
+            AppendItem(timeItem, LocalizationHelper.Localize("Set Time…", ""), (sender, arg) =>
             {
                 ShowTimeSetting();
             });
 
-            var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views"));
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally"), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically"), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View"), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete });
-            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views"), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D });
+            var viewItem = CreateMenuBarItem(LocalizationHelper.Localize("Views", ""));
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Horizontally", ""), 18, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.R });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Split Vertically", ""), 21, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.U });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Active View", ""), 127, new KeyboardAccelerator() { Key = VirtualKey.Delete });
+            AppendCharEnterItem(viewItem, LocalizationHelper.Localize("Delete Other Views", ""), 4, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.D });
             viewItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(viewItem, LocalizationHelper.Localize("Toggle Fullscreen"), (sender, arg) =>
+            AppendItem(viewItem, LocalizationHelper.Localize("Toggle Fullscreen", ""), (sender, arg) =>
             {
                 ToggleFullscreen();
             }, new KeyboardAccelerator { Key = VirtualKey.F11 });
 
-            var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks"));
-            AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark"), (sender, arg) =>
+            var bookmarkItem = CreateMenuBarItem(LocalizationHelper.Localize("Bookmarks", ""));
+            AppendItem(bookmarkItem, LocalizationHelper.Localize("Add Bookmark", ""), (sender, arg) =>
             {
                 ShowNewBookmark();
             });
-            AppendItem(bookmarkItem, LocalizationHelper.Localize("Organize Bookmarks…"), (sender, arg) =>
+            AppendItem(bookmarkItem, LocalizationHelper.Localize("Organize Bookmarks…", ""), (sender, arg) =>
             {
                 ShowBookmarkOrganizer();
             });
 
-            var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help"));
-            AppendItem(helpItem, LocalizationHelper.Localize("Run Demo"), (sender, arg) =>
+            var helpItem = CreateMenuBarItem(LocalizationHelper.Localize("Help", ""));
+            AppendItem(helpItem, LocalizationHelper.Localize("Run Demo", ""), (sender, arg) =>
             {
                 mRenderer.EnqueueTask(() =>
                 {
@@ -1156,28 +1156,28 @@ namespace CelestiaUWP
                 });
             });
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("OpenGL Info", ""), (sender, arg) =>
             {
                 ShowOpenGLInfo();
             });
             if (!isXbox)
             {
                 helpItem.Items.Add(new MenuFlyoutSeparator());
-                AppendItem(helpItem, LocalizationHelper.Localize("Report a Bug"), (sender, arg) =>
+                AppendItem(helpItem, LocalizationHelper.Localize("Report a Bug", ""), (sender, arg) =>
                 {
                     ReportBug();
                 });
-                AppendItem(helpItem, LocalizationHelper.Localize("Suggest a Feature"), (sender, arg) =>
+                AppendItem(helpItem, LocalizationHelper.Localize("Suggest a Feature", ""), (sender, arg) =>
                 {
                     SuggestFeature();
                 });
             }
             helpItem.Items.Add(new MenuFlyoutSeparator());
-            AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("Celestia Help", ""), (sender, arg) =>
             {
                 ShowHelp();
             });
-            AppendItem(helpItem, LocalizationHelper.Localize("About Celestia"), (sender, arg) =>
+            AppendItem(helpItem, LocalizationHelper.Localize("About Celestia", ""), (sender, arg) =>
             {
                 ShowAboutDialog();
             });
@@ -1312,8 +1312,8 @@ namespace CelestiaUWP
                 await FileIO.WriteTextAsync(systemInfoFile, systemInfoText);
                 var emailMessage = new EmailMessage();
                 emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
-                emailMessage.Subject = LocalizationHelper.Localize("Bug report for Celestia");
-                emailMessage.Body = LocalizationHelper.Localize("Please describe the issue and repro steps, if known.");
+                emailMessage.Subject = LocalizationHelper.Localize("Bug report for Celestia", "");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the issue and repro steps, if known.", "");
                 if (screenshotFile != null)
                     emailMessage.Attachments.Add(new EmailAttachment(screenshotFile.Name, screenshotFile));
                 emailMessage.Attachments.Add(new EmailAttachment(renderInfoFile.Name, renderInfoFile));
@@ -1342,8 +1342,8 @@ namespace CelestiaUWP
             {
                 var emailMessage = new EmailMessage();
                 emailMessage.To.Add(new EmailRecipient(FeedbackEmailAddress));
-                emailMessage.Subject = LocalizationHelper.Localize("Feature suggestion for Celestia");
-                emailMessage.Body = LocalizationHelper.Localize("Please describe the feature you want to see in Celestia.");
+                emailMessage.Subject = LocalizationHelper.Localize("Feature suggestion for Celestia", "");
+                emailMessage.Body = LocalizationHelper.Localize("Please describe the feature you want to see in Celestia.", "");
                 await EmailManager.ShowComposeNewEmailAsync(emailMessage);
             }
             catch
@@ -1381,7 +1381,7 @@ namespace CelestiaUWP
 
         async void ShowSelectObject()
         {
-            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Object name:"));
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Object name:", ""));
             if (text.Length > 0)
             {
                 var selection = mAppCore.Simulation.Find(text);
@@ -1427,7 +1427,7 @@ namespace CelestiaUWP
 
         async void ShowObjectNotFound()
         {
-            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found."));
+            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Object not found.", ""));
         }
 
         async void ShowObserverMode()
@@ -1541,7 +1541,7 @@ namespace CelestiaUWP
         {
             var dialog = new InfoDialog(Info)
             {
-                Title = LocalizationHelper.Localize("OpenGL Info")
+                Title = LocalizationHelper.Localize("OpenGL Info", "")
             };
             await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
         }
@@ -1660,7 +1660,7 @@ namespace CelestiaUWP
                 {
                     var selectItem = new MenuFlyoutItem
                     {
-                        Text = LocalizationHelper.Localize("Select")
+                        Text = LocalizationHelper.Localize("Select", "")
                     };
                     selectItem.Click += (newSender, newArgs) =>
                     {
@@ -1715,7 +1715,7 @@ namespace CelestiaUWP
 
         private async void ShowScreenshotFailure()
         {
-            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Failed in capturing screenshot."));
+            await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Failed in capturing screenshot.", ""));
         }
 
         private async void SaveScreenshot(string path)
@@ -1731,9 +1731,9 @@ namespace CelestiaUWP
                     Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
                 };
                 // Dropdown of file types the user can save the file as
-                savePicker.FileTypeChoices.Add(LocalizationHelper.Localize("Image"), new List<string>() { ".png" });
+                savePicker.FileTypeChoices.Add(LocalizationHelper.Localize("Image", ""), new List<string>() { ".png" });
                 // Default file name if the user does not type one in or select a file to replace
-                savePicker.SuggestedFileName = LocalizationHelper.Localize("Celestia Screenshot");
+                savePicker.SuggestedFileName = LocalizationHelper.Localize("Celestia Screenshot", "");
                 StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file == null) return;
 

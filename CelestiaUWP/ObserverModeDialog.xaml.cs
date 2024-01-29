@@ -30,15 +30,15 @@ namespace CelestiaUWP
                 switch (val)
                 {
                 case CoordinateSystem.Universal:
-                    return LocalizationHelper.Localize("Free Flight");
+                    return LocalizationHelper.Localize("Free Flight", "");
                 case CoordinateSystem.Ecliptical:
-                    return LocalizationHelper.Localize("Follow");
+                    return LocalizationHelper.Localize("Follow", "");
                 case CoordinateSystem.BodyFixed:
-                    return LocalizationHelper.Localize("Sync Orbit");
+                    return LocalizationHelper.Localize("Sync Orbit", "");
                 case CoordinateSystem.PhaseLock:
-                    return LocalizationHelper.Localize("Phase Lock");
+                    return LocalizationHelper.Localize("Phase Lock", "");
                 case CoordinateSystem.Chase:
-                    return LocalizationHelper.Localize("Chase");
+                    return LocalizationHelper.Localize("Chase", "");
                 }
             }
             return null;
@@ -89,11 +89,11 @@ namespace CelestiaUWP
             this.appCore = appCore;
             this.renderer = renderer;
             this.InitializeComponent();
-            CoordinateSystemHint.Text = LocalizationHelper.Localize("Coordinate System:");
-            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object");
-            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object");
-            var infoText = LocalizationHelper.Localize("Flight mode decides how you move around in Celestia. Learn more…");
-            var infoLinkText = LocalizationHelper.Localize("Learn more…");
+            CoordinateSystemHint.Text = LocalizationHelper.Localize("Coordinate System:", "");
+            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object", "");
+            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object", "");
+            var infoText = LocalizationHelper.Localize("Flight mode decides how you move around in Celestia. Learn more…", "");
+            var infoLinkText = LocalizationHelper.Localize("Learn more…", "");
             var linkTextPos = infoText.IndexOf(infoLinkText);
             if (linkTextPos == -1)
             {
@@ -115,8 +115,8 @@ namespace CelestiaUWP
                 LearnMoreHint.Inlines.Add(span);
             }
 
-            PrimaryButtonText = LocalizationHelper.Localize("OK");
-            SecondaryButtonText = LocalizationHelper.Localize("Cancel");
+            PrimaryButtonText = LocalizationHelper.Localize("OK", "");
+            SecondaryButtonText = LocalizationHelper.Localize("Cancel", "");
         }
 
         private async void ObjectNameText_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

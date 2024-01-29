@@ -52,11 +52,11 @@ namespace CelestiaUWP
 
             this.InitializeComponent();
 
-            NewFolderButton.Content = LocalizationHelper.Localize("New Folder");
-            DeleteButton.Content = LocalizationHelper.Localize("Delete");
-            GoButton.Content = LocalizationHelper.Localize("Go");
-            RenameButton.Content = LocalizationHelper.Localize("Rename");
-            EmptyHintText.Text = LocalizationHelper.Localize("No saved bookmarks");
+            NewFolderButton.Content = LocalizationHelper.Localize("New Folder", "");
+            DeleteButton.Content = LocalizationHelper.Localize("Delete", "");
+            GoButton.Content = LocalizationHelper.Localize("Go", "");
+            RenameButton.Content = LocalizationHelper.Localize("Rename", "");
+            EmptyHintText.Text = LocalizationHelper.Localize("No saved bookmarks", "");
             Unloaded += BookmarkOrganizerPage_Unloaded;
         }
 
@@ -123,7 +123,7 @@ namespace CelestiaUWP
         }
         private async void CreateNewFolder()
         {
-            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Folder name"));
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Folder name", ""));
             if (text.Length > 0)
             {
                 var bookmark = new BookmarkNode(true, text, "", BookmarkHelper.CreateEmptyList());
@@ -149,7 +149,7 @@ namespace CelestiaUWP
         {
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
-            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name"));
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name", ""));
             if (text.Length <= 0) return;
 
             var listToChange = parent == null ? bookmarks : parent.Children;
