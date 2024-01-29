@@ -4,7 +4,8 @@ namespace CelestiaAppComponent
     runtimeclass LocalizationHelper
     {
         static String Locale;
-        static String Localize(String original);
+        static String Localize(String original, String comment);
+        static String Localize(String original, String context, String comment);
         static String FromWindowsTag(String tag);
         static String ToWindowsTag(String locale);
     }

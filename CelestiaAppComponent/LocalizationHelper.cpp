@@ -20,9 +20,14 @@ namespace winrt::CelestiaAppComponent::implementation
         currentLocale = locale;
     }
 
-    hstring LocalizationHelper::Localize(hstring const& original)
+    hstring LocalizationHelper::Localize(hstring const& original, hstring const&)
     {
         return CelestiaComponent::CelestiaAppCore::LocalizedString(original, L"celestia_ui");
+    }
+
+    hstring LocalizationHelper::Localize(hstring const& original, hstring const& context, hstring const&)
+    {
+        return CelestiaComponent::CelestiaAppCore::LocalizedString(original, context, L"celestia_ui");
     }
 
     hstring LocalizationHelper::FromWindowsTag(hstring const& tag)
