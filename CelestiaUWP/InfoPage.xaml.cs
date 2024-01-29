@@ -31,10 +31,7 @@ namespace CelestiaUWP
             var Selection = parameter.Item2;
 
             NameLabel.Text = AppCore.Simulation.Universe.NameForSelection(Selection);
-            DetailLabel.Text = CelestiaExtension.GetOverviewForSelection(Selection, (string original) =>
-            {
-                return LocalizationHelper.Localize(original);
-            }, AppCore);
+            DetailLabel.Text = SelectionHelper.GetOverview(Selection, AppCore);
             var url = Selection.InfoURL;
             if (!string.IsNullOrEmpty(url))
             {

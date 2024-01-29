@@ -24,6 +24,7 @@
     <Midl Include="RequestResult.idl" />
     <Midl Include="GuideItem.idl" />
     <Midl Include="ResourceItem.idl" />
+    <Midl Include="SelectionHelper.idl" />
     <Midl Include="AppSettings.idl" />
     <Midl Include="BookmarkNode.idl" />
     <Midl Include="BookmarkHelper.idl" />

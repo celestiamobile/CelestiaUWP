@@ -156,6 +156,9 @@
     <ClInclude Include="ResourceItem.h">
       <DependentUpon>ResourceItem.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SelectionHelper.h">
+      <DependentUpon>SelectionHelper.idl</DependentUpon>
+    </ClInclude>
     <ClInclude Include="AppSettings.h">
       <DependentUpon>AppSettings.idl</DependentUpon>
     </ClInclude>
@@ -209,6 +212,9 @@
     <ClCompile Include="ResourceItem.cpp">
       <DependentUpon>ResourceItem.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SelectionHelper.cpp">
+      <DependentUpon>SelectionHelper.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="AppSettings.cpp">
       <DependentUpon>AppSettings.idl</DependentUpon>
     </ClCompile>
@@ -250,6 +256,7 @@
     <Midl Include="RequestResult.idl" />
     <Midl Include="GuideItem.idl" />
     <Midl Include="ResourceItem.idl" />
+    <Midl Include="SelectionHelper.idl" />
     <Midl Include="AppSettings.idl" />
     <Midl Include="BookmarkNode.idl" />
     <Midl Include="BookmarkHelper.idl" />

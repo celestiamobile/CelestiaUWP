@@ -6,6 +6,8 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Gaming.Input.h>
 #include <winrt/Windows.Globalization.h>
+#include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#include <winrt/Windows.Globalization.NumberFormatting.h>
 #include <winrt/Windows.ApplicationModel.h>
 #include <winrt/Windows.Security.ExchangeActiveSyncProvisioning.h>
 #include <winrt/Windows.Storage.h>

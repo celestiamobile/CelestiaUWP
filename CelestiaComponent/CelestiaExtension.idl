@@ -161,7 +161,5 @@ namespace CelestiaComponent
         static void InvokeCelestiaGamepadAction(CelestiaAppCore appCore, CelestiaGamepadAction action, Boolean up);
 
         static CelestiaBrowserItem[] GetChildren(CelestiaBrowserItem item, CelestiaAppCore appCore);
-
-        static String GetOverviewForSelection(CelestiaSelection selection, LocalizationProvider localizationProvider, CelestiaAppCore appCore);
     }
 }
