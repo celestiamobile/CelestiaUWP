@@ -759,7 +759,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::ShowVelocityVector(bool showVelocityVector)
     {
-        core->toggleReferenceMark("velocity vecto");
+        core->toggleReferenceMark("velocity vector");
     }
 
     bool CelestiaAppCore::ShowPlanetographicGrid()

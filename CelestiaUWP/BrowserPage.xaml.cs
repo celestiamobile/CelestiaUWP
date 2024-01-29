@@ -183,18 +183,18 @@ namespace CelestiaUWP
             ButtonStack.Children.Add(getInfoButton);
             var actions = new (string, short)[]
                 {
-                    ("Go", 103),
-                    ("Follow", 102),
-                    ("Sync Orbit", 121),
-                    ("Lock Phase", 58),
-                    ("Chase", 34),
-                    ("Track", 116)
+                    (LocalizationHelper.Localize("Go"), 103),
+                    (LocalizationHelper.Localize("Follow"), 102),
+                    (LocalizationHelper.Localize("Sync Orbit"), 121),
+                    (LocalizationHelper.Localize("Lock Phase"), 58),
+                    (LocalizationHelper.Localize("Chase"), 34),
+                    (LocalizationHelper.Localize("Track"), 116)
                 };
             foreach (var action in actions)
             {
                 var button = new Button
                 {
-                    Content = LocalizationHelper.Localize(action.Item1)
+                    Content = action.Item1
                 };
                 button.Click += (sender, arg) =>
                 {

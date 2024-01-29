@@ -123,7 +123,7 @@ namespace CelestiaUWP.Addon
 
         private void UpdateState()
         {
-            GoButton.Content = LocalizationHelper.Localize(Item.Type == "script" ? "Run" :"Go");
+            GoButton.Content = Item.Type == "script" ? LocalizationHelper.Localize("Run") :LocalizationHelper.Localize("Go");
 
             switch (State)
             {

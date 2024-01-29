@@ -93,12 +93,6 @@ namespace CelestiaUWP
 
         private string[] AvailableLanguages;
 
-        private readonly string[] Markers = new string[]
-        {
-            "Diamond", "Triangle", "Filled Square", "Plus", "X", "Left Arrow", "Right Arrow", "Up Arrow", "Down Arrow",
-            "Circle", "Disk", "Crosshair"
-        };
-
         private float scale = 1.0f;
 
         private GamepadManager gamepadManager = null;
@@ -482,14 +476,14 @@ namespace CelestiaUWP
 
                       var actions = new (string, short)[]
                       {
-                        ("Go", 103),
-                        ("Follow", 102),
-                        ("Sync Orbit", 121),
+                        (LocalizationHelper.Localize("Go"), 103),
+                        (LocalizationHelper.Localize("Follow"), 102),
+                        (LocalizationHelper.Localize("Sync Orbit"), 121),
                       };
 
                       foreach (var action in actions)
                       {
-                          AppendItem(menu, LocalizationHelper.Localize(action.Item1), (sender, arg) =>
+                          AppendItem(menu, action.Item1, (sender, arg) =>
                           {
                               mRenderer.EnqueueTask(() =>
                               {
@@ -540,18 +534,18 @@ namespace CelestiaUWP
 
                           var refMarkMenuActions = new (string, string)[]
                           {
-                              ("Show Body Axes", "ShowBodyAxes"),
-                              ("Show Frame Axes", "ShowFrameAxes"),
-                              ("Show Sun Direction", "ShowSunDirection"),
-                              ("Show Velocity Vector", "ShowVelocityVector"),
-                              ("Show Planetographic Grid", "ShowPlanetographicGrid"),
-                              ("Show Terminator", "ShowTerminator")
+                              (LocalizationHelper.Localize("Show Body Axes"), "ShowBodyAxes"),
+                              (LocalizationHelper.Localize("Show Frame Axes"), "ShowFrameAxes"),
+                              (LocalizationHelper.Localize("Show Sun Direction"), "ShowSunDirection"),
+                              (LocalizationHelper.Localize("Show Velocity Vector"), "ShowVelocityVector"),
+                              (LocalizationHelper.Localize("Show Planetographic Grid"), "ShowPlanetographicGrid"),
+                              (LocalizationHelper.Localize("Show Terminator"), "ShowTerminator")
                           };
 
                           foreach (var action in refMarkMenuActions)
                           {
                               var isEnabled = (bool)mAppCore.GetType().GetProperty(action.Item2).GetValue(mAppCore);
-                              AppendToggleSubItem(refMarkMenu, LocalizationHelper.Localize(action.Item1), isEnabled, (sender, args) =>
+                              AppendToggleSubItem(refMarkMenu, action.Item1, isEnabled, (sender, args) =>
                               {
                                   mRenderer.EnqueueTask(() =>
                                   {
@@ -595,14 +589,29 @@ namespace CelestiaUWP
                       }
                       else
                       {
+                          string[] markers = new string[]
+                          {
+                              LocalizationHelper.Localize("Diamond"),
+                              LocalizationHelper.Localize("Triangle"),
+                              LocalizationHelper.Localize("Filled Square"),
+                              LocalizationHelper.Localize("Plus"),
+                              LocalizationHelper.Localize("X"),
+                              LocalizationHelper.Localize("Left Arrow"),
+                              LocalizationHelper.Localize("Right Arrow"),
+                              LocalizationHelper.Localize("Up Arrow"),
+                              LocalizationHelper.Localize("Down Arrow"),
+                              LocalizationHelper.Localize("Circle"),
+                              LocalizationHelper.Localize("Disk"),
+                              LocalizationHelper.Localize("Crosshair")
+                          };
                           var action = new MenuFlyoutSubItem
                           {
                               Text = LocalizationHelper.Localize("Mark")
                           };
-                          for (int i = 0; i < Markers.Length; i += 1)
+                          for (int i = 0; i < markers.Length; i += 1)
                           {
                               int copy = i;
-                              AppendSubItem(action, LocalizationHelper.Localize(Markers[i]), (sender, arg) =>
+                              AppendSubItem(action, markers[i], (sender, arg) =>
                               {
                                   mRenderer.EnqueueTask(() =>
                                   {
@@ -1063,15 +1072,15 @@ namespace CelestiaUWP
             navigationItem.Items.Add(new MenuFlyoutSeparator());
 
             var actions = new (string, short)[] {
-                    ("Center Selection", 99),
-                    ("Go to Selection", 103),
-                    ("Follow Selection", 102),
-                    ("Sync Orbit Selection", 121),
-                    ("Track Selection", 116)
+                    (LocalizationHelper.Localize("Center Selection"), 99),
+                    (LocalizationHelper.Localize("Go to Selection"), 103),
+                    (LocalizationHelper.Localize("Follow Selection"), 102),
+                    (LocalizationHelper.Localize("Sync Orbit Selection"), 121),
+                    (LocalizationHelper.Localize("Track Selection"), 116)
                 };
             foreach (var action in actions)
             {
-                AppendCharEnterItem(navigationItem, LocalizationHelper.Localize(action.Item1), action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
+                AppendCharEnterItem(navigationItem, action.Item1, action.Item2, new KeyboardAccelerator() { Key = (VirtualKey)(action.Item2 - 32) });
             }
             navigationItem.Items.Add(new MenuFlyoutSeparator());
             AppendItem(navigationItem, LocalizationHelper.Localize("Flight Mode"), (s,
