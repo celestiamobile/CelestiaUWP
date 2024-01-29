@@ -70,7 +70,7 @@ namespace CelestiaUWP
                 }
             }
             if (SolRoot != null)
-                RootItems.Add(new BrowserItemTab(SolRoot, LocalizationHelper.Localize("Solar System", "")));
+                RootItems.Add(new BrowserItemTab(SolRoot, LocalizationHelper.Localize("Solar System", "Tab for solar system in Star Browser")));
 
             if (BrightestStars == null)
             {
@@ -117,7 +117,7 @@ namespace CelestiaUWP
                 BrightestStars,
                 new BrowserItem(new CelestiaBrowserItem(LocalizationHelper.Localize("Stars with Planets", ""), s3.ToArray(), true)),
             };
-            RootItems.Add(new BrowserItemTab(StarRoot, LocalizationHelper.Localize("Stars", "")));
+            RootItems.Add(new BrowserItemTab(StarRoot, LocalizationHelper.Localize("Stars", "Tab for stars in Star Browser")));
 
             if (DSORoot == null)
             {
@@ -174,21 +174,21 @@ namespace CelestiaUWP
                 }
                 DSORoot = dsoCategories.ToArray();
             }
-            RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs", "")));
+            RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs", "Tab for deep sky objects in Star Browser")));
             var getInfoButton = new Button
             {
-                Content = LocalizationHelper.Localize("Get Info", "")
+                Content = LocalizationHelper.Localize("Get Info", "Action for getting info about current selected object")
             };
             getInfoButton.Click += GetInfoButton_Click;
             ButtonStack.Children.Add(getInfoButton);
             var actions = new (string, short)[]
                 {
-                    (LocalizationHelper.Localize("Go", ""), 103),
+                    (LocalizationHelper.Localize("Go", "Go to an object"), 103),
                     (LocalizationHelper.Localize("Follow", ""), 102),
                     (LocalizationHelper.Localize("Sync Orbit", ""), 121),
                     (LocalizationHelper.Localize("Lock Phase", ""), 58),
                     (LocalizationHelper.Localize("Chase", ""), 34),
-                    (LocalizationHelper.Localize("Track", ""), 116)
+                    (LocalizationHelper.Localize("Track", "Track an object"), 116)
                 };
             foreach (var action in actions)
             {

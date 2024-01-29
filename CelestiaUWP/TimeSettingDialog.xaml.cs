@@ -65,13 +65,13 @@ namespace CelestiaUWP
             NumberFormatter.IsGrouped = false;
             this.julianDay = julianDay;
             this.InitializeComponent();
-            TypeSelection.ItemsSource = new string[] { LocalizationHelper.Localize("Picker", ""), LocalizationHelper.Localize("Julian Day", "") };
+            TypeSelection.ItemsSource = new string[] { LocalizationHelper.Localize("Picker", "Select time via picker"), LocalizationHelper.Localize("Julian Day", "Select time via entering Julian day") };
             DatePicker.MaxYear = new DateTimeOffset(new DateTime(9999, 12, 30));
             DatePicker.MinYear = new DateTimeOffset(new DateTime(1, 1, 2));
-            Title = LocalizationHelper.Localize("Set Time", "");
+            Title = LocalizationHelper.Localize("Set Time", "Button to confirm selected simulation time");
             PrimaryButtonText = LocalizationHelper.Localize("OK", "");
             SecondaryButtonText = LocalizationHelper.Localize("Cancel", "");
-            CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time", "");
+            CurrentTimeButton.Content = LocalizationHelper.Localize("Set to Current Time", "Set simulation time to device");
             JulianDayInput.Text = NumberFormatter.FormatDouble(Math.Round(julianDay, 4));
             if (julianDay < CelestiaHelper.MinRepresentableJulianDay() || julianDay > CelestiaHelper.MaxRepresentableJulianDay())
             {
@@ -150,7 +150,7 @@ namespace CelestiaUWP
             {
                 IsPrimaryButtonEnabled = false;
                 ErrorText.Visibility= Visibility.Visible;
-                ErrorText.Text = LocalizationHelper.Localize("Selected time is out of range.", "");
+                ErrorText.Text = LocalizationHelper.Localize("Selected time is out of range.", "Error message, the time in the picker is considered out of range by the system");
             }
         }
 
@@ -162,7 +162,7 @@ namespace CelestiaUWP
             {
                 IsPrimaryButtonEnabled = false;
                 JulianDayErrorText.Visibility = Visibility.Visible;
-                JulianDayErrorText.Text = LocalizationHelper.Localize("Incorrect Julian day string.", "");
+                JulianDayErrorText.Text = LocalizationHelper.Localize("Invalid Julian day string.", "The input of julian day is not valid");
             }
             else
             {

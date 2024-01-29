@@ -51,13 +51,13 @@ namespace CelestiaUWP
         public EclipseFinderPage()
         {
             this.InitializeComponent();
-            GoButton.Content = LocalizationHelper.Localize("Set Date and Go to Planet", "");
-            ComputeButton.Content = LocalizationHelper.Localize("Compute", "");
-            StartTimeHint.Text = LocalizationHelper.Localize("Start time:", "");
-            EndTimeHint.Text = LocalizationHelper.Localize("End time:", "");
-            ObjectHint.Text = LocalizationHelper.Localize("Object:", "");
-            SolarEclipseButton.Content = LocalizationHelper.Localize("Solar", "");
-            LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar", "");
+            GoButton.Content = LocalizationHelper.Localize("Set Date and Go to Planet", "Set date to eclipse date and view eclipse");
+            ComputeButton.Content = LocalizationHelper.Localize("Compute", "Compute for eclipses");
+            StartTimeHint.Text = LocalizationHelper.Localize("Start time:", "In eclipse finder, range of time to find eclipse in");
+            EndTimeHint.Text = LocalizationHelper.Localize("End time:", "In eclipse finder, range of time to find eclipse in");
+            ObjectHint.Text = LocalizationHelper.Localize("Object:", "In Go to, Windows, In eclipse finder, object to find eclipse with");
+            SolarEclipseButton.Content = LocalizationHelper.Localize("Solar", "Solar eclipses.");
+            LunarEclipseButton.Content = LocalizationHelper.Localize("Lunar", "Lunar eclipses.");
             EmptyHintText.Text = LocalizationHelper.Localize("Find eclipses for an object in a time range", "");
             var obj = AvailableObjects[0];
             ObjectChooser.Text = obj.Name;
@@ -117,7 +117,7 @@ namespace CelestiaUWP
             {
                 ResultList.Visibility = Visibility.Visible;
             }
-            ComputeButton.Content = LocalizationHelper.Localize("Compute", "");
+            ComputeButton.Content = LocalizationHelper.Localize("Compute", "Compute for eclipses");
         }
 
         private async Task<CelestiaEclipse[]> Compute(CelestiaBody body, CelestiaEclipseKind kind, DateTime startTime, DateTime endTime)

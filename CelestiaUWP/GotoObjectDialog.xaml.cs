@@ -49,9 +49,9 @@ namespace CelestiaUWP
         public int Unit = 1;
         private readonly string[] Units = new string[]
         {
-            LocalizationHelper.Localize("km", ""),
-            LocalizationHelper.Localize("radii", ""),
-            LocalizationHelper.Localize("au", "")
+            LocalizationHelper.Localize("km", "Unit"),
+            LocalizationHelper.Localize("radii", "In Go to, specify the distance based on the object radius"),
+            LocalizationHelper.Localize("au", "Astronomical unit")
         };
 
         public GotoObjectDialog(CelestiaAppCore appCore, CelestiaRenderer renderer)
@@ -68,9 +68,9 @@ namespace CelestiaUWP
             LongitudeText.Text = NumberFormatter.FormatDouble((double)Longitude);
             LatitudeText.Text = NumberFormatter.FormatDouble((double)Latitude);
             DistanceText.Text = NumberFormatter.FormatDouble(Distance);
-            LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude", "");
-            LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude", "");
-            DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance", "");
+            LongitudeText.PlaceholderText = LocalizationHelper.Localize("Longitude", "Coordinates");
+            LatitudeText.PlaceholderText = LocalizationHelper.Localize("Latitude", "Coordinates");
+            DistanceText.PlaceholderText = LocalizationHelper.Localize("Distance", "Distance to the object (in Go to)");
         }
 
         private void LongitudeText_TextChanged(object sender, TextChangedEventArgs args)

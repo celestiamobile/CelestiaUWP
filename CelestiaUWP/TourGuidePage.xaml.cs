@@ -27,8 +27,8 @@ namespace CelestiaUWP
         public TourGuidePage()
         {
             this.InitializeComponent();
-            TitleText.Text = LocalizationHelper.Localize("Select your destination:", "");
-            GoButton.Content = LocalizationHelper.Localize("Go", "");
+            TitleText.Text = LocalizationHelper.Localize("Select your destination:", "Select a destination in tour guide");
+            GoButton.Content = LocalizationHelper.Localize("Go", "Go to an object");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

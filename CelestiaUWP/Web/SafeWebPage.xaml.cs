@@ -21,7 +21,7 @@ namespace CelestiaUWP.Web
         public SafeWebPage()
         {
             this.InitializeComponent();
-            WebViewNotFoundView.Text = LocalizationHelper.Localize("WebView is not available.", "");
+            WebViewNotFoundView.Text = LocalizationHelper.Localize("WebView is not available.", "WebView component is missing or disabled");
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

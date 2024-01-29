@@ -30,13 +30,13 @@ namespace CelestiaUWP
                 switch (val)
                 {
                 case CoordinateSystem.Universal:
-                    return LocalizationHelper.Localize("Free Flight", "");
+                    return LocalizationHelper.Localize("Free Flight", "Flight mode, coordinate system");
                 case CoordinateSystem.Ecliptical:
                     return LocalizationHelper.Localize("Follow", "");
                 case CoordinateSystem.BodyFixed:
                     return LocalizationHelper.Localize("Sync Orbit", "");
                 case CoordinateSystem.PhaseLock:
-                    return LocalizationHelper.Localize("Phase Lock", "");
+                    return LocalizationHelper.Localize("Phase Lock", "Flight mode, coordinate system");
                 case CoordinateSystem.Chase:
                     return LocalizationHelper.Localize("Chase", "");
                 }
@@ -89,11 +89,11 @@ namespace CelestiaUWP
             this.appCore = appCore;
             this.renderer = renderer;
             this.InitializeComponent();
-            CoordinateSystemHint.Text = LocalizationHelper.Localize("Coordinate System:", "");
-            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object", "");
-            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object", "");
+            CoordinateSystemHint.Text = LocalizationHelper.Localize("Coordinate System:", "Used in Flight Mode");
+            ReferenceNameText.PlaceholderText = LocalizationHelper.Localize("Reference Object", "Used in Flight Mode");
+            TargetNameText.PlaceholderText = LocalizationHelper.Localize("Target Object", "Used in Flight Mode");
             var infoText = LocalizationHelper.Localize("Flight mode decides how you move around in Celestia. Learn more…", "");
-            var infoLinkText = LocalizationHelper.Localize("Learn more…", "");
+            var infoLinkText = LocalizationHelper.Localize("Learn more…", "Text for the link in Flight mode decides how you move around in Celestia. Learn more…");
             var linkTextPos = infoText.IndexOf(infoLinkText);
             if (linkTextPos == -1)
             {
