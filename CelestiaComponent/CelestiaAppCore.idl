@@ -145,6 +145,7 @@ namespace CelestiaComponent
         static void SetLocaleDirectory(String localeDirectory, String locale);
         static void SetUpLocale();
         static String LocalizedString(String original, String domain);
+        static String LocalizedString(String original, String context, String domain);
         static CelestiaScript[] ReadScripts(String directory, Boolean deepScan);
 
         Boolean ShowStars;

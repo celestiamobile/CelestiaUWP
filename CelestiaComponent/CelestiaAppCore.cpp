@@ -16,6 +16,7 @@
 #include <celutil/flag.h>
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
+#include <fmt/format.h>
 #endif
 #include <icu.h>
 #include "CelestiaAppCore.h"
@@ -419,6 +420,19 @@ namespace winrt::CelestiaComponent::implementation
         if (original.empty())
             return original;
         return to_hstring(dgettext(to_string(domain).c_str(), to_string(original).c_str()));
+#else
+        return original;
+#endif
+    }
+
+    hstring CelestiaAppCore::LocalizedString(hstring const& original, hstring const& context, hstring const& domain)
+    {
+#ifdef ENABLE_NLS
+        if (original.empty())
+            return original;
+        const char *aux = fmt::format("{}\004{}", to_string(context).c_str(), to_string(original).c_str());
+        const char *translation = dgettext(to_string(domain).c_str(), aux);
+        return translation == aux ? original : to_hstring(translation);
 #else
         return original;
 #endif
