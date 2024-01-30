@@ -17,6 +17,7 @@
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
 #include <fmt/format.h>
+#include <fmt/xchar.h>
 #endif
 #include <icu.h>
 #include "CelestiaAppCore.h"
@@ -392,8 +393,26 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
+        auto wloc = std::wstring(locale);
         UErrorCode status = U_ZERO_ERROR;
-        uloc_setDefault(to_string(locale).c_str(), &status);
+        if (wloc.find(L"_") == std::wstring::npos)
+        {
+            Windows::Globalization::GeographicRegion region;
+            std::wstring code = std::wstring(region.CodeTwoLetter());
+            if (code.size() == 2 && code != L"ZZ")
+            {
+                auto fullLoc = fmt::format(L"{}_{}", wloc, code);
+                uloc_setDefault(to_string(hstring(fullLoc)).c_str(), &status);
+            }
+            else
+            {
+                uloc_setDefault(to_string(locale).c_str(), &status);
+            }
+        }
+        else
+        {
+            uloc_setDefault(to_string(locale).c_str(), &status);
+        }
 #ifdef ENABLE_NLS
         _wputenv_s(L"LANG", locale.c_str());
         wbindtextdomain("celestia", localeDirectory.c_str());
