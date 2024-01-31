@@ -393,15 +393,30 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
-        auto wloc = std::wstring(locale);
+        auto uloc = std::wstring(locale);
+        bool shouldAppendCountryCode = false;
         UErrorCode status = U_ZERO_ERROR;
-        if (wloc.find(L"_") == std::wstring::npos)
+        if (uloc == L"zh_CN")
+        {
+            uloc = L"zh_Hans";
+            shouldAppendCountryCode = true;
+        }
+        else if (uloc == L"zh_TW")
+        {
+            uloc = L"zh_Hant";
+            shouldAppendCountryCode = true;
+        }
+        else
+        {
+            shouldAppendCountryCode = uloc.find(L"_") == std::wstring::npos;
+        }
+        if (shouldAppendCountryCode)
         {
             Windows::Globalization::GeographicRegion region;
             std::wstring code = std::wstring(region.CodeTwoLetter());
             if (code.size() == 2 && code != L"ZZ")
             {
-                auto fullLoc = fmt::format(L"{}_{}", wloc, code);
+                auto fullLoc = fmt::format(L"{}_{}", uloc, code);
                 uloc_setDefault(to_string(hstring(fullLoc)).c_str(), &status);
             }
             else
