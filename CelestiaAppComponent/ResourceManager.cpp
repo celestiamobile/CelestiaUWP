@@ -46,7 +46,7 @@ namespace winrt::CelestiaAppComponent::implementation
             {
                 // Check cancellation
                 if (cancellation())
-                    throw_hresult(E_ABORT);
+                    throw hresult_canceled();
 
                 struct zip_stat st;
                 if (zip_stat_index(archive, i, 0, &st) != 0)
@@ -54,72 +54,65 @@ namespace winrt::CelestiaAppComponent::implementation
                     hasZipError = true;
                     break;
                 }
+
                 std::filesystem::path name{ st.name };
-                if (!name.has_filename())
+                std::vector<std::string> components;
+
+                for (auto const& component : name)
+                    components.push_back(component.string());
+
+                bool isRegularFile = name.has_filename();
+                auto currentDirectory = destinationFolder;
+
+                for (int j = 0; j < components.size(); ++j)
                 {
-                    // is directory
-                    auto currentDirectory = destinationFolder;
-                    for (auto it = name.begin(); it != name.end(); ++it)
-                    {
-                        auto component = to_hstring(it->string());
-                        if (!component.empty())
-                            currentDirectory = co_await currentDirectory.CreateFolderAsync(to_hstring(it->string()), CreationCollisionOption::OpenIfExists);
-                    }
+                    const auto& component = components[j];
+                    if (component.empty())
+                        continue;
+
+                    // The last one is the filename for file entries, we don't create directory for it
+                    if (!isRegularFile || j != components.size() - 1)
+                        currentDirectory = co_await currentDirectory.CreateFolderAsync(to_hstring(component), CreationCollisionOption::OpenIfExists);
                 }
-                else
+
+                if (!isRegularFile)
+                    continue;
+
+                currentEntry = zip_fopen_index(archive, i, 0);
+                if (!currentEntry)
                 {
-                    currentEntry = zip_fopen_index(archive, i, 0);
-                    if (!currentEntry)
+                    hasZipError = true;
+                    break;
+                }
+
+                auto file = co_await currentDirectory.CreateFileAsync(to_hstring(name.filename().string()));
+                auto fileStream = co_await file.OpenAsync(FileAccessMode::ReadWrite);
+                auto fileOutputStream = fileStream.GetOutputStreamAt(0);
+
+                zip_uint64_t bytesWritten = 0;
+                uint32_t bufferSize = 4096;
+                while (bytesWritten != st.size)
+                {
+                    // Check cancellation
+                    if (cancellation())
+                        throw hresult_canceled();
+
+                    Streams::Buffer buffer{ bufferSize };
+                    auto bytesRead = zip_fread(currentEntry, buffer.data(), bufferSize);
+                    if (bytesRead < 0)
                     {
                         hasZipError = true;
                         break;
                     }
-                    auto currentDirectory = destinationFolder;
-                    auto filename = to_hstring(name.filename().string());
-
-                    // The last one is the filename, we don't create directory for it
-                    auto it = name.begin();
-                    while (true)
-                    {
-                        auto component = to_hstring(it->string());
-                        ++it;
-                        if (it == name.end())
-                            break;
-
-                        if (!component.empty())
-                            currentDirectory = co_await currentDirectory.CreateFolderAsync(component, CreationCollisionOption::OpenIfExists);
-                    }
-
-                    auto file = co_await currentDirectory.CreateFileAsync(filename);
-                    auto fileStream = co_await file.OpenAsync(FileAccessMode::ReadWrite);
-                    auto fileOutputStream = fileStream.GetOutputStreamAt(0);
-
-                    zip_uint64_t bytesWritten = 0;
-                    uint32_t bufferSize = 4096;
-                    while (bytesWritten != st.size)
-                    {
-                        // Check cancellation
-                        if (cancellation())
-                            throw_hresult(E_ABORT);
-
-                        Streams::Buffer buffer{ bufferSize };
-                        auto bytesRead = zip_fread(currentEntry, buffer.data(), bufferSize);
-                        if (bytesRead < 0)
-                        {
-                            hasZipError = true;
-                            break;
-                        }
-                        buffer.Length(static_cast<uint32_t>(bytesRead));
-                        co_await fileOutputStream.WriteAsync(buffer);
-                        bytesWritten += bytesRead;
-                    }
-                    zip_fclose(currentEntry);
-                    currentEntry = nullptr;
-                    if (hasZipError)
-                    {
-                        break;
-                    }
+                    buffer.Length(static_cast<uint32_t>(bytesRead));
+                    co_await fileOutputStream.WriteAsync(buffer);
+                    bytesWritten += bytesRead;
                 }
+                zip_fclose(currentEntry);
+                currentEntry = nullptr;
+
+                if (hasZipError)
+                    break;
             }
         }
         catch (hresult_error const& e)
@@ -177,7 +170,7 @@ namespace winrt::CelestiaAppComponent::implementation
             do
             {
                 if (cancellation())
-                    throw_hresult(E_ABORT);
+                    throw hresult_canceled();
                 auto buffer{ co_await httpStream.ReadAsync(Buffer{ bufferSize }, bufferSize, InputStreamOptions::None) };
                 if (buffer.Length() > 0)
                 {
