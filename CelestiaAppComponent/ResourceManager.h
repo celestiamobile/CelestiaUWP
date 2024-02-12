@@ -27,14 +27,14 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct ResourceManagerDownloadFailureArgs : ResourceManagerDownloadFailureArgsT<ResourceManagerDownloadFailureArgs>
     {
-        ResourceManagerDownloadFailureArgs(CelestiaAppComponent::ResourceItem const& item, int32_t errorCode, hstring const& errorMessage) : item(item), errorCode(errorCode), errorMessage(errorMessage) {};
+        ResourceManagerDownloadFailureArgs(CelestiaAppComponent::ResourceItem const& item, CelestiaAppComponent::ResourceErrorType errorType, hstring const& contextPath = L"") : item(item), errorType(errorType), contextPath(contextPath) {};
         CelestiaAppComponent::ResourceItem Item() { return item; };
-        int32_t ErrorCode() { return errorCode; };
-        hstring ErrorMessage() { return errorMessage; };
+        CelestiaAppComponent::ResourceErrorType ErrorType() { return errorType; };
+        hstring ContextPath() { return contextPath; };
     private:
         CelestiaAppComponent::ResourceItem item;
-        int32_t errorCode;
-        hstring errorMessage;
+        CelestiaAppComponent::ResourceErrorType errorType;
+        hstring contextPath;
     };
 
     struct ResourceManager : ResourceManagerT<ResourceManager>
