@@ -7,7 +7,7 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     struct ContentDialogHelper : ContentDialogHelperT<ContentDialogHelper>
     {
-        static Windows::Foundation::IAsyncAction ShowAlert(Windows::UI::Xaml::UIElement const element, hstring const message);
+        static Windows::Foundation::IAsyncAction ShowAlert(Windows::UI::Xaml::UIElement const element, hstring const message, hstring const content = L"");
         static Windows::Foundation::IAsyncOperation<bool> ShowOption(Windows::UI::Xaml::UIElement const element, hstring const message);
         static Windows::Foundation::IAsyncOperation<hstring> GetText(Windows::UI::Xaml::UIElement const element, hstring const message);
         static Windows::Foundation::IAsyncAction ShowText(Windows::UI::Xaml::UIElement const element, hstring const title, hstring const text);

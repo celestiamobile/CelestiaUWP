@@ -13,11 +13,13 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     std::map<XamlRoot, std::vector<completion_source<bool>*>> ContentDialogHelper::pendingContentDialogRequests;
 
-    IAsyncAction ContentDialogHelper::ShowAlert(UIElement const element, hstring const message)
+    IAsyncAction ContentDialogHelper::ShowAlert(UIElement const element, hstring const message, hstring const content)
     {
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(message));
+        if (!content.empty())
+            dialog.Content(box_value(content));
         dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
         dialog.IsSecondaryButtonEnabled(false);
         co_await ShowContentDialogAsync(element, dialog);
