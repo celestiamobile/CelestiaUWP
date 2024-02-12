@@ -103,10 +103,35 @@ namespace CelestiaUWP.Addon
             WebContent.Navigate(typeof(SafeWebPage), args);
         }
 
-        private void Shared_DownloadFailure(object sender, ResourceManagerDownloadFailureArgs args)
+        private async void Shared_DownloadFailure(object sender, ResourceManagerDownloadFailureArgs args)
         {
             if (args.Item.ID != mItem.ID) return;
             UpdateState();
+
+            string message = null;
+            switch (args.ErrorType) {
+                case ResourceErrorType.Cancelled:
+                    message = null;
+                    break;
+                case ResourceErrorType.Download:
+                    message = LocalizationHelper.Localize("Error downloading add-on", "");
+                    break;
+                case ResourceErrorType.Zip:
+                    message = LocalizationHelper.Localize("Error unzipping add-on", "");
+                    break;
+                case ResourceErrorType.CreateDirectory:
+                    message = LocalizationHelper.Localize("Error creating directory for add-on", "");
+                    break;
+                case ResourceErrorType.OpenFile:
+                    message = LocalizationHelper.Localize("Error opening file for saving add-on", "");
+                    break;
+                case ResourceErrorType.WriteFile:
+                    message = LocalizationHelper.Localize("Error writing data file for add-on", "");
+                    break;
+            }
+
+            if (message != null)
+                await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Failed to download or install this add-on.", ""), message);
         }
 
         private void Shared_DownloadSuccess(object sender, ResourceManagerDownloadSuccessArgs args)
