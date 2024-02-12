@@ -26,6 +26,8 @@ namespace CelestiaAppComponent
     runtimeclass ResourceManagerDownloadFailureArgs
     {
         ResourceItem Item{ get; };
+        Int32 ErrorCode{ get; };
+        String ErrorMessage{ get; };
     }
 
     [default_interface]
