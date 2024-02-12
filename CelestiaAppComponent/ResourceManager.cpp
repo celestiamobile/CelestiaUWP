@@ -36,7 +36,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto cancellation = co_await get_cancellation_token();
         auto archive = zip_open(to_string(source).c_str(), 0, nullptr);
         if (!archive)
-            throw_hresult(E_FAIL);
+            throw hresult_error(E_FAIL, LocalizationHelper::Localize(L"Error unzipping add-on"));
 
         zip_file_t *currentEntry = nullptr;
         bool hasZipError = false;
@@ -132,7 +132,7 @@ namespace winrt::CelestiaAppComponent::implementation
         zip_close(archive);
 
         if (hasZipError)
-            throw_hresult(E_FAIL);
+            throw hresult_error(E_FAIL, LocalizationHelper::Localize(L"Error unzipping add-on"));
     }
 
     void ResourceManager::Download(CelestiaAppComponent::ResourceItem const& item)
@@ -197,20 +197,15 @@ namespace winrt::CelestiaAppComponent::implementation
             // Create description file
             co_await WriteDescriptionFile(destinationFolder, item);
         }
-        catch (hresult_error const&)
+        catch (hresult_error const& e)
         {
-            hasErrors = true;
+            tasks.erase(item.ID());
+            downloadFailureEvent(*this, make<ResourceManagerDownloadFailureArgs>(item, static_cast<int32_t>(e.code()), e.message()));
+            co_return
         };
 
         tasks.erase(item.ID());
-        if (hasErrors)
-        {
-            downloadFailureEvent(*this, make<ResourceManagerDownloadFailureArgs>(item));
-        }
-        else
-        {
-            downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
-        }
+        downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
     }
 
     hstring ResourceManager::ItemPath(CelestiaAppComponent::ResourceItem const& item)
