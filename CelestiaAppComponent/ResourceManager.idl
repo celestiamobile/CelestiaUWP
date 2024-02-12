@@ -22,12 +22,23 @@ namespace CelestiaAppComponent
         ResourceItem Item{ get; };
     }
 
+    enum ResourceErrorType
+    {
+        Download,
+        Zip,
+        CreateDirectory,
+        OnboardMessageDisplayed,
+        OpenFile,
+        WriteFile,
+        Cancelled,
+    };
+
     [default_interface]
     runtimeclass ResourceManagerDownloadFailureArgs
     {
         ResourceItem Item{ get; };
-        Int32 ErrorCode{ get; };
-        String ErrorMessage{ get; };
+        ResourceErrorType ErrorType{ get; };
+        String ContextPath{ get; };
     }
 
     [default_interface]

@@ -4,8 +4,10 @@
 #include "ResourceManager.g.cpp"
 #endif
 
-#include <unordered_set>
 #include <filesystem>
+#include <fstream>
+#include <string>
+#include <vector>
 #include <zip.h>
 
 using namespace std;
@@ -31,99 +33,149 @@ namespace winrt::CelestiaAppComponent::implementation
         co_await FileIO::WriteTextAsync(file, item.JSONRepresentation().Stringify());
     }
 
-    IAsyncAction Unzip(hstring source, StorageFolder destinationFolder)
+    template<typename Async, typename Token>
+    std::decay_t<Async> MakeCancellable(Async&& async, Token&& token)
     {
+        token.callback([async] { async.Cancel(); });
+        return std::forward<Async>(async);
+    }
+
+    IAsyncOperation<CelestiaAppComponent::ResourceManagerDownloadFailureArgs> Unzip(CelestiaAppComponent::ResourceItem const item, hstring source, hstring destinationPath)
+    {
+        winrt::apartment_context ui_thread;
+        co_await resume_background();
         auto cancellation = co_await get_cancellation_token();
         auto archive = zip_open(to_string(source).c_str(), 0, nullptr);
-        if (!archive)
-            throw hresult_error(E_FAIL, LocalizationHelper::Localize(L"Error unzipping add-on"));
+        std::string destinationFolder = to_string(destinationPath);
 
+        if (!archive)
+        {
+            co_await ui_thread;
+            co_return make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
+        }
+
+        CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs = nullptr;
         zip_file_t *currentEntry = nullptr;
         bool hasZipError = false;
-        try
+        bool hasSystemError = false;
+        bool isCancelled = false;
+
+        for (zip_int64_t i = 0; i < zip_get_num_entries(archive, 0); i += 1)
         {
-            for (zip_int64_t i = 0; i < zip_get_num_entries(archive, 0); i += 1)
+            // Check cancellation
+            if (cancellation())
+            {
+                isCancelled = true;
+                break;
+            }
+
+            struct zip_stat st;
+            if (zip_stat_index(archive, i, 0, &st) != 0)
+            {
+                hasZipError = true;
+                failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
+                break;
+            }
+
+            std::filesystem::path name{ st.name };
+            std::vector<std::string> components;
+
+            for (auto const& component : name)
+                components.push_back(component.string());
+
+            bool isRegularFile = name.has_filename();
+            std::filesystem::path currentDirectory = destinationFolder;
+
+            for (int j = 0; j < components.size(); ++j)
+            {
+                const auto& component = components[j];
+                if (component.empty())
+                    continue;
+
+                // The last one is the filename for file entries, we don't create directory for it
+                if (!isRegularFile || j != components.size() - 1)
+                {
+                    currentDirectory = currentDirectory / component;
+                    std::error_code ec;
+                    bool exists = std::filesystem::exists(currentDirectory, ec);
+                    if (ec)
+                    {
+                        hasSystemError = true;
+                        failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::CreateDirectory, to_hstring(currentDirectory.string()));
+                        break;
+                    }
+
+                    if (!exists)
+                    {
+                        bool success = std::filesystem::create_directory(currentDirectory, ec);
+                        if (!success || ec)
+                        {
+                            hasSystemError = true;
+                            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::CreateDirectory, to_hstring(currentDirectory.string()));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (hasSystemError)
+                break;
+
+            if (!isRegularFile)
+                continue;
+
+            currentEntry = zip_fopen_index(archive, i, 0);
+            if (!currentEntry)
+            {
+                hasZipError = true;
+                failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
+                break;
+            }
+
+            std::filesystem::path filePath = currentDirectory / name.filename();
+            std::ofstream file(filePath);
+            if (!file.good())
+            {
+                hasSystemError = true;
+                failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::OpenFile, to_hstring(filePath.string()));
+                break;
+            }
+
+            zip_uint64_t bytesWritten = 0;
+            const uint32_t bufferSize = 4096;
+            char buffer[bufferSize];
+            while (bytesWritten != st.size)
             {
                 // Check cancellation
                 if (cancellation())
-                    throw hresult_canceled();
+                {
+                    isCancelled = true;
+                    break;
+                }
 
-                struct zip_stat st;
-                if (zip_stat_index(archive, i, 0, &st) != 0)
+                auto bytesRead = zip_fread(currentEntry, buffer, bufferSize);
+                if (bytesRead < 0)
                 {
                     hasZipError = true;
+                    failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
                     break;
                 }
 
-                std::filesystem::path name{ st.name };
-                std::vector<std::string> components;
-
-                for (auto const& component : name)
-                    components.push_back(component.string());
-
-                bool isRegularFile = name.has_filename();
-                auto currentDirectory = destinationFolder;
-
-                for (int j = 0; j < components.size(); ++j)
+                if (!file.write(buffer, bytesRead).good())
                 {
-                    const auto& component = components[j];
-                    if (component.empty())
-                        continue;
-
-                    // The last one is the filename for file entries, we don't create directory for it
-                    if (!isRegularFile || j != components.size() - 1)
-                        currentDirectory = co_await currentDirectory.CreateFolderAsync(to_hstring(component), CreationCollisionOption::OpenIfExists);
-                }
-
-                if (!isRegularFile)
-                    continue;
-
-                currentEntry = zip_fopen_index(archive, i, 0);
-                if (!currentEntry)
-                {
-                    hasZipError = true;
+                    hasSystemError = true;
+                    failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::WriteFile, to_hstring(filePath.string()));
                     break;
                 }
 
-                auto file = co_await currentDirectory.CreateFileAsync(to_hstring(name.filename().string()));
-                auto fileStream = co_await file.OpenAsync(FileAccessMode::ReadWrite);
-                auto fileOutputStream = fileStream.GetOutputStreamAt(0);
-
-                zip_uint64_t bytesWritten = 0;
-                uint32_t bufferSize = 4096;
-                while (bytesWritten != st.size)
-                {
-                    // Check cancellation
-                    if (cancellation())
-                        throw hresult_canceled();
-
-                    Streams::Buffer buffer{ bufferSize };
-                    auto bytesRead = zip_fread(currentEntry, buffer.data(), bufferSize);
-                    if (bytesRead < 0)
-                    {
-                        hasZipError = true;
-                        break;
-                    }
-                    buffer.Length(static_cast<uint32_t>(bytesRead));
-                    co_await fileOutputStream.WriteAsync(buffer);
-                    bytesWritten += bytesRead;
-                }
-                zip_fclose(currentEntry);
-                currentEntry = nullptr;
-
-                if (hasZipError)
-                    break;
+                bytesWritten += bytesRead;
             }
-        }
-        catch (hresult_error const& e)
-        {
-            // Clean up
-            if (currentEntry != nullptr)
-                zip_fclose(currentEntry);
-            zip_close(archive);
 
-            // Re-throw the error
-            throw e;
+            zip_fclose(currentEntry);
+            currentEntry = nullptr;
+
+            if (hasSystemError || hasZipError || isCancelled)
+                break;
         }
 
         // Clean up
@@ -131,8 +183,13 @@ namespace winrt::CelestiaAppComponent::implementation
             zip_fclose(currentEntry);
         zip_close(archive);
 
-        if (hasZipError)
-            throw hresult_error(E_FAIL, LocalizationHelper::Localize(L"Error unzipping add-on"));
+        co_await ui_thread;
+
+        // Rethrow the cancellation
+        if (isCancelled)
+            throw hresult_canceled();
+
+        co_return failureArgs;
     }
 
     void ResourceManager::Download(CelestiaAppComponent::ResourceItem const& item)
@@ -144,13 +201,15 @@ namespace winrt::CelestiaAppComponent::implementation
 
     IAsyncAction ResourceManager::DownloadAsync(CelestiaAppComponent::ResourceItem const item)
     {
+        CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs = nullptr;
+        StorageFile tempFile = nullptr;
         auto cancellation = co_await get_cancellation_token();
-        HttpClient client;
-        bool hasErrors = false;
+
         try
         {
+            HttpClient client;
             auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
-            auto tempFile = co_await tempFolder.CreateFileAsync(to_hstring(GuidHelper::CreateNewGuid()) + L".zip");
+            tempFile = co_await tempFolder.CreateFileAsync(to_hstring(GuidHelper::CreateNewGuid()) + L".zip");
 
             auto response = co_await client.GetAsync(Uri(item.URL()), HttpCompletionOption::ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
@@ -186,23 +245,84 @@ namespace winrt::CelestiaAppComponent::implementation
                     isMoreToRead = false;
                 }
             } while (isMoreToRead);
-
-            // try to uninstall first
-            co_await Uninstall(item);
-
-            // Create directory
-            auto destinationFolder = co_await (item.Type() == L"script" ? scriptFolder : addonFolder).CreateFolderAsync(item.ID(), CreationCollisionOption::OpenIfExists);
-            // Extract the archive
-            co_await Unzip(tempFile.Path(), destinationFolder);
-            // Create description file
-            co_await WriteDescriptionFile(destinationFolder, item);
         }
-        catch (hresult_error const& e)
+        catch (hresult_canceled const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_illegal_method_call const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_error const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Download);
+        }
+
+        if (failureArgs != nullptr)
         {
             tasks.erase(item.ID());
-            downloadFailureEvent(*this, make<ResourceManagerDownloadFailureArgs>(item, static_cast<int32_t>(e.code()), e.message()));
-            co_return
-        };
+            downloadFailureEvent(*this, failureArgs);
+            co_return;
+        }
+
+        // Create directory
+        StorageFolder destinationFolder = nullptr;
+        try
+        {
+            destinationFolder = co_await (item.Type() == L"script" ? scriptFolder : addonFolder).CreateFolderAsync(item.ID(), CreationCollisionOption::OpenIfExists);
+        }
+        catch (hresult_canceled const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_illegal_method_call const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_error const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::CreateDirectory, ItemPath(item));
+        }
+
+        if (failureArgs != nullptr)
+        {
+            tasks.erase(item.ID());
+            downloadFailureEvent(*this, failureArgs);
+            co_return;
+        }
+
+        // Extract the archive
+        try
+        {
+            failureArgs = co_await MakeCancellable(Unzip(item, tempFile.Path(), destinationFolder.Path()), cancellation);
+        }
+        catch (hresult_canceled const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_illegal_method_call const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
+        }
+        catch (hresult_error const&)
+        {
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
+        }
+
+        if (failureArgs != nullptr)
+        {
+            tasks.erase(item.ID());
+            downloadFailureEvent(*this, failureArgs);
+            co_return;
+        }
+
+        // Create description file, ignore error
+        try
+        {
+            co_await WriteDescriptionFile(destinationFolder, item);
+        }
+        catch (hresult_error const&) {}
 
         tasks.erase(item.ID());
         downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
