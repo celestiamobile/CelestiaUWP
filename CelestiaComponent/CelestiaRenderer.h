@@ -68,9 +68,10 @@ namespace winrt::CelestiaComponent::implementation
         CRITICAL_SECTION msgCritSection;
         CONDITION_VARIABLE resumeCond;
 
-        int currentWindowWidth = 0;
-        int currentWindowHeight = 0;
-        float windowScale = 1.0f;
+        int currentWindowWidth { 0 };
+        int currentWindowHeight { 0 };
+        float windowScale { 1.0f };
+        int sampleCount { 0 };
 
         Windows::UI::Xaml::Controls::SwapChainPanel window{ nullptr };
 

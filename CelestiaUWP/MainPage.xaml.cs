@@ -160,7 +160,7 @@ namespace CelestiaUWP
             var locale = await GetLocale(localePath);
             await Task.Run(() => CreateExtraFolders());
 
-            mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, () => {
+            mRenderer = new CelestiaRenderer(AppSettings.EnableMSAA, (samples) => {
                 CelestiaAppCore.InitGL();
 
                 List<string> extraPaths = new List<string>();

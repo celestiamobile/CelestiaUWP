@@ -162,6 +162,9 @@ namespace winrt::CelestiaComponent::implementation
                     Destroy();
                     return false;
                 }
+                EGLint numSamples;
+                if (eglGetConfigAttrib(display, config, EGL_SAMPLES, &numSamples) && numSamples > 1)
+                    sampleCount = numSamples;
             }
             else {
                 if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
@@ -282,7 +285,7 @@ namespace winrt::CelestiaComponent::implementation
                 {
                     if (surface != EGL_NO_SURFACE && !engineStartedCalled)
                     {
-                        bool started = engineStarted();
+                        bool started = engineStarted(static_cast<int32_t>(sampleCount));
                         if (!started)
                             break;
                         engineStartedCalled = true;

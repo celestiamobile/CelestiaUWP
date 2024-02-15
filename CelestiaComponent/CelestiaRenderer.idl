@@ -9,7 +9,7 @@
 
 namespace CelestiaComponent
 {
-    delegate Boolean CelestiaRendererEngineStartedHandler();
+    delegate Boolean CelestiaRendererEngineStartedHandler(Int32 sampleCount);
     delegate void CelestiaRendererTask();
 
     [default_interface]
