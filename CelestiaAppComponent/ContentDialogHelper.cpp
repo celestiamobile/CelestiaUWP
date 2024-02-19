@@ -89,8 +89,9 @@ namespace winrt::CelestiaAppComponent::implementation
             co_await completionSource;
             co_await context;
             contentDialog.XamlRoot(xamlRoot);
-            co_await ShowContentDialogDirectAsync(contentDialog);
+            auto dialogResult{ co_await ShowContentDialogDirectAsync(contentDialog) };
             NotifyNextContentDialog(xamlRoot);
+            co_return dialogResult;
         }
     }
 
