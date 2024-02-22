@@ -21,6 +21,13 @@ jobs:
     fetchDepth: 0
 
   - script: |
+      %VCPKG_INSTALLATION_ROOT%\vcpkg.exe install --triplet=x64-windows gperf gettext
+      cd $(System.DefaultWorkingDirectory)\CelestiaUWP
+      mkdir tools
+      copy %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\bin\msgmerge.exe %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\bin\msgfmt.exe %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\bin\gperf.exe tools
+    displayName: 'Install Dependencies'
+
+  - script: |
       cd Celestia
       git checkout origin/$(Build.SourceBranchName)
       cd ../CelestiaLocalization
