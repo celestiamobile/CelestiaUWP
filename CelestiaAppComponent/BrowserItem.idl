@@ -1,6 +1,25 @@
 namespace CelestiaAppComponent
 {
     [default_interface]
+    unsealed runtimeclass BrowserAction
+    {
+        String Name{ get; };
+    }
+
+    [default_interface]
+    runtimeclass BrowserGetInfoAction : BrowserAction
+    {
+        BrowserGetInfoAction();
+    }
+
+    [default_interface]
+    runtimeclass BrowserInputAction : BrowserAction
+    {
+        BrowserInputAction(String name, Int16 code);
+        Int16 Code{ get; };
+    }
+
+    [default_interface]
     runtimeclass BrowserItem
     {
         BrowserItem(CelestiaComponent.CelestiaBrowserItem item);

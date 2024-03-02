@@ -6,6 +6,12 @@
 #if __has_include("BrowserItemTab.g.cpp")
 #include "BrowserItemTab.g.cpp"
 #endif
+#if __has_include("BrowserGetInfoAction.g.cpp")
+#include "BrowserGetInfoAction.g.cpp"
+#endif
+#if __has_include("BrowserInputAction.g.cpp")
+#include "BrowserInputAction.g.cpp"
+#endif
 
 #include "ObservableVector.h"
 
@@ -15,6 +21,29 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
+    BrowserGetInfoAction::BrowserGetInfoAction()
+    {
+    }
+
+    hstring BrowserGetInfoAction::Name()
+    {
+        return LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object");
+    }
+
+    BrowserInputAction::BrowserInputAction(hstring const& name, int16_t code) : name(name), code(code)
+    {
+    }
+
+    hstring BrowserInputAction::Name()
+    {
+        return name;
+    }
+
+    int16_t BrowserInputAction::Code()
+    {
+        return code;
+    }
+
     BrowserItem::BrowserItem(CelestiaComponent::CelestiaBrowserItem const& item) : item(item)
     {
         children = single_threaded_observable_vector<CelestiaAppComponent::BrowserItem>();

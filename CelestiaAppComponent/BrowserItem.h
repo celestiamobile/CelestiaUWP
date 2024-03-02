@@ -2,9 +2,34 @@
 
 #include "BrowserItem.g.h"
 #include "BrowserItemTab.g.h"
+#include "BrowserAction.g.h"
+#include "BrowserGetInfoAction.g.h"
+#include "BrowserInputAction.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
 {
+    struct BrowserAction : BrowserActionT<BrowserAction>
+    {
+        virtual hstring Name() = 0;
+    };
+
+    struct BrowserGetInfoAction : BrowserGetInfoActionT<BrowserGetInfoAction, BrowserAction>
+    {
+        BrowserGetInfoAction();
+        hstring Name();
+    };
+
+    struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, BrowserAction>
+    {
+        BrowserInputAction(hstring const& name, int16_t code);
+        hstring Name();
+        int16_t Code();
+
+    private:
+        hstring name;
+        int16_t code;
+    };
+
     struct BrowserItem : BrowserItemT<BrowserItem>
     {
         BrowserItem(CelestiaComponent::CelestiaBrowserItem const& item);
@@ -39,6 +64,14 @@ namespace winrt::CelestiaAppComponent::implementation
 
 namespace winrt::CelestiaAppComponent::factory_implementation
 {
+    struct BrowserGetInfoAction : BrowserGetInfoActionT<BrowserGetInfoAction, implementation::BrowserGetInfoAction>
+    {
+    };
+
+    struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, implementation::BrowserInputAction>
+    {
+    };
+
     struct BrowserItem : BrowserItemT<BrowserItem, implementation::BrowserItem>
     {
     };
