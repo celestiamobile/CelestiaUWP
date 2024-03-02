@@ -40,9 +40,19 @@ namespace CelestiaUWP
 
         private ObservableCollection<BrowserItemTab> RootItems = new ObservableCollection<BrowserItemTab>();
         private IBindableObservableVector RootItem = null;
+        private ObservableCollection<BrowserAction> Actions = null;
 
         public BrowserPage()
         {
+            Actions = new ObservableCollection<BrowserAction>() {
+                new BrowserGetInfoAction(),
+                new BrowserInputAction(LocalizationHelper.Localize("Go", "Go to an object"), 103),
+                new BrowserInputAction(LocalizationHelper.Localize("Follow", ""), 102),
+                new BrowserInputAction(LocalizationHelper.Localize("Sync Orbit", ""), 121),
+                new BrowserInputAction(LocalizationHelper.Localize("Lock Phase", ""), 58),
+                new BrowserInputAction(LocalizationHelper.Localize("Chase", ""), 34),
+                new BrowserInputAction(LocalizationHelper.Localize("Track", "Track an object"), 116)
+            };
             this.InitializeComponent();
         }
 
@@ -175,51 +185,10 @@ namespace CelestiaUWP
                 DSORoot = dsoCategories.ToArray();
             }
             RootItems.Add(new BrowserItemTab(DSORoot, LocalizationHelper.Localize("DSOs", "Tab for deep sky objects in Star Browser")));
-            var getInfoButton = new Button
-            {
-                Content = LocalizationHelper.Localize("Get Info", "Action for getting info about current selected object")
-            };
-            getInfoButton.Click += GetInfoButton_Click;
-            ButtonStack.Children.Add(getInfoButton);
-            var actions = new (string, short)[]
-                {
-                    (LocalizationHelper.Localize("Go", "Go to an object"), 103),
-                    (LocalizationHelper.Localize("Follow", ""), 102),
-                    (LocalizationHelper.Localize("Sync Orbit", ""), 121),
-                    (LocalizationHelper.Localize("Lock Phase", ""), 58),
-                    (LocalizationHelper.Localize("Chase", ""), 34),
-                    (LocalizationHelper.Localize("Track", "Track an object"), 116)
-                };
-            foreach (var action in actions)
-            {
-                var button = new Button
-                {
-                    Content = action.Item1
-                };
-                button.Click += (sender, arg) =>
-                {
-                    var selectedItem = Tree.SelectedItem;
-                    if (selectedItem is BrowserItem item)
-                    {
-                        var obj = item.Item.Object;
-                        if (obj != null)
-                        {
-                            Renderer.EnqueueTask(() =>
-                            {
-                                var selection = new CelestiaSelection(obj);
-                                AppCore.Simulation.Selection = selection;
-                                AppCore.CharEnter(action.Item2);
-                            });
-                        }
-                    }
-                };
-                ButtonStack.Children.Add(button);
-            }
-
             Nav.SelectedItem = RootItems[0];
         }
 
-        private void GetInfoButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ActionButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             var selectedItem = Tree.SelectedItem;
             if (selectedItem is BrowserItem item)
@@ -228,8 +197,24 @@ namespace CelestiaUWP
                 if (obj != null)
                 {
                     var selection = new CelestiaSelection(obj);
-                    Container.Navigate(typeof(InfoPage), (AppCore, selection));
-                    Nav.IsBackEnabled = true;
+                    var context = (sender as Button).DataContext as BrowserAction;
+                    if (context is BrowserGetInfoAction)
+                    {
+                        Container.Navigate(typeof(InfoPage), (AppCore, selection));
+                        Nav.IsBackEnabled = true;
+                    }
+                    else
+                    {
+                        var action = context as BrowserInputAction;
+                        if (action != null)
+                        {
+                            Renderer.EnqueueTask(() =>
+                            {
+                                AppCore.Simulation.Selection = selection;
+                                AppCore.CharEnter(action.Code);
+                            });
+                        }
+                    }
                 }
             }
         }

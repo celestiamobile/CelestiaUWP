@@ -150,6 +150,9 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppSettings" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BookmarkNode" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserAction" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserGetInfoAction" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserInputAction" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItemTab" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ContentDialogHelper" ThreadingModel="both" />

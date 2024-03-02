@@ -25,8 +25,18 @@
                             </DataTemplate>
                         </muxc:TreeView.ItemTemplate>
                     </muxc:TreeView>
-                    <controls:WrapPanel Orientation="Horizontal" HorizontalSpacing="{StaticResource HorizontalSpacing}" VerticalSpacing="{StaticResource VerticalSpacing}" x:Name="ButtonStack" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                    </controls:WrapPanel>
+                    <muxc:ItemsRepeater x:Name="ButtonStack" ItemsSource="{x:Bind Actions, Mode=OneTime}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                        <muxc:ItemsRepeater.Layout>
+                            <controls:WrapLayout
+                                VerticalSpacing="{StaticResource VerticalSpacing}"
+                                HorizontalSpacing="{StaticResource HorizontalSpacing}"/>
+                        </muxc:ItemsRepeater.Layout>
+                        <muxc:ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="app:BrowserAction">
+                                <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
+                            </DataTemplate>
+                        </muxc:ItemsRepeater.ItemTemplate>
+                    </muxc:ItemsRepeater>
                 </RelativePanel>
             </RelativePanel>
         </Frame>
