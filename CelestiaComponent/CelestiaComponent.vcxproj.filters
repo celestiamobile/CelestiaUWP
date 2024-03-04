@@ -617,6 +617,9 @@
     <ClCompile Include="..\..\Celestia\src\celrender\boundariesrenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\ringrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\unicode.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -1285,6 +1288,9 @@
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\boundariesrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\ringrenderer.h">
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\vecgl.h">
