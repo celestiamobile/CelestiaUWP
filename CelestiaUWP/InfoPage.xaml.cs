@@ -12,6 +12,8 @@
 using CelestiaAppComponent;
 using CelestiaComponent;
 using System;
+using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -19,16 +21,40 @@ namespace CelestiaUWP
 {
     public sealed partial class InfoPage : Page
     {
+        private CelestiaAppCore AppCore;
+        private CelestiaSelection Selection;
+        private CelestiaRenderer Renderer;
+        private ObservableCollection<BrowserInputAction> Actions = null;
+
         public InfoPage()
         {
+            Actions = new ObservableCollection<BrowserInputAction>() {
+                new BrowserInputAction(LocalizationHelper.Localize("Go", "Go to an object"), 103),
+                new BrowserInputAction(LocalizationHelper.Localize("Follow", ""), 102),
+                new BrowserInputAction(LocalizationHelper.Localize("Sync Orbit", ""), 121),
+                new BrowserInputAction(LocalizationHelper.Localize("Lock Phase", ""), 58),
+                new BrowserInputAction(LocalizationHelper.Localize("Chase", ""), 34),
+                new BrowserInputAction(LocalizationHelper.Localize("Track", "Track an object"), 116)
+            };
             this.InitializeComponent();
+        }
+
+        private void ActionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var action = (sender as Button).DataContext as BrowserInputAction;
+            Renderer.EnqueueTask(() =>
+            {
+                AppCore.Simulation.Selection = Selection;
+                AppCore.CharEnter(action.Code);
+            });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = ((CelestiaAppCore, CelestiaSelection))e.Parameter;
-            var AppCore = parameter.Item1;
-            var Selection = parameter.Item2;
+            var parameter = ((CelestiaAppCore, CelestiaRenderer, CelestiaSelection))e.Parameter;
+            AppCore = parameter.Item1;
+            Renderer = parameter.Item2;
+            Selection = parameter.Item3;
 
             NameLabel.Text = AppCore.Simulation.Universe.NameForSelection(Selection);
             DetailLabel.Text = SelectionHelper.GetOverview(Selection, AppCore);
@@ -37,6 +63,11 @@ namespace CelestiaUWP
             {
                 LinkButton.NavigateUri = new Uri(url);
                 LinkButton.Content = url;
+                LinkButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LinkButton.Visibility = Visibility.Collapsed;
             }
         }
     }

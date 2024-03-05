@@ -5,7 +5,8 @@
     xmlns:app="using:CelestiaAppComponent"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <muxc:NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Visible" IsBackEnabled="False" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged" BackRequested="Nav_BackRequested">
         <muxc:NavigationView.MenuItemTemplate>

@@ -1376,7 +1376,7 @@ namespace CelestiaUWP
 
         void ShowInfo(CelestiaSelection selection)
         {
-            ShowPage(typeof(InfoPage), new Size(400, 0), (mAppCore, selection));
+            ShowPage(typeof(InfoPage), new Size(400, 0), (mAppCore, mRenderer, selection));
         }
 
         async void ShowSelectObject()

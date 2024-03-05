@@ -200,7 +200,7 @@ namespace CelestiaUWP
                     var context = (sender as Button).DataContext as BrowserAction;
                     if (context is BrowserGetInfoAction)
                     {
-                        Container.Navigate(typeof(InfoPage), (AppCore, selection));
+                        Container.Navigate(typeof(InfoPage), (AppCore, Renderer, selection));
                         Nav.IsBackEnabled = true;
                     }
                     else
