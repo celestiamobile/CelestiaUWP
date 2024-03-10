@@ -15,6 +15,7 @@ import "CelestiaTimeline.idl";
 
 namespace CelestiaComponent
 {
+    [flags]
     enum CelestiaBodyType
     {
         Planet = 0x01,

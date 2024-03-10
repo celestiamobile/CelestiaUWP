@@ -11,11 +11,11 @@ import "CelestiaBody.idl";
 
 namespace CelestiaComponent
 {
+    [flags]
     enum CelestiaEclipseKind
     {
         Solar = 1,
-        Lunar = 2,
-        SolarAndLunar = 3
+        Lunar = 2
     };
 
     [default_interface]
