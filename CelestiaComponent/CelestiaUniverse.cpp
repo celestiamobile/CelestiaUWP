@@ -97,33 +97,33 @@ namespace winrt::CelestiaComponent::implementation
                 continue;
 
 			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider, false);
-			int bodyClass = body->getClassification();
+			auto bodyClass = body->getClassification();
 			switch (bodyClass)
 			{
-			case Body::Invisible:
-            case Body::Diffuse:
-            case Body::Component:
+			case BodyClassification::Invisible:
+            case BodyClassification::Diffuse:
+            case BodyClassification::Component:
 				continue;
-			case Body::Planet:
+			case BodyClassification::Planet:
 				planets.push_back(item);
 				break;
-			case Body::DwarfPlanet:
+			case BodyClassification::DwarfPlanet:
 				dwarfPlanets.push_back(item);
 				break;
-			case Body::Moon:
-			case Body::MinorMoon:
-				if (body->getRadius() < 100.0f || Body::MinorMoon == bodyClass)
+			case BodyClassification::Moon:
+			case BodyClassification::MinorMoon:
+				if (body->getRadius() < 100.0f || BodyClassification::MinorMoon == bodyClass)
 					minorMoons.push_back(item);
 				else
 					direct.push_back(item);
 				break;
-			case Body::Asteroid:
+			case BodyClassification::Asteroid:
 				asteroids.push_back(item);
 				break;
-			case Body::Comet:
+			case BodyClassification::Comet:
 				comets.push_back(item);
 				break;
-			case Body::Spacecraft:
+			case BodyClassification::Spacecraft:
 				spacecraft.push_back(item);
 				break;
 			default:
@@ -173,25 +173,25 @@ namespace winrt::CelestiaComponent::implementation
 				continue;
 
 			CelestiaComponent::CelestiaBrowserItem item = make<CelestiaBrowserItem>(name, make<CelestiaBody>(reinterpret_cast<Body*>(body)), provider, false);
-			int bodyClass = body->getClassification();
-			if (bodyClass == Body::Asteroid) bodyClass = Body::Moon;
+			auto bodyClass = body->getClassification();
+			if (bodyClass == BodyClassification::Asteroid) bodyClass = BodyClassification::Moon;
 			switch (bodyClass)
 			{
-			case Body::Invisible:
-            case Body::Diffuse:
-            case Body::Component:
+			case BodyClassification::Invisible:
+            case BodyClassification::Diffuse:
+            case BodyClassification::Component:
 				continue;
-			case Body::Moon:
-			case Body::MinorMoon:
-				if (body->getRadius() < 100.0f || Body::MinorMoon == bodyClass)
+			case BodyClassification::Moon:
+			case BodyClassification::MinorMoon:
+				if (body->getRadius() < 100.0f || BodyClassification::MinorMoon == bodyClass)
 					minorMoons.push_back(item);
 				else
 					direct.push_back(item);
 				break;
-			case Body::Comet:
+			case BodyClassification::Comet:
 				comets.push_back(item);
 				break;
-			case Body::Spacecraft:
+			case BodyClassification::Spacecraft:
 				spacecraft.push_back(item);
 				break;
 			default:

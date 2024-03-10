@@ -118,7 +118,7 @@ namespace winrt::CelestiaComponent::implementation
         bool success = core->initRenderer();
 
         // start with default values
-        constexpr int DEFAULT_ORBIT_MASK = Body::Planet | Body::Moon | Body::Stellar;
+        constexpr auto DEFAULT_ORBIT_MASK = BodyClassification::Planet | BodyClassification::Moon | BodyClassification::Stellar;
         constexpr int DEFAULT_LABEL_MODE = 2176;
         constexpr float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
         constexpr float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
@@ -574,11 +574,13 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
 #define ORBITMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Orbits() \
 { \
-    return (core->getRenderer()->getOrbitMask() & Body::flag) != 0; \
+    return celestia::util::is_set(core->getRenderer()->getOrbitMask(), BodyClassification::flag); \
 } \
 void CelestiaAppCore::Show##flag##Orbits(bool value) \
 { \
-    core->getRenderer()->setOrbitMask((int)bit_mask_value_update(value, Body::flag, core->getRenderer()->getOrbitMask())); \
+    auto flags = core->getRenderer()->getOrbitMask(); \
+    celestia::util::set_or_unset(flags, BodyClassification::flag, value); \
+    core->getRenderer()->setOrbitMask(flags); \
 }
 
     ORBITMETHODS(Planet)

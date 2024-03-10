@@ -30,7 +30,7 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaBodyType CelestiaBody::Type()
     {
-        return (CelestiaComponent::CelestiaBodyType)(static_cast<Body*>(obj)->getClassification());
+        return static_cast<CelestiaComponent::CelestiaBodyType>(static_cast<Body*>(obj)->getClassification());
     }
 
 	com_array<hstring> CelestiaBody::AlternateSurfaceNames()

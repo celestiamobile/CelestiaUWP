@@ -17,21 +17,21 @@ namespace CelestiaComponent
 {
     enum CelestiaBodyType
     {
-        planet = 0x01,
-        moon = 0x02,
-        asteroid = 0x04,
-        comet = 0x08,
-        spacecraft = 0x10,
-        invisible = 0x20,
-        barycenter = 0x40,           // Not used (invisible is used instead)
-        smallBody = 0x80,            // Not used
-        dwarfPlanet = 0x100,
-        stellar = 0x200,             // only used for orbit mask
-        surfaceFeature = 0x400,
-        component = 0x800,
-        minorMoon = 0x1000,
-        diffuse = 0x2000,
-        unknown = 0x10000,
+        Planet = 0x01,
+        Moon = 0x02,
+        Asteroid = 0x04,
+        Comet = 0x08,
+        Spacecraft = 0x10,
+        Invisible = 0x20,
+        Barycenter = 0x40,           // Not used (invisible is used instead)
+        SmallBody = 0x80,            // Not used
+        DwarfPlanet = 0x100,
+        Stellar = 0x200,             // only used for orbit mask
+        SurfaceFeature = 0x400,
+        Component = 0x800,
+        MinorMoon = 0x1000,
+        Diffuse = 0x2000,
+        Unknown = 0x10000,
     };
 
     [default_interface]

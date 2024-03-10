@@ -67,7 +67,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto orbit = body.OrbitAtTime(julianDay);
         auto rotation = body.RotationModelAtTime(julianDay);
         auto orbitalPeriod = orbit.IsPeriodic() ? orbit.Period() : 0.0;
-        if (rotation.IsPeriodic() && body.Type() != CelestiaBodyType::spacecraft)
+        if (rotation.IsPeriodic() && body.Type() != CelestiaBodyType::Spacecraft)
         {
             auto rotPeriod = rotation.Period();
             auto dayLength = 0.0;
