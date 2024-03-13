@@ -187,9 +187,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -546,6 +543,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\localeutil.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
@@ -829,9 +829,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h">
@@ -1204,6 +1201,9 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h">

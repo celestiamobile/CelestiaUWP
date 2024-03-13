@@ -338,7 +338,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\dsoname.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsorenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.h" />
@@ -529,6 +528,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\intrusiveptr.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128.h" />
@@ -566,7 +566,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\dsoname.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsorenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.cpp" />
@@ -721,6 +720,7 @@
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\localeutil.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />

@@ -35,7 +35,7 @@ namespace winrt::CelestiaComponent::implementation
 
 	com_array<hstring> CelestiaBody::AlternateSurfaceNames()
 	{
-		auto altSurfaces = static_cast<Body*>(obj)->getAlternateSurfaceNames();
+		auto altSurfaces = GetBodyFeaturesManager()->getAlternateSurfaceNames(static_cast<Body*>(obj));
 		std::vector<hstring> results;
 		if (altSurfaces.has_value() && !altSurfaces->empty())
 		{
@@ -71,12 +71,12 @@ namespace winrt::CelestiaComponent::implementation
 
     bool CelestiaBody::HasRings()
     {
-        return static_cast<Body*>(obj)->getRings();
+        return GetBodyFeaturesManager()->getRings(static_cast<Body*>(obj));
     }
 
     bool CelestiaBody::HasAtmosphere()
     {
-        return static_cast<Body*>(obj)->getAtmosphere();
+        return GetBodyFeaturesManager()->getAtmosphere(static_cast<Body*>(obj));
     }
 
     bool CelestiaBody::IsEllipsoid()

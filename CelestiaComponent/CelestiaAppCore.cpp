@@ -16,6 +16,7 @@
 #include <celutil/flag.h>
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
+#include <celutil/localeutil.h>
 #include <fmt/format.h>
 #include <fmt/xchar.h>
 #endif
@@ -443,8 +444,12 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaAppCore::SetUpLocale()
     {
 #ifdef ENABLE_NLS
-        setlocale(LC_ALL, "");
-        setlocale(LC_NUMERIC, "C");
+        static bool isLocaleSet = false;
+        if (isLocaleSet)
+            return;
+
+        isLocaleSet = true;
+        celestia::util::InitLocale();
 #endif
     }
 

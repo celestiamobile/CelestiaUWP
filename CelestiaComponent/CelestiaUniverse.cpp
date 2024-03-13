@@ -201,7 +201,7 @@ namespace winrt::CelestiaComponent::implementation
 		}
 
 		std::vector<CelestiaComponent::CelestiaBrowserItem> locs;
-		auto locations = b->getLocations();
+		auto locations = GetBodyFeaturesManager()->getLocations(b);
 		if (locations.has_value() && !locations->empty())
 		{
 			for (const auto loc : *locations)
