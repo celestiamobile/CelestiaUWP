@@ -1,0 +1,63 @@
+//
+// Copyright (C) 2024-present, Celestia Development Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+namespace CelestiaUWP2
+{
+    struct UvBounds
+    {
+        Double UMin;
+        Double UMax;
+        Double VMin;
+        Double VMax;
+    };
+
+    struct UvMeasure
+    {
+        Double U;
+        Double V;
+
+    };
+
+    [default_interface]
+    runtimeclass WrapItem
+    {
+        WrapItem(Int32 index);
+        Int32 Index{ get; };
+        Windows.Foundation.IReference<UvMeasure> Measure{ get; set; };
+        Windows.Foundation.IReference<UvMeasure> Position{ get; set; };
+        Windows.UI.Xaml.UIElement Element{ get; set; };
+    }
+
+    [default_interface]
+    runtimeclass WrapLayoutState
+    {
+        WrapLayoutState(Microsoft.UI.Xaml.Controls.VirtualizingLayoutContext context);
+        Windows.UI.Xaml.Controls.Orientation Orientation{ get; };
+        Windows.Foundation.IReference<UvMeasure> Spacing{ get; set; };
+        Double AvailableU{ get; set; };
+        WrapItem GetItemAt(Int32 index);
+        void Clear();
+        void RemoveFromIndex(Int32 index);
+        void SetOrientation(Windows.UI.Xaml.Controls.Orientation orientation);
+        void ClearPositions();
+        Double GetHeight();
+        void RecycleElementAt(Int32 index);
+    }
+
+    [default_interface]
+    runtimeclass WrapLayout : Microsoft.UI.Xaml.Controls.VirtualizingLayout
+    {
+        WrapLayout();
+        Double HorizontalSpacing;
+        Double VerticalSpacing;
+        Windows.UI.Xaml.Controls.Orientation Orientation;
+        static Windows.UI.Xaml.DependencyProperty HorizontalSpacingProperty{ get; };
+        static Windows.UI.Xaml.DependencyProperty VerticalSpacingProperty{ get; };
+        static Windows.UI.Xaml.DependencyProperty OrientationProperty{ get; };
+    }
+}

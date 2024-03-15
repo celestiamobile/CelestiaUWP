@@ -192,6 +192,9 @@
     <ClInclude Include="SystemInformation.h">
       <DependentUpon>SystemInformation.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="DataHelper.h">
+      <DependentUpon>DataHelper.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -248,6 +251,9 @@
     <ClCompile Include="SystemInformation.cpp">
       <DependentUpon>SystemInformation.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="DataHelper.cpp">
+      <DependentUpon>DataHelper.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +274,7 @@
     <Midl Include="BrowserItem.idl" />
     <Midl Include="SearchObjectEntry.idl" />
     <Midl Include="SystemInformation.idl" />
+    <Midl Include="DataHelper.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />

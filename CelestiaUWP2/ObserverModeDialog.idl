@@ -1,0 +1,28 @@
+//
+// Copyright (C) 2024-present, Celestia Development Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+namespace CelestiaUWP2
+{
+    [default_interface]
+    runtimeclass ObserverModeStringConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+        ObserverModeStringConverter();
+    }
+
+    [default_interface]
+    runtimeclass ObserverModeDialog : Windows.UI.Xaml.Controls.ContentDialog, Windows.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ObserverModeDialog(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        Windows.Foundation.Collections.IObservableVector<CelestiaComponent.CoordinateSystem> CoordinateSystems{ get; };
+        CelestiaComponent.CoordinateSystem SelectedCoordinateSystem;
+        Windows.UI.Xaml.Visibility RefObjectTextBoxVisibility{ get; };
+        Windows.UI.Xaml.Visibility TargetObjectTextBoxVisibility{ get; };
+        String ReferenceObjectPath{ get; };
+        String TargetObjectPath{ get; };
+    }
+}

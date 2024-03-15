@@ -1,0 +1,50 @@
+//
+// Copyright (C) 2024-present, Celestia Development Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+namespace CelestiaUWP2
+{
+    [default_interface]
+    runtimeclass EclipseFinderParameter
+    {
+        EclipseFinderParameter(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        CelestiaComponent.CelestiaAppCore AppCore{ get; };
+        CelestiaComponent.CelestiaRenderer Renderer{ get; };
+    }
+
+    [default_interface]
+    runtimeclass EclipseResult
+    {
+        EclipseResult(CelestiaComponent.CelestiaEclipse eclipse, String displayName);
+        CelestiaComponent.CelestiaEclipse Eclipse{ get; };
+        String DisplayName{ get; };
+    }
+
+    [default_interface]
+    runtimeclass DateTimeStringConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+        DateTimeStringConverter();
+    }
+
+    [default_interface]
+    runtimeclass DateTimeReferenceDateTimeConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+        DateTimeReferenceDateTimeConverter();
+    }
+
+    [default_interface]
+    runtimeclass EclipseFinderPage : Windows.UI.Xaml.Controls.Page, Windows.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        EclipseFinderPage();
+        Windows.Foundation.DateTime StartTime;
+        Windows.Foundation.DateTime EndTime;
+        Boolean FindLunar;
+        Boolean FindSolar;
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.SearchObjectEntry> AvailableObjects{ get; };
+        Windows.Foundation.Collections.IObservableVector<EclipseResult> Eclipses{ get; };
+    }
+}
