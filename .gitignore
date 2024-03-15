@@ -12,3 +12,4 @@ CelestiaUWP/Resources
 *.user
 AppPackages
 BundleArtifacts
+.DS_Store

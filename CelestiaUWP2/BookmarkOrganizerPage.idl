@@ -1,0 +1,29 @@
+//
+// Copyright (C) 2024-present, Celestia Development Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+namespace CelestiaUWP2
+{
+    [default_interface]
+    runtimeclass BookmarkOrganizerParameter
+    {
+        BookmarkOrganizerParameter(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, Boolean canAddNewBookmarks);
+        CelestiaComponent.CelestiaAppCore AppCore{ get; };
+        CelestiaComponent.CelestiaRenderer Renderer{ get; };
+        Boolean CanAddNewBookmarks{ get; };
+    }
+
+    [default_interface]
+    runtimeclass BookmarkOrganizerPage : Windows.UI.Xaml.Controls.Page
+    {
+        BookmarkOrganizerPage();
+
+        Windows.UI.Xaml.Interop.IBindableObservableVector Bookmarks{ get; };
+
+        void InsertBookmarkAtSelection(CelestiaAppComponent.BookmarkNode bookmark);
+    }
+}

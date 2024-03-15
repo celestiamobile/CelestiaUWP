@@ -36,6 +36,7 @@
     <Midl Include="BrowserItem.idl" />
     <Midl Include="SearchObjectEntry.idl" />
     <Midl Include="SystemInformation.idl" />
+    <Midl Include="DataHelper.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaAppComponent.def" />
