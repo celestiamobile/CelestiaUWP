@@ -153,9 +153,6 @@
     </Compile>
     <Compile Include="Helper\NavigationViewItem.cs" />
     <Compile Include="Helper\TimeConverter.cs" />
-    <Compile Include="InfoDialog.xaml.cs">
-      <DependentUpon>InfoDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
     </Compile>
@@ -294,10 +291,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BookmarkOrganizerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

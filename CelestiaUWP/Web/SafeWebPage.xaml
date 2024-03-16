@@ -8,7 +8,6 @@
     Background="Transparent">
 
     <RelativePanel>
-        <TextBlock Visibility="Collapsed" x:Name="WebViewNotFoundView" Style="{StaticResource BodyTextBlockStyle}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
         <Frame Visibility="Collapsed" x:Name="WebContent" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
     </RelativePanel>
 </Page>

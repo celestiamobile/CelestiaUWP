@@ -57,7 +57,6 @@ namespace CelestiaUWP
             GoButton.Content = LocalizationHelper.Localize("Go", "Go to an object");
             RenameButton.Content = LocalizationHelper.Localize("Rename", "Rename a favorite item (currently bookmark)");
             EmptyHintText.Text = LocalizationHelper.Localize("No saved bookmarks", "");
-            Unloaded += BookmarkOrganizerPage_Unloaded;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

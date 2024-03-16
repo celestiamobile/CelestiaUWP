@@ -1384,18 +1384,21 @@ namespace CelestiaUWP
             var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("Object name:", ""));
             if (text.Length > 0)
             {
-                var selection = mAppCore.Simulation.Find(text);
-                if (selection.IsEmpty)
+                mRenderer.EnqueueTask(() =>
                 {
-                    ShowObjectNotFound();
-                }
-                else
-                {
-                    mRenderer.EnqueueTask(() =>
+                    var selection = mAppCore.Simulation.Find(text);
+                    if (selection.IsEmpty)
+                    {
+                        Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ShowObjectNotFound();
+                        });
+                    }
+                    else
                     {
                         mAppCore.Simulation.Selection = selection;
-                    });
-                }
+                    }
+                });
             }
         }
         async void ShowGotoObject()
@@ -1409,19 +1412,22 @@ namespace CelestiaUWP
                 var longitude = dialog.Longitude;
                 var distance = dialog.Distance;
                 var unit = (CelestiaGotoLocationDistanceUnit)dialog.Unit;
-                var selection = mAppCore.Simulation.Find(objectPath);
-                if (selection.IsEmpty)
+                mRenderer.EnqueueTask(() =>
                 {
-                    ShowObjectNotFound();
-                }
-                else
-                {
-                    var location = new CelestiaGotoLocation(selection, latitude, longitude, distance, unit);
-                    mRenderer.EnqueueTask(() =>
+                    var selection = mAppCore.Simulation.Find(objectPath);
+                    if (selection.IsEmpty)
                     {
+                        Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            ShowObjectNotFound();
+                        });
+                    }
+                    else
+                    {
+                        var location = new CelestiaGotoLocation(selection, latitude, longitude, distance, unit);
                         mAppCore.Simulation.GoToLocation(location);
-                    });
-                }
+                    }
+                });
             }
         }
 
@@ -1539,11 +1545,7 @@ namespace CelestiaUWP
 
         async void ShowOpenGLInfo(string Info)
         {
-            var dialog = new InfoDialog(Info)
-            {
-                Title = LocalizationHelper.Localize("OpenGL Info", "")
-            };
-            await ContentDialogHelper.ShowContentDialogAsync(this, dialog);
+            await ContentDialogHelper.ShowText(this, LocalizationHelper.Localize("OpenGL Info", ""), Info);
         }
 
         void ShowOnlineAddons()
