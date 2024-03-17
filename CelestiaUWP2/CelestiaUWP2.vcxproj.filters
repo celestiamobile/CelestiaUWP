@@ -21,6 +21,7 @@
     <Page Include="ResourceManagerPage.xaml" />
     <Page Include="CommonWebPage.xaml" />
     <Page Include="LegacyWebPage.xaml" />
+    <Page Include="SafeWebPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -43,6 +44,7 @@
     <Midl Include="CommonWebParameter.idl" />
     <Midl Include="CommonWebPage.idl" />
     <Midl Include="LegacyWebPage.idl" />
+    <Midl Include="SafeWebPage.idl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -66,6 +68,7 @@
     <ClCompile Include="CommonWebParameter.cpp" />
     <ClCompile Include="CommonWebPage.cpp" />
     <ClCompile Include="LegacyWebPage.cpp" />
+    <ClCompile Include="SafeWebPage.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>

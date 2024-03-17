@@ -169,6 +169,9 @@
     <ClInclude Include="LegacyWebPage.h">
       <DependentUpon>LegacyWebPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SafeWebPage.h">
+      <DependentUpon>SafeWebPage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -223,6 +226,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="LegacyWebPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SafeWebPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -449,6 +455,9 @@
     <ClCompile Include="LegacyWebPage.cpp">
       <DependentUpon>LegacyWebPage.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SafeWebPage.cpp">
+      <DependentUpon>SafeWebPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -507,6 +516,9 @@
     </Midl>
     <Midl Include="LegacyWebPage.idl">
       <DependentUpon>LegacyWebPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="SafeWebPage.idl">
+      <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>
