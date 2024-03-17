@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
+    <Page.Resources>
         <x:Double x:Key="InternalSpacing">4</x:Double>
         <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
             <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalSpacing}" Margin="{StaticResource ListItemMargin}">
@@ -68,7 +68,7 @@
             Slider="{StaticResource SliderItemTemplate}"
             Selection="{StaticResource SelectionItemTemplate}"
             Header="{StaticResource HeaderItemTemplate}"/>
-    </UserControl.Resources>
+    </Page.Resources>
     <RelativePanel>
         <muxc:InfoBar x:Name="RestartHint" IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}" IsClosable="False" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
         <ListView

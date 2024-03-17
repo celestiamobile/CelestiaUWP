@@ -17,6 +17,8 @@
     <Page Include="EclipseFinderPage.xaml" />
     <Page Include="SettingCommonPage.xaml" />
     <Page Include="SettingsPage.xaml" />
+    <Page Include="InstalledItemList.xaml" />
+    <Page Include="ResourceManagerPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -34,6 +36,9 @@
     <Midl Include="EclipseFinderPage.idl" />
     <Midl Include="SettingCommonPage.idl" />
     <Midl Include="SettingsPage.idl" />
+    <Midl Include="InstalledItemList.idl" />
+    <Midl Include="ResourceManagerPage.idl" />
+    <Midl Include="CommonWebParameter.idl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -52,6 +57,9 @@
     <ClCompile Include="EclipseFinderPage.cpp" />
     <ClCompile Include="SettingCommonPage.cpp" />
     <ClCompile Include="SettingsPage.cpp" />
+    <ClCompile Include="InstalledItemList.cpp" />
+    <ClCompile Include="ResourceManagerPage.cpp" />
+    <ClCompile Include="CommonWebParameter.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
