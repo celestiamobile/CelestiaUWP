@@ -1,5 +1,5 @@
-﻿<Page
-    x:Class="CelestiaUWP2.CommonWebPage"
+<Page
+    x:Class="CelestiaUWP2.LegacyWebPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -9,7 +9,7 @@
     Background="Transparent">
 
     <RelativePanel>
-        <muxc:WebView2 FlowDirection="LeftToRight" x:Name="WebView" NavigationStarting="WebView_NavigationStarting" WebMessageReceived="WebView_WebMessageReceived" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+        <WebView DefaultBackgroundColor="Transparent" FlowDirection="LeftToRight" x:Name="WebView" NavigationStarting="WebView_NavigationStarting" ScriptNotify="WebView_ScriptNotify" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
         <muxc:ProgressRing x:Name="LoadingIndicator" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
     </RelativePanel>
 </Page>
