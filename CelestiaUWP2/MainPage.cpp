@@ -980,7 +980,9 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::ShowSettings()
     {
-        // TODO
+        auto languages = single_threaded_vector<hstring>();
+        languages.ReplaceAll(availableLanguages);
+        ShowPage(xaml_typename<CelestiaUWP2::SettingsPage>(), Size(400, 0), CelestiaUWP2::SettingsParameter(appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages));
     }
 
     void MainPage::ShowAddonManagement()

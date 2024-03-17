@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="CelestiaUWP2.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CelestiaUWP2"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="ItemGroupTemplate" x:DataType="local:SettingsNavigationItemGroup">
+            <muxc:NavigationViewItem Content="{x:Bind Title}"/>
+        </DataTemplate>
+    </Page.Resources>
+    <muxc:NavigationView MenuItemsSource="{x:Bind ItemGroups, Mode=OneWay}" MenuItemTemplate="{StaticResource ItemGroupTemplate}" SelectionChanged="NavigationView_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
+        <Frame x:Name="Container"/>
+    </muxc:NavigationView>
+</Page>

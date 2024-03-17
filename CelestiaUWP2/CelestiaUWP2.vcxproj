@@ -148,6 +148,12 @@
     <ClInclude Include="EclipseFinderPage.h">
       <DependentUpon>EclipseFinderPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="SettingCommonPage.h">
+      <DependentUpon>SettingCommonPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="SettingsPage.h">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -184,6 +190,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EclipseFinderPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingCommonPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -389,6 +401,12 @@
     <ClCompile Include="EclipseFinderPage.cpp">
       <DependentUpon>EclipseFinderPage.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="SettingCommonPage.cpp">
+      <DependentUpon>SettingCommonPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="SettingsPage.cpp">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -428,6 +446,12 @@
     </Midl>
     <Midl Include="EclipseFinderPage.idl">
       <DependentUpon>EclipseFinderPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="SettingCommonPage.idl">
+      <DependentUpon>SettingCommonPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="SettingsPage.idl">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>
