@@ -1,0 +1,36 @@
+//
+// Copyright (C) 2024-present, Celestia Development Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+namespace CelestiaUWP2
+{
+    [default_interface]
+    runtimeclass SettingCommonParameter
+    {
+        SettingCommonParameter(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint);
+        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+        Boolean ShowRestartHint{ get; };
+    }
+
+    [default_interface]
+    runtimeclass SettingTemplateSelector : Windows.UI.Xaml.Controls.DataTemplateSelector
+    {
+        SettingTemplateSelector();
+        Windows.UI.Xaml.DataTemplate Toggle;
+        Windows.UI.Xaml.DataTemplate Selection;
+        Windows.UI.Xaml.DataTemplate Slider;
+        Windows.UI.Xaml.DataTemplate Header;
+    }
+
+    [default_interface]
+    runtimeclass SettingCommonPage : Windows.UI.Xaml.Controls.Page
+    {
+        SettingCommonPage();
+        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+        Boolean ShowRestartHint{ get; };
+    }
+}
