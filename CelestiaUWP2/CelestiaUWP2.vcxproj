@@ -154,6 +154,15 @@
     <ClInclude Include="SettingsPage.h">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="InstalledItemListPage.h">
+      <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="ResourceManagerPage.h">
+      <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="CommonWebParameter.h">
+      <DependentUpon>CommonWebParameter.idl</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -196,6 +205,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="InstalledItemListPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceManagerPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -407,6 +422,15 @@
     <ClCompile Include="SettingsPage.cpp">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="InstalledItemListPage.cpp">
+      <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="ResourceManagerPage.cpp">
+      <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="CommonWebParameter.cpp">
+      <DependentUpon>CommonWebParameter.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -453,6 +477,13 @@
     <Midl Include="SettingsPage.idl">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Midl>
+    <Midl Include="InstalledItemListPage.idl">
+      <DependentUpon>InstalledItemListPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="ResourceManagerPage.idl">
+      <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="CommonWebParameter.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

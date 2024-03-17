@@ -987,7 +987,12 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::ShowAddonManagement()
     {
-        // TODO
+        ShowPage(xaml_typename<CelestiaUWP2::ResourceManagerPage>(), Size(400, 0), CelestiaUWP2::ResourceManagerParameter(appCore, renderer, resourceManager, [weak_this{ get_weak() }]()
+            {
+                auto strong_this = weak_this.get();
+                if (strong_this)
+                    strong_this->ShowOnlineAddons();
+            }));
     }
 
     fire_and_forget MainPage::ShowOnlineAddons()

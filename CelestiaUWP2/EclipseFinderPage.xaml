@@ -8,13 +8,13 @@
     xmlns:app="using:CelestiaAppComponent"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
-    <UserControl.Resources>
+    <Page.Resources>
         <local:DateTimeReferenceDateTimeConverter x:Key="DateTimeReferenceDateTimeConverter"/>
         <local:DateTimeStringConverter x:Key="DateTimeStringConverter"/>
         <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
-    </UserControl.Resources>
+    </Page.Resources>
     <RelativePanel Margin="{StaticResource Margin}">
         <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
             <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
