@@ -36,5 +36,6 @@
 #include <winrt/Windows.Web.Http.h>
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Microsoft.UI.Xaml.XamlTypeInfo.h>
+#include <winrt/Microsoft.Web.WebView2.Core.h>
 #include <winrt/CelestiaComponent.h>
 #include <winrt/CelestiaAppComponent.h>

@@ -78,8 +78,8 @@ namespace winrt::CelestiaUWP2::implementation
             currentItemControl.CloseWebViewIfNeeded();
             currentItemControl = nullptr;
         }
-        ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, windowProvider };
-        Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);*/
+        ResourceItemPage Page{ appCore, renderer, item, resourceManager, windowProvider };
+        Container().Navigate(xaml_typename<CelestiaUWP2::CustomPage>(), Page);*/
         Nav().IsBackEnabled(true);
     }
 

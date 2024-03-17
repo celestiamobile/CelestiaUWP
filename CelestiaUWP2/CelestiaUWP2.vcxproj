@@ -163,6 +163,9 @@
     <ClInclude Include="CommonWebParameter.h">
       <DependentUpon>CommonWebParameter.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="CommonWebPage.h">
+      <DependentUpon>CommonWebPage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -211,6 +214,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ResourceManagerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CommonWebPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -431,6 +437,9 @@
     <ClCompile Include="CommonWebParameter.cpp">
       <DependentUpon>CommonWebParameter.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="CommonWebPage.cpp">
+      <DependentUpon>CommonWebPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +493,9 @@
       <DependentUpon>ResourceManagerPage.xaml</DependentUpon>
     </Midl>
     <Midl Include="CommonWebParameter.idl" />
+    <Midl Include="CommonWebPage.idl">
+      <DependentUpon>CommonWebPage.xaml</DependentUpon>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
