@@ -91,7 +91,7 @@ namespace CelestiaUWP
             get { return PathHelper.Combine(defaultResourcePath, "celestia.cfg"); }
         }
 
-        private string[] AvailableLanguages;
+        private string[] AvailableLanguages = new string[] {};
 
         private float scale = 1.0f;
 
@@ -1573,21 +1573,28 @@ namespace CelestiaUWP
 
         async Task<string> GetLocale(string LocalePath)
         {
-            if (AvailableLanguages == null)
+            try
             {
-                var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
-                var files = await folder.GetFoldersAsync();
-                var availableLocales = new List<string>();
-                foreach (var file in files)
+                if (AvailableLanguages.Length == 0)
                 {
-                    availableLocales.Add(file.Name);
-                }
+                    var folder = await Windows.Storage.StorageFolder.GetFolderFromPathAsync(LocalePath);
+                    var files = await folder.GetFoldersAsync();
+                    var availableLocales = new List<string>();
+                    foreach (var file in files)
+                    {
+                        availableLocales.Add(file.Name);
+                    }
 
-                availableLocales.Sort();
-                AvailableLanguages = availableLocales.ToArray();
+                    availableLocales.Sort();
+                    AvailableLanguages = availableLocales.ToArray();
+                }
+                var resourceLoader = ResourceLoader.GetForViewIndependentUse();
+                return resourceLoader.GetString("CelestiaLanguage");
             }
-            var resourceLoader = ResourceLoader.GetForViewIndependentUse();
-            return resourceLoader.GetString("CelestiaLanguage");
+            catch
+            {
+                return "en";
+            }
         }
 
         private async Task<JsonObject> ReadDefaultSettings()
