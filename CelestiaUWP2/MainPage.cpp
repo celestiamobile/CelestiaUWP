@@ -98,7 +98,7 @@ namespace winrt::CelestiaUWP2::implementation
         args.Handled(true);
     }
 
-    fire_and_forget MainPage::MainPage_Loaded(IInspectable const& sender, RoutedEventArgs const& e)
+    fire_and_forget MainPage::MainPage_Loaded(IInspectable const&, RoutedEventArgs const&)
     {
         if (appSettings.UseFullDPI())
             scale = static_cast<int>(Windows::Graphics::Display::DisplayInformation::GetForCurrentView().ResolutionScale()) / 100.0f;
@@ -149,7 +149,7 @@ namespace winrt::CelestiaUWP2::implementation
         renderer.Start();
     }
 
-    bool MainPage::StartEngine(hstring const& resourcePath, hstring const& configPath, hstring const& locale, CelestiaLayoutDirection layoutDirection, JsonObject const& defaultSettings)
+    bool MainPage::StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaLayoutDirection layoutDirection, JsonObject const& defaultSettings)
     {
         CelestiaAppCore::InitGL();
 
@@ -161,7 +161,7 @@ namespace winrt::CelestiaUWP2::implementation
         hstring localeDirectory = PathHelper::Combine(resourcePath, L"locale");
         CelestiaAppCore::SetLocaleDirectory(localeDirectory, locale);
 
-        bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [this](hstring const& status) {
+        bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [this](hstring const status) {
             Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this, status]()
                 {
                     auto textToDisplay = hstring(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), std::wstring(status)));
@@ -180,7 +180,7 @@ namespace winrt::CelestiaUWP2::implementation
                     });
                 SetCurrentDirectoryW(defaultResourcePath.c_str());
                 CelestiaAppCore::SetLocaleDirectory(PathHelper::Combine(defaultResourcePath, L"locale"), locale);
-                if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [this](hstring const& status) {
+                if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [this](hstring const status) {
                     Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this, status]()
                         {
                             auto textToDisplay = hstring(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), std::wstring(status)));
@@ -188,10 +188,7 @@ namespace winrt::CelestiaUWP2::implementation
                         });
                     }))
                 {
-                    Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this]()
-                        {
-                            ShowLoadingFailure();
-                        });
+                    ShowLoadingFailure();
                     return false;
                 }
             }
@@ -204,10 +201,7 @@ namespace winrt::CelestiaUWP2::implementation
 
         if (!appCore.StartRenderer())
         {
-            Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this]()
-                {
-                    ShowLoadingFailure();
-                });
+            ShowLoadingFailure();
             return false;
         }
 
@@ -309,7 +303,10 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::ShowLoadingFailure()
     {
-        LoadingText().Text(LocalizationHelper::Localize(L"Loading Celestia failed\u2026", L"Celestia loading failed"));
+        Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this]()
+            {
+                LoadingText().Text(LocalizationHelper::Localize(L"Loading Celestia failed\u2026", L"Celestia loading failed"));
+            });
     }
 
     void MainPage::UpdateScale()
@@ -369,20 +366,27 @@ namespace winrt::CelestiaUWP2::implementation
 
     IAsyncOperation<hstring> MainPage::GetLocale(hstring const& localePath)
     {
-        if (availableLanguages.empty())
+        try
         {
-            auto folder{ co_await StorageFolder::GetFolderFromPathAsync(localePath) };
-            auto files{ co_await folder.GetFoldersAsync() };
-            std::vector<hstring> availableLocales;
-            for (const auto& file : files)
+            if (availableLanguages.empty())
             {
-                availableLocales.push_back(file.Name());
+                auto folder{ co_await StorageFolder::GetFolderFromPathAsync(localePath) };
+                auto files{ co_await folder.GetFoldersAsync() };
+                std::vector<hstring> availableLocales;
+                for (const auto& file : files)
+                {
+                    availableLocales.push_back(file.Name());
+                }
+                std::sort(availableLocales.begin(), availableLocales.end());
+                availableLanguages = availableLocales;
             }
-            std::sort(availableLocales.begin(), availableLocales.end());
-            availableLanguages = availableLocales;
+            auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
+            co_return resourceLoader.GetString(L"CelestiaLanguage");
         }
-        auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
-        co_return resourceLoader.GetString(L"CelestiaLanguage");
+        catch (hresult_error const&)
+        {
+            co_return L"en";
+        }
     }
 
     void AppendItem(MenuFlyout const& parent, hstring const& text, RoutedEventHandler const& click, Input::KeyboardAccelerator const& accelerator = nullptr);
@@ -520,6 +524,23 @@ namespace winrt::CelestiaUWP2::implementation
             });
         Microsoft::UI::Xaml::Controls::MenuBarItem navigationItem;
         navigationItem.Title(LocalizationHelper::Localize(L"Navigation", L"Navigation menu"));
+
+        AppendItem(navigationItem, LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->renderer.EnqueueTask([strong_this]()
+                    {
+                        auto selection = strong_this->appCore.Simulation().Selection();
+                        if (selection.IsEmpty()) return;
+                        strong_this->Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [strong_this, selection]()
+                            {
+                                strong_this->ShowInfo(selection);
+                            });
+                    });
+            });
+        navigationItem.Items().Append(MenuFlyoutSeparator());
+
         AppendCharEnterItem(navigationItem, LocalizationHelper::Localize(L"Select Sol", L""), 104, appCore, renderer, VirtualKey::H);
         AppendItem(navigationItem, LocalizationHelper::Localize(L"Select Object", L"Select an object"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
@@ -773,10 +794,8 @@ namespace winrt::CelestiaUWP2::implementation
         picker.SuggestedStartLocation(Pickers::PickerLocationId::Downloads);
         picker.FileTypeFilter().Append(L".cel");
         picker.FileTypeFilter().Append(L".celx");
-        auto file{ co_await picker.PickSingleFileAsync() };
-        if (file == nullptr) co_return;
-
-        OpenFileIfReady(file);
+        if (auto file = co_await picker.PickSingleFileAsync(); file != nullptr)
+            OpenFileIfReady(file);
     }
 
     void MainPage::OpenFileIfReady(StorageFile const scriptFile)
@@ -828,8 +847,116 @@ namespace winrt::CelestiaUWP2::implementation
 
     IAsyncAction MainPage::OpenFileOrURL()
     {
-        // TODO
-        co_return;
+        using namespace Windows::Web::Http;
+
+        auto scriptFile = scriptFileToOpen;
+        auto url = urlToOpen;
+        if (scriptFile != nullptr)
+        {
+            if (co_await ContentDialogHelper::ShowOption(*this, LocalizationHelper::Localize(L"Run script?", L"Request user consent to run a script")))
+            {
+                renderer.EnqueueTask([this, scriptFile]()
+                    {
+                        appCore.RunScript(scriptFile.Path());
+                    });
+            }
+            co_return;
+        }
+        if (url != nullptr)
+        {
+            if (url.SchemeName() == L"cel")
+            {
+                if (co_await ContentDialogHelper::ShowOption(*this, LocalizationHelper::Localize(L"Open URL?", L"Request user consent to open a URL")))
+                {
+                    renderer.EnqueueTask([this, url]()
+                        {
+                            appCore.GoToURL(url.AbsoluteUri());
+                        });
+                }
+                co_return;
+            }
+
+            if (resourceManager != nullptr && url.SchemeName() == L"celaddon" && url.Host() == L"item" && !url.Query().empty())
+            {
+                auto parsed = url.QueryParsed();
+                if (parsed != nullptr)
+                {
+                    auto addon = parsed.GetFirstValueByName(L"item");
+                    if (!addon.empty())
+                    {
+                        HttpClient client;
+                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()} });
+                        auto itemURL = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
+                        try
+                        {
+                            auto response = co_await client.GetAsync(Uri(itemURL));
+                            response.EnsureSuccessStatusCode();
+                            auto content = co_await response.Content().ReadAsStringAsync();
+                            auto requestResult = RequestResult::TryParse(content);
+                            if (requestResult.Status() == 0)
+                            {
+                                auto item = ResourceItem::TryParse(requestResult.Info().Detail());
+                                ShowPage(xaml_typename<CelestiaUWP2::ResourceItemPage>(), Size(400, 0), CelestiaUWP2::ResourceItemParameter(appCore, renderer, item, resourceManager));
+                            }
+                        }
+                        catch (hresult_error const&) {}
+                    }
+                }
+                co_return;
+            }
+
+            if (url.SchemeName() == L"celguide" && url.Host() == L"guide" && !url.Query().empty())
+            {
+                auto parsed = url.QueryParsed();
+                if (parsed != nullptr)
+                {
+                    auto guide = parsed.GetFirstValueByName(L"guide");
+                    if (!guide.empty())
+                    {
+                        ShowPage(xaml_typename<CelestiaUWP2::SafeWebPage>(), Size(400, 0), CelestiaUWP2::CommonWebParameter(GetURIForGuide(guide), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", nullptr));
+                    }
+                }
+                co_return;
+            }
+        }
+
+
+        if (!appSettings.OnboardMessageDisplayed())
+        {
+            appSettings.OnboardMessageDisplayed(true);
+            appSettings.Save(ApplicationData::Current().LocalSettings());
+            ShowHelp();
+            co_return;
+        }
+
+        HttpClient client;
+        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()} });
+        auto latestGuideURL = hstring(L"https://celestia.mobi/api") + L"/resource/latest" + L"?" + query.ToString();
+        try
+        {
+            auto response = co_await client.GetAsync(Uri(latestGuideURL));
+            response.EnsureSuccessStatusCode();
+            auto content = co_await response.Content().ReadAsStringAsync();
+            auto requestResult = RequestResult::TryParse(content);
+            if (requestResult.Status() == 0)
+            {
+                auto item = GuideItem::TryParse(requestResult.Info().Detail());
+                if (appSettings.LastNewsID() != item.ID())
+                {
+                    ShowPage(xaml_typename<CelestiaUWP2::SafeWebPage>(), Size(400, 0), CelestiaUWP2::CommonWebParameter(GetURIForGuide(item.ID()), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }](hstring const& id)
+                        {
+                            auto strong_this = weak_this.get();
+                            if (strong_this)
+                            {
+                                strong_this->appSettings.LastNewsID(id);
+                                strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
+                            }
+                        }));
+                    co_return;
+                }
+            }
+        }
+        catch (hresult_error const&) {}
     }
 
     void MainPage::CopyURL()
@@ -838,11 +965,11 @@ namespace winrt::CelestiaUWP2::implementation
         renderer.EnqueueTask([this]()
             {
                 auto url = appCore.CurrentURL();
-                Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [this, url]()
+                Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [url]()
                     {
                         DataPackage dataPackage;
                         dataPackage.RequestedOperation(DataPackageOperation::Copy);
-                        dataPackage.SetText(appCore.CurrentURL());
+                        dataPackage.SetText(url);
                         Clipboard::SetContent(dataPackage);
                     });
             });
@@ -904,7 +1031,7 @@ namespace winrt::CelestiaUWP2::implementation
             });
     }
 
-    IAsyncAction MainPage::SaveScreenshot(hstring const& path)
+    IAsyncAction MainPage::SaveScreenshot(hstring const path)
     {
         try
         {
@@ -1057,7 +1184,8 @@ namespace winrt::CelestiaUWP2::implementation
             for (const auto& addon : addons)
                 installedAddonList += fmt::format(L"{}/{}\n", std::wstring(addon.Name()), std::wstring(addon.ID()));
 
-            co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
+            if (!installedAddonList.empty())
+                co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
             auto systemInfo = SystemInformation::Instance();
             auto version = systemInfo.ApplicationVersion();
             auto systemInfoText = hstring(fmt::format(
@@ -1116,7 +1244,7 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::ShowHelp()
     {
-        // TODO
+        ShowPage(xaml_typename<CelestiaUWP2::SafeWebPage>(), Size(400, 0), CelestiaUWP2::CommonWebParameter(GetURIForPath(L"/help/welcome"), single_threaded_vector<hstring>(), appCore, renderer, L"", nullptr));
     }
 
     void MainPage::AppCore_ShowContextMenu(IInspectable const&, ShowContextMenuArgs const& args)
@@ -1406,6 +1534,7 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::FocusHelperControl_CharacterReceived(IInspectable const&, Input::CharacterReceivedRoutedEventArgs const& args)
     {
+        if (OverlayContainer().Content() != nullptr) return;
         int16_t key = args.Character();
         renderer.EnqueueTask([this, key]()
             {
@@ -1415,6 +1544,7 @@ namespace winrt::CelestiaUWP2::implementation
 
     void MainPage::FocusHelperControl_KeyDown(IInspectable const&, Input::KeyRoutedEventArgs const& args)
     {
+        if (OverlayContainer().Content() != nullptr) return;
         if (args.OriginalKey() >= VirtualKey::GamepadA && args.OriginalKey() <= VirtualKey::GamepadRightThumbstickLeft) return;
 
         int32_t modifiers = 0;

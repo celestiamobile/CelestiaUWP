@@ -172,6 +172,9 @@
     <ClInclude Include="SafeWebPage.h">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="ResourceItemPage.h">
+      <DependentUpon>ResourceItemPage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -229,6 +232,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SafeWebPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceItemPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -458,6 +464,9 @@
     <ClCompile Include="SafeWebPage.cpp">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="ResourceItemPage.cpp">
+      <DependentUpon>ResourceItemPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -519,6 +528,9 @@
     </Midl>
     <Midl Include="SafeWebPage.idl">
       <DependentUpon>SafeWebPage.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="ResourceItemPage.idl">
+      <DependentUpon>ResourceItemPage.xaml</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>

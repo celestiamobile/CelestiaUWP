@@ -55,12 +55,6 @@ namespace winrt::CelestiaUWP2::implementation
     {
         if (!Container().CanGoBack()) return;
 
-        /*
-        if (currentItemControl != nullptr)
-        {
-            currentItemControl.CloseWebViewIfNeeded();
-            currentItemControl = nullptr;
-        }*/
         Container().GoBack();
         if (!Container().CanGoBack())
         {
@@ -72,14 +66,7 @@ namespace winrt::CelestiaUWP2::implementation
 
     void ResourceManagerPage::ShowItem(CelestiaAppComponent::ResourceItem const& item)
     {
-        /*
-        if (currentItemControl != nullptr)
-        {
-            currentItemControl.CloseWebViewIfNeeded();
-            currentItemControl = nullptr;
-        }
-        ResourceItemPage Page{ appCore, renderer, item, resourceManager, windowProvider };
-        Container().Navigate(xaml_typename<CelestiaUWP2::CustomPage>(), Page);*/
+        Container().Navigate(xaml_typename<CelestiaUWP2::ResourceItemPage>(), CelestiaUWP2::ResourceItemParameter(appCore, renderer, item, resourceManager));
         Nav().IsBackEnabled(true);
     }
 

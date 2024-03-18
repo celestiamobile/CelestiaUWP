@@ -64,19 +64,30 @@ namespace winrt::CelestiaUWP2::implementation
         selection = param.Selection();
         auto obj = selection.Object();
         if (obj == nullptr) return;
-        NameLabel().Text(appCore.Simulation().Universe().NameForSelection(selection));
-        DetailLabel().Text(SelectionHelper::GetOverview(selection, appCore));
-        auto url = selection.InfoURL();
-        if (!url.empty())
-        {
-            LinkButton().NavigateUri(Uri(url));
-            LinkButton().Content(box_value(url));
-            LinkButton().Visibility(Visibility::Visible);
-        }
-        else
-        {
-            LinkButton().Visibility(Visibility::Collapsed);
-        }
+
+        renderer.EnqueueTask([weak_this{ get_weak() }, obj]()
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                auto name = strong_this->appCore.Simulation().Universe().NameForSelection(strong_this->selection);
+                auto detail = SelectionHelper::GetOverview(strong_this->selection, strong_this->appCore);
+                auto url = strong_this->selection.InfoURL();
+                strong_this->Dispatcher().TryRunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, [strong_this, name, detail, url]()
+                    {
+                        strong_this->NameLabel().Text(name);
+                        strong_this->DetailLabel().Text(detail);
+                        if (!url.empty())
+                        {
+                            strong_this->LinkButton().NavigateUri(Uri(url));
+                            strong_this->LinkButton().Content(box_value(url));
+                            strong_this->LinkButton().Visibility(Visibility::Visible);
+                        }
+                        else
+                        {
+                            strong_this->LinkButton().Visibility(Visibility::Collapsed);
+                        }
+                    });
+            });
     }
 
     Collections::IObservableVector<BrowserInputAction> InfoPage::Actions()
@@ -87,10 +98,12 @@ namespace winrt::CelestiaUWP2::implementation
     void InfoPage::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
     {
         auto action = sender.as<Button>().DataContext().as<BrowserInputAction>();
-        renderer.EnqueueTask([this, action]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, action]()
             {
-                appCore.Simulation().Selection(selection);
-                appCore.CharEnter(action.Code());
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.Simulation().Selection(strong_this->selection);
+                strong_this->appCore.CharEnter(action.Code());
             });
     }
 }

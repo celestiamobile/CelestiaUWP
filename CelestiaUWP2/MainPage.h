@@ -49,7 +49,7 @@ namespace winrt::CelestiaUWP2::implementation
         bool isGLViewFocused{ false };
         bool hasOverlayOpen{ false };
 
-        bool StartEngine(hstring const& resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
+        bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();
         void ShowLoadingFailure();
         void UpdateScale();
@@ -65,7 +65,7 @@ namespace winrt::CelestiaUWP2::implementation
         Windows::Foundation::IAsyncAction PasteURL();
         Windows::Foundation::IAsyncAction ShowSelectObject();
         void CaptureImage();
-        Windows::Foundation::IAsyncAction SaveScreenshot(hstring const& path);
+        Windows::Foundation::IAsyncAction SaveScreenshot(hstring const path);
         void ShowTourGuide();
         void ShowInfo(CelestiaComponent::CelestiaSelection const& selection);
         void ShowEclipseFinder();

@@ -140,7 +140,8 @@ namespace winrt::CelestiaUWP2::implementation
                 continue;
             auto measure = item.Measure().Value();
             std::swap(measure.U, measure.V);
-            item.Position(measure);
+            item.Measure(measure);
+            item.Position(IReference<CelestiaUWP2::UvMeasure>(std::nullopt));
         }
 
         this->orientation = newOrientation;
@@ -179,7 +180,7 @@ namespace winrt::CelestiaUWP2::implementation
             maxV = max(maxV, item.Measure().Value().V);
         }
 
-        return lastPosition ? lastPosition.Value().V + maxV : maxV;
+        return lastPosition ? lastPosition.Value().V + maxV : 0;
     }
 
     void WrapLayoutState::RecycleElementAt(int32_t index)

@@ -23,20 +23,6 @@ namespace winrt::CelestiaUWP2::implementation
     {
     }
 
-    void CommonWebPage::CloseWebViewIfNeeded()
-    {
-        if (webViewOpened)
-        {
-            WebView().Close();
-            webViewOpened = false;
-        }
-    }
-
-    CommonWebPage::~CommonWebPage()
-    {
-        CloseWebViewIfNeeded();
-    }
-
     fire_and_forget CommonWebPage::WebView_NavigationStarting(IInspectable const&, CoreWebView2NavigationStartingEventArgs const& args)
     {
         if (args.Uri().empty())
@@ -80,7 +66,6 @@ namespace winrt::CelestiaUWP2::implementation
         {
             co_return;
         }
-        webViewOpened = true;
         WebView().Source(initialUri);
         WebView().CoreWebView2().DOMContentLoaded({ get_weak(), &CommonWebPage::CoreWebView2_DOMContentLoaded });
     }

@@ -12,6 +12,5 @@ namespace CelestiaUWP2
     runtimeclass CommonWebPage : Windows.UI.Xaml.Controls.Page
     {
         CommonWebPage();
-        void CloseWebViewIfNeeded();
     }
 }

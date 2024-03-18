@@ -18,9 +18,10 @@ namespace winrt::CelestiaUWP2::implementation
         void InitializeComponent();
 
     private:
-        fire_and_forget LoadAuthorTranslator();
         hstring authorsFilePath;
         hstring translatorsFilePath;
+
+        fire_and_forget LoadAuthorTranslator();
     };
 }
 
