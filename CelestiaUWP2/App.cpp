@@ -34,6 +34,11 @@ App::App()
         }
     });
 #endif
+
+    bool isXbox = Windows::System::Profile::AnalyticsInfo::VersionInfo().DeviceFamily() == L"Windows.Xbox";
+    if (isXbox)
+        RequiresPointerMode(ApplicationRequiresPointerMode::WhenRequested);
+    SetEnvironmentVariableW(L"WEBVIEW2_DEFAULT_BACKGROUND_COLOR", L"0");
 }
 
 void App::OnLaunched(LaunchActivatedEventArgs const& e)
@@ -54,10 +59,14 @@ void App::Launch(LaunchActivatedEventArgs const& launchEvent, IActivatedEventArg
 {
     Frame rootFrame{ nullptr };
     auto content = Window::Current().Content();
-    if (content)
+    if (auto frame = content.try_as<Frame>(); frame != nullptr)
     {
-        rootFrame = content.try_as<Frame>();
+        rootFrame = frame;
     }
+
+    auto args = activatedEvent;
+    if (args == nullptr)
+        args = AppInstance::GetActivatedEventArgs();
 
     // Do not repeat app initialization when the Window already has content,
     // just ensure that the window is active
@@ -77,9 +86,9 @@ void App::Launch(LaunchActivatedEventArgs const& launchEvent, IActivatedEventArg
     {
         auto page = rootFrame.Content().try_as<CelestiaUWP2::MainPage>();
         if (page == nullptr)
-            rootFrame.Navigate(xaml_typename<CelestiaUWP2::MainPage>(), activatedEvent);
+            rootFrame.Navigate(xaml_typename<CelestiaUWP2::MainPage>(), args);
         else
-            page.WillActivate(activatedEvent);
+            page.WillActivate(args);
     }
 
     // Ensure the current window is active

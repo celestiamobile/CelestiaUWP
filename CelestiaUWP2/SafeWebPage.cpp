@@ -35,12 +35,12 @@ namespace winrt::CelestiaUWP2::implementation
         if (webViewVersion.empty())
         {
             WebContent().Visibility(Windows::UI::Xaml::Visibility::Visible);
-            WebContent().Navigate(xaml_typename<LegacyWebPage>(), parameter);
+            WebContent().Navigate(xaml_typename<CelestiaUWP2::LegacyWebPage>(), parameter);
         }
         else
         {
             WebContent().Visibility(Windows::UI::Xaml::Visibility::Visible);
-            WebContent().Navigate(xaml_typename<CommonWebPage>(), parameter);
+            WebContent().Navigate(xaml_typename<CelestiaUWP2::CommonWebPage>(), parameter);
         }
     }
 }

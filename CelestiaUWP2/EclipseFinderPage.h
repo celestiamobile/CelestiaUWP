@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "EclipseResult.g.h"
 #include "EclipseFinderParameter.g.h"
+#include "EclipseResult.g.h"
 #include "DateTimeStringConverter.g.h"
 #include "DateTimeReferenceDateTimeConverter.g.h"
 #include "EclipseFinderPage.g.h"
@@ -89,7 +89,7 @@ namespace winrt::CelestiaUWP2::implementation
         Windows::Foundation::DateTime startTime;
         Windows::Foundation::DateTime endTime;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::SearchObjectEntry> availableObjects;
-        Windows::Foundation::Collections::IObservableVector< CelestiaUWP2::EclipseResult> eclipses;
+        Windows::Foundation::Collections::IObservableVector<CelestiaUWP2::EclipseResult> eclipses;
         bool findLunar{ true };
         bool findSolar{ true };
         event<Windows::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;

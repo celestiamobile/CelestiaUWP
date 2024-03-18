@@ -9,11 +9,11 @@
 #include "pch.h"
 #include "EclipseFinderPage.h"
 
-#if __has_include("EclipseResult.g.cpp")
-#include "EclipseResult.g.cpp"
-#endif
 #if __has_include("EclipseFinderParameter.g.cpp")
 #include "EclipseFinderParameter.g.cpp"
+#endif
+#if __has_include("EclipseResult.g.cpp")
+#include "EclipseResult.g.cpp"
 #endif
 #if __has_include("DateTimeStringConverter.g.cpp")
 #include "DateTimeStringConverter.g.cpp"
@@ -29,8 +29,8 @@
 #include <fmt/xchar.h>
 
 using namespace winrt;
-using namespace CelestiaAppComponent;
 using namespace CelestiaComponent;
+using namespace CelestiaAppComponent;
 using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;

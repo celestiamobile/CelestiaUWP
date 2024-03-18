@@ -25,7 +25,6 @@ namespace winrt::CelestiaUWP2::implementation
         Windows::Foundation::Uri initialUri;
         Windows::Foundation::Collections::IVector<hstring> matchingQueryKeys;
         CelestiaAppComponent::JavascriptBridge bridge{ nullptr };
-        bool webViewOpened{ false };
 
         bool IsURIAllowed(Windows::Foundation::Uri const& uri);
     };

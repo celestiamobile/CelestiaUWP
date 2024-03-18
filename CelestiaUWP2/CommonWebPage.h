@@ -21,14 +21,10 @@ namespace winrt::CelestiaUWP2::implementation
         void CoreWebView2_DOMContentLoaded(Windows::Foundation::IInspectable const&, Microsoft::Web::WebView2::Core::CoreWebView2DOMContentLoadedEventArgs const&);
         void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const&);
 
-        void CloseWebViewIfNeeded();
-        virtual ~CommonWebPage();
-
     private:
         Windows::Foundation::Uri initialUri;
         Windows::Foundation::Collections::IVector<hstring> matchingQueryKeys;
         CelestiaAppComponent::JavascriptBridge bridge{ nullptr };
-        bool webViewOpened{ false };
 
         fire_and_forget EnsureWebView2();
         bool IsURIAllowed(Windows::Foundation::Uri const& uri);
