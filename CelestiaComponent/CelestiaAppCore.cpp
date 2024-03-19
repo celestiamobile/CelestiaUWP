@@ -449,7 +449,7 @@ namespace winrt::CelestiaComponent::implementation
             return;
 
         isLocaleSet = true;
-        celestia::util::InitLocale();
+        CelestiaCore::initLocale();
 #endif
     }
 

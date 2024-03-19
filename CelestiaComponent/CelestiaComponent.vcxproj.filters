@@ -543,9 +543,6 @@
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celutil\localeutil.cpp">
-      <Filter>Celestia\celutil</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp">
       <Filter>Celestia\celcompat</Filter>
     </ClCompile>
