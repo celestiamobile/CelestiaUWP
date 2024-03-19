@@ -43,20 +43,20 @@ namespace CelestiaUWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Launch(e, null, null);
+            Launch(e, null);
         }
 
         protected override void OnFileActivated(FileActivatedEventArgs e)
         {
-            Launch(null, e, null);
+            Launch(null, e);
         }
 
         protected override void OnActivated(IActivatedEventArgs e)
         {
-            Launch(null, null, e);
+            Launch(null, e);
         }
 
-        private void Launch(LaunchActivatedEventArgs launchEvent, FileActivatedEventArgs fileEvent, IActivatedEventArgs urlEvent)
+        private void Launch(LaunchActivatedEventArgs launchEvent, IActivatedEventArgs activatedEvent)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -70,42 +70,21 @@ namespace CelestiaUWP
                 Window.Current.Content = rootFrame;
             }
 
+            var args = activatedEvent;
+            if (args == null)
+                args = AppInstance.GetActivatedEventArgs();
+
             if (launchEvent == null || launchEvent.PrelaunchActivated == false)
             {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    if (launchEvent != null)
-                        rootFrame.Navigate(typeof(MainPage), launchEvent.Arguments);
-                    else
-                        rootFrame.Navigate(typeof(MainPage));
-                }
-
-                if (fileEvent != null && fileEvent.Files != null && fileEvent.Files.Count > 0)
-                {
-                    var file = fileEvent.Files[0];
-                    if (file is Windows.Storage.StorageFile file1)
-                    {
-                        var p = rootFrame.Content as MainPage;
-                        p.OpenFileIfReady(file1);
-                    }
-                }
-                else if (urlEvent != null && urlEvent.Kind == ActivationKind.Protocol)
-                {
-                    var e = urlEvent as ProtocolActivatedEventArgs;
-                    var p = rootFrame.Content as MainPage;
-                    try
-                    {
-                        p.OpenURLIfReady(e.Uri);
-                    }
-                    catch { };
-                }
-
-                // Ensure the current window is active
-                Window.Current.Activate();
+                var page = rootFrame.Content as MainPage;
+                if (page == null)
+                    rootFrame.Navigate(typeof(MainPage), args);
+                else
+                    page.WillActivate(args);
             }
+
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         /// <summary>

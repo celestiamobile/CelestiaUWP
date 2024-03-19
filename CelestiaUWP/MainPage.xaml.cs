@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Email;
@@ -34,6 +35,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 
 using MenuBarItem = Microsoft.UI.Xaml.Controls.MenuBarItem;
 
@@ -114,6 +116,27 @@ namespace CelestiaUWP
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = false;
             isXbox = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
+        }
+
+        public void WillActivate(IActivatedEventArgs args)
+        {
+            if (args == null) return;
+            if (args.Kind == ActivationKind.File)
+            {
+                var fileArgs = (FileActivatedEventArgs)args;
+                var file = (StorageFile)fileArgs.Files[0];
+                OpenFileIfReady(file);
+            }
+            else if (args.Kind == ActivationKind.Protocol)
+            {
+                var protocolArgs = (ProtocolActivatedEventArgs)args;
+                OpenURLIfReady(protocolArgs.Uri);
+            }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            WillActivate(e.Parameter as IActivatedEventArgs);
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
