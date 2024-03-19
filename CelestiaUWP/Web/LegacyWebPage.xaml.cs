@@ -44,7 +44,7 @@ namespace CelestiaUWP.Web
                 contextDirectory = "";
             bridge = new JavascriptBridge(parameter.AppCore, parameter.Renderer, contextDirectory, parameter.ACKReceiver, (title, uri) =>
             {
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ShowShare(title, uri);
                 });

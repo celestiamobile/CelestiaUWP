@@ -192,28 +192,28 @@ namespace CelestiaUWP
 
                 void progressCallback(string progress)
                 {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         LoadingText.Text = string.Format(LocalizationHelper.Localize("Loading: %s", "Celestia initialization, loading file").Replace("%s", "{0}"), progress);
                     });
                 }
 
-                Directory.SetCurrentDirectory(resourcePath);
+                try { Directory.SetCurrentDirectory(resourcePath); } catch { }
                 CelestiaAppCore.SetLocaleDirectory(PathHelper.Combine(resourcePath, "locale"), locale);
                 if (!mAppCore.StartSimulation(configPath, extraPaths.ToArray(), progressCallback) && (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath))
                 {
                     if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
                     {
                         // Try to restore originial settings
-                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, async () =>
                         {
                             await ContentDialogHelper.ShowAlert(this, LocalizationHelper.Localize("Error loading data, fallback to original configuration.", ""));
                         });
-                        Directory.SetCurrentDirectory(defaultResourcePath);
+                        try { Directory.SetCurrentDirectory(defaultResourcePath); } catch { }
                         CelestiaAppCore.SetLocaleDirectory(PathHelper.Combine(defaultResourcePath, "locale"), locale);
                         if (!mAppCore.StartSimulation(defaultConfigFilePath, extraPaths.ToArray(), progressCallback))
                         {
-                            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                             {
                                 ShowLoadingFailure();
                             });
@@ -222,7 +222,7 @@ namespace CelestiaUWP
                     }
                     else
                     {
-                        _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                         {
                             ShowLoadingFailure();
                         });
@@ -232,7 +232,7 @@ namespace CelestiaUWP
 
                 if (!mAppCore.StartRenderer())
                 {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         ShowLoadingFailure();
                     });
@@ -243,7 +243,7 @@ namespace CelestiaUWP
                 mAppCore.LayoutDirection = flowDirection == "RightToLeft" ? CelestiaLayoutDirection.RTL : CelestiaLayoutDirection.LTR;
                 UpdateScale();
 
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     LoadingText.Visibility = Visibility.Collapsed;
                     if (mExtraAddonFolder != null)
@@ -258,7 +258,7 @@ namespace CelestiaUWP
 
                 ReadyForInput = true;
 
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     OpenFileOrURL();
                 });
@@ -485,7 +485,7 @@ namespace CelestiaUWP
                 var x = contextMenuArgs.X;
                 var y = contextMenuArgs.Y;
                 var selection = contextMenuArgs.Selection;
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                   {
                       var menu = new MenuFlyout();
                       AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
@@ -828,7 +828,7 @@ namespace CelestiaUWP
 
         private void AppCore_ChangeCursor(object sender, ChangeCursorArgs e)
         {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 var window = CoreWindow.GetForCurrentThread();
                 switch (e.Cursor)
@@ -890,7 +890,7 @@ namespace CelestiaUWP
 
         private void AppCore_FatalError(object sender, FatalErrorArgs e)
         {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 await ContentDialogHelper.ShowAlert(this, e.Message);
             });
@@ -1026,7 +1026,7 @@ namespace CelestiaUWP
                 mRenderer.EnqueueTask(() =>
                 {
                     var url = mAppCore.CurrentURL;
-                    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         DataPackage dataPackage = new DataPackage();
                         dataPackage.SetText(url);
@@ -1094,7 +1094,7 @@ namespace CelestiaUWP
                     var selection = mAppCore.Simulation.Selection;
                     if (selection.IsEmpty) return;
 
-                    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         ShowInfo(selection);
                     });
@@ -1314,7 +1314,7 @@ namespace CelestiaUWP
                     var renderInfo = mAppCore.RenderInfo;
                     var url = mAppCore.CurrentURL;
                     bool saveScreenshotSuccess = mAppCore.SaveScreenshot(screenshotFile.Path);
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         ReportBug(saveScreenshotSuccess ? screenshotFile : null, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, crashInfoFile, renderInfo, url);
                     });
@@ -1432,7 +1432,7 @@ namespace CelestiaUWP
                     var selection = mAppCore.Simulation.Find(text);
                     if (selection.IsEmpty)
                     {
-                        Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                         {
                             ShowObjectNotFound();
                         });
@@ -1460,7 +1460,7 @@ namespace CelestiaUWP
                     var selection = mAppCore.Simulation.Find(objectPath);
                     if (selection.IsEmpty)
                     {
-                        Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                         {
                             ShowObjectNotFound();
                         });
@@ -1579,7 +1579,7 @@ namespace CelestiaUWP
             mRenderer.EnqueueTask(() =>
             {
                 string info = mAppCore.RenderInfo;
-                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     ShowOpenGLInfo(info);
                 });
@@ -1750,14 +1750,14 @@ namespace CelestiaUWP
             {
                 if (mAppCore.SaveScreenshot(path))
                 {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                       {
                           SaveScreenshot(path);
                       });
                 }
                 else
                 {
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         ShowScreenshotFailure();
                     });

@@ -61,7 +61,7 @@ namespace CelestiaUWP
                 var name = AppCore.Simulation.Universe.NameForSelection(Selection);
                 var detail = SelectionHelper.GetOverview(Selection, AppCore);
                 var url = Selection.InfoURL;
-                Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     NameLabel.Text = name;
                     DetailLabel.Text = detail;

@@ -58,7 +58,7 @@ namespace CelestiaUWP
             Renderer.EnqueueTask(() =>
             {
                 var url = AppCore.CurrentURL;
-                _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                _ = Dispatcher.TryRunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
                     var bookmark = new BookmarkNode(false, NameText, AppCore.CurrentURL, BookmarkHelper.CreateEmptyList());
                     var organizerPage = Organizer.Content as BookmarkOrganizerPage;
