@@ -28,8 +28,10 @@ FOR %%D in (fonts) DO (
 	XCOPY "%SolutionDir%\%%D" "%CELESTIA_ROOT%\%%D" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
 )
 
-FOR %%D in (celestia.cfg controls.txt demo.cel guide.cel start.cel COPYING AUTHORS TRANSLATORS) DO (
+FOR %%D in (controls.txt demo.cel guide.cel start.cel COPYING AUTHORS TRANSLATORS) DO (
 	XCOPY "%CELESTIA_REPO_ROOT%\%%D" "%CELESTIA_ROOT%" /Y
 )
+
+powershell -Command "(Get-Content '%CELESTIA_REPO_ROOT%\celestia.cfg.in') -replace '@CELCFG_EXTRAS_DIRS@', '' | Set-Content '%CELESTIA_ROOT%\celestia.cfg'"
 
 RD "%CELESTIA_TEMP_DIR%" /S /Q
