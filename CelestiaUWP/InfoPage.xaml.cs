@@ -56,19 +56,27 @@ namespace CelestiaUWP
             Renderer = parameter.Item2;
             Selection = parameter.Item3;
 
-            NameLabel.Text = AppCore.Simulation.Universe.NameForSelection(Selection);
-            DetailLabel.Text = SelectionHelper.GetOverview(Selection, AppCore);
-            var url = Selection.InfoURL;
-            if (!string.IsNullOrEmpty(url))
+            Renderer.EnqueueTask(() =>
             {
-                LinkButton.NavigateUri = new Uri(url);
-                LinkButton.Content = url;
-                LinkButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                LinkButton.Visibility = Visibility.Collapsed;
-            }
+                var name = AppCore.Simulation.Universe.NameForSelection(Selection);
+                var detail = SelectionHelper.GetOverview(Selection, AppCore);
+                var url = Selection.InfoURL;
+                Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    NameLabel.Text = name;
+                    DetailLabel.Text = detail;
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        LinkButton.NavigateUri = new Uri(url);
+                        LinkButton.Content = url;
+                        LinkButton.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        LinkButton.Visibility = Visibility.Collapsed;
+                    }
+                });
+            });
         }
     }
 }

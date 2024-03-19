@@ -557,7 +557,8 @@ namespace CelestiaUWP
                       }
 
                       var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var browserItem = new CelestiaBrowserItem(mAppCore.Simulation.Universe.NameForSelection(selection), selection.Object, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, mAppCore); }, false);
+                      var appCore = mAppCore;
+                      var browserItem = new CelestiaBrowserItem(appCore.Simulation.Universe.NameForSelection(selection), selection.Object, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, appCore); }, false);
                       if (browserItem.Children != null)
                       {
                           foreach (var child in browserItem.Children)
@@ -999,12 +1000,16 @@ namespace CelestiaUWP
 
             AppendItem(fileItem, LocalizationHelper.Localize("Copy URL", "Copy current URL to pasteboard"), (sender, arg) =>
             {
-                DataPackage dataPackage = new DataPackage
+                mRenderer.EnqueueTask(() =>
                 {
-                    RequestedOperation = DataPackageOperation.Copy
-                };
-                dataPackage.SetText(mAppCore.CurrentURL);
-                Clipboard.SetContent(dataPackage);
+                    var url = mAppCore.CurrentURL;
+                    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        DataPackage dataPackage = new DataPackage();
+                        dataPackage.SetText(url);
+                        Clipboard.SetContent(dataPackage);
+                    });
+                });
             }, new KeyboardAccelerator() { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.C });
             AppendItem(fileItem, LocalizationHelper.Localize("Paste URL", "Paste URL from pasteboard"), async (sender, arg) =>
             {
