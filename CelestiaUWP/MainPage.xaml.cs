@@ -1064,6 +1064,21 @@ namespace CelestiaUWP
 
             var navigationItem = CreateMenuBarItem(LocalizationHelper.Localize("Navigation", "Navigation menu"));
 
+            AppendItem(navigationItem, LocalizationHelper.Localize("Get Info", "Action for getting info about current selected object"), (sender, arg) =>
+            {
+                mRenderer.EnqueueTask(() =>
+                {
+                    var selection = mAppCore.Simulation.Selection;
+                    if (selection.IsEmpty) return;
+
+                    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        ShowInfo(selection);
+                    });
+                });
+            });
+            navigationItem.Items.Add(new MenuFlyoutSeparator());
+
             AppendCharEnterItem(navigationItem, LocalizationHelper.Localize("Select Sol", ""), 104, new KeyboardAccelerator() { Key = VirtualKey.H });
             AppendItem(navigationItem, LocalizationHelper.Localize("Select Object", "Select an object"), (sender, arg) =>
             {
