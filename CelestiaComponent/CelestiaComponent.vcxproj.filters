@@ -298,9 +298,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\simulation.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\skygrid.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\solarsys.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -615,6 +612,9 @@
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\ringrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\skygridrenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\unicode.cpp">
@@ -1290,16 +1290,13 @@
     <ClInclude Include="..\..\Celestia\src\celrender\ringrenderer.h">
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\skygridrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celmath\vecgl.h">
       <Filter>Celestia\celmath</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\arrayvector.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\flag.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\intrusiveptr.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\unicode.h">

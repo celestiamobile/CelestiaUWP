@@ -488,6 +488,7 @@
     <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\rendererfwd.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\ringrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\skygridrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\script.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\common\scriptmaps.h" />
     <ClInclude Include="..\..\Celestia\src\celscript\legacy\cmdparser.h" />
@@ -512,7 +513,6 @@
     <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h" />
     <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\arrayvector.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />
@@ -527,7 +527,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\intrusiveptr.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
@@ -606,7 +605,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\selection.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\shadermanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\simulation.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\skygrid.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\solarsys.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\spheremesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\star.cpp" />
@@ -692,6 +690,7 @@
     <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\ringrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\skygridrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\script.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\common\scriptmaps.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\legacy\cmdparser.cpp" />
