@@ -133,7 +133,7 @@ namespace winrt::CelestiaAppComponent::implementation
             }
 
             std::filesystem::path filePath = currentDirectory / name.filename();
-            std::ofstream file(filePath);
+            std::ofstream file(filePath, std::ios::binary);
             if (!file.good())
             {
                 hasSystemError = true;
