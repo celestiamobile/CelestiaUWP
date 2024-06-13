@@ -395,6 +395,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\starbrowser.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\starcolors.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\stardb.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\stardbbuilder.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\starname.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\staroctree.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\stellarclass.h" />
@@ -611,6 +612,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\starbrowser.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\starcolors.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\stardb.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\stardbbuilder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\starname.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\staroctree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\stellarclass.cpp" />
