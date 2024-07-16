@@ -23,6 +23,7 @@ namespace CelestiaUWP
             this.InitializeComponent();
             Title = LocalizationHelper.Localize("About Celestia", "System menu item");
             PrimaryButtonText = LocalizationHelper.Localize("OK", "");
+            LinkButton.NavigateUri = new Uri($"https://celestia.mobi?lang={LocalizationHelper.Locale}");
             var version = SystemInformation.Instance.ApplicationVersion;
 
             VersionLabel.Text = string.Format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
