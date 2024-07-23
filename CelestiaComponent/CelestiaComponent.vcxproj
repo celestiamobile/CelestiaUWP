@@ -338,6 +338,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsodbbuilder.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsorenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.h" />
@@ -354,6 +355,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\location.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\octreebuilder.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\marker.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\meshmanager.h" />
@@ -566,6 +568,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsodbbuilder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsorenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\fisheyeprojectionmode.cpp" />

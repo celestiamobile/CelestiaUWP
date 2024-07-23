@@ -187,6 +187,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\dsodbbuilder.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -831,6 +834,9 @@
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\dsodbbuilder.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -874,6 +880,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\octreebuilder.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h">
