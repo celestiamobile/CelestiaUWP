@@ -76,6 +76,12 @@ namespace winrt::CelestiaAppComponent::implementation
         auto gamepadInvertYResult = propertySet.TryLookup(L"GamepadInvertY");
         if (gamepadInvertYResult)
             gamepadInvertY = unbox_value_or(gamepadInvertYResult, gamepadInvertY);
+        auto gamepadEnableLeftThumbstickResult = propertySet.TryLookup(L"GamepadEnableLeftThumbstick");
+        if (gamepadEnableLeftThumbstickResult)
+            gamepadEnableLeftThumbstick = unbox_value_or(gamepadEnableLeftThumbstickResult, gamepadEnableLeftThumbstick);
+        auto gamepadEnableRightThumbstickResult = propertySet.TryLookup(L"GamepadEnableRightThumbstick");
+        if (gamepadEnableRightThumbstickResult)
+            gamepadEnableRightThumbstick = unbox_value_or(gamepadEnableRightThumbstickResult, gamepadEnableRightThumbstick);
     }
 
     bool AppSettings::UseFullDPI()
@@ -288,6 +294,26 @@ namespace winrt::CelestiaAppComponent::implementation
         gamepadInvertY = value;
     }
 
+    bool AppSettings::GamepadEnableLeftThumbstick()
+    {
+        return gamepadEnableLeftThumbstick;
+    }
+
+    void AppSettings::GamepadEnableLeftThumbstick(bool value)
+    {
+        gamepadEnableLeftThumbstick = value;
+    }
+
+    bool AppSettings::GamepadEnableRightThumbstick()
+    {
+        return gamepadEnableRightThumbstick;
+    }
+
+    void AppSettings::GamepadEnableRightThumbstick(bool value)
+    {
+        gamepadEnableRightThumbstick = value;
+    }
+
     void AppSettings::SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value)
     {
         switch (entry)
@@ -306,6 +332,12 @@ namespace winrt::CelestiaAppComponent::implementation
             break;
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
             GamepadInvertY(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadEnableLeftThumbstick:
+            GamepadEnableLeftThumbstick(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadEnableRightThumbstick:
+            GamepadEnableRightThumbstick(value);
             break;
         case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
             OnboardMessageDisplayed(value);
@@ -329,6 +361,10 @@ namespace winrt::CelestiaAppComponent::implementation
             return GamepadInvertX();
         case CelestiaAppComponent::AppSettingBooleanEntry::GamepadInvertY:
             return GamepadInvertY();
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadEnableLeftThumbstick:
+            return GamepadEnableLeftThumbstick();
+        case CelestiaAppComponent::AppSettingBooleanEntry::GamepadEnableRightThumbstick:
+            return GamepadEnableRightThumbstick();
         case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
             return OnboardMessageDisplayed();
         default:
@@ -488,5 +524,7 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"GamepadRemapDpadRight", box_value(static_cast<int>(gamepadRemapDpadRight)));
         settings.Values().Insert(L"GamepadInvertX", box_value(gamepadInvertX));
         settings.Values().Insert(L"GamepadInvertY", box_value(gamepadInvertY));
+        settings.Values().Insert(L"GamepadEnableLeftThumbstick", box_value(gamepadEnableLeftThumbstick));
+        settings.Values().Insert(L"GamepadEnableRightThumbstick", box_value(gamepadEnableRightThumbstick));
     }
 }

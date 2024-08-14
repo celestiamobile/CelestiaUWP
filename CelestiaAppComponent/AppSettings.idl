@@ -8,6 +8,8 @@ namespace CelestiaAppComponent
         OnboardMessageDisplayed,
         GamepadInvertX,
         GamepadInvertY,
+        GamepadEnableLeftThumbstick,
+        GamepadEnableRightThumbstick,
     };
 
     enum AppSettingInt32Entry
@@ -72,6 +74,8 @@ namespace CelestiaAppComponent
 
         Boolean GamepadInvertX;
         Boolean GamepadInvertY;
+        Boolean GamepadEnableLeftThumbstick;
+        Boolean GamepadEnableRightThumbstick;
 
         void Save(Windows.Storage.ApplicationDataContainer settings);
     }

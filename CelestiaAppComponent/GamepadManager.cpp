@@ -75,8 +75,18 @@ namespace winrt::CelestiaAppComponent::implementation
         bool isDpadDownPressedNew = (int)(reading.Buttons & GamepadButtons::DPadDown) != 0;
         bool isDpadLeftPressedNew = (int)(reading.Buttons & GamepadButtons::DPadLeft) != 0;
         bool isDpadRightPressedNew = (int)(reading.Buttons & GamepadButtons::DPadRight) != 0;
-        double thumbstickX = reading.LeftThumbstickX + reading.RightThumbstickX;
-        double thumbstickY = reading.LeftThumbstickY + reading.RightThumbstickY;
+        double thumbstickX = 0.0;
+        double thumbstickY = 0.0;
+        if (appSettings.GamepadEnableLeftThumbstick())
+        {
+            thumbstickX = reading.LeftThumbstickX;
+            thumbstickY = reading.LeftThumbstickY;
+        }
+        if (appSettings.GamepadEnableRightThumbstick())
+        {
+            thumbstickX = reading.RightThumbstickX;
+            thumbstickY = reading.RightThumbstickY;
+        }
         if (isAPressedNew != isAPressed)
         {
             isAPressed = isAPressedNew;

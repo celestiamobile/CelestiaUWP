@@ -295,6 +295,8 @@ namespace CelestiaUWP.Settings
                     new AppSettingsInt32Item(LocalizationHelper.Localize("RB / R1", "Game controller button"), AppSettings, AppSettingInt32Entry.GamepadRemapRB, actions, localSettings),
                     new AppSettingsInt32Item(LocalizationHelper.Localize("RT / R2", "Game controller button"), AppSettings, AppSettingInt32Entry.GamepadRemapRT, actions, localSettings),
                     new SettingHeaderItem(LocalizationHelper.Localize("Thumbsticks", "Settings for game controller thumbsticks")),
+                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Enable Left Thumbstick", "Setting item to control whether left thumbstick should be enabled"), AppSettings, AppSettingBooleanEntry.GamepadEnableLeftThumbstick, localSettings),
+                    new AppSettingsBooleanItem(LocalizationHelper.Localize("Enable Right Thumbstick", "Setting item to control whether right thumbstick should be enabled"), AppSettings, AppSettingBooleanEntry.GamepadEnableRightThumbstick, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Horizontally", "Invert game controller thumbstick axis horizontally"), AppSettings, AppSettingBooleanEntry.GamepadInvertX, localSettings),
                     new AppSettingsBooleanItem(LocalizationHelper.Localize("Invert Vertically", "Invert game controller thumbstick axis vertically"), AppSettings, AppSettingBooleanEntry.GamepadInvertY, localSettings),
                 };

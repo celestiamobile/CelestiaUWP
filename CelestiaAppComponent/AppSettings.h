@@ -71,6 +71,12 @@ namespace winrt::CelestiaAppComponent::implementation
         bool GamepadInvertY();
         void GamepadInvertY(bool);
 
+        bool GamepadEnableLeftThumbstick();
+        void GamepadEnableLeftThumbstick(bool);
+
+        bool GamepadEnableRightThumbstick();
+        void GamepadEnableRightThumbstick(bool);
+
         void SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value);
         bool GetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry);
         void SetInt32(CelestiaAppComponent::AppSettingInt32Entry entry, int32_t value);
@@ -106,6 +112,8 @@ namespace winrt::CelestiaAppComponent::implementation
 
         bool gamepadInvertX{ false };
         bool gamepadInvertY{ false };
+        bool gamepadEnableLeftThumbstick{ true };
+        bool gamepadEnableRightThumbstick{ true };
     };
 }
 
