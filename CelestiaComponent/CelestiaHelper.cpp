@@ -22,45 +22,16 @@ namespace winrt::CelestiaComponent::implementation
 {
 	double CelestiaHelper::JulianDayFromDateTime(Windows::Foundation::DateTime const& dateTime)
 	{
-		Windows::Globalization::Calendar c;
-		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
-		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
-		c.ChangeTimeZone(L"UTC");
-		c.SetDateTime(dateTime);
-		int era = c.Era();
-		int year = c.Year();
-		if (era < 1) year = 1 - year;
-		celestia::astro::Date astroDate(year, c.Month(), c.Day());
-		astroDate.hour = c.Hour();
-		astroDate.minute = c.Minute();
-		astroDate.seconds = static_cast<double>(c.Second()) + static_cast<double>(c.Nanosecond()) / 1000000000.0;
-		return celestia::astro::UTCtoTDB(astroDate);
+        static auto epoch = celestia::astro::Date(1970, 1, 1);
+        return celestia::astro::UTCtoTDB(epoch + std::chrono::duration_cast<std::chrono::milliseconds>(dateTime.time_since_epoch()).count() / 86400.0 / 1000.0);
 	}
 
 	Windows::Foundation::DateTime CelestiaHelper::DateTimeFromJulianDay(double julianDay)
 	{
-		Windows::Globalization::Calendar c;
-		c.ChangeClock(Windows::Globalization::ClockIdentifiers::TwentyFourHour());
-		c.ChangeCalendarSystem(Windows::Globalization::CalendarIdentifiers::Gregorian());
-		c.ChangeTimeZone(L"UTC");
-        celestia::astro::Date astroDate = celestia::astro::TDBtoUTC(julianDay);
-		int year = astroDate.year;
-
-		int era = 1;
-		if (year < 1)
-		{
-			era = 0;
-			year = 1 - year;
-		}
-		c.Era(era);
-		c.Year(year);
-		c.Month(astroDate.month);
-		c.Day(astroDate.day);
-		c.Hour(astroDate.hour);
-		c.Minute(astroDate.minute);
-		c.Second(static_cast<int32_t>(std::floor(astroDate.seconds)));
-        c.Nanosecond(static_cast<int32_t>((astroDate.seconds - std::floor(astroDate.seconds)) * 1000000000.0));
-		return c.GetDateTime();
+        static auto epoch = celestia::astro::Date(1970, 1, 1);
+        auto date = (celestia::astro::TDBtoUTC(julianDay) - epoch) * 86400.0 * 1000.0;
+        std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> tp{ std::chrono::milliseconds{static_cast<long long>(date)}};
+        return winrt::clock::from_sys(tp);
 	}
 
     double CelestiaHelper::MinRepresentableJulianDay()
