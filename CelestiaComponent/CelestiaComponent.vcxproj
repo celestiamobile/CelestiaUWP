@@ -186,7 +186,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -203,7 +203,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -220,7 +220,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -237,7 +237,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -254,7 +254,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -271,7 +271,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -288,7 +288,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
@@ -305,7 +305,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
     </ClCompile>
