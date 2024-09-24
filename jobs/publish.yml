@@ -9,39 +9,13 @@ jobs:
 
   steps:
   - task: DownloadBuildArtifacts@0
-    displayName: 'Download MSIXUpload Artifacts'
-    inputs:
-      artifactName: 'msixupload'
-    condition: eq( variables['publishType'], 'msixupload' )
-
-  - task: DownloadBuildArtifacts@0
     displayName: 'Download Sideload Artifacts'
     inputs:
       artifactName: 'sideload'
-    condition: eq( variables['publishType'], 'sideload' )
 
   - script: |
-      "C:\Program Files\7-Zip\7z.exe" x "$(System.ArtifactsDirectory)\$(publishType)\*.msixupload" -o"$(System.ArtifactsDirectory)\$(publishType)"
-    displayName: 'Unzip MSIXUpload'
-    condition: eq( variables['publishType'], 'msixupload' )
-
-  - script: |
-      MKDIR Symbols
-      FOR /R $(System.ArtifactsDirectory)\$(publishType) %%f in (*.appxsym) DO @COPY "%%f" Symbols /Y
-    displayName: 'Create Symbols Directory'
-
-  - script: |
-      npm install -g appcenter-cli
-    displayName: 'Install AppCenter-CLI'
-
-  - script: |
-      FOR /R $(System.DefaultWorkingDirectory)\Symbols %%f in (*.appxsym) DO @appcenter crashes upload-symbols --appxsym "%%f" --app CelestiaProject/Celestia-4 --token $(APP_CENTER_TOKEN) --disable-telemetry --debug
-    displayName: 'Upload Symbols'
-
-  - script: |
-      DEL $(System.ArtifactsDirectory)\$(publishType)\*.appxsym /S /Q
-    displayName: 'Remove .appxsym'
-    condition: eq( variables['publishType'], 'sideload' )
+      DEL $(System.ArtifactsDirectory)\$(publishType)\*.msixsym /S /Q
+    displayName: 'Remove .msixsym'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
@@ -49,4 +23,3 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)\$(publishType)'
       ArtifactName: CelestiaSL
       publishLocation: Container
-    condition: eq( variables['publishType'], 'sideload' )
