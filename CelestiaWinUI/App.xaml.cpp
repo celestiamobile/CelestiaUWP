@@ -6,17 +6,37 @@
 #include "App.xaml.h"
 #include "MainWindow.xaml.h"
 
+#if defined(_M_IX86) || defined(_M_X64)
+#define SUPPORTS_SENTRY
+#include <sentry.h>
+#endif
+
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 using namespace Microsoft::UI::Xaml::Navigation;
 using namespace Microsoft::Windows::AppLifecycle;
+using namespace CelestiaAppComponent;
 using namespace CelestiaWinUI;
 using namespace CelestiaWinUI::implementation;
 
 App::App()
 {
+#ifdef SUPPORTS_SENTRY
+    auto installedLocation = Windows::ApplicationModel::Package::Current().InstalledLocation().Path();
+    auto crashpadHandlerPath = PathHelper::Combine(installedLocation, L"crashpad_handler.exe");
+    auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder().Path();
+    auto sentryDatabasePath = PathHelper::Combine(localFolder, L"sentry");
+
+    sentry_options_t* options = sentry_options_new();
+    sentry_options_set_dsn(options, "SENTRY-DSN");
+    sentry_options_set_handler_path(options, to_string(crashpadHandlerPath).c_str());
+    sentry_options_set_database_path(options, to_string(sentryDatabasePath).c_str());
+    sentry_options_set_release(options, "celestia-windows@1.0.0");
+    sentry_init(options);
+#endif
+
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
     UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
     {
@@ -46,6 +66,9 @@ fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const args)
     window = make<MainWindow>();
     window.Closed([](IInspectable const&, WindowEventArgs const&)
         {
+#ifdef SUPPORTS_SENTRY
+            sentry_close();
+#endif
             Application::Current().Exit();
         });
     Launch(args, nullptr);

@@ -4,22 +4,22 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  IgnorableNamespaces="uap rescap mp">
 
   <Identity
-    Name="698f54ef-8595-469a-8cfb-f44bc1816f5d"
-    Publisher="CN=linfel"
-    Version="1.0.0.0" />
+    Name="40507LinfengLi.Celestia"
+    Publisher="CN=DFAB6BEB-215D-4D28-AB17-B4B02709A980"
+    Version="2.1.0.0" />
 
   <Properties>
     <DisplayName>Celestia</DisplayName>
-    <PublisherDisplayName>linfel</PublisherDisplayName>
+    <PublisherDisplayName>Linfeng Li</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.18362.0" MaxVersionTested="10.0.22000.0" />
   </Dependencies>
 
 <Resources>
