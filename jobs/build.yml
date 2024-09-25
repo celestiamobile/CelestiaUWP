@@ -22,6 +22,12 @@ jobs:
   - checkout: self
     fetchDepth: 0
 
+  - pwsh: |
+      $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.Component.MSBuild -latest -utf8 -format json | ConvertFrom-Json
+      $msbuild = Join-Path $vs[0].installationPath "MSBuild" "Current" "Bin" "MSBuild.exe"
+      Write-Host "##vso[task.setvariable variable=msbuild;]$msbuild"
+    displayName: 'Find MSBuild'
+
   - script: |
       cd Celestia
       git checkout origin/$(Build.SourceBranchName)
@@ -115,33 +121,13 @@ jobs:
     inputs:
       secureFile: '3d.pfx'
 
-  - task: VSBuild@1
-    inputs:
-      platform: x64
-      solution: '$(solution)'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x64"
-                    /p:AppxPackageDir="$(build.artifactStagingDirectory)"
-                    /p:AppxBundle=Always
-                    /p:UapAppxPackageBuildMode=CI
-                    /p:AppxPackageSigningEnabled=true
-                    /p:PackageCertificateThumbprint=""
-                    /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
+  - script: |
+      "$(msbuild)" /m /t:CelestiaUWP /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="$(build.artifactStagingDirectory)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=CI /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP.sln"
     displayName: 'Build MSIXUpload'
     condition: eq( variables['buildType'], 'msixupload' )
 
-  - task: VSBuild@1
-    inputs:
-      platform: x64
-      solution: '$(solution)'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x64"
-                    /p:AppxPackageDir="$(build.artifactStagingDirectory)"
-                    /p:AppxBundle=Always
-                    /p:UapAppxPackageBuildMode=SideLoadOnly
-                    /p:AppxPackageSigningEnabled=true
-                    /p:PackageCertificateThumbprint=""
-                    /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)"'
+  - script: |
+      "$(msbuild)" /m /t:CelestiaUWP /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="$(build.artifactStagingDirectory)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideLoadOnly /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP.sln"
     displayName: 'Build Sideload'
     condition: eq( variables['buildType'], 'sideload' )
 
