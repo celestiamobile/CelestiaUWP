@@ -118,7 +118,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto listToChangeIn = parentBookmark == nullptr ? bookmarks : parentBookmark.Children();
         auto bookmarkToChange = bookmark;
 
-        auto name{ co_await ContentDialogHelper::GetText(*this, LocalizationHelper::Localize(L"New name", L"Enter new name for a bookmark node")) };
+        auto name{ co_await ContentDialogHelper::GetText(*this, LocalizationHelper::Localize(L"New name", L"Enter new name for a bookmark node"), bookmarkToChange.Name()) };
         if (name.empty()) co_return;
 
         uint32_t index;
