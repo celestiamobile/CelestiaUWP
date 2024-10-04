@@ -27,7 +27,7 @@ namespace winrt::CelestiaComponent::implementation
         double HMSSeconds();
         double Decimal();
     private:
-        int32_t decimal;
+        double decimal;
     };
 }
 
