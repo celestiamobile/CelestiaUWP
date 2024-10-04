@@ -45,6 +45,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     BookmarkNode::BookmarkNode(bool isFolder, hstring const& name, hstring const& url, Collections::IObservableVector<CelestiaAppComponent::BookmarkNode> children) noexcept : isFolder(isFolder), name(name), url(url), children(children), hasErrors(false)
     {
+        bindableChildren = make<ObservableVector<CelestiaAppComponent::BookmarkNode>>(children);
     }
 
     bool BookmarkNode::IsFolder()
