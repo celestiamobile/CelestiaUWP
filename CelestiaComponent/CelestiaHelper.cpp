@@ -23,7 +23,7 @@ namespace winrt::CelestiaComponent::implementation
 	double CelestiaHelper::JulianDayFromDateTime(Windows::Foundation::DateTime const& dateTime)
 	{
         static auto epoch = celestia::astro::Date(1970, 1, 1);
-        return celestia::astro::UTCtoTDB(epoch + std::chrono::duration_cast<std::chrono::milliseconds>(dateTime.time_since_epoch()).count() / 86400.0 / 1000.0);
+        return celestia::astro::UTCtoTDB(epoch + std::chrono::duration_cast<std::chrono::milliseconds>(winrt::clock::to_sys(dateTime).time_since_epoch()).count() / 86400.0 / 1000.0);
 	}
 
 	Windows::Foundation::DateTime CelestiaHelper::DateTimeFromJulianDay(double julianDay)
