@@ -165,11 +165,11 @@ namespace winrt::CelestiaAppComponent::implementation
         numberFormatter.FractionDigits(0);
         numberFormatter.IsGrouped(true);
 
-        CelestiaDMS hms{ sph.X() };
+        CelestiaDMS hms{ CelestiaHelper::DegFromRad(sph.X()) };
         double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), std::wstring(numberFormatter.FormatInt(hms.HMSHours())), std::wstring(numberFormatter.FormatInt(hms.HMSMinutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
-        CelestiaDMS dms{ sph.Y() };
+        CelestiaDMS dms{ CelestiaHelper::DegFromRad(sph.Y()) };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
@@ -191,22 +191,22 @@ namespace winrt::CelestiaAppComponent::implementation
         numberFormatter.FractionDigits(0);
         numberFormatter.IsGrouped(true);
 
-        CelestiaDMS hms{ sph.X() };
+        CelestiaDMS hms{ CelestiaHelper::DegFromRad(sph.X()) };
         double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), std::wstring(numberFormatter.FormatInt(hms.HMSHours())), std::wstring(numberFormatter.FormatInt(hms.HMSMinutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
-        CelestiaDMS dms{ sph.Y() };
+        CelestiaDMS dms{ CelestiaHelper::DegFromRad(sph.Y()) };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
-        dms = CelestiaDMS(sph.X());
+        dms = CelestiaDMS(CelestiaHelper::DegFromRad(sph.X()));
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"L: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 
-        dms = CelestiaDMS(sph.Y());
+        dms = CelestiaDMS(CelestiaHelper::DegFromRad(sph.Y()));
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
         lines.push_back(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"B: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), std::wstring(numberFormatter.FormatInt(dms.Degrees())), std::wstring(numberFormatter.FormatInt(dms.Minutes())), std::wstring(numberFormatter.FormatDouble(seconds))));
 

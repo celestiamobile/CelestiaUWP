@@ -30,6 +30,7 @@ namespace winrt::CelestiaComponent::implementation
         static CelestiaComponent::CelestiaVector EquatorialToGalactic(CelestiaComponent::CelestiaVector const& equatorial);
         static CelestiaComponent::CelestiaVector RectToSpherical(CelestiaComponent::CelestiaVector const& rect);
         static double AUToKilometers(double au);
+        static double DegFromRad(double rad);
     };
 }
 

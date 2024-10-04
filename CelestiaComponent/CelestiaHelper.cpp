@@ -121,4 +121,9 @@ namespace winrt::CelestiaComponent::implementation
     {
         return celestia::astro::AUtoKilometers(au);
     }
+
+    double CelestiaHelper::DegFromRad(double rad)
+    {
+        return celestia::math::radToDeg(rad);
+    }
 }

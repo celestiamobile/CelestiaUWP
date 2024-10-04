@@ -24,5 +24,6 @@ namespace CelestiaComponent
         static CelestiaVector EquatorialToGalactic(CelestiaVector equatorial);
         static CelestiaVector RectToSpherical(CelestiaVector rect);
         static Double AUToKilometers(Double au);
+        static Double DegFromRad(Double rad);
     }
 }
