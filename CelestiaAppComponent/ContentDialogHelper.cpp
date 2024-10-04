@@ -37,7 +37,7 @@ namespace winrt::CelestiaAppComponent::implementation
         co_return result == ContentDialogResult::Primary;
     }
 
-    IAsyncOperation<hstring> ContentDialogHelper::GetText(UIElement const element, hstring const message)
+    IAsyncOperation<hstring> ContentDialogHelper::GetText(UIElement const element, hstring const message, hstring const placeholder)
     {
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
@@ -46,6 +46,7 @@ namespace winrt::CelestiaAppComponent::implementation
         dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
         dialog.IsSecondaryButtonEnabled(true);
         TextBox textBox;
+        textBox.Text(placeholder);
         dialog.Content(textBox);
 
         auto result{ co_await ShowContentDialogAsync(element, dialog) };

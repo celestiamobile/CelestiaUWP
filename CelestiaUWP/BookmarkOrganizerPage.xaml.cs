@@ -148,7 +148,7 @@ namespace CelestiaUWP
         {
             var (bookmark, parent) = GetSelectedBookmarkAndParent();
             if (bookmark == null) return;
-            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name", "Enter new name for a bookmark node"));
+            var text = await ContentDialogHelper.GetText(this, LocalizationHelper.Localize("New name", "Enter new name for a bookmark node"), bookmark.Name);
             if (text.Length <= 0) return;
 
             var listToChange = parent == null ? bookmarks : parent.Children;
