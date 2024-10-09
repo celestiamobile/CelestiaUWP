@@ -7,6 +7,7 @@
 // of the License, or (at your option) any later version.
 //
 
+import "CelestiaCompletion.idl";
 import "CelestiaDestination.idl";
 import "CelestiaEclipse.idl";
 import "CelestiaGotoLocation.idl";
@@ -31,6 +32,6 @@ namespace CelestiaComponent
         void GoToEclipse(CelestiaEclipse eclipse);
         void ReverseOrientation();
 
-        String[] GetCompletion(String name);
+        CelestiaCompletion[] GetCompletion(String name);
     }
 }

@@ -25,8 +25,8 @@ namespace winrt::CelestiaWinUI::implementation
         void SelectedCoordinateSystem(CelestiaComponent::CoordinateSystem);
         Microsoft::UI::Xaml::Visibility RefObjectTextBoxVisibility();
         Microsoft::UI::Xaml::Visibility TargetObjectTextBoxVisibility();
-        hstring ReferenceObjectPath();
-        hstring TargetObjectPath();
+        CelestiaComponent::CelestiaSelection ReferenceObject();
+        CelestiaComponent::CelestiaSelection TargetObject();
 
         void ObjectNameText_TextChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::AutoSuggestBoxTextChangedEventArgs const&);
         void ObjectNameText_SuggestionChosen(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::AutoSuggestBoxSuggestionChosenEventArgs const&);
@@ -36,8 +36,8 @@ namespace winrt::CelestiaWinUI::implementation
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
-        hstring referenceObjectPath{ L"" };
-        hstring targetObjectPath{ L"" };
+        CelestiaComponent::CelestiaSelection referenceObject;
+        CelestiaComponent::CelestiaSelection targetObject;
         Windows::Foundation::Collections::IObservableVector<CelestiaComponent::CoordinateSystem> coordinateSystems;
         CelestiaComponent::CoordinateSystem selectedCoordinateSystem{ CelestiaComponent::CoordinateSystem::Universal };
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
