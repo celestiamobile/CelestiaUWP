@@ -5,7 +5,7 @@ namespace CelestiaWinUI
     {
         GotoObjectDialog(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
 
-        String ObjectPath{ get; };
+        CelestiaComponent.CelestiaSelection Object{ get; };
         Single Latitude{ get; };
         Single Longitude{ get; };
         Double Distance{ get; };

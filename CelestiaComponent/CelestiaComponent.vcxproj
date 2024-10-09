@@ -335,6 +335,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\body.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\boundaries.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\category.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\completion.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\console.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
@@ -565,6 +566,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\category.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\completion.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\console.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
@@ -897,6 +899,20 @@
     <Midl Include="CelestiaVector.idl">
       <SubType>Code</SubType>
       <DependentUpon>CelestiaVector.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CelestiaCompletion.h">
+      <DependentUpon>CelestiaCompletion.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaCompletion.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaCompletion.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaCompletion.cpp</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>

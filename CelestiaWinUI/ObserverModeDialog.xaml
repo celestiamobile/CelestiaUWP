@@ -27,14 +27,14 @@
         </StackPanel>
         <AutoSuggestBox x:Name="ReferenceNameText" Visibility="{x:Bind RefObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen" UpdateTextOnSelect="False">
             <AutoSuggestBox.ItemTemplate>
-                <DataTemplate x:DataType="app:SearchObjectEntry">
+                <DataTemplate x:DataType="celestia:CelestiaCompletion">
                     <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
                 </DataTemplate>
             </AutoSuggestBox.ItemTemplate>
         </AutoSuggestBox>
         <AutoSuggestBox x:Name="TargetNameText" Visibility="{x:Bind TargetObjectTextBoxVisibility, Mode=OneWay}" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen" UpdateTextOnSelect="False">
             <AutoSuggestBox.ItemTemplate>
-                <DataTemplate x:DataType="app:SearchObjectEntry">
+                <DataTemplate x:DataType="celestia:CelestiaCompletion">
                     <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
                 </DataTemplate>
             </AutoSuggestBox.ItemTemplate>

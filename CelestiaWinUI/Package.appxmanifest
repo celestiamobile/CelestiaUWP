@@ -111,6 +111,7 @@
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaAstroObject" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBody" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaBrowserItem" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaCompletion" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDestination" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDMS" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaDSO" ThreadingModel="both" />

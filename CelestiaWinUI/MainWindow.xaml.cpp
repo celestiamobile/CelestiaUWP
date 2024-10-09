@@ -735,26 +735,21 @@ namespace winrt::CelestiaWinUI::implementation
         GotoObjectDialog dialog{ appCore, renderer };
         if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) == ContentDialogResult::Primary)
         {
-            auto objectPath = dialog.ObjectPath();
+            auto object = dialog.Object();
+            if (object.IsEmpty())
+            {
+                ShowObjectNotFound();
+                co_return;
+            }
+
             auto latitude = dialog.Latitude();
             auto longitude = dialog.Longitude();
             auto distance = dialog.Distance();
             auto unit = dialog.UnitType();
-            renderer.EnqueueTask([this, objectPath, latitude, longitude, distance, unit]
+            renderer.EnqueueTask([this, object, latitude, longitude, distance, unit]
                 {
-                    auto selection = appCore.Simulation().Find(objectPath);
-                    if (selection.IsEmpty())
-                    {
-                        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]
-                            {
-                                ShowObjectNotFound();
-                            });
-                    }
-                    else
-                    {
-                        CelestiaGotoLocation location{ selection, latitude, longitude, distance, unit };
-                        appCore.Simulation().GoToLocation(location);
-                    }
+                    CelestiaGotoLocation location{ object, latitude, longitude, distance, unit };
+                    appCore.Simulation().GoToLocation(location);
                 });
         }
     }
@@ -1159,12 +1154,10 @@ namespace winrt::CelestiaWinUI::implementation
         ObserverModeDialog dialog{ appCore, renderer };
         if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) != ContentDialogResult::Primary) co_return;
         auto coordinateSystem = dialog.SelectedCoordinateSystem();
-        auto referenceObjectPath = dialog.ReferenceObjectPath();
-        auto targetObjectPath = dialog.TargetObjectPath();
-        renderer.EnqueueTask([this, coordinateSystem, referenceObjectPath, targetObjectPath]()
+        auto referenceObject = dialog.ReferenceObject();
+        auto targetObject = dialog.TargetObject();
+        renderer.EnqueueTask([this, coordinateSystem, referenceObject, targetObject]()
             {
-                auto referenceObject = referenceObjectPath.empty() ? CelestiaSelection() : appCore.Simulation().Find(referenceObjectPath);
-                auto targetObject = targetObjectPath.empty() ? CelestiaSelection() : appCore.Simulation().Find(targetObjectPath);
                 appCore.Simulation().ActiveObserver().SetFrame(coordinateSystem, referenceObject, targetObject);
             });
     }

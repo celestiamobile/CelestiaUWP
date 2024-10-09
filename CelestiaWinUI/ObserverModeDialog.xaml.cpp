@@ -46,6 +46,8 @@ namespace winrt::CelestiaWinUI::implementation
     ObserverModeDialog::ObserverModeDialog(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
         coordinateSystems = single_threaded_observable_vector<CoordinateSystem>({ CoordinateSystem::Universal, CoordinateSystem::Ecliptical, CoordinateSystem::BodyFixed, CoordinateSystem::PhaseLock, CoordinateSystem::Chase });
+        targetObject = CelestiaComponent::CelestiaSelection();
+        referenceObject = CelestiaComponent::CelestiaSelection();
     }
 
     void ObserverModeDialog::InitializeComponent()
@@ -113,14 +115,14 @@ namespace winrt::CelestiaWinUI::implementation
         return selectedCoordinateSystem == CoordinateSystem::PhaseLock ? Visibility::Visible : Visibility::Collapsed;
     }
 
-    hstring ObserverModeDialog::ReferenceObjectPath()
+    CelestiaComponent::CelestiaSelection ObserverModeDialog::ReferenceObject()
     {
-        return RefObjectTextBoxVisibility() == Visibility::Visible ? referenceObjectPath : L"";
+        return RefObjectTextBoxVisibility() == Visibility::Visible ? referenceObject : CelestiaComponent::CelestiaSelection();
     }
 
-    hstring ObserverModeDialog::TargetObjectPath()
+    CelestiaComponent::CelestiaSelection ObserverModeDialog::TargetObject()
     {
-        return TargetObjectTextBoxVisibility() == Visibility::Visible ? targetObjectPath : L"";
+        return TargetObjectTextBoxVisibility() == Visibility::Visible ? targetObject : CelestiaComponent::CelestiaSelection();
     }
 
     void ObserverModeDialog::ObjectNameText_TextChanged(IInspectable const& sender, Controls::AutoSuggestBoxTextChangedEventArgs const& args)
@@ -129,14 +131,14 @@ namespace winrt::CelestiaWinUI::implementation
         auto text = suggestBox.Text();
         bool isReference = suggestBox == ReferenceNameText();
         if (args.Reason() != Controls::AutoSuggestionBoxTextChangeReason::UserInput) return;
-        if (isReference)
-            referenceObjectPath = text;
-        else
-            targetObjectPath = text;
 
         if (text.empty())
         {
-            suggestBox.ItemsSource(single_threaded_observable_vector<SearchObjectEntry>());
+            suggestBox.ItemsSource(single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>());
+            if (isReference)
+                referenceObject = CelestiaComponent::CelestiaSelection();
+            else
+                targetObject = CelestiaComponent::CelestiaSelection();
             return;
         }
 
@@ -145,18 +147,20 @@ namespace winrt::CelestiaWinUI::implementation
                 auto strong_this = weak_this.get();
                 if (!strong_this) return;
                 auto comCompletions = strong_this->appCore.Simulation().GetCompletion(text);
-                hstring prefix = L"";
-                auto input = std::wstring(text);
-                auto lastSeparatorPosition = input.rfind(L'/', input.length());
-                if (lastSeparatorPosition != std::wstring::npos)
-                    prefix = input.substr(0, lastSeparatorPosition + 1);
-                auto source = single_threaded_observable_vector<SearchObjectEntry>();
-                for (hstring const& completion : comCompletions)
-                    source.Append(SearchObjectEntry(completion, prefix + completion));
-                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, strong_this, isReference]()
+                auto fullMatch = strong_this->appCore.Simulation().Find(text);
+                auto source = single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>();
+                for (auto const& completion : comCompletions)
+                    source.Append(completion);
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, strong_this, isReference, fullMatch]()
                     {
                         if (suggestBox.Text() == text)
+                        {
                             suggestBox.ItemsSource(source);
+                            if (isReference)
+                                strong_this->referenceObject = fullMatch;
+                            else
+                                strong_this->targetObject = fullMatch;
+                        }
                     });
             });
     }
@@ -165,11 +169,11 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         bool isReference = suggestBox == ReferenceNameText();
-        auto selected = args.SelectedItem().as<SearchObjectEntry>();
+        auto selected = args.SelectedItem().as<CelestiaComponent::CelestiaCompletion>();
         if (isReference)
-            referenceObjectPath = selected.Path();
+            referenceObject = selected.Selection();
         else
-            targetObjectPath = selected.Path();
+            targetObject = selected.Selection();
         suggestBox.Text(selected.Name());
     }
 
