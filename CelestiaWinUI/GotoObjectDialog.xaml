@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:app="using:CelestiaAppComponent"
+    xmlns:celestia="using:CelestiaComponent"
     mc:Ignorable="d">
 
     <Grid ColumnSpacing="{StaticResource HorizontalSpacing}" RowSpacing="{StaticResource VerticalSpacing}">
@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <AutoSuggestBox x:Name="ObjectNameText" Grid.Row="0" TextChanged="ObjectNameText_TextChanged" SuggestionChosen="ObjectNameText_SuggestionChosen" UpdateTextOnSelect="False" Grid.Column="0" Grid.ColumnSpan="2">
             <AutoSuggestBox.ItemTemplate>
-                <DataTemplate x:DataType="app:SearchObjectEntry">
+                <DataTemplate x:DataType="celestia:CelestiaCompletion">
                     <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
                 </DataTemplate>
             </AutoSuggestBox.ItemTemplate>

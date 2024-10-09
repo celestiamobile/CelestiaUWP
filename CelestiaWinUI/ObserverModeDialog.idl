@@ -14,7 +14,7 @@ namespace CelestiaWinUI
         CelestiaComponent.CoordinateSystem SelectedCoordinateSystem;
         Microsoft.UI.Xaml.Visibility RefObjectTextBoxVisibility{ get; };
         Microsoft.UI.Xaml.Visibility TargetObjectTextBoxVisibility{ get; };
-        String ReferenceObjectPath{ get; };
-        String TargetObjectPath{ get; };
+        CelestiaComponent.CelestiaSelection ReferenceObject{ get; };
+        CelestiaComponent.CelestiaSelection TargetObject{ get; };
     }
 }

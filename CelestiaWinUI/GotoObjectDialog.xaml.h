@@ -12,7 +12,7 @@ namespace winrt::CelestiaWinUI::implementation
         GotoObjectDialog(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer);
         void InitializeComponent();
 
-        hstring ObjectPath();
+        CelestiaComponent::CelestiaSelection Object();
         float Latitude();
         float Longitude();
         double Distance();
@@ -29,7 +29,7 @@ namespace winrt::CelestiaWinUI::implementation
         void ObjectNameText_SuggestionChosen(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::AutoSuggestBoxSuggestionChosenEventArgs const&);
 
     private:
-        hstring objectPath{ L"" };
+        CelestiaComponent::CelestiaSelection object;
         int32_t unit{ 1 };
         Windows::Foundation::IReference<float> latitude{ 0.0f };
         Windows::Foundation::IReference<float> longitude{ 0.0f };

@@ -16,6 +16,7 @@ namespace winrt::CelestiaWinUI::implementation
 {
     GotoObjectDialog::GotoObjectDialog(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
+        object = CelestiaComponent::CelestiaSelection();
         numberFormatter = DecimalFormatter();
         numberFormatter.FractionDigits(0);
         numberFormatter.IsGrouped(false);
@@ -59,9 +60,9 @@ namespace winrt::CelestiaWinUI::implementation
         return (CelestiaComponent::CelestiaGotoLocationDistanceUnit)unit;
     }
 
-    hstring GotoObjectDialog::ObjectPath()
+    CelestiaComponent::CelestiaSelection GotoObjectDialog::Object()
     {
-        return objectPath;
+        return object;
     }
 
     Collections::IObservableVector<hstring> GotoObjectDialog::Units()
@@ -134,11 +135,11 @@ namespace winrt::CelestiaWinUI::implementation
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         auto text = suggestBox.Text();
         if (args.Reason() != Controls::AutoSuggestionBoxTextChangeReason::UserInput) return;
-        objectPath = text;
 
         if (text.empty())
         {
-            suggestBox.ItemsSource(single_threaded_observable_vector<SearchObjectEntry>());
+            object = CelestiaComponent::CelestiaSelection();
+            suggestBox.ItemsSource(single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>());
             return;
         }
 
@@ -147,18 +148,17 @@ namespace winrt::CelestiaWinUI::implementation
                 auto strong_this = weak_this.get();
                 if (!strong_this) return;
                 auto comCompletions = strong_this->appCore.Simulation().GetCompletion(text);
-                hstring prefix = L"";
-                auto input = std::wstring(text);
-                auto lastSeparatorPosition = input.rfind(L'/', input.length());
-                if (lastSeparatorPosition != std::wstring::npos)
-                    prefix = input.substr(0, lastSeparatorPosition + 1);
-                auto source = single_threaded_observable_vector<SearchObjectEntry>();
-                for (hstring const& completion : comCompletions)
-                    source.Append(SearchObjectEntry(completion, prefix + completion));
-                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, strong_this]()
+                auto fullMatch = strong_this->appCore.Simulation().Find(text);
+                auto source = single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>();
+                for (auto const& completion : comCompletions)
+                    source.Append(completion);
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, fullMatch, strong_this]()
                     {
                         if (suggestBox.Text() == text)
+                        {
+                            strong_this->object = fullMatch;
                             suggestBox.ItemsSource(source);
+                        }
                     });
             });
     }
@@ -166,8 +166,8 @@ namespace winrt::CelestiaWinUI::implementation
     void GotoObjectDialog::ObjectNameText_SuggestionChosen(IInspectable const& sender, Controls::AutoSuggestBoxSuggestionChosenEventArgs const& args)
     {
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
-        auto selected = args.SelectedItem().as<SearchObjectEntry>();
-        objectPath = selected.Path();
+        auto selected = args.SelectedItem().as<CelestiaComponent::CelestiaCompletion>();
+        object = selected.Selection();
         suggestBox.Text(selected.Name());
     }
 
