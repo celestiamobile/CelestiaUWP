@@ -617,6 +617,7 @@ namespace CelestiaUWP
                           {
                               LocalizationHelper.Localize("Diamond", "Marker"),
                               LocalizationHelper.Localize("Triangle", "Marker"),
+                              LocalizationHelper.Localize("Square", "Marker"),
                               LocalizationHelper.Localize("Filled Square", "Marker"),
                               LocalizationHelper.Localize("Plus", "Marker"),
                               LocalizationHelper.Localize("X", "Marker"),
