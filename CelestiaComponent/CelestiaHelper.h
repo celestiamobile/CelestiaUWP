@@ -24,6 +24,7 @@ namespace winrt::CelestiaComponent::implementation
         static Windows::Foundation::DateTime DateTimeFromJulianDay(double julianDay);
         static double MinRepresentableJulianDay();
         static double MaxRepresentableJulianDay();
+        static Windows::Foundation::DateTime GetMidnight(Windows::Foundation::DateTime const& dateTime);
 
         static CelestiaComponent::CelestiaVector CelToJ2000Ecliptic(CelestiaComponent::CelestiaVector const& cel);
         static CelestiaComponent::CelestiaVector EclipticToEquatorial(CelestiaComponent::CelestiaVector const& ecliptic);

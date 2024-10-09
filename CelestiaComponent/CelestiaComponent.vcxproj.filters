@@ -172,6 +172,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\category.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\completion.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\console.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -482,6 +485,7 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="CelestiaAstroObject.cpp" />
     <ClCompile Include="CelestiaBody.cpp" />
+    <ClCompile Include="CelestiaCompletion.cpp" />
     <ClCompile Include="CelestiaDSO.cpp" />
     <ClCompile Include="CelestiaGalaxy.cpp" />
     <ClCompile Include="CelestiaStar.cpp" />
@@ -817,6 +821,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\category.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\completion.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\console.h">

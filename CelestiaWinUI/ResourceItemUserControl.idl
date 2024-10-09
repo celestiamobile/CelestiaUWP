@@ -1,0 +1,11 @@
+import "CommonWebUserControl.idl";
+
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass ResourceItemUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        ResourceItemUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.ResourceItem resourceItem, CelestiaAppComponent.ResourceManager resourceManager, WebWindowProvider windowProvider);
+        void CloseWebViewIfNeeded();
+    }
+}
