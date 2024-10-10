@@ -270,79 +270,81 @@ namespace winrt::CelestiaComponent::implementation
         core->draw();
     }
 
+    DWORD CelestiaRenderer::Main(LPVOID context)
+    {
+        auto* renderer = reinterpret_cast<CelestiaRenderer*>(context);
+        bool renderingEnabled = true;
+        while (renderingEnabled)
+        {
+            if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
+            {
+                bool started = renderer->engineStarted(static_cast<int32_t>(renderer->sampleCount));
+                if (!started)
+                    break;
+                renderer->engineStartedCalled = true;
+            }
+
+            renderer->Lock();
+            renderer->Wait();
+
+            bool shouldQuit = false;
+            switch (renderer->msg)
+            {
+            case CelestiaRenderer::MSG_WINDOW_SET:
+                shouldQuit = !renderer->Initialize();
+                break;
+            case CelestiaRenderer::MSG_RENDER_LOOP_EXIT:
+                renderingEnabled = false;
+                break;
+            default:
+                break;
+            }
+            renderer->msg = CelestiaRenderer::MSG_NONE;
+
+            if (shouldQuit)
+                break;
+
+            bool needsDrawn = false;
+            if (renderer->engineStartedCalled && renderer->surface != EGL_NO_SURFACE && renderer->core != nullptr)
+                needsDrawn = true;
+            auto [tasks, prerenderTask] = renderer->RetrieveAndResetTasks();
+
+            renderer->Unlock();
+
+
+            for (const auto& task : tasks)
+                task();
+            if (prerenderTask != nullptr)
+                prerenderTask();
+
+            if (needsDrawn)
+            {
+                renderer->ResizeIfNeeded();
+                renderer->TickAndDraw();
+                if (!eglSwapBuffers(renderer->display, renderer->surface))
+                    printf("eglSwapBuffers() returned error %d", eglGetError());
+            }
+        }
+        renderer->Destroy();
+        return 0;
+    }
+
 	void CelestiaRenderer::Start()
 	{
-        // If the render loop is already running then do not start another thread.
-        if (mRenderLoopWorker != nullptr && mRenderLoopWorker.Status() == Windows::Foundation::AsyncStatus::Started)
-        {
+        threadHandle = CreateThread(nullptr, 0, CelestiaRenderer::Main, this, CREATE_SUSPENDED, &threadID);
+        if (threadHandle == nullptr)
             return;
-        }
-
-        // Create a task for rendering that will be run on a background thread.
-        auto workItemHandler = Windows::System::Threading::WorkItemHandler([this](Windows::Foundation::IAsyncAction action)
-            {
-                while (action.Status() == winrt::Windows::Foundation::AsyncStatus::Started)
-                {
-                    if (surface != EGL_NO_SURFACE && !engineStartedCalled)
-                    {
-                        bool started = engineStarted(static_cast<int32_t>(sampleCount));
-                        if (!started)
-                            break;
-                        engineStartedCalled = true;
-                    }
-
-                    Lock();
-                    Wait();
-
-                    bool shouldQuit = false;
-                    switch (msg)
-                    {
-                    case CelestiaRenderer::MSG_WINDOW_SET:
-                        shouldQuit = !Initialize();
-                        break;
-                    default:
-                        break;
-                    }
-                    msg = CelestiaRenderer::MSG_NONE;
-
-                    if (shouldQuit)
-                        break;
-
-                    bool needsDrawn = false;
-                    if (engineStartedCalled && surface != EGL_NO_SURFACE && core != nullptr)
-                        needsDrawn = true;
-                    auto [tasks, prerenderTask] = RetrieveAndResetTasks();
-
-                    Unlock();
-
-
-                    for (const auto& task : tasks)
-                        task();
-                    if (preRenderTask != nullptr)
-                        prerenderTask();
-
-                    if (needsDrawn)
-                    {
-                        ResizeIfNeeded();
-                        TickAndDraw();
-                        if (!eglSwapBuffers(display, surface))
-                            printf("eglSwapBuffers() returned error %d", eglGetError());
-                    }
-                }
-                Destroy();
-            });
-
-        // Run task on a dedicated high priority background thread.
-        mRenderLoopWorker = Windows::System::Threading::ThreadPool::RunAsync(workItemHandler, Windows::System::Threading::WorkItemPriority::High, Windows::System::Threading::WorkItemOptions::TimeSliced);
+        SetThreadPriority(threadHandle, THREAD_PRIORITY_TIME_CRITICAL);
+        ResumeThread(threadHandle);
 	}
 
     void CelestiaRenderer::Stop()
     {
-        if (mRenderLoopWorker)
-        {
-            mRenderLoopWorker.Cancel();
-            mRenderLoopWorker = nullptr;
-        }
+        Lock();
+        msg = CelestiaRenderer::MSG_RENDER_LOOP_EXIT;
+        Unlock();
+
+        WaitForSingleObject(threadHandle, INFINITE);
     }
 
     inline void CelestiaRenderer::Lock()

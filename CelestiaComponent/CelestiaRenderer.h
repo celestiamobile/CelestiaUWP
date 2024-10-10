@@ -42,6 +42,7 @@ namespace winrt::CelestiaComponent::implementation
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
         std::pair<std::vector<CelestiaComponent::CelestiaRendererTask>, CelestiaComponent::CelestiaRendererTask> RetrieveAndResetTasks();
+        static DWORD WINAPI Main(LPVOID context);
 
         void MakeContextCurrent();
 
@@ -50,6 +51,7 @@ namespace winrt::CelestiaComponent::implementation
         enum RenderThreadMessage {
             MSG_NONE = 0,
             MSG_WINDOW_SET,
+            MSG_RENDER_LOOP_EXIT,
         };
 
         enum RenderThreadMessage msg = MSG_NONE;
@@ -75,7 +77,8 @@ namespace winrt::CelestiaComponent::implementation
 
         Windows::UI::Xaml::Controls::SwapChainPanel window{ nullptr };
 
-        Windows::Foundation::IAsyncAction mRenderLoopWorker{ nullptr };
+        DWORD threadID{ 0 };
+        HANDLE threadHandle{ 0 };
 
         std::vector<CelestiaComponent::CelestiaRendererTask> tasks;
         CelestiaComponent::CelestiaRendererTask preRenderTask;
