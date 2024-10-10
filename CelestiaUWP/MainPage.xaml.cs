@@ -486,169 +486,164 @@ namespace CelestiaUWP
                 var y = contextMenuArgs.Y;
                 var selection = contextMenuArgs.Selection;
                 _ = Dispatcher.TryRunAsync(CoreDispatcherPriority.Normal, () =>
-                  {
-                      var menu = new MenuFlyout();
-                      AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
-                      menu.Items.Add(new MenuFlyoutSeparator());
-                      AppendItem(menu, LocalizationHelper.Localize("Get Info", "Action for getting info about current selected object"), (sender, arg) =>
-                      {
-                          ShowInfo(selection);
-                      });
+                    {
+                        var menu = new MenuFlyout();
+                        AppendItem(menu, mAppCore.Simulation.Universe.NameForSelection(selection), null);
+                        menu.Items.Add(new MenuFlyoutSeparator());
+                        AppendItem(menu, LocalizationHelper.Localize("Get Info", "Action for getting info about current selected object"), (sender, arg) =>
+                        {
+                            ShowInfo(selection);
+                        });
 
-                      menu.Items.Add(new MenuFlyoutSeparator());
+                        menu.Items.Add(new MenuFlyoutSeparator());
 
-                      var actions = new (string, short)[]
-                      {
-                        (LocalizationHelper.Localize("Go", "Go to an object"), 103),
-                        (LocalizationHelper.Localize("Follow", ""), 102),
-                        (LocalizationHelper.Localize("Sync Orbit", ""), 121),
-                      };
+                        var actions = new (string, short)[]
+                        {
+                          (LocalizationHelper.Localize("Go", "Go to an object"), 103),
+                          (LocalizationHelper.Localize("Follow", ""), 102),
+                          (LocalizationHelper.Localize("Sync Orbit", ""), 121),
+                        };
 
-                      foreach (var action in actions)
-                      {
-                          AppendItem(menu, action.Item1, (sender, arg) =>
-                          {
-                              mRenderer.EnqueueTask(() =>
-                              {
-                                  mAppCore.Simulation.Selection = selection;
-                                  mAppCore.CharEnter(action.Item2);
-                              });
-                          });
-                      }
+                        foreach (var action in actions)
+                        {
+                            AppendItem(menu, action.Item1, (sender, arg) =>
+                            {
+                                mRenderer.EnqueueTask(() =>
+                                {
+                                    mAppCore.Simulation.Selection = selection;
+                                    mAppCore.CharEnter(action.Item2);
+                                });
+                            });
+                        }
 
-                      if (selection.Object is CelestiaBody body)
-                      {
-                          var surfaces = body.AlternateSurfaceNames;
-                          if (surfaces != null && surfaces.Length > 0)
-                          {
-                              menu.Items.Add(new MenuFlyoutSeparator());
+                        if (selection.Object is CelestiaBody body)
+                        {
+                            var surfaces = body.AlternateSurfaceNames;
+                            if (surfaces != null && surfaces.Length > 0)
+                            {
+                                menu.Items.Add(new MenuFlyoutSeparator());
 
-                              var altSur = new MenuFlyoutSubItem
-                              {
-                                  Text = LocalizationHelper.Localize("Alternate Surfaces", "Alternative textures to display")
-                              };
-                              AppendSubItem(altSur, LocalizationHelper.Localize("Default", ""), (sender, arg) =>
-                              {
-                                  mRenderer.EnqueueTask(() =>
-                                  {
-                                      mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = "";
-                                  });
-                              });
+                                var altSur = new MenuFlyoutSubItem
+                                {
+                                    Text = LocalizationHelper.Localize("Alternate Surfaces", "Alternative textures to display")
+                                };
+                                AppendSubItem(altSur, LocalizationHelper.Localize("Default", ""), (sender, arg) =>
+                                {
+                                    mRenderer.EnqueueTask(() =>
+                                    {
+                                        mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = "";
+                                    });
+                                });
 
-                              foreach (var name in surfaces)
-                              {
-                                  AppendSubItem(altSur, name, (sender, arg) =>
-                                  {
-                                      mRenderer.EnqueueTask(() =>
-                                      {
-                                          mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = name;
-                                      });
-                                  });
-                              }
+                                foreach (var name in surfaces)
+                                {
+                                    AppendSubItem(altSur, name, (sender, arg) =>
+                                    {
+                                        mRenderer.EnqueueTask(() =>
+                                        {
+                                            mAppCore.Simulation.ActiveObserver.DisplayedSurfaceName = name;
+                                        });
+                                    });
+                                }
 
-                              menu.Items.Add(altSur);
-                          }
+                               menu.Items.Add(altSur);
+                            }
 
-                          menu.Items.Add(new MenuFlyoutSeparator());
-                          var refMarkMenu = new MenuFlyoutSubItem
-                          {
-                              Text = LocalizationHelper.Localize("Reference Vectors", "Reference vectors for an object")
-                          };
+                            menu.Items.Add(new MenuFlyoutSeparator());
+                            var refMarkMenu = new MenuFlyoutSubItem
+                            {
+                                Text = LocalizationHelper.Localize("Reference Vectors", "Reference vectors for an object")
+                            };
 
-                          var refMarkMenuActions = new (string, string)[]
-                          {
-                              (LocalizationHelper.Localize("Show Body Axes", "Reference vector"), "ShowBodyAxes"),
-                              (LocalizationHelper.Localize("Show Frame Axes", "Reference vector"), "ShowFrameAxes"),
-                              (LocalizationHelper.Localize("Show Sun Direction", "Reference vector"), "ShowSunDirection"),
-                              (LocalizationHelper.Localize("Show Velocity Vector", "Reference vector"), "ShowVelocityVector"),
-                              (LocalizationHelper.Localize("Show Planetographic Grid", "Reference vector"), "ShowPlanetographicGrid"),
-                              (LocalizationHelper.Localize("Show Terminator", "Reference vector"), "ShowTerminator")
-                          };
+                            var refMarkMenuActions = new (string, string)[]
+                            {
+                                (LocalizationHelper.Localize("Show Body Axes", "Reference vector"), "ShowBodyAxes"),
+                                (LocalizationHelper.Localize("Show Frame Axes", "Reference vector"), "ShowFrameAxes"),
+                                (LocalizationHelper.Localize("Show Sun Direction", "Reference vector"), "ShowSunDirection"),
+                                (LocalizationHelper.Localize("Show Velocity Vector", "Reference vector"), "ShowVelocityVector"),
+                                (LocalizationHelper.Localize("Show Planetographic Grid", "Reference vector"), "ShowPlanetographicGrid"),
+                                (LocalizationHelper.Localize("Show Terminator", "Reference vector"), "ShowTerminator")
+                            };
 
-                          foreach (var action in refMarkMenuActions)
-                          {
-                              var isEnabled = (bool)mAppCore.GetType().GetProperty(action.Item2).GetValue(mAppCore);
-                              AppendToggleSubItem(refMarkMenu, action.Item1, isEnabled, (sender, args) =>
-                              {
-                                  mRenderer.EnqueueTask(() =>
-                                  {
-                                      mAppCore.GetType().GetProperty(action.Item2).SetValue(mAppCore, !isEnabled);
-                                  });
-                              });
-                          }
-                          menu.Items.Add(refMarkMenu);
-                      }
+                            foreach (var action in refMarkMenuActions)
+                            {
+                                var isEnabled = (bool)mAppCore.GetType().GetProperty(action.Item2).GetValue(mAppCore);
+                                AppendToggleSubItem(refMarkMenu, action.Item1, isEnabled, (sender, args) =>
+                                {
+                                    mRenderer.EnqueueTask(() =>
+                                    {
+                                        mAppCore.GetType().GetProperty(action.Item2).SetValue(mAppCore, !isEnabled);
+                                    });
+                                });
+                            }
+                            menu.Items.Add(refMarkMenu);
+                        }
 
-                      var browserMenuItems = new List<MenuFlyoutItemBase>();
-                      var appCore = mAppCore;
-                      var browserItem = new CelestiaBrowserItem(appCore.Simulation.Universe.NameForSelection(selection), selection.Object, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, appCore); }, false);
-                      if (browserItem.Children != null)
-                      {
-                          foreach (var child in browserItem.Children)
-                          {
-                              browserMenuItems.Add(CreateMenuItem(child));
-                          }
-                      }
+                        var browserMenuItems = new List<MenuFlyoutItemBase>();
+                        var appCore = mAppCore;
+                        var browserItem = new CelestiaBrowserItem(appCore.Simulation.Universe.NameForSelection(selection), selection.Object, (CelestiaBrowserItem item) => { return CelestiaExtension.GetChildren(item, appCore); }, false);
+                        if (browserItem.Children != null)
+                        {
+                            foreach (var child in browserItem.Children)
+                            {
+                                browserMenuItems.Add(CreateMenuItem(child));
+                            }
+                        }
 
-                      if (browserMenuItems.Count > 0)
-                      {
-                          menu.Items.Add(new MenuFlyoutSeparator());
-                          foreach (var browserMenuItem in browserMenuItems)
-                          {
-                              menu.Items.Add(browserMenuItem);
-                          }
-                      }
+                        if (browserMenuItems.Count > 0)
+                        {
+                            menu.Items.Add(new MenuFlyoutSeparator());
+                            foreach (var browserMenuItem in browserMenuItems)
+                            {
+                                menu.Items.Add(browserMenuItem);
+                            }
+                        }
 
-                      menu.Items.Add(new MenuFlyoutSeparator());
+                        menu.Items.Add(new MenuFlyoutSeparator());
 
-                      if (mAppCore.Simulation.Universe.IsSelectionMarked(selection))
-                      {
-                          AppendItem(menu, LocalizationHelper.Localize("Unmark", "Unmark an object"), (sender, arg) =>
-                          {
-                              mRenderer.EnqueueTask(() =>
-                              {
-                                  mAppCore.Simulation.Universe.UnmarkSelection(selection);
-                              });
-                          });
-                      }
-                      else
-                      {
-                          string[] markers = new string[]
-                          {
-                              LocalizationHelper.Localize("Diamond", "Marker"),
-                              LocalizationHelper.Localize("Triangle", "Marker"),
-                              LocalizationHelper.Localize("Square", "Marker"),
-                              LocalizationHelper.Localize("Filled Square", "Marker"),
-                              LocalizationHelper.Localize("Plus", "Marker"),
-                              LocalizationHelper.Localize("X", "Marker"),
-                              LocalizationHelper.Localize("Left Arrow", "Marker"),
-                              LocalizationHelper.Localize("Right Arrow", "Marker"),
-                              LocalizationHelper.Localize("Up Arrow", "Marker"),
-                              LocalizationHelper.Localize("Down Arrow", "Marker"),
-                              LocalizationHelper.Localize("Circle", "Marker"),
-                              LocalizationHelper.Localize("Disk", "Marker"),
-                              LocalizationHelper.Localize("Crosshair", "Marker")
-                          };
-                          var action = new MenuFlyoutSubItem
-                          {
-                              Text = LocalizationHelper.Localize("Mark", "Mark an object")
-                          };
-                          for (int i = 0; i < markers.Length; i += 1)
-                          {
-                              int copy = i;
-                              AppendSubItem(action, markers[i], (sender, arg) =>
-                              {
-                                  mRenderer.EnqueueTask(() =>
-                                  {
-                                      mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
-                                      mAppCore.ShowMarkers = true;
-                                  });
-                              });
-                          }
-                          menu.Items.Add(action);
-                      }
-                      menu.ShowAt(GLView, new Point(x / scale, y / scale));
-                  });
+                        string[] markers = new string[]
+                        {
+                            LocalizationHelper.Localize("Diamond", "Marker"),
+                            LocalizationHelper.Localize("Triangle", "Marker"),
+                            LocalizationHelper.Localize("Square", "Marker"),
+                            LocalizationHelper.Localize("Filled Square", "Marker"),
+                            LocalizationHelper.Localize("Plus", "Marker"),
+                            LocalizationHelper.Localize("X", "Marker"),
+                            LocalizationHelper.Localize("Left Arrow", "Marker"),
+                            LocalizationHelper.Localize("Right Arrow", "Marker"),
+                            LocalizationHelper.Localize("Up Arrow", "Marker"),
+                            LocalizationHelper.Localize("Down Arrow", "Marker"),
+                            LocalizationHelper.Localize("Circle", "Marker"),
+                            LocalizationHelper.Localize("Disk", "Marker"),
+                            LocalizationHelper.Localize("Crosshair", "Marker")
+                        };
+                        var markMenu = new MenuFlyoutSubItem
+                        {
+                            Text = LocalizationHelper.Localize("Mark", "Mark an object")
+                        };
+                        for (int i = 0; i < markers.Length; i += 1)
+                        {
+                            int copy = i;
+                            AppendSubItem(markMenu, markers[i], (sender, arg) =>
+                            {
+                                mRenderer.EnqueueTask(() =>
+                                {
+                                    mAppCore.Simulation.Universe.MarkSelection(selection, (CelestiaMarkerRepresentation)copy);
+                                    mAppCore.ShowMarkers = true;
+                                });
+                            });
+                        }
+                        AppendSubItem(markMenu, LocalizationHelper.Localize("Unmark", "Unmark an object"), (sender, arg) =>
+                        {
+                            mRenderer.EnqueueTask(() =>
+                            {
+                                mAppCore.Simulation.Universe.UnmarkSelection(selection);
+                            });
+                        });
+                        menu.Items.Add(markMenu);
+
+                        menu.ShowAt(GLView, new Point(x / scale, y / scale));
+                    });
             };
             GLView.PointerPressed += (sender, args) =>
             {
