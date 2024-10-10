@@ -152,7 +152,7 @@ namespace CelestiaUWP
             if (text.Length <= 0) return;
 
             var listToChange = parent == null ? bookmarks : parent.Children;
-            var index = bookmarks.IndexOf(bookmark);
+            var index = listToChange.IndexOf(bookmark);
             if (index >= 0)
             {
                 bookmark.Name = text;
