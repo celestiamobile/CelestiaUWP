@@ -1,0 +1,20 @@
+namespace CelestiaWinUI
+{
+    delegate void GetAddonHandler();
+
+    [default_interface]
+    runtimeclass InstalledItemListItemSelectedArgs
+    {
+        CelestiaAppComponent.ResourceItem Item{ get; };
+    }
+
+    [default_interface]
+    runtimeclass InstalledItemListUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        InstalledItemListUserControl(CelestiaAppComponent.ResourceManager resourceManager, GetAddonHandler getAddonHandler);
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.ResourceItem> Items{ get; };
+        void Reload();
+
+        event Windows.Foundation.EventHandler<InstalledItemListItemSelectedArgs> ItemSelected;
+    }
+}

@@ -37,7 +37,7 @@ namespace winrt::CelestiaComponent::implementation
         void Pause();
         void Resume();
         inline void Wait();
-        void SetSurface(Windows::UI::Xaml::Controls::SwapChainPanel const& surface, float scale);
+        void SetSurface(Microsoft::UI::Xaml::Controls::SwapChainPanel const& surface, float scale);
         void SetCorePointer(int64_t core);
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
@@ -75,7 +75,7 @@ namespace winrt::CelestiaComponent::implementation
         float windowScale { 1.0f };
         int sampleCount { 0 };
 
-        Windows::UI::Xaml::Controls::SwapChainPanel window{ nullptr };
+        Microsoft::UI::Xaml::Controls::SwapChainPanel window{ nullptr };
 
         DWORD threadID{ 0 };
         HANDLE threadHandle{ 0 };

@@ -33,15 +33,6 @@ stages:
     parameters:
       buildType: sideload
 
-- stage: Publish_MSIXUpload
-  displayName: 'Publish MSIXUpload'
-  dependsOn:
-  - Build_MSIXUpload
-  jobs:
-  - template: jobs/publish.yml
-    parameters:
-      publishType: msixupload
-
 - stage: Publish_Sideload
   displayName: 'Publish Sideload'
   dependsOn:

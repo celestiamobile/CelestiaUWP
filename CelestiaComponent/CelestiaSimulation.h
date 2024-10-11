@@ -10,6 +10,7 @@
 #pragma once
 
 #include <celengine/simulation.h>
+#include "CelestiaCompletion.h"
 #include "CelestiaDestination.h"
 #include "CelestiaEclipse.h"
 #include "CelestiaGotoLocation.h"
@@ -42,7 +43,7 @@ namespace winrt::CelestiaComponent::implementation
         void GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse);
         void ReverseOrientation();
 
-        com_array<hstring> GetCompletion(hstring const& name);
+        com_array<CelestiaComponent::CelestiaCompletion> GetCompletion(hstring const& name);
 
         Simulation* sim;
         CelestiaComponent::CelestiaUniverse u;

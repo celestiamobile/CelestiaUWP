@@ -1,0 +1,68 @@
+<UserControl
+    x:Class="CelestiaWinUI.EclipseFinderUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:CelestiaWinUI"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:celestia="using:CelestiaComponent"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:DateTimeReferenceDateTimeConverter x:Key="DateTimeReferenceDateTimeConverter"/>
+        <local:DateTimeStringConverter x:Key="DateTimeStringConverter"/>
+        <Style x:Key="ListViewItemStretchStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </UserControl.Resources>
+    <RelativePanel Margin="{StaticResource Margin}">
+        <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
+            <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:EclipseResult">
+                        <RelativePanel>
+                            <TextBlock Text="{x:Bind DisplayName, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True"
+                                    Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind Eclipse.StartTime, Converter={StaticResource DateTimeStringConverter}, Mode=OneTime}" RelativePanel.AlignRightWithPanel="True"
+                                    Grid.Column="2" VerticalAlignment="Center"/>
+                        </RelativePanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock x:Name="EmptyHintText" Visibility="Visible" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <ProgressRing x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+        </RelativePanel>
+        <StackPanel x:Name="ControlContainer" Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical" Margin="{StaticResource TopSpacing}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+            <RelativePanel>
+                <TextBlock Text="Start time:" x:Name="StartTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind StartTime, Converter={StaticResource DateTimeReferenceDateTimeConverter}, Mode=TwoWay}" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+            <RelativePanel>
+                <TextBlock Text="End time:" x:Name="EndTimeHint" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <CalendarDatePicker Date="{x:Bind EndTime, Converter={StaticResource DateTimeReferenceDateTimeConverter}, Mode=TwoWay}" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+            <Grid ColumnSpacing="{StaticResource HorizontalSpacing}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Object:" x:Name="ObjectHint" Grid.Column="0" VerticalAlignment="Center"/>
+                <AutoSuggestBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjects}" Grid.Column="1" TextChanged="ObjectChooser_TextChanged" SuggestionChosen="ObjectChooser_SuggestionChosen" UpdateTextOnSelect="False">
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate x:DataType="app:SearchObjectEntry">
+                            <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
+                </AutoSuggestBox>
+                <CheckBox Content="Solar" IsChecked="{x:Bind FindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
+                <CheckBox Content="Lunar" IsChecked="{x:Bind FindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
+            </Grid>
+            <RelativePanel>
+                <Button Content="Compute" x:Name="ComputeButton" Click="ComputeButton_Click" RelativePanel.AlignLeftWithPanel="True"/>
+                <Button Content="Set Date and Go to Planet" x:Name="GoButton" Click="GoButton_Click" RelativePanel.AlignRightWithPanel="True"/>
+            </RelativePanel>
+        </StackPanel>
+    </RelativePanel>
+</UserControl>

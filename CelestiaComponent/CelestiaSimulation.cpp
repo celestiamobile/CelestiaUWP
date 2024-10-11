@@ -158,13 +158,13 @@ namespace winrt::CelestiaComponent::implementation
         sim->reverseObserverOrientation();
     }
 
-    com_array<hstring> CelestiaSimulation::GetCompletion(hstring const& name)
+    com_array<CelestiaComponent::CelestiaCompletion> CelestiaSimulation::GetCompletion(hstring const& name)
     {
-        std::vector<hstring> vec;
-        std::vector<std::string> names;
-        sim->getObjectCompletion(names, to_string(name), true);
-        for (const auto& name : names)
-            vec.push_back(to_hstring(name));
-        return com_array<hstring>(vec);
+        std::vector<CelestiaComponent::CelestiaCompletion> vec;
+        std::vector<celestia::engine::Completion> results;
+        sim->getObjectCompletion(results, to_string(name), true);
+        for (const auto& result : results)
+            vec.push_back(make<CelestiaCompletion>(result));
+        return com_array<CelestiaComponent::CelestiaCompletion>(vec);
     }
 }

@@ -9,7 +9,7 @@ namespace CelestiaAppComponent
         String Name;
         String URL;
         Windows.Foundation.Collections.IObservableVector<BookmarkNode> Children;
-        Windows.UI.Xaml.Interop.IBindableObservableVector BindableChildren{ get; };
+        Microsoft.UI.Xaml.Interop.IBindableObservableVector BindableChildren{ get; };
         Boolean HasErrors{ get; };
         Windows.Data.Json.JsonObject JsonRepresentation{ get; };
     }
