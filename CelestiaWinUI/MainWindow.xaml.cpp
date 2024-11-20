@@ -780,6 +780,7 @@ namespace winrt::CelestiaWinUI::implementation
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, scriptFile]()
             {
                 scriptFileToOpen = scriptFile;
+                urlToOpen = nullptr;
                 if (readyForInput)
                     OpenFileOrURL();
             });
@@ -790,6 +791,7 @@ namespace winrt::CelestiaWinUI::implementation
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, url]()
             {
                 urlToOpen = url;
+                scriptFileToOpen = nullptr;
                 if (readyForInput)
                     OpenFileOrURL();
             });
