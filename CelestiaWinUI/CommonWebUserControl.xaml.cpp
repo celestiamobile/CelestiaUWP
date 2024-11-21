@@ -60,7 +60,7 @@ namespace winrt::CelestiaWinUI::implementation
     void CommonWebUserControl::InitializeComponent()
     {
         CommonWebUserControlT::InitializeComponent();
-
+        webViewOpened = true;
         bridge = CelestiaAppComponent::JavascriptBridge(args.AppCore(), args.Renderer(), args.ContextDirectory(), args.ACKCallback(), [weak_this{ get_weak() }](hstring const& title, Uri const& uri)
             {
                 auto strong_this{ weak_this.get() };
@@ -74,6 +74,12 @@ namespace winrt::CelestiaWinUI::implementation
                                 WindowHelper::ShowShareLink(window, title, uri);
                         });
                 }
+            });
+        args.WindowProvider()().Closed([weak_this{ get_weak() }](IInspectable const&, WindowEventArgs const&)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->CloseWebViewIfNeeded();
             });
 
         EnsureWebView2();
@@ -128,23 +134,20 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget CommonWebUserControl::EnsureWebView2()
     {
+        auto weak_this{ get_weak() };
         try
         {
             co_await WebView().EnsureCoreWebView2Async();
         }
         catch (hresult_error const&)
         {
-            return;
+            co_return;
         }
-        webViewOpened = true;
-        WebView().Source(args.InitialUri());
-        args.WindowProvider()().Closed([weak_this{ get_weak() }](IInspectable const&, WindowEventArgs const&)
-            {
-                auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr) return;
-                strong_this->CloseWebViewIfNeeded();
-            });
-        WebView().CoreWebView2().DOMContentLoaded({ get_weak(), &CommonWebUserControl::CoreWebView2_DOMContentLoaded });
+        auto strong_this = weak_this.get();
+        if (strong_this == nullptr)
+            co_return;
+        strong_this->WebView().Source(strong_this->args.InitialUri());
+        strong_this->WebView().CoreWebView2().DOMContentLoaded({ strong_this->get_weak(), &CommonWebUserControl::CoreWebView2_DOMContentLoaded });
     }
 
     bool CommonWebUserControl::IsURIAllowed(Uri const& uri)
