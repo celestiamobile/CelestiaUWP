@@ -169,7 +169,7 @@ namespace winrt::CelestiaWinUI::implementation
         winrt::apartment_context ui_thread;
         auto strong_this{ get_strong() };
         co_await winrt::resume_background();
-        auto computedEclipses = strong_this->eclipseFinder.Search(kind, computeStartTime, computeEndTime);
+        auto computedEclipses = eclipseFinder.Search(kind, computeStartTime, computeEndTime);
         for (const auto& eclipse : computedEclipses)
         {
             hstring displayName = hstring(fmt::format(L"{} - {}", std::wstring(eclipse.Occulter().Name()), std::wstring(eclipse.Receiver().Name())));

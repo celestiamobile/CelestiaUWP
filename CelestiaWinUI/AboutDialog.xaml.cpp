@@ -45,9 +45,9 @@ namespace winrt::CelestiaWinUI::implementation
         {
             auto strong_this{ get_strong() };
             auto authorFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(strong_this->authorsFilePath) };
-            auto authorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(strong_this->authorFile) };
+            auto authorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(authorFile) };
             auto translatorsFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(strong_this->translatorsFilePath) };
-            auto translatorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(strong_this->translatorsFile) };
+            auto translatorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(translatorsFile) };
             strong_this->TranslatorLabel().Text(translatorsText);
             strong_this->TranslatorTitleLabel().Text(LocalizationHelper::Localize(L"Translators:", L"Translators for Celestia"));
             strong_this->AuthorLabel().Text(authorsText);
