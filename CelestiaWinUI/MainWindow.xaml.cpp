@@ -777,7 +777,9 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::OpenFileIfReady(StorageFile const scriptFile)
     {
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, scriptFile]()
+        auto dispatcherQueue{ DispatcherQueue() };
+        if (dispatcherQueue == nullptr) return;
+        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, scriptFile]()
             {
                 scriptFileToOpen = scriptFile;
                 urlToOpen = nullptr;
@@ -788,7 +790,9 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::OpenURLIfReady(Uri const url)
     {
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, url]()
+        auto dispatcherQueue{ DispatcherQueue() };
+        if (dispatcherQueue == nullptr) return;
+        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, url]()
             {
                 urlToOpen = url;
                 scriptFileToOpen = nullptr;
