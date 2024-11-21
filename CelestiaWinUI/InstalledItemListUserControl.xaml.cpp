@@ -48,16 +48,22 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget InstalledItemListUserControl::LoadItems()
     {
+        auto weak_this{ get_weak() };
         LoadingIndicator().Visibility(Visibility::Visible);
         EmptyHint().Visibility(Visibility::Collapsed);
         ItemList().Visibility(Visibility::Collapsed);
         auto installedItems = co_await resourceManager.InstalledItems();
-        items.ReplaceAll(std::vector<CelestiaAppComponent::ResourceItem>{ installedItems.begin(), installedItems.end() });
-        LoadingIndicator().Visibility(Visibility::Collapsed);
-        if (items.Size() == 0)
-            EmptyHint().Visibility(Visibility::Visible);
+
+        auto strong_this = weak_this.get();
+        if (strong_this == nullptr)
+            co_return;
+
+        strong_this->items.ReplaceAll(std::vector<CelestiaAppComponent::ResourceItem>{ installedItems.begin(), installedItems.end() });
+        strong_this->LoadingIndicator().Visibility(Visibility::Collapsed);
+        if (strong_this->items.Size() == 0)
+            strong_this->EmptyHint().Visibility(Visibility::Visible);
         else
-            ItemList().Visibility(Visibility::Visible);
+            strong_this->ItemList().Visibility(Visibility::Visible);
     }
 
     void InstalledItemListUserControl::ItemList_ItemClick(IInspectable const&, ItemClickEventArgs const& args)

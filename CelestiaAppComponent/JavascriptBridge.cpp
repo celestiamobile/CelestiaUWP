@@ -101,6 +101,7 @@ namespace winrt::CelestiaAppComponent::implementation
             {
                 StorageFile file{ nullptr };
                 auto scriptFileName = scriptName.empty() ? to_hstring(GuidHelper::CreateNewGuid()) + L"." + scriptType : scriptName + L"." + scriptType;
+                auto weak_this{ get_weak() };
                 if (scriptLocation == L"context")
                 {
                     auto folder = co_await StorageFolder::GetFolderFromPathAsync(contextDirectory);
@@ -113,9 +114,15 @@ namespace winrt::CelestiaAppComponent::implementation
                     if (folder != nullptr)
                         file = co_await folder.CreateFileAsync(scriptFileName, CreationCollisionOption::ReplaceExisting);
                 }
+
                 if (file == nullptr) co_return;
-                FileIO::WriteTextAsync(file, scriptContent);
-                renderer.EnqueueTask([appCore, file]()
+                co_await FileIO::WriteTextAsync(file, scriptContent);
+
+                auto strong_this = weak_this.get();
+                if (strong_this == nullptr) co_return;
+
+                auto appCore = strong_this->appCore;
+                strong_this->renderer.EnqueueTask([appCore, file]()
                     {
                         appCore.RunScript(file.Path());
                     });

@@ -46,8 +46,11 @@ namespace winrt::CelestiaWinUI::implementation
     {
         if (isSaving) co_return;
         isSaving = true;
+        auto weak_this{ get_weak() };
         co_await BookmarkHelper::WriteBookmarks(bookmarks);
-        isSaving = false;
+        auto strong_this = weak_this.get();
+        if (strong_this == nullptr) co_return;
+        strong_this->isSaving = false;
     }
 
     void BookmarkOrganizerUserControl::InsertBookmarkAtSelection(BookmarkNode const& bookmark)
@@ -165,14 +168,19 @@ namespace winrt::CelestiaWinUI::implementation
         LoadingIndicator().Visibility(Visibility::Visible);
         EmptyHintText().Visibility(Visibility::Collapsed);
         Tree().Visibility(Visibility::Collapsed);
+
+        auto weak_this{ get_weak() };
         auto newBookmarks = co_await BookmarkHelper::ReadBookmarks();
-        bookmarks.ReplaceAll(std::vector<BookmarkNode>(newBookmarks.begin(), newBookmarks.end()));
-        isRead = true;
-        LoadingIndicator().Visibility(Visibility::Collapsed);
-        if (bookmarks.Size() == 0)
-            EmptyHintText().Visibility(Visibility::Visible);
+        auto strong_this = weak_this.get();
+        if (strong_this == nullptr) co_return;
+
+        strong_this->bookmarks.ReplaceAll(std::vector<BookmarkNode>(newBookmarks.begin(), newBookmarks.end()));
+        strong_this->isRead = true;
+        strong_this->LoadingIndicator().Visibility(Visibility::Collapsed);
+        if (strong_this->bookmarks.Size() == 0)
+            strong_this->EmptyHintText().Visibility(Visibility::Visible);
         else
-            Tree().Visibility(Visibility::Visible);
+            strong_this->Tree().Visibility(Visibility::Visible);
     }
 
     std::pair<BookmarkNode, BookmarkNode> BookmarkOrganizerUserControl::GetSelectionInfo()

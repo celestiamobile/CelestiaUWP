@@ -53,6 +53,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget ResourceItemUserControl::ActionButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
+        auto weak_this{ get_weak() };
         switch (resourceManager.StateForItem(item))
         {
         case ResourceItemState::Installed:
@@ -67,7 +68,9 @@ namespace winrt::CelestiaWinUI::implementation
         default:
             break;
         }
-        UpdateState();
+        auto strong_this = weak_this.get();
+        if (strong_this)
+            strong_this->UpdateState();
     }
 
     bool FileExists(hstring const& path)
@@ -206,17 +209,23 @@ namespace winrt::CelestiaWinUI::implementation
         HttpClient client;
         HttpFormUrlEncodedContent query({ {L"item", item.ID()}, {L"lang", LocalizationHelper::Locale()}});
         auto url = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
+        auto weak_this{ get_weak() };
         try
         {
             auto response = co_await client.GetAsync(Uri(url));
             response.EnsureSuccessStatusCode();
             auto content = co_await response.Content().ReadAsStringAsync();
+
+            auto strong_this = weak_this.get();
+            if (strong_this == nullptr)
+                co_return;
+
             auto requestResult = RequestResult::TryParse(content);
             if (requestResult.Status() == 0)
             {
                 auto newItem = ResourceItem::TryParse(requestResult.Info().Detail());
-                item = newItem;
-                UpdateState();
+                strong_this->item = newItem;
+                strong_this->UpdateState();
             }
         }
         catch (hresult_error const&) {}

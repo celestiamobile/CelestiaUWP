@@ -138,21 +138,27 @@ namespace winrt::CelestiaWinUI::implementation
         LoadingIndicator().Visibility(Visibility::Visible);
         EmptyHintText().Visibility(Visibility::Collapsed);
         ResultList().Visibility(Visibility::Collapsed);
-        auto computedEclipses = co_await ComputeEclipsesAsync(body, kind, startTime, endTime);
-        eclipses.ReplaceAll(std::vector<CelestiaWinUI::EclipseResult>(computedEclipses.begin(), computedEclipses.end()));
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Eclipses"));
 
-        LoadingIndicator().Visibility(Visibility::Collapsed);
-        if (eclipses.Size() == 0)
+        auto weak_this{ get_weak() };
+        auto computedEclipses = co_await ComputeEclipsesAsync(body, kind, startTime, endTime);
+        auto strong_this = weak_this.get();
+        if (strong_this == nullptr)
+            co_return;
+
+        strong_this->eclipses.ReplaceAll(std::vector<CelestiaWinUI::EclipseResult>(computedEclipses.begin(), computedEclipses.end()));
+        strong_this->propertyChangedEvent(*strong_this, Data::PropertyChangedEventArgs(L"Eclipses"));
+
+        strong_this->LoadingIndicator().Visibility(Visibility::Collapsed);
+        if (strong_this->eclipses.Size() == 0)
         {
-            EmptyHintText().Text(LocalizationHelper::Localize(L"No eclipse is found for the given object in the time range", L""));
-            EmptyHintText().Visibility(Visibility::Visible);
+            strong_this->EmptyHintText().Text(LocalizationHelper::Localize(L"No eclipse is found for the given object in the time range", L""));
+            strong_this->EmptyHintText().Visibility(Visibility::Visible);
         }
         else
         {
-            ResultList().Visibility(Visibility::Visible);
+            strong_this->ResultList().Visibility(Visibility::Visible);
         }
-        ComputeButton().Content(box_value(LocalizationHelper::Localize(L"Compute", L"Compute for eclipses")));
+        strong_this->ComputeButton().Content(box_value(LocalizationHelper::Localize(L"Compute", L"Compute for eclipses")));
     }
 
     IAsyncOperation<Collections::IVector<CelestiaWinUI::EclipseResult>> EclipseFinderUserControl::ComputeEclipsesAsync(CelestiaBody const body, CelestiaEclipseKind kind, DateTime const computeStartTime, DateTime const computeEndTime)
@@ -161,15 +167,16 @@ namespace winrt::CelestiaWinUI::implementation
         finder = eclipseFinder;
         auto vectorResults = single_threaded_vector<CelestiaWinUI::EclipseResult>();
         winrt::apartment_context ui_thread;
+        auto strong_this{ get_strong() };
         co_await winrt::resume_background();
-        auto computedEclipses = eclipseFinder.Search(kind, computeStartTime, computeEndTime);
+        auto computedEclipses = strong_this->eclipseFinder.Search(kind, computeStartTime, computeEndTime);
         for (const auto& eclipse : computedEclipses)
         {
             hstring displayName = hstring(fmt::format(L"{} - {}", std::wstring(eclipse.Occulter().Name()), std::wstring(eclipse.Receiver().Name())));
             vectorResults.Append(CelestiaWinUI::EclipseResult(eclipse, displayName));
         }
         co_await ui_thread;
-        finder = nullptr;
+        strong_this->finder = nullptr;
         co_return vectorResults;
     }
 

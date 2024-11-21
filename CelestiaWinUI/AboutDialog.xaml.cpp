@@ -43,14 +43,15 @@ namespace winrt::CelestiaWinUI::implementation
     {
         try
         {
-            auto authorFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(authorsFilePath) };
-            auto authorsText = co_await Windows::Storage::FileIO::ReadTextAsync(authorFile);
-            AuthorLabel().Text(authorsText);
-            AuthorTitleLabel().Text(LocalizationHelper::Localize(L"Authors:", L"Authors for Celestia"));
-            auto translatorsFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(translatorsFilePath) };
-            auto translatorsText = co_await Windows::Storage::FileIO::ReadTextAsync(translatorsFile);
-            TranslatorLabel().Text(translatorsText);
-            TranslatorTitleLabel().Text(LocalizationHelper::Localize(L"Translators:", L"Translators for Celestia"));
+            auto strong_this{ get_strong() };
+            auto authorFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(strong_this->authorsFilePath) };
+            auto authorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(strong_this->authorFile) };
+            auto translatorsFile{ co_await Windows::Storage::StorageFile::GetFileFromPathAsync(strong_this->translatorsFilePath) };
+            auto translatorsText{ co_await Windows::Storage::FileIO::ReadTextAsync(strong_this->translatorsFile) };
+            strong_this->TranslatorLabel().Text(translatorsText);
+            strong_this->TranslatorTitleLabel().Text(LocalizationHelper::Localize(L"Translators:", L"Translators for Celestia"));
+            strong_this->AuthorLabel().Text(authorsText);
+            strong_this->AuthorTitleLabel().Text(LocalizationHelper::Localize(L"Authors:", L"Authors for Celestia"));
         }
         catch (hresult_error const&) {}
     }
