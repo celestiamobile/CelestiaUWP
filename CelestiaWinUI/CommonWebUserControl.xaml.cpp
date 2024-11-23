@@ -146,8 +146,14 @@ namespace winrt::CelestiaWinUI::implementation
         auto strong_this = weak_this.get();
         if (strong_this == nullptr || !strong_this->webViewOpened)
             co_return;
-        strong_this->WebView().Source(strong_this->args.InitialUri());
-        strong_this->WebView().CoreWebView2().DOMContentLoaded({ strong_this->get_weak(), &CommonWebUserControl::CoreWebView2_DOMContentLoaded });
+
+        auto webView = strong_this->WebView();
+        auto webView2 = webView.CoreWebView2();
+        if (webView2 == nullptr)
+            co_return;
+
+        webView.Source(strong_this->args.InitialUri());
+        webView2.DOMContentLoaded({ strong_this->get_weak(), &CommonWebUserControl::CoreWebView2_DOMContentLoaded });
     }
 
     bool CommonWebUserControl::IsURIAllowed(Uri const& uri)
