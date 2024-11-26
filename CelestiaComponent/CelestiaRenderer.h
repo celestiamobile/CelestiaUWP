@@ -18,7 +18,9 @@
 #include <EGL/egl.h>
 #include <thread>
 #include <mutex>
+
 #include "CelestiaRenderer.g.h"
+#include "completion_source.h"
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -30,7 +32,7 @@ namespace winrt::CelestiaComponent::implementation
         void Destroy();
         inline void ResizeIfNeeded();
         inline void TickAndDraw() const;
-        void Start();
+        Windows::Foundation::IAsyncAction Start();
         void Stop();
         inline void Lock();
         inline void Unlock();
@@ -85,6 +87,8 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
         bool enableMSAA;
+
+        completion_source<bool> *startCompletionSource{ nullptr };
     };
 }
 

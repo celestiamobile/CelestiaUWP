@@ -279,6 +279,11 @@ namespace winrt::CelestiaComponent::implementation
             if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
             {
                 bool started = renderer->engineStarted(static_cast<int32_t>(renderer->sampleCount));
+                if (renderer->startCompletionSource != nullptr)
+                {
+                    renderer->startCompletionSource->set(started);
+                    renderer->startCompletionSource = nullptr;
+                }
                 if (!started)
                     break;
                 renderer->engineStartedCalled = true;
@@ -329,13 +334,25 @@ namespace winrt::CelestiaComponent::implementation
         return 0;
     }
 
-	void CelestiaRenderer::Start()
+    Windows::Foundation::IAsyncAction CelestiaRenderer::Start()
 	{
         threadHandle = CreateThread(nullptr, 0, CelestiaRenderer::Main, this, CREATE_SUSPENDED, &threadID);
         if (threadHandle == nullptr)
             return;
         SetThreadPriority(threadHandle, THREAD_PRIORITY_TIME_CRITICAL);
-        ResumeThread(threadHandle);
+
+        winrt::apartment_context context;
+        completion_source<bool> completion;
+        startCompletionSource = &completion;
+        auto strong_this{ get_strong() };
+        if (ResumeThread(threadHandle) == -1)
+        {
+            startCompletionSource = nullptr;
+            return;
+        }
+
+        co_await completion;
+        co_await context;
 	}
 
     void CelestiaRenderer::Stop()

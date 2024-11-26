@@ -82,6 +82,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::MainWindow_Loaded()
     {
+        auto strong_this{ get_strong() };
         if (appSettings.UseFullDPI())
             scale = WindowHelper::GetWindowScaleFactor(*this);
 
@@ -128,7 +129,7 @@ namespace winrt::CelestiaWinUI::implementation
             });
         renderer.SetCorePointer(appCore.Pointer());
         renderer.SetSurface(GLView(), scale);
-        renderer.Start();
+        co_await renderer.Start();
     }
 
     bool MainWindow::StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaLayoutDirection layoutDirection, JsonObject const& defaultSettings)
@@ -366,7 +367,7 @@ namespace winrt::CelestiaWinUI::implementation
         }
         catch (hresult_error const&)
         {
-            return L"en";
+            co_return L"en";
         }
     }
 

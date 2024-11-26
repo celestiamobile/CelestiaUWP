@@ -16,7 +16,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaRenderer
     {
         CelestiaRenderer(Boolean enableMultisample, CelestiaRendererEngineStartedHandler engineStarted);
-        void Start();
+        Windows.Foundation.IAsyncAction Start();
         void Stop();
         void Pause();
         void Resume();

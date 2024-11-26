@@ -739,6 +739,7 @@
     <ClCompile Include="..\..\Celestia\src\celutil\winutil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="completion_source.h" />
     <ClInclude Include="CelestiaAppCore.h">
       <DependentUpon>CelestiaAppCore.cpp</DependentUpon>
     </ClInclude>
