@@ -83,14 +83,14 @@ namespace winrt::CelestiaComponent::implementation
                 // Use the default distance
                 sim->gotoSelection(5.0,
                     Eigen::Vector3f::UnitY(),
-                    ObserverFrame::ObserverLocal);
+                    ObserverFrame::CoordinateSystem::ObserverLocal);
             }
             else
             {
                 sim->gotoSelection(5.0,
                     d->Distance(),
                     Eigen::Vector3f::UnitY(),
-                    ObserverFrame::ObserverLocal);
+                    ObserverFrame::CoordinateSystem::ObserverLocal);
             }
         }
     }
@@ -125,7 +125,7 @@ namespace winrt::CelestiaComponent::implementation
         }
         else
         {
-            sim->gotoSelection(5, distance, up, ObserverFrame::ObserverLocal);
+            sim->gotoSelection(5, distance, up, ObserverFrame::CoordinateSystem::ObserverLocal);
         }
     }
 
@@ -145,7 +145,7 @@ namespace winrt::CelestiaComponent::implementation
             return;
 
         sim->setTime(e->startTime);
-        sim->setFrame(ObserverFrame::PhaseLock, target, ref);
+        sim->setFrame(ObserverFrame::CoordinateSystem::PhaseLock, target, ref);
         sim->update(0);
         double distance = target.radius() * 4.0;
         sim->gotoLocation(UniversalCoord::Zero().offsetKm(Eigen::Vector3d::UnitX() * distance),
