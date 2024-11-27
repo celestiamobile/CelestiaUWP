@@ -14,6 +14,7 @@
 #include "CelestiaUniverse.g.cpp"
 #endif
 
+#include <celengine/location.h>
 #include <celutil/gettext.h>
 
 using namespace std;

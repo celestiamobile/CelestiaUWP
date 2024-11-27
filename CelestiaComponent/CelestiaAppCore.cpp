@@ -8,6 +8,7 @@
 //
 
 #include "pch.h"
+#include <celengine/location.h>
 #include <celestia/celestiastate.h>
 #include <celestia/configfile.h>
 #include <celestia/helper.h>
