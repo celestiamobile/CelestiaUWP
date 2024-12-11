@@ -191,13 +191,14 @@ namespace winrt::CelestiaWinUI::implementation
         appCore.LayoutDirection(layoutDirection);
         UpdateScale();
 
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, resourcePath]()
+        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, resourcePath]()
             {
-                LoadingText().Visibility(Visibility::Collapsed);
-                if (extraAddonFolder != nullptr)
-                    resourceManager = ResourceManager(extraAddonFolder, extraScriptFolder);
-                SetUpGLViewInteractions();
-                PopulateMenuBar(resourcePath);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->LoadingText().Visibility(Visibility::Collapsed);
+                strong_this->resourceManager = ResourceManager(strong_this->extraAddonFolder, strong_this->extraScriptFolder);
+                strong_this->SetUpGLViewInteractions();
+                strong_this->PopulateMenuBar(resourcePath);
             });
 
         ApplySettings(defaultSettings);
@@ -590,6 +591,27 @@ namespace winrt::CelestiaWinUI::implementation
                 if (strong_this == nullptr) return;
                 strong_this->ShowAddonManagement();
             });
+
+        if (!isXbox)
+        {
+            toolsItem.Items().Append(MenuFlyoutSeparator());
+            AppendItem(toolsItem, LocalizationHelper::Localize(L"Open Add-on Folder", L"Open the folder for add-ons"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    auto folder = strong_this->extraAddonFolder;
+                    if (folder != nullptr)
+                        Launcher::LaunchFolderAsync(folder);
+                });
+            AppendItem(toolsItem, LocalizationHelper::Localize(L"Open Script Folder", L"Open the folder for scripts"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    auto folder = strong_this->extraScriptFolder;
+                    if (folder != nullptr)
+                        Launcher::LaunchFolderAsync(folder);
+                });
+        }
 
         MenuBarItem timeItem;
         timeItem.Title(LocalizationHelper::Localize(L"Time", L""));
