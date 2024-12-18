@@ -25,11 +25,6 @@ namespace winrt::CelestiaComponent::implementation
 	{
 	}
 
-	CelestiaComponent::CelestiaSelection CelestiaUniverse::Find(hstring const& name)
-	{
-		return make<CelestiaSelection>(u->find(to_string(name), {}));
-	}
-
 	hstring CelestiaUniverse::NameForSelection(CelestiaComponent::CelestiaSelection const& selection)
 	{
 		Selection s = get_self<CelestiaSelection>(selection)->AsSelection();

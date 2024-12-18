@@ -26,7 +26,6 @@ namespace winrt::CelestiaComponent::implementation
     {
         CelestiaUniverse(Universe* u);
 
-        CelestiaComponent::CelestiaSelection Find(hstring const& name);
         hstring NameForSelection(CelestiaComponent::CelestiaSelection const& selection);
 
         bool IsSelectionMarked(CelestiaComponent::CelestiaSelection const& selection);
