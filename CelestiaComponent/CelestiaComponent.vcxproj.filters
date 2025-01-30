@@ -679,9 +679,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\ranges.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
@@ -1342,6 +1339,8 @@
     <ClInclude Include="..\..\Celestia\src\celastro\units.h">
       <Filter>Celestia\celastro</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
+    <ClInclude Include="completion_source.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CelestiaComponent.def" />
