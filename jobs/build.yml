@@ -7,7 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ 'e804551103660af99579ad60a7275d2f89c9f214' }}
+    contentCommitHash: ${{ 'de6dc6b3f9e39e7286ea4dccb877d38d077cba8c' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.4'
@@ -64,7 +64,7 @@ jobs:
     displayName: 'Apply ANGLE Patches'
 
   - script: |
-      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\run_gperf.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\run_gperf.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"
     displayName: 'Running gperf'
 
   - bash: |
@@ -79,11 +79,11 @@ jobs:
     displayName: 'Replace Sentry Placeholder'
 
   - script: |
-      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaWinUI\Resources"
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaWinUI\Resources"
     displayName: 'Copy General Data'
 
   - script: |
-      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaUWP\convert_po.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaWinUI\Resources"
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\convert_po.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaWinUI\Resources"
     displayName: 'Convert POs'
 
   - task: NuGetToolInstaller@1
@@ -197,4 +197,4 @@ jobs:
   - script: |
       sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) --include-sources Symbols
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
-    displayName: 'Uplaod Symbols'
+    displayName: 'Upload Symbols'
