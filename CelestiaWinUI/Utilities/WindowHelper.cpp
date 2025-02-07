@@ -40,22 +40,6 @@ namespace winrt::CelestiaWinUI::implementation
         transferManagerInterop->ShowShareUIForWindow(hWnd);
     }
 
-    Microsoft::UI::Windowing::AppWindow WindowHelper::GetAppWindow(Window const& window)
-    {
-        auto windowNative{ window.try_as<::IWindowNative>() };
-        if (windowNative)
-        {
-            HWND hWnd{ 0 };
-            windowNative->get_WindowHandle(&hWnd);
-            if (hWnd != 0)
-            {
-                auto windowId = Microsoft::UI::GetWindowIdFromWindow(hWnd);
-                return Microsoft::UI::Windowing::AppWindow::GetFromWindowId(windowId);
-            }
-        }
-        return nullptr;
-    }
-
     float WindowHelper::GetWindowScaleFactor(Window const& window)
     {
         auto windowNative{ window.try_as<::IWindowNative>() };
@@ -88,11 +72,9 @@ namespace winrt::CelestiaWinUI::implementation
 
     void WindowHelper::SetWindowIcon(Window const& window)
     {
-        auto appWindow = GetAppWindow(window);
+        auto appWindow{ window.AppWindow() };
         if (appWindow)
-        {
             appWindow.SetIcon(L"AppIcon.ico");
-        }
     }
 
     void WindowHelper::SetWindowFlowDirection(Window const& window)
@@ -118,7 +100,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void WindowHelper::ResizeWindow(Window const& window, int32_t width, int32_t height)
     {
-        auto appWindow = GetAppWindow(window);
+        auto appWindow{ window.AppWindow() };
         if (appWindow)
         {
             auto scaleFactor = GetWindowScaleFactor(window);

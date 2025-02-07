@@ -7,7 +7,6 @@ namespace winrt::CelestiaWinUI::implementation
     struct WindowHelper : WindowHelperT<WindowHelper>
     {
         static void ShowShareLink(Microsoft::UI::Xaml::Window const& window, hstring const& title, Windows::Foundation::Uri const& uri);
-        static Microsoft::UI::Windowing::AppWindow GetAppWindow(Microsoft::UI::Xaml::Window const& window);
         static float GetWindowScaleFactor(Microsoft::UI::Xaml::Window const& window);
         static void TrackWindow(Microsoft::UI::Xaml::Window const& window, hstring const& key);
         static Microsoft::UI::Xaml::Window GetTrackedWindow(hstring const& key);
