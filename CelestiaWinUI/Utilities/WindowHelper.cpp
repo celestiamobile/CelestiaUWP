@@ -81,20 +81,27 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
         auto flowDirection = resourceLoader.GetString(L"ApplicationFlowDirection");
-        if (flowDirection != L"RightToLeft") return;
 
         auto windowNative{ window.try_as<IWindowNative>() };
         if (!windowNative) return;
 
         HWND hWnd{ 0 };
         windowNative->get_WindowHandle(&hWnd);
-        auto extended_style = GetWindowLong(hWnd, GWL_EXSTYLE);
-        SetWindowLong(hWnd, GWL_EXSTYLE, extended_style | WS_EX_LAYOUTRTL);
 
+        auto extendedStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
         auto content = window.Content().try_as<FrameworkElement>();
-        if (content)
+
+        if (flowDirection == L"RightToLeft")
         {
-            content.FlowDirection(FlowDirection::RightToLeft);
+            SetWindowLong(hWnd, GWL_EXSTYLE, extendedStyle | WS_EX_LAYOUTRTL);
+            if (content)
+                content.FlowDirection(FlowDirection::RightToLeft);
+        }
+        else
+        {
+            SetWindowLong(hWnd, GWL_EXSTYLE, extendedStyle & ~WS_EX_LAYOUTRTL);
+            if (content)
+                content.FlowDirection(FlowDirection::LeftToRight);
         }
     }
 
@@ -104,7 +111,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (appWindow)
         {
             auto scaleFactor = GetWindowScaleFactor(window);
-            appWindow.Resize({ (int32_t)(width * scaleFactor), (int32_t)(height * scaleFactor) });
+            appWindow.Resize({ static_cast<int32_t>(width * scaleFactor), static_cast<int32_t>(height * scaleFactor) });
         }
     }
 
