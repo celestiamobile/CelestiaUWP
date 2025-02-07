@@ -430,7 +430,7 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        auto selectedLang = ApplicationLanguages::PrimaryLanguageOverride();
+        auto selectedLang = Microsoft::Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride();
         if (selectedLang.empty()) return 0;
         uint32_t index;
         if (availableLanguages.IndexOf(LocalizationHelper::FromWindowsTag(selectedLang), index))
@@ -444,9 +444,9 @@ namespace winrt::CelestiaAppComponent::implementation
         if (!hasCorrectValue)
             return;
         if (value == 0)
-            ApplicationLanguages::PrimaryLanguageOverride(L"");
+            Microsoft::Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(L"");
         else
-            ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
+            Microsoft::Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
     }
 
     hstring LanguageInt32Item::Title()
