@@ -1319,7 +1319,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::ToggleFullScreen()
     {
-        auto appWindow = WindowHelper::GetAppWindow(*this);
+        auto appWindow = AppWindow();
         if (appWindow == nullptr) return;
 
         using namespace Microsoft::UI::Windowing;
