@@ -33,7 +33,7 @@ App::App()
     sentry_options_set_dsn(options, "SENTRY-DSN");
     sentry_options_set_handler_path(options, to_string(crashpadHandlerPath).c_str());
     sentry_options_set_database_path(options, to_string(sentryDatabasePath).c_str());
-    sentry_options_set_release(options, "celestia-windows@2.1.5");
+    sentry_options_set_release(options, "celestia-windows@2.1.6");
     sentry_init(options);
 #endif
 

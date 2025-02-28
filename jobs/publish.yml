@@ -2,7 +2,7 @@ jobs:
 - job: Publish
   displayName: 'Publish'
   pool:
-    vmImage: 'windows-2022'
+    vmImage: 'windows-2025'
 
   variables:
     publishType: ${{ parameters.publishType }}
