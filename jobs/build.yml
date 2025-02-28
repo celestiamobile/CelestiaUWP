@@ -10,7 +10,7 @@ jobs:
     contentCommitHash: ${{ '81e468cf8d0bf5b0c77bfae66129561a74dbe06d' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.4'
+    dependencyVersion: '1.0.5'
 
   steps:
   - checkout: Celestia
