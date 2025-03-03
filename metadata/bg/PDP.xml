@@ -104,7 +104,7 @@ Celestia служи като планетариум - за наблюдение 
     <!-- Valid length: 200 character limit, up to 11 elements -->
   </MinimumHardware>
   <CopyrightAndTrademark _locID="App_CopyrightandTrademark">
-    <!-- _locComment_text="{MaxLength=200} Copyright and Trademark" -->© 2001-2024, Celestia Development Team</CopyrightAndTrademark>
+    <!-- _locComment_text="{MaxLength=200} Copyright and Trademark" -->2025 Celestia Development Team</CopyrightAndTrademark>
   <AdditionalLicenseTerms _locID="App_AdditionalLicenseTerms">
     <!-- _locComment_text="{MaxLength=10000} Additional License Terms" -->
   </AdditionalLicenseTerms>
