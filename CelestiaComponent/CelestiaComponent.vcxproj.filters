@@ -556,6 +556,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\infourl.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
@@ -1232,6 +1235,9 @@
       <Filter>Celestia\celcompat</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\infourl.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\textprintposition.h">

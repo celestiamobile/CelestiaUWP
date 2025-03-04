@@ -533,6 +533,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\greek.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\indexlist.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\infourl.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
@@ -727,6 +728,7 @@
     <ClCompile Include="..\..\Celestia\src\celutil\formatnum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\infourl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
