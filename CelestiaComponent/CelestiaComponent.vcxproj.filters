@@ -961,6 +961,9 @@
     <ClInclude Include="..\..\Celestia\src\celengine\render.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\renderflags.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\renderglsl.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>

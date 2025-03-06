@@ -121,15 +121,15 @@ namespace winrt::CelestiaComponent::implementation
 
         // start with default values
         constexpr auto DEFAULT_ORBIT_MASK = BodyClassification::Planet | BodyClassification::Moon | BodyClassification::Stellar;
-        constexpr int DEFAULT_LABEL_MODE = 2176;
+        constexpr auto DEFAULT_LABEL_MODE = RenderLabels::I18nConstellationLabels | RenderLabels::LocationLabels;
         constexpr float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
         constexpr float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
-        constexpr Renderer::StarStyle DEFAULT_STAR_STYLE = Renderer::FuzzyPointStars;
+        constexpr StarStyle DEFAULT_STAR_STYLE = StarStyle::FuzzyPointStars;
         constexpr ColorTableType DEFAULT_STARS_COLOR = ColorTableType::Blackbody_D65;
-        constexpr unsigned int DEFAULT_TEXTURE_RESOLUTION = medres;
+        constexpr auto DEFAULT_TEXTURE_RESOLUTION = TextureResolution::medres;
         constexpr float DEFAULT_TINT_SATURATION = 0.5f;
 
-        core->getRenderer()->setRenderFlags(Renderer::DefaultRenderFlags);
+        core->getRenderer()->setRenderFlags(RenderFlags::DefaultRenderFlags);
         core->getRenderer()->setOrbitMask(DEFAULT_ORBIT_MASK);
         core->getRenderer()->setLabelMode(DEFAULT_LABEL_MODE);
         core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
@@ -500,11 +500,13 @@ namespace winrt::CelestiaComponent::implementation
 #define RENDERMETHODS(flag) \
 bool CelestiaAppCore::Show##flag() \
 { \
-    return (core->getRenderer()->getRenderFlags() & Renderer::Show##flag) != 0; \
+    return celestia::util::is_set(core->getRenderer()->getRenderFlags(), RenderFlags::Show##flag); \
 } \
 void CelestiaAppCore::Show##flag(bool value) \
 { \
-    core->getRenderer()->setRenderFlags(bit_mask_value_update(value, Renderer::Show##flag, core->getRenderer()->getRenderFlags())); \
+    auto flags = core->getRenderer()->getRenderFlags(); \
+    celestia::util::set_or_unset(flags, RenderFlags::Show##flag, value); \
+    core->getRenderer()->setRenderFlags(flags); \
 } \
 
     RENDERMETHODS(Stars)
@@ -544,11 +546,13 @@ void CelestiaAppCore::Show##flag(bool value) \
 #define LABELMETHODS(flag) \
 bool CelestiaAppCore::Show##flag##Labels() \
 { \
-    return (core->getRenderer()->getLabelMode() & Renderer::flag##Labels) != 0; \
+    return celestia::util::is_set(core->getRenderer()->getLabelMode(), RenderLabels::flag##Labels); \
 } \
 void CelestiaAppCore::Show##flag##Labels(bool value) \
 { \
-    core->getRenderer()->setLabelMode((int)bit_mask_value_update(value, Renderer::flag##Labels, core->getRenderer()->getLabelMode())); \
+    auto flags = core->getRenderer()->getLabelMode(); \
+    celestia::util::set_or_unset(flags, RenderLabels::flag##Labels, value); \
+    core->getRenderer()->setLabelMode(flags); \
 }
     LABELMETHODS(Star)
     LABELMETHODS(Planet)
@@ -605,7 +609,7 @@ bool CelestiaAppCore::Show##flag##Labels() \
 } \
 void CelestiaAppCore::Show##flag##Labels(bool value) \
 { \
-    core->getSimulation()->getObserver().setLocationFilter((int)bit_mask_value_update(value, Location::flag, core->getSimulation()->getObserver().getLocationFilter())); \
+    core->getSimulation()->getObserver().setLocationFilter(bit_mask_value_update(value, Location::flag, core->getSimulation()->getObserver().getLocationFilter())); \
 }
     FEATUREMETHODS(City)
     FEATUREMETHODS(Observatory)
@@ -656,22 +660,22 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     int32_t CelestiaAppCore::Resolution()
     {
-        return core->getRenderer()->getResolution();
+        return static_cast<int32_t>(core->getRenderer()->getResolution());
     }
 
     void CelestiaAppCore::Resolution(int32_t resolution)
     {
-        core->getRenderer()->setResolution(resolution);
+        core->getRenderer()->setResolution(static_cast<TextureResolution>(resolution));
     }
 
     int32_t CelestiaAppCore::StarStyle()
     {
-        return (int32_t)core->getRenderer()->getStarStyle();
+        return static_cast<int32_t>(core->getRenderer()->getStarStyle());
     }
 
     void CelestiaAppCore::StarStyle(int32_t starStyle)
     {
-        core->getRenderer()->setStarStyle((Renderer::StarStyle)starStyle);
+        core->getRenderer()->setStarStyle(static_cast<StarStyle>(starStyle));
     }
 
     int32_t CelestiaAppCore::StarColors()
@@ -716,7 +720,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     float CelestiaAppCore::FaintestVisible()
     {
-        if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
+        if (!celestia::util::is_set(core->getRenderer()->getRenderFlags(), RenderFlags::ShowAutoMag))
         {
             return core->getSimulation()->getFaintestVisible();
         }
@@ -728,7 +732,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::FaintestVisible(float faintestVisible)
     {
-        if ((core->getRenderer()->getRenderFlags() & Renderer::ShowAutoMag) == 0)
+        if (!celestia::util::is_set(core->getRenderer()->getRenderFlags(), RenderFlags::ShowAutoMag))
         {
             core->setFaintest(faintestVisible);
         }

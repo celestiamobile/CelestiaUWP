@@ -384,6 +384,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\referencemark.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rendcontext.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\render.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\renderflags.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\renderglsl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\renderinfo.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\renderlistentry.h" />
