@@ -36,7 +36,7 @@ namespace winrt::CelestiaComponent::implementation
     {
     public:
         AppCoreProgressWatcher(CelestiaComponent::CelestiaLoadCallback const& loadCallback) : ProgressNotifier(), loadCallback(loadCallback) {};
-        void update(const string& status)
+        void update(const string& status) override
         {
             loadCallback(to_hstring(status));
         }
@@ -49,7 +49,7 @@ namespace winrt::CelestiaComponent::implementation
     public:
         AppCoreContextMenuHandler(weak_ref<CelestiaAppCore> const& weakAppCore) : CelestiaCore::ContextMenuHandler(), weakAppCore(weakAppCore) {};
 
-        void requestContextMenu(float x, float y, Selection sel)
+        void requestContextMenu(float x, float y, Selection sel) override
         {
             auto appCore = weakAppCore.get();
             if (appCore == nullptr) return;
@@ -102,7 +102,7 @@ namespace winrt::CelestiaComponent::implementation
         core->setCursorHandler(new AppCoreCursorHandler(get_weak()));
     }
 
-    bool CelestiaAppCore::StartSimulation(hstring const&configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
+    bool CelestiaAppCore::StartSimulation(hstring const& configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
     {
         AppCoreProgressWatcher watcher(callback);
         string config = to_string(configFileName);
@@ -124,7 +124,7 @@ namespace winrt::CelestiaComponent::implementation
         constexpr auto DEFAULT_LABEL_MODE = RenderLabels::I18nConstellationLabels | RenderLabels::LocationLabels;
         constexpr float DEFAULT_AMBIENT_LIGHT_LEVEL = 0.1f;
         constexpr float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
-        constexpr StarStyle DEFAULT_STAR_STYLE = StarStyle::FuzzyPointStars;
+        constexpr auto DEFAULT_STAR_STYLE = ::StarStyle::FuzzyPointStars;
         constexpr ColorTableType DEFAULT_STARS_COLOR = ColorTableType::Blackbody_D65;
         constexpr auto DEFAULT_TEXTURE_RESOLUTION = TextureResolution::medres;
         constexpr float DEFAULT_TINT_SATURATION = 0.5f;
@@ -410,7 +410,7 @@ namespace winrt::CelestiaComponent::implementation
         }
         else
         {
-            shouldAppendCountryCode = uloc.find(L"_") == std::wstring::npos;
+            shouldAppendCountryCode = uloc.find(L'_') == std::wstring::npos;
         }
         if (shouldAppendCountryCode)
         {
@@ -675,7 +675,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::StarStyle(int32_t starStyle)
     {
-        core->getRenderer()->setStarStyle(static_cast<StarStyle>(starStyle));
+        core->getRenderer()->setStarStyle(static_cast<::StarStyle>(starStyle));
     }
 
     int32_t CelestiaAppCore::StarColors()
