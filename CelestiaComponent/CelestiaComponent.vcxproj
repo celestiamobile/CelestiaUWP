@@ -354,7 +354,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\globular.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glshader.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\hash.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\location.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h" />
@@ -374,7 +373,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\overlay.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\parser.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarrenderer.h" />
@@ -414,7 +412,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\value.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\visibleregion.h" />
@@ -521,6 +518,7 @@
     <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\associativearray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
@@ -537,6 +535,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\infourl.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\logger.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\parser.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128util.h" />
@@ -587,7 +586,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\globular.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\location.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp" />
@@ -602,7 +600,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\overlay.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\parser.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarrenderer.cpp" />
@@ -632,7 +629,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\value.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\virtualtex.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\visibleregion.cpp" />
@@ -723,6 +719,7 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\glcompat.cpp" />
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\associativearray.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\dateformatter.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp" />
@@ -731,6 +728,7 @@
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\infourl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\parser.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\r128util.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\strnatcmp.cpp" />

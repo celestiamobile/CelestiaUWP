@@ -61,6 +61,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Celestia\src\celutil\associativearray.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -74,6 +77,9 @@
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\fsutils.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\parser.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\stringutils.cpp">
@@ -226,9 +232,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\hash.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\location.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -269,9 +272,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\parser.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp">
@@ -350,9 +350,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\value.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp">
@@ -877,9 +874,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\hash.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\lightenv.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -935,9 +929,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\parser.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h">
@@ -1046,9 +1037,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\value.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h">
@@ -1348,7 +1336,15 @@
     <ClInclude Include="..\..\Celestia\src\celastro\units.h">
       <Filter>Celestia\celastro</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\range.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\associativearray.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\parser.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
     <ClInclude Include="completion_source.h" />
   </ItemGroup>
   <ItemGroup>

@@ -12,3 +12,6 @@ cd "%CELESTIA_REPO_ROOT%\src\celephem"
 cd "%CELESTIA_REPO_ROOT%\src\celengine"
 "%SolutionDir%\tools\gperf.exe" location.gperf -m4 --output-file=location.inc
 "%SolutionDir%\tools\gperf.exe" solarsys.gperf -m4 --output-file=solarsys.inc
+
+cd "%CELESTIA_REPO_ROOT%\src\celutil"
+"%SolutionDir%\tools\gperf.exe" parser.gperf -m4 --output-file=parser.inc
