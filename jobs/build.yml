@@ -33,6 +33,13 @@ jobs:
     displayName: 'Install Sentry CLI'
 
   - script: |
+      %VCPKG_INSTALLATION_ROOT%\vcpkg.exe install --triplet=x64-windows gperf gettext[tools]
+      cd $(System.DefaultWorkingDirectory)\CelestiaUWP
+      mkdir tools
+      copy %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\tools\gettext\bin\msgmerge.exe %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\tools\gettext\bin\msgfmt.exe %VCPKG_INSTALLATION_ROOT%\installed\x64-windows\tools\gperf\gperf.exe tools
+    displayName: 'Install Dependencies'
+
+  - script: |
       cd Celestia
       git checkout origin/$(Build.SourceBranchName)
       cd ../CelestiaLocalization
