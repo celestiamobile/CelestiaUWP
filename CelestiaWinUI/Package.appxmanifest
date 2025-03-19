@@ -10,7 +10,7 @@
   <Identity
     Name="40507LinfengLi.Celestia"
     Publisher="CN=DFAB6BEB-215D-4D28-AB17-B4B02709A980"
-    Version="2.1.7.0" />
+    Version="2.1.8.0" />
 
   <Properties>
     <DisplayName>Celestia</DisplayName>
