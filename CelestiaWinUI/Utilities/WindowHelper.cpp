@@ -77,6 +77,13 @@ namespace winrt::CelestiaWinUI::implementation
             appWindow.SetIcon(L"AppIcon.ico");
     }
 
+    void WindowHelper::SetWindowTheme(Window const& window)
+    {
+        auto appWindow{ window.AppWindow() };
+        if (appWindow)
+            appWindow.TitleBar().PreferredTheme(Microsoft::UI::Windowing::TitleBarTheme::UseDefaultAppMode);
+    }
+
     void WindowHelper::SetWindowFlowDirection(Window const& window)
     {
         auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };

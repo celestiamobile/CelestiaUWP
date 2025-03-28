@@ -39,7 +39,6 @@ namespace winrt::CelestiaWinUI::implementation
         bool isXbox{ false };
         bool isGLViewFocused{ false };
         bool isClosed{ false };
-        Windows::UI::ViewManagement::UISettings uiSettings{ nullptr };
 
         bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();
@@ -80,8 +79,6 @@ namespace winrt::CelestiaWinUI::implementation
         void OpenURLIfReady(Windows::Foundation::Uri const urlToOpen);
         HWND WindowHandle();
         Windows::Foundation::IAsyncOperation<hstring> GetLocale(hstring const& localePath);
-        void ObserveThemeChanges();
-        void ApplyCurrentTheme();
 
         winrt::fire_and_forget MainWindow_Loaded();
         void AppCore_ShowContextMenu(Windows::Foundation::IInspectable const&, CelestiaComponent::ShowContextMenuArgs const& args);

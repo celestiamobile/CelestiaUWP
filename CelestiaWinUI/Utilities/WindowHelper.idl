@@ -8,6 +8,7 @@ namespace CelestiaWinUI
         static void TrackWindow(Microsoft.UI.Xaml.Window window, String key);
         static Microsoft.UI.Xaml.Window GetTrackedWindow(String key);
         static void SetWindowIcon(Microsoft.UI.Xaml.Window window);
+        static void SetWindowTheme(Microsoft.UI.Xaml.Window window);
         static void SetWindowFlowDirection(Microsoft.UI.Xaml.Window window);
         static void ResizeWindow(Microsoft.UI.Xaml.Window window, Int32 width, Int32 height);
     }
