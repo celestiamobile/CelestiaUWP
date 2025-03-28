@@ -8,6 +8,7 @@
 #include <fmt/printf.h>
 #include <fmt/xchar.h>
 #include <shlobj_core.h>
+#include <dwmapi.h>
 
 using namespace winrt;
 using namespace CelestiaAppComponent;
@@ -19,6 +20,7 @@ using namespace Windows::Foundation;
 using namespace Windows::Globalization;
 using namespace Windows::Storage;
 using namespace Windows::System;
+using namespace Windows::UI::ViewManagement;
 
 #ifndef LOCK_CURSOR
 #define LOCK_CURSOR 1
@@ -83,6 +85,7 @@ namespace winrt::CelestiaWinUI::implementation
     fire_and_forget MainWindow::MainWindow_Loaded()
     {
         auto strong_this{ get_strong() };
+        ObserveThemeChanges();
         if (appSettings.UseFullDPI())
             scale = WindowHelper::GetWindowScaleFactor(*this);
 
@@ -1842,6 +1845,58 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 appCore.KeyUp(key, 0);
             });
+    }
+
+    void MainWindow::ObserveThemeChanges()
+    {
+        uiSettings = UISettings();
+        ApplyCurrentTheme();
+        uiSettings.ColorValuesChanged([weak_this{ get_weak() }](UISettings const&, IInspectable const&)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this)
+                    strong_this->ApplyCurrentTheme();
+            });
+    }
+
+    bool isWindowsVersionChecked = false;
+    bool isDarkModeSupported = false;
+
+    inline bool IsColorLight(Windows::UI::Color& clr)
+    {
+        return (((5 * clr.G) + (2 * clr.R) + clr.B) > (8 * 128));
+    }
+
+    void MainWindow::ApplyCurrentTheme()
+    {
+        if (!isWindowsVersionChecked)
+        {
+            isWindowsVersionChecked = true;
+            using fnRtlGetNtVersionNumbers = void (WINAPI*)(LPDWORD major, LPDWORD minor, LPDWORD build);
+            auto RtlGetNtVersionNumbers = reinterpret_cast<fnRtlGetNtVersionNumbers>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "RtlGetNtVersionNumbers"));
+            if (RtlGetNtVersionNumbers)
+            {
+                DWORD buildNumber = 0;
+                DWORD major, minor;
+                RtlGetNtVersionNumbers(&major, &minor, &buildNumber);
+                buildNumber &= ~0xF0000000;
+
+                isDarkModeSupported = major >= 10 && minor >= 0 && buildNumber >= 22000;
+            }
+        }
+
+        if (!isDarkModeSupported) return;
+
+        auto windowNative{ this->try_as<IWindowNative>() };
+        if (!windowNative)
+            return;
+
+        // https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-windows-themes#know-when-dark-mode-is-enabled
+        auto color{ uiSettings.GetColorValue(UIColorType::Foreground) };
+        HWND hWnd{ 0 };
+        windowNative->get_WindowHandle(&hWnd);
+        BOOL useDarkMode = IsColorLight(color) ? TRUE : FALSE;
+        DwmSetWindowAttribute(hWnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &useDarkMode, sizeof(BOOL));
     }
 
     void AppendItem(MenuFlyout const& parent, hstring const& text, RoutedEventHandler const& click, Input::KeyboardAccelerator const& accelerator)
