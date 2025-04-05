@@ -7,7 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ '82f08ce3f90d9eb6339d8b9cf349afcea243f2f9' }}
+    contentCommitHash: ${{ 'c7fc5bbd2b6ecc97fa6168e47682ec3d79003fa0' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.5'
@@ -29,8 +29,8 @@ jobs:
     displayName: 'Find MSBuild'
 
   - script: |
-      choco install sentry-cli
-    displayName: 'Install Sentry CLI'
+      choco install sentry-cli imagemagick
+    displayName: 'Install Build Dependencies'
 
   - script: |
       cd Celestia
@@ -62,6 +62,10 @@ jobs:
       cd Celestia
       git apply ../CelestiaUWP/patches/angle/celestia.patch --ignore-whitespace --whitespace=nowarn
     displayName: 'Apply ANGLE Patches'
+
+  - script: |
+      call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\downsize_textures.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"
+    displayName: 'Running imagemagick'
 
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\run_gperf.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"
