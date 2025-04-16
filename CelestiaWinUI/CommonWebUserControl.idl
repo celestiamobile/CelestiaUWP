@@ -6,6 +6,7 @@ namespace CelestiaWinUI
     runtimeclass CommonWebParameter
     {
         CommonWebParameter(Windows.Foundation.Uri initailUri, Windows.Foundation.Collections.IVector<String> matchingQueryKeys, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, String contextDirectory, CelestiaAppComponent.JavascriptMessageACKCallback ackCallback, WebWindowProvider windowProvider);
+        CommonWebParameter(Windows.Foundation.Uri initailUri, Windows.Foundation.Collections.IVector<String> matchingQueryKeys, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, String contextDirectory, CelestiaAppComponent.JavascriptMessageACKCallback ackCallback, WebWindowProvider windowProvider, Boolean updateWindowTitle);
 
         Windows.Foundation.Uri InitialUri{ get; };
         Windows.Foundation.Collections.IVector<String> MatchingQueryKeys{ get; };
@@ -14,6 +15,7 @@ namespace CelestiaWinUI
         String ContextDirectory{ get; };
         CelestiaAppComponent.JavascriptMessageACKCallback ACKCallback{ get; };
         WebWindowProvider WindowProvider{ get; };
+        Boolean UpdateWindowTitle{ get; };
     }
 
     [default_interface]

@@ -14,8 +14,8 @@ using namespace Microsoft::Web::WebView2::Core;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    CommonWebParameter::CommonWebParameter(Uri const& initialUri, Collections::IVector<hstring> const& matchingQueryKeys, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, hstring const& contextDirectory, CelestiaAppComponent::JavascriptMessageACKCallback const& ackCallback, CelestiaWinUI::WebWindowProvider const& windowProvider)
-        : initialUri(initialUri), matchingQueryKeys(matchingQueryKeys), appCore(appCore), renderer(renderer), contextDirectory(contextDirectory), ackCallback(ackCallback), windowProvider(windowProvider)
+    CommonWebParameter::CommonWebParameter(Uri const& initialUri, Collections::IVector<hstring> const& matchingQueryKeys, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, hstring const& contextDirectory, CelestiaAppComponent::JavascriptMessageACKCallback const& ackCallback, CelestiaWinUI::WebWindowProvider const& windowProvider, bool updateWindowTitle)
+        : initialUri(initialUri), matchingQueryKeys(matchingQueryKeys), appCore(appCore), renderer(renderer), contextDirectory(contextDirectory), ackCallback(ackCallback), windowProvider(windowProvider), updateWindowTitle(updateWindowTitle)
     {
     }
 
@@ -51,6 +51,11 @@ namespace winrt::CelestiaWinUI::implementation
     CelestiaWinUI::WebWindowProvider CommonWebParameter::WindowProvider()
     {
         return windowProvider;
+    }
+
+    bool CommonWebParameter::UpdateWindowTitle()
+    {
+        return updateWindowTitle;
     }
 
     CommonWebUserControl::CommonWebUserControl(CelestiaWinUI::CommonWebParameter const& args) : args(args)
@@ -132,6 +137,19 @@ namespace winrt::CelestiaWinUI::implementation
         LoadingIndicator().Visibility(Visibility::Collapsed);
     }
 
+    void CommonWebUserControl::CoreWebView2_DocumentTitleChanged(IInspectable const&, IInspectable const&)
+    {
+        if (args.UpdateWindowTitle())
+        {
+            auto windowProvider = args.WindowProvider();
+            auto window = windowProvider == nullptr ? nullptr : windowProvider();
+            if (window != nullptr)
+            {
+                window.AppWindow().Title(WebView().CoreWebView2().DocumentTitle());
+            }
+        }
+    }
+
     fire_and_forget CommonWebUserControl::EnsureWebView2()
     {
         auto weak_this{ get_weak() };
@@ -154,6 +172,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         webView.Source(strong_this->args.InitialUri());
         webView2.DOMContentLoaded({ strong_this->get_weak(), &CommonWebUserControl::CoreWebView2_DOMContentLoaded });
+        webView2.DocumentTitleChanged({ strong_this->get_weak(), &CommonWebUserControl::CoreWebView2_DocumentTitleChanged });
     }
 
     bool CommonWebUserControl::IsURIAllowed(Uri const& uri)

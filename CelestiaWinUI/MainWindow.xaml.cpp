@@ -912,7 +912,7 @@ namespace winrt::CelestiaWinUI::implementation
                                 }
                                 Window window;
                                 window.SystemBackdrop(Media::MicaBackdrop());
-                                window.Title(L"Celestia");
+                                window.Title(item.Name());
                                 ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, [weak_window{ make_weak(window) }]()
                                     {
                                         return weak_window.get();
@@ -953,7 +953,7 @@ namespace winrt::CelestiaWinUI::implementation
                         SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(guide), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", nullptr, [weak_window{ make_weak(window)}]()
                             {
                                 return weak_window.get();
-                            }) };
+                            }, true) };
                         window.Content(userControl);
                         WindowHelper::SetWindowIcon(window);
                         WindowHelper::SetWindowTheme(window);
@@ -998,7 +998,7 @@ namespace winrt::CelestiaWinUI::implementation
                     }
                     Window window;
                     window.SystemBackdrop(Media::MicaBackdrop());
-                    window.Title(L"Celestia");
+                    window.Title(item.Title());
                     SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(item.ID()), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }](hstring const& id)
                         {
                             auto strong_this = weak_this.get();
@@ -1357,7 +1357,7 @@ namespace winrt::CelestiaWinUI::implementation
         SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForPath(L"/help/welcome"), single_threaded_vector<hstring>(), appCore, renderer, L"", nullptr, [weak_window{make_weak(window)}]()
             {
                 return weak_window.get();
-            })
+            }, true)
         };
         window.Content(userControl);
         WindowHelper::SetWindowIcon(window);
