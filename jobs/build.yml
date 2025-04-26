@@ -7,10 +7,10 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ 'c7fc5bbd2b6ecc97fa6168e47682ec3d79003fa0' }}
+    contentCommitHash: ${{ '7cf89b3deace6b18c1ac6eeb5be3338c34fe470e' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.5'
+    dependencyVersion: '1.0.6'
 
   steps:
   - checkout: Celestia
