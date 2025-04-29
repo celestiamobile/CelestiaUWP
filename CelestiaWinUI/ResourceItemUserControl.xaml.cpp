@@ -100,7 +100,7 @@ namespace winrt::CelestiaWinUI::implementation
                 renderer.EnqueueTask([this, demoObjectName]()
                     {
                         auto selection = appCore.Simulation().Find(demoObjectName);
-                        if (selection.IsEmpty())
+                        if (!selection.IsEmpty())
                         {
                             appCore.Simulation().Selection(selection);
                             appCore.CharEnter(103);
