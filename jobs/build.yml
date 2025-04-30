@@ -10,7 +10,7 @@ jobs:
     contentCommitHash: ${{ '7cf89b3deace6b18c1ac6eeb5be3338c34fe470e' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.6'
+    dependencyVersion: '1.0.7'
 
   steps:
   - checkout: Celestia
@@ -92,6 +92,12 @@ jobs:
 
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: custom
+      arguments: 'source add -Name "celestia-dependencies" -Source "https://pkgs.dev.azure.com/CelestiaProject/Celestia/_packaging/celestia-dependencies/nuget/v3/index.json"'
+    displayName: 'Add Nuget Source'
 
   - task: DownloadPackage@1
     inputs:
