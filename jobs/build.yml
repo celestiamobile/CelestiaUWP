@@ -11,6 +11,7 @@ jobs:
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.7'
+    angleVersion: '1.0.3'
 
   steps:
   - checkout: Celestia
@@ -93,29 +94,7 @@ jobs:
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
-  - task: DownloadPackage@1
-    inputs:
-      packageType: 'nuget'
-      feed: '9f9dcde1-dcba-4537-8214-71c8a03b99a0/14bb1031-e6b2-40ac-b287-73e7fcb5900e'
-      view:
-      definition: '8eb6c372-ca5d-454e-9d4a-55ac65df8010'
-      version: '$(dependencyVersion)'
-      extract: false
-      downloadPath: '$(System.DefaultWorkingDirectory)'
-    displayName: 'Download Dependencies'
-
   - script: |
-      ren celestia-windows-release-dependencies.nupkg celestia-windows-release-dependencies.$(dependencyVersion).nupkg
-    displayName: 'Rename NUPKG'
-
-  - task: NuGetCommand@2
-    inputs:
-      command: custom
-      arguments: 'install celestia-windows-release-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
-    displayName: 'Install Dependencies'
-
-  - script: |
-      DEL celestia-windows-release-dependencies.$(dependencyVersion).nupkg
       RD Celestia\.git /S /Q
       RD CelestiaContent\.git /S /Q
       RD CelestiaUWP\.git /S /Q
@@ -162,6 +141,18 @@ jobs:
     displayName: 'Move Symbols'
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
 
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Symbols'
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)\CelestiaUWP\Symbols'
+      ArtifactName: '$(buildType)-symbols'
+      publishLocation: Container
+
+  - script: |
+      sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) --include-sources Symbols
+    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
+    displayName: 'Upload Symbols'
+
   - pwsh: |
       $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
       $packageManifestXML = [xml]$packageManifestContent
@@ -169,6 +160,8 @@ jobs:
 
       New-Item -Name "Output" -ItemType "directory"
 
+      Get-ChildItem -Path "packages\Celestia.ANGLE.$(angleVersion)\build\native\x64\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
+      Get-ChildItem -Path "packages\celestia-windows-release-dependencies.$(dependencyVersion)\installed\x64-windows-release\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
       Compress-Archive -Path Symbols\* -Destination "Output\symbols.zip"
       Rename-Item -Path "Output\symbols.zip" -NewName "CelestiaWinUI_${version}_x64.appxsym"
 
@@ -192,15 +185,3 @@ jobs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)\CelestiaUWP\AppPackages'
       ArtifactName: '$(buildType)'
       publishLocation: Container
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Symbols'
-    inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)\CelestiaUWP\Symbols'
-      ArtifactName: '$(buildType)-symbols'
-      publishLocation: Container
-
-  - script: |
-      sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) --include-sources Symbols
-    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
-    displayName: 'Upload Symbols'
