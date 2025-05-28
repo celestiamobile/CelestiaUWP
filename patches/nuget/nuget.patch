@@ -127,8 +127,8 @@ index 0382fa2..32a06da 100644
 @@ -1186,6 +1187,8 @@
      <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250513003\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250513003\build\native\Microsoft.WindowsAppSDK.targets')" />
      <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3240.44\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3240.44\build\native\Microsoft.Web.WebView2.targets')" />
-     <Import Project="..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets')" />
-+    <Import Project="..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets')" />
+     <Import Project="..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets')" />
++    <Import Project="..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets')" />
 +    <Import Project="..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.targets" Condition="Exists('..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -136,8 +136,8 @@ index 0382fa2..32a06da 100644
 @@ -1199,5 +1202,8 @@
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250513003\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250513003\build\native\Microsoft.WindowsAppSDK.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.3240.44\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.3240.44\build\native\Microsoft.Web.WebView2.targets'))" />
-     <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets'))" />
-+    <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.3\build\native\Celestia.ANGLE.targets'))" />
+     <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets'))" />
++    <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.4\build\native\Celestia.ANGLE.targets'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.props'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-release-dependencies.1.0.7\build\native\celestia-windows-release-dependencies.targets'))" />
    </Target>

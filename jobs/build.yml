@@ -11,7 +11,7 @@ jobs:
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.7'
-    angleVersion: '1.0.3'
+    angleVersion: '1.0.4'
 
   steps:
   - checkout: Celestia
