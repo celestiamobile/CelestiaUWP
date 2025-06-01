@@ -7,7 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ '8bc11f1421e192b43197a8d2743da52eb8f04b40' }}
+    contentCommitHash: ${{ 'bc6291824a5244a415a60e44501f8fec32b0db44' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.7'
