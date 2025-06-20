@@ -10,7 +10,7 @@ jobs:
     contentCommitHash: ${{ 'bf3a919855ea19544d0f524d8466740d9ed11951' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.8'
+    dependencyVersion: '1.0.9'
     angleVersion: '1.0.5'
 
   steps:
@@ -58,11 +58,6 @@ jobs:
       cd CelestiaUWP
       git apply patches/nuget/nuget.patch --ignore-whitespace --whitespace=nowarn
     displayName: 'Apply Nuget Patches'
-
-  - script: |
-      cd Celestia
-      git apply ../CelestiaUWP/patches/angle/celestia.patch --ignore-whitespace --whitespace=nowarn
-    displayName: 'Apply ANGLE Patches'
 
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\downsize_textures.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP"

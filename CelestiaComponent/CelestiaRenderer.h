@@ -15,7 +15,7 @@
 #define EGL_EGL_PROTOTYPES 1
 #endif
 
-#include <EGL/egl.h>
+#include <epoxy/egl.h>
 #include <thread>
 #include <mutex>
 
