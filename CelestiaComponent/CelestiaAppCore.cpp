@@ -106,7 +106,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         AppCoreProgressWatcher watcher(callback);
         string config = to_string(configFileName);
-        vector<fs::path> extraPaths;
+        vector<std::filesystem::path> extraPaths;
 
         for (unsigned int i = 0; i < extraDirectories.size(); i++)
         {

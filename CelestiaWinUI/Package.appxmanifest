@@ -100,6 +100,11 @@
             <uap:DisplayName>Celestia Guide URL</uap:DisplayName>
           </uap:Protocol>
         </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="celestia">
+            <uap:DisplayName>Celestia Launcher</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>
