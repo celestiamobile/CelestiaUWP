@@ -102,6 +102,19 @@ namespace CelestiaComponent
         String Message{ get; };
     }
 
+    enum SystemAccessRequestResult
+    {
+        Unknown = 0,
+        Granted = 1,
+        Denied  = 2,
+    };
+
+    [default_interface]
+    runtimeclass SystemAccessRequestArgs
+    {
+        SystemAccessRequestResult Result;
+    }
+
     [default_interface]
     runtimeclass CelestiaAppCore
     {
@@ -270,5 +283,6 @@ namespace CelestiaComponent
         event Windows.Foundation.EventHandler<ShowContextMenuArgs> ShowContextMenu;
         event Windows.Foundation.EventHandler<ChangeCursorArgs> ChangeCursor;
         event Windows.Foundation.EventHandler<FatalErrorArgs> FatalError;
+        event Windows.Foundation.EventHandler<SystemAccessRequestArgs> SystemAccessRequest;
     }
 }

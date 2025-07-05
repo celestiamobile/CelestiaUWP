@@ -15,6 +15,7 @@
 #include "ShowContextMenuArgs.g.h"
 #include "ChangeCursorArgs.g.h"
 #include "FatalErrorArgs.g.h"
+#include "SystemAccessRequestArgs.g.h"
 #include "CelestiaAppCore.g.h"
 #include <celestia/celestiacore.h>
 #include <winrt/Windows.Globalization.DateTimeFormatting.h>
@@ -48,6 +49,15 @@ namespace winrt::CelestiaComponent::implementation
         hstring Message() { return message; }
     private:
         hstring message;
+    };
+
+    struct SystemAccessRequestArgs : SystemAccessRequestArgsT<SystemAccessRequestArgs>
+    {
+        SystemAccessRequestArgs(CelestiaComponent::SystemAccessRequestResult result) : result(result) {}
+        CelestiaComponent::SystemAccessRequestResult Result() { return result; }
+        void Result(CelestiaComponent::SystemAccessRequestResult newValue) { result = newValue; }
+    private:
+        CelestiaComponent::SystemAccessRequestResult result;
     };
 
     struct CelestiaAppCore : CelestiaAppCoreT<CelestiaAppCore>
@@ -338,9 +348,13 @@ namespace winrt::CelestiaComponent::implementation
         event_token FatalError(Windows::Foundation::EventHandler<CelestiaComponent::FatalErrorArgs> const&);
         void FatalError(event_token const&);
 
+        event_token SystemAccessRequest(Windows::Foundation::EventHandler<CelestiaComponent::SystemAccessRequestArgs> const&);
+        void SystemAccessRequest(event_token const&);
+
         event<Windows::Foundation::EventHandler<CelestiaComponent::ShowContextMenuArgs>> showContextMenuEvent;
         event<Windows::Foundation::EventHandler<CelestiaComponent::ChangeCursorArgs>> changeCursorEvent;
         event<Windows::Foundation::EventHandler<CelestiaComponent::FatalErrorArgs>> fatalErrorEvent;
+        event<Windows::Foundation::EventHandler<CelestiaComponent::SystemAccessRequestArgs>> systemAccessRequestEvent;
 
     private:
         CelestiaCore* core;

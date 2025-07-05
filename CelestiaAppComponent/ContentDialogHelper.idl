@@ -6,6 +6,7 @@ namespace CelestiaAppComponent
         static Windows.Foundation.IAsyncAction ShowAlert(Microsoft.UI.Xaml.UIElement element, String message);
         static Windows.Foundation.IAsyncAction ShowAlert(Microsoft.UI.Xaml.UIElement element, String message, String content);
         static Windows.Foundation.IAsyncOperation<Boolean> ShowOption(Microsoft.UI.Xaml.UIElement element, String message);
+        static Windows.Foundation.IAsyncOperation<Boolean> ShowOption(Microsoft.UI.Xaml.UIElement element, String message, String content);
         static Windows.Foundation.IAsyncOperation<String> GetText(Microsoft.UI.Xaml.UIElement element, String message);
         static Windows.Foundation.IAsyncOperation<String> GetText(Microsoft.UI.Xaml.UIElement element, String message, String placeholder);
         static Windows.Foundation.IAsyncAction ShowText(Microsoft.UI.Xaml.UIElement element, String title, String text);

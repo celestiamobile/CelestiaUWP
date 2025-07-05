@@ -386,6 +386,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         appCore.ShowContextMenu({ get_weak(), &MainWindow::AppCore_ShowContextMenu });
         appCore.FatalError({ get_weak(), &MainWindow::AppCore_FatalError });
+        appCore.SystemAccessRequest({ get_weak(), &MainWindow::AppCore_SystemAccessRequest });
         GLView().PointerPressed({ get_weak(), &MainWindow::GLView_PointerPressed });
         GLView().PointerMoved({ get_weak(), &MainWindow::GLView_PointerMoved });
         GLView().PointerReleased({ get_weak(), &MainWindow::GLView_PointerReleased });
@@ -1475,6 +1476,17 @@ namespace winrt::CelestiaWinUI::implementation
         co_await Launcher::LaunchUriAsync(Uri(feedbackLinkAddress));
     }
 
+    fire_and_forget MainWindow::ShowSystemAccessRequest(HANDLE semaphore, SystemAccessRequestArgs const args)
+    {
+        bool result = co_await ContentDialogHelper::ShowOption(
+            Content(),
+            LocalizationHelper::Localize(L"Script System Access", L"Alert title for scripts requesting system access"),
+            LocalizationHelper::Localize(L"This script requests permission to read/write files and execute external programs. Allowing this can be dangerous.\nDo you trust the script and want to allow this?", L"Alert message for scripts requesting system access")
+        );
+        args.Result(result ? SystemAccessRequestResult::Granted : SystemAccessRequestResult::Denied);
+        ReleaseSemaphore(semaphore, 1, nullptr);
+    }
+
     HWND MainWindow::WindowHandle()
     {
         auto windowNative = try_as<::IWindowNative>();
@@ -1610,6 +1622,23 @@ namespace winrt::CelestiaWinUI::implementation
                     ContentDialogHelper::ShowAlert(strong_this->Content(), message);
                 }
             });
+    }
+
+    void MainWindow::AppCore_SystemAccessRequest(IInspectable const&, SystemAccessRequestArgs const& args)
+    {
+        auto sem = CreateSemaphore(nullptr, 0, 1, nullptr);
+        DispatcherQueue().TryEnqueue([weak_this{ get_weak() }, sem, args]()
+            {
+                auto strong_this{ weak_this.get() };
+                if (!strong_this)
+                {
+                    ReleaseSemaphore(sem, 1, nullptr);
+                    return;
+                }
+                strong_this->ShowSystemAccessRequest(sem, args);
+            });
+        WaitForSingleObject(sem, INFINITE);
+        CloseHandle(sem);
     }
 
     void MainWindow::GLView_PointerPressed(IInspectable const& sender, Input::PointerRoutedEventArgs const& args)

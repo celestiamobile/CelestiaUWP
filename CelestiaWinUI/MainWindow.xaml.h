@@ -75,14 +75,17 @@ namespace winrt::CelestiaWinUI::implementation
         fire_and_forget SuggestFeature();
         fire_and_forget ReportBugOrSuggestFeatureFallback();
         fire_and_forget ReportBug(Windows::Storage::StorageFile const screenshotFile, Windows::Storage::StorageFile const renderInfoFile, Windows::Storage::StorageFile const urlInfoFile, Windows::Storage::StorageFile const systemInfoFile, Windows::Storage::StorageFile const addonInfoFile, hstring const renderInfo, hstring const url);
+        winrt::fire_and_forget ShowSystemAccessRequest(HANDLE semaphore, CelestiaComponent::SystemAccessRequestArgs const args);
         void OpenFileIfReady(Windows::Storage::StorageFile const scriptFileToOpen);
         void OpenURLIfReady(Windows::Foundation::Uri const urlToOpen);
+
         HWND WindowHandle();
         Windows::Foundation::IAsyncOperation<hstring> GetLocale(hstring const& localePath);
 
         winrt::fire_and_forget MainWindow_Loaded();
         void AppCore_ShowContextMenu(Windows::Foundation::IInspectable const&, CelestiaComponent::ShowContextMenuArgs const& args);
         void AppCore_FatalError(Windows::Foundation::IInspectable const&, CelestiaComponent::FatalErrorArgs const& args);
+        void AppCore_SystemAccessRequest(Windows::Foundation::IInspectable const&, CelestiaComponent::SystemAccessRequestArgs const& args);
         void GLView_PointerPressed(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
         void GLView_PointerMoved(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
         void GLView_PointerReleased(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);

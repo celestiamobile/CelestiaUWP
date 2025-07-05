@@ -100,6 +100,24 @@ namespace winrt::CelestiaComponent::implementation
         core->setContextMenuHandler(new AppCoreContextMenuHandler(get_weak()));
         core->setAlerter(new AppCoreAlerter(get_weak()));
         core->setCursorHandler(new AppCoreCursorHandler(get_weak()));
+        auto weak_this{ get_weak() };
+        core->setScriptSystemAccessHandler([weak_this]
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr)
+                    return CelestiaCore::ScriptSystemAccessPolicy::Ask;
+                auto args = make<SystemAccessRequestArgs>(CelestiaComponent::SystemAccessRequestResult::Unknown);
+                strong_this->systemAccessRequestEvent(*strong_this, args);
+                switch (args.Result())
+                {
+                case CelestiaComponent::SystemAccessRequestResult::Unknown:
+                    return CelestiaCore::ScriptSystemAccessPolicy::Ask;
+                case CelestiaComponent::SystemAccessRequestResult::Granted:
+                    return CelestiaCore::ScriptSystemAccessPolicy::Allow;
+                case CelestiaComponent::SystemAccessRequestResult::Denied:
+                    return CelestiaCore::ScriptSystemAccessPolicy::Deny;
+                }
+            });
     }
 
     bool CelestiaAppCore::StartSimulation(hstring const& configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const& callback)
@@ -931,5 +949,15 @@ void CelestiaAppCore::Enable##flag(bool value) \
     void CelestiaAppCore::FatalError(event_token const& token)
     {
         fatalErrorEvent.remove(token);
+    }
+
+    event_token CelestiaAppCore::SystemAccessRequest(Windows::Foundation::EventHandler<CelestiaComponent::SystemAccessRequestArgs> const& handler)
+    {
+        return systemAccessRequestEvent.add(handler);
+    }
+
+    void CelestiaAppCore::SystemAccessRequest(event_token const& token)
+    {
+        systemAccessRequestEvent.remove(token);
     }
 }

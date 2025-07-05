@@ -25,11 +25,13 @@ namespace winrt::CelestiaAppComponent::implementation
         co_await ShowContentDialogAsync(element, dialog);
     }
 
-    IAsyncOperation<bool> ContentDialogHelper::ShowOption(UIElement const element, hstring const message)
+    IAsyncOperation<bool> ContentDialogHelper::ShowOption(UIElement const element, hstring const message, hstring const content)
     {
         ContentDialog dialog;
         dialog.DefaultButton(ContentDialogButton::Primary);
         dialog.Title(box_value(message));
+        if (!content.empty())
+            dialog.Content(box_value(content));
         dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
         dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
         dialog.IsSecondaryButtonEnabled(true);
