@@ -10,8 +10,8 @@ jobs:
     contentCommitHash: ${{ '1586549653454b456f24680657475ba453f99689' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.9'
-    angleVersion: '1.0.5'
+    dependencyVersion: '1.0.10'
+    angleVersion: '1.0.6'
 
   steps:
   - checkout: Celestia
