@@ -314,7 +314,7 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount)
     {
-        core->joystickAxis((int)axis, amount);
+        core->joystickAxis(static_cast<CelestiaCore::JoyAxis>(axis), amount);
     }
 
     void CelestiaAppCore::SetHudFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)

@@ -75,17 +75,19 @@ namespace winrt::CelestiaAppComponent::implementation
         bool isDpadDownPressedNew = (int)(reading.Buttons & GamepadButtons::DPadDown) != 0;
         bool isDpadLeftPressedNew = (int)(reading.Buttons & GamepadButtons::DPadLeft) != 0;
         bool isDpadRightPressedNew = (int)(reading.Buttons & GamepadButtons::DPadRight) != 0;
-        double thumbstickX = 0.0;
-        double thumbstickY = 0.0;
+        double thumbstickXLeft = 0.0;
+        double thumbstickYLeft = 0.0;
+        double thumbstickXRight = 0.0;
+        double thumbstickYRight = 0.0;
         if (appSettings.GamepadEnableLeftThumbstick())
         {
-            thumbstickX = reading.LeftThumbstickX;
-            thumbstickY = reading.LeftThumbstickY;
+            thumbstickXLeft = reading.LeftThumbstickX;
+            thumbstickYLeft = reading.LeftThumbstickY;
         }
         if (appSettings.GamepadEnableRightThumbstick())
         {
-            thumbstickX = reading.RightThumbstickX;
-            thumbstickY = reading.RightThumbstickY;
+            thumbstickXRight = reading.RightThumbstickX;
+            thumbstickYRight = reading.RightThumbstickY;
         }
         if (isAPressedNew != isAPressed)
         {
@@ -148,16 +150,30 @@ namespace winrt::CelestiaAppComponent::implementation
             GamepadButtonAction(appCore, appSettings.GamepadRemapDpadRight(), isDpadRightPressed);
         }
         if (appSettings.GamepadInvertX())
-            thumbstickX = -thumbstickX;
-        if (appSettings.GamepadInvertY())
-            thumbstickY = -thumbstickY;
-        if (thumbstickX != 0.0)
         {
-            GamepadJoystickAction(appCore, CelestiaJoystickAxis::X, thumbstickX);
+            thumbstickXLeft = -thumbstickXLeft;
+            thumbstickXRight = -thumbstickXRight;
         }
-        if (thumbstickY != 0.0)
+        if (appSettings.GamepadInvertY())
         {
-            GamepadJoystickAction(appCore, CelestiaJoystickAxis::Y, thumbstickY);
+            thumbstickYLeft = -thumbstickYLeft;
+            thumbstickYRight = -thumbstickYRight;
+        }
+        if (thumbstickXLeft != 0.0)
+        {
+            GamepadJoystickAction(appCore, CelestiaJoystickAxis::X, thumbstickXLeft);
+        }
+        if (thumbstickYLeft != 0.0)
+        {
+            GamepadJoystickAction(appCore, CelestiaJoystickAxis::Y, thumbstickYLeft);
+        }
+        if (thumbstickXRight != 0.0)
+        {
+            GamepadJoystickAction(appCore, CelestiaJoystickAxis::RX, thumbstickXRight);
+        }
+        if (thumbstickYRight != 0.0)
+        {
+            GamepadJoystickAction(appCore, CelestiaJoystickAxis::RY, thumbstickYRight);
         }
     }
 
