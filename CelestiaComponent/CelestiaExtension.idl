@@ -116,6 +116,7 @@ namespace CelestiaComponent
         EnableReverseWheel,
         EnableRayBasedDragging,
         EnableFocusZooming,
+        EnableAlignCameraToSurfaceOnLand,
     };
 
     enum CelestiaSettingInt32Entry

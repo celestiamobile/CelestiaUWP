@@ -676,6 +676,20 @@ void CelestiaAppCore::Enable##flag(bool value) \
     INTERACTIONMETHODS(RayBasedDragging)
     INTERACTIONMETHODS(FocusZooming)
 
+#define OBSERVERMETHODS(flag) \
+bool CelestiaAppCore::Enable##flag() \
+{ \
+    return celestia::util::is_set(core->getObserverFlags(), celestia::engine::ObserverFlags::flag); \
+} \
+void CelestiaAppCore::Enable##flag(bool value) \
+{ \
+    auto flags = core->getObserverFlags(); \
+    celestia::util::set_or_unset(flags, celestia::engine::ObserverFlags::flag, value); \
+    core->setObserverFlags(flags); \
+}
+
+    OBSERVERMETHODS(AlignCameraToSurfaceOnLand)
+
     int32_t CelestiaAppCore::Resolution()
     {
         return static_cast<int32_t>(core->getRenderer()->getResolution());

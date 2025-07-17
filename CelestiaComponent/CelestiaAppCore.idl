@@ -273,6 +273,7 @@ namespace CelestiaComponent
         Boolean EnableReverseWheel;
         Boolean EnableRayBasedDragging;
         Boolean EnableFocusZooming;
+        Boolean EnableAlignCameraToSurfaceOnLand;
 
         Int32 TimeZone;
         Int32 MeasurementSystem;

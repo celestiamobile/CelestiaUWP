@@ -216,6 +216,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging;
         else if (name == L"EnableFocusZooming")
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming;
+        else if (name == L"EnableAlignCameraToSurfaceOnLand")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand;
         return CelestiaComponent::CelestiaSettingBooleanEntry::None;
     }
 
@@ -441,6 +443,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"EnableRayBasedDragging";
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
             return L"EnableFocusZooming";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
+            return L"EnableAlignCameraToSurfaceOnLand";
         default:
             break;
         }
@@ -768,6 +772,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
             appCore.EnableFocusZooming(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
+            appCore.EnableAlignCameraToSurfaceOnLand(value);
+            break;
         default:
             break;
         }
@@ -1018,6 +1025,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.EnableRayBasedDragging();
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming:
             return appCore.EnableFocusZooming();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
+            return appCore.EnableAlignCameraToSurfaceOnLand();
         default:
             break;
         }

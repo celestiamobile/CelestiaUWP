@@ -322,6 +322,8 @@ namespace winrt::CelestiaComponent::implementation
         void EnableRayBasedDragging(bool value);
         bool EnableFocusZooming();
         void EnableFocusZooming(bool value);
+        bool EnableAlignCameraToSurfaceOnLand();
+        void EnableAlignCameraToSurfaceOnLand(bool value);
 
         int32_t TimeZone();
         void TimeZone(int32_t timeZone);

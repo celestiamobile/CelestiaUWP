@@ -225,6 +225,13 @@ namespace winrt::CelestiaWinUI::implementation
         });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), interactionSettingItemGroupItems, true));
 
+        auto cameraSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
+        cameraSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
+        {
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Align to Surface on Landing", L"Option to align camera to surface when landing"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand, localSettings),
+        });
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), cameraSettingItemGroupItems, true));
+
         auto allActions = single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"None", L"Empty HUD display")),
