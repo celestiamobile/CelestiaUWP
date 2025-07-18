@@ -1,12 +1,10 @@
 namespace CelestiaWinUI
 {
     [default_interface]
-    runtimeclass BrowserUserControl : Microsoft.UI.Xaml.Controls.UserControl, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    runtimeclass BrowserUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         BrowserUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
 
         Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserItemTab> RootItems{ get; };
-        Microsoft.UI.Xaml.Interop.IBindableObservableVector RootItem{ get; };
-        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserAction> Actions{ get; };
     }
 }

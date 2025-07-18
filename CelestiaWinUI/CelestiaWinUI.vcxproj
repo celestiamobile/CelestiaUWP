@@ -152,6 +152,10 @@
       <DependentUpon>BrowserUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="BrowserItemUserControl.xaml.h">
+      <DependentUpon>BrowserItemUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="CommonWebUserControl.xaml.h">
       <DependentUpon>CommonWebUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -186,6 +190,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BrowserUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BrowserItemUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CommonWebUserControl.xaml">
@@ -250,6 +257,10 @@
       <DependentUpon>BrowserUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="BrowserItemUserControl.xaml.cpp">
+      <DependentUpon>BrowserItemUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="CommonWebUserControl.xaml.cpp">
       <DependentUpon>CommonWebUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -292,6 +303,10 @@
     </Midl>
     <Midl Include="BrowserUserControl.idl">
       <DependentUpon>BrowserUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="BrowserItemUserControl.idl">
+      <DependentUpon>BrowserItemUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="CommonWebUserControl.idl">

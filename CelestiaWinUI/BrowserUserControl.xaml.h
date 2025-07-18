@@ -11,24 +11,15 @@ namespace winrt::CelestiaWinUI::implementation
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItemTab> RootItems();
-        Microsoft::UI::Xaml::Interop::IBindableObservableVector RootItem();
-        Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> Actions();
 
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
         void Nav_BackRequested(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewBackRequestedEventArgs const&);
-        void ActionButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
-
-        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
-        void PropertyChanged(event_token const& token) noexcept;
+        void BrowserItem_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::BrowserItemGetInfoArgs const&);
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItemTab> rootItems;
-        Microsoft::UI::Xaml::Interop::IBindableObservableVector rootItem{ nullptr };
-        Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> actions;
-
-        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
 
         void LoadData();
     };

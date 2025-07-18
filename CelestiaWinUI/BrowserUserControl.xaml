@@ -14,34 +14,7 @@
             </DataTemplate>
         </NavigationView.MenuItemTemplate>
         <Frame x:Name="Container">
-            <RelativePanel x:Name="BrowserItemListContainer" Margin="{StaticResource Margin}">
-                <RelativePanel x:Name="ContentContainer" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
-                    <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneWay}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                        <TreeView.ItemTemplate>
-                            <DataTemplate x:DataType="app:BrowserItem">
-                                <TreeViewItem ItemsSource="{x:Bind BindableChildren}"
-                               IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
-                               Content="{x:Bind ItemName}"/>
-                            </DataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                    <ItemsView x:Name="ButtonStack" ItemsSource="{x:Bind Actions, Mode=OneTime}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                        <ItemsView.Layout>
-                            <LinedFlowLayout
-                                LineSpacing="{StaticResource VerticalSpacing}"
-                                MinItemSpacing="{StaticResource HorizontalSpacing}"
-                                ItemsJustification="Start"/>
-                        </ItemsView.Layout>
-                        <ItemsView.ItemTemplate>
-                            <DataTemplate x:DataType="app:BrowserAction">
-                                <ItemContainer>
-                                    <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
-                                </ItemContainer>
-                            </DataTemplate>
-                        </ItemsView.ItemTemplate>
-                    </ItemsView>
-                </RelativePanel>
-            </RelativePanel>
+            <RelativePanel x:Name="BrowserItemListContainer" Margin="{StaticResource Margin}"/>
         </Frame>
     </NavigationView>
 </UserControl>

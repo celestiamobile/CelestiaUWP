@@ -10,6 +10,7 @@
     <Page Include="TimeSettingDialog.xaml" />
     <Page Include="TourGuideWindow.xaml" />
     <Page Include="BrowserUserControl.xaml" />
+    <Page Include="BrowserItemUserControl.xaml" />
     <Page Include="EclipseFinderUserControl.xaml" />
     <Page Include="BookmarkOrganizerUserControl.xaml" />
     <Page Include="NewBookmarkUserControl.xaml" />

@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="CelestiaWinUI.BrowserItemUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel x:Name="ContentContainer">
+        <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneTime}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+            <TreeView.ItemTemplate>
+                <DataTemplate x:DataType="app:BrowserItem">
+                    <TreeViewItem ItemsSource="{x:Bind BindableChildren}"
+               IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
+               Content="{x:Bind ItemName}"/>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <ItemsView x:Name="ButtonStack" ItemsSource="{x:Bind Actions, Mode=OneTime}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <ItemsView.Layout>
+                <LinedFlowLayout
+                LineSpacing="{StaticResource VerticalSpacing}"
+                MinItemSpacing="{StaticResource HorizontalSpacing}"
+                ItemsJustification="Start"/>
+            </ItemsView.Layout>
+            <ItemsView.ItemTemplate>
+                <DataTemplate x:DataType="app:BrowserAction">
+                    <ItemContainer>
+                        <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
+                    </ItemContainer>
+                </DataTemplate>
+            </ItemsView.ItemTemplate>
+        </ItemsView>
+    </RelativePanel>
+</UserControl>

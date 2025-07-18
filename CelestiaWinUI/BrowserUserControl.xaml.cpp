@@ -20,16 +20,6 @@ namespace winrt::CelestiaWinUI::implementation
     BrowserUserControl::BrowserUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
         rootItems = single_threaded_observable_vector<BrowserItemTab>();
-        actions = single_threaded_observable_vector<BrowserAction>
-        ({
-            BrowserGetInfoAction(),
-            BrowserInputAction(LocalizationHelper::Localize(L"Go", L"Go to an object"), 103),
-            BrowserInputAction(LocalizationHelper::Localize(L"Follow", L""), 102),
-            BrowserInputAction(LocalizationHelper::Localize(L"Sync Orbit", L""), 121),
-            BrowserInputAction(LocalizationHelper::Localize(L"Lock Phase", L""), 58),
-            BrowserInputAction(LocalizationHelper::Localize(L"Chase", L""), 34),
-            BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), 116)
-        });
     }
 
     void BrowserUserControl::InitializeComponent()
@@ -41,12 +31,21 @@ namespace winrt::CelestiaWinUI::implementation
 
     void BrowserUserControl::NavigationView_SelectionChanged(IInspectable const&, NavigationViewSelectionChangedEventArgs const& args)
     {
+        BrowserItemListContainer().Children().Clear();
+
         auto item = args.SelectedItem();
         if (item == nullptr) return;
         auto browserItem = item.try_as<BrowserItemTab>();
         if (browserItem == nullptr) return;
-        rootItem = BrowserItem::ConvertToBindable(browserItem.Children());
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"RootItem"));
+        BrowserItemUserControl userControl{ appCore, renderer, browserItem };
+
+        userControl.GetInfo({ get_weak(), &BrowserUserControl::BrowserItem_GetInfo });
+
+        BrowserItemListContainer().Children().Append(userControl);
+        BrowserItemListContainer().SetAlignTopWithPanel(userControl, true);
+        BrowserItemListContainer().SetAlignBottomWithPanel(userControl, true);
+        BrowserItemListContainer().SetAlignLeftWithPanel(userControl, true);
+        BrowserItemListContainer().SetAlignRightWithPanel(userControl, true);
     }
 
     void BrowserUserControl::Nav_BackRequested(IInspectable const&, Controls::NavigationViewBackRequestedEventArgs const&)
@@ -55,56 +54,16 @@ namespace winrt::CelestiaWinUI::implementation
         Nav().IsBackEnabled(false);
     }
 
-    void BrowserUserControl::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
+    void BrowserUserControl::BrowserItem_GetInfo(IInspectable const&, BrowserItemGetInfoArgs const& args)
     {
-        auto selectedItem = Tree().SelectedItem();
-        if (selectedItem == nullptr) return;
-        auto browserItem = selectedItem.try_as<BrowserItem>();
-        if (browserItem == nullptr) return;
-        auto object = browserItem.Item().Object();
-        if (object == nullptr) return;
-        auto selection = CelestiaSelection(object);
-        auto context = sender.as<Button>().DataContext().as<BrowserAction>();
-
-        if (context.try_as<BrowserGetInfoAction>() != nullptr)
-        {
-            InfoUserControl userControl{ appCore, renderer, selection };
-            Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);
-            Nav().IsBackEnabled(true);
-        }
-        else if (auto inputAction = context.try_as<BrowserInputAction>(); inputAction != nullptr)
-        {
-            renderer.EnqueueTask([this, selection, inputAction]()
-                {
-                    appCore.Simulation().Selection(selection);
-                    appCore.CharEnter(inputAction.Code());
-                });
-        }
+        InfoUserControl userControl{ appCore, renderer, args.Selection() };
+        Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);
+        Nav().IsBackEnabled(true);
     }
 
     Collections::IObservableVector<BrowserItemTab> BrowserUserControl::RootItems()
     {
         return rootItems;
-    }
-
-    Microsoft::UI::Xaml::Interop::IBindableObservableVector BrowserUserControl::RootItem()
-    {
-        return rootItem;
-    }
-
-    Collections::IObservableVector<BrowserAction> BrowserUserControl::Actions()
-    {
-        return actions;
-    }
-
-    event_token BrowserUserControl::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
-    {
-        return propertyChangedEvent.add(handler);
-    }
-
-    void BrowserUserControl::PropertyChanged(event_token const& token) noexcept
-    {
-        propertyChangedEvent.remove(token);
     }
 
     void BrowserUserControl::LoadData()
