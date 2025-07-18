@@ -25,6 +25,7 @@ namespace winrt::CelestiaComponent::implementation
         bool IsEmpty();
         double Radius();
         hstring InfoURL();
+        bool Equals(CelestiaComponent::CelestiaSelection const& other);
 
         Selection AsSelection();
 

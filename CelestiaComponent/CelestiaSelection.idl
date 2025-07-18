@@ -20,5 +20,6 @@ namespace CelestiaComponent
         Boolean IsEmpty{ get; };
         Double Radius{ get; };
         String InfoURL{ get; };
+        Boolean Equals(CelestiaSelection other);
     }
 }

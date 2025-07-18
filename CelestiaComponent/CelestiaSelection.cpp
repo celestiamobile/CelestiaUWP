@@ -127,4 +127,12 @@ namespace winrt::CelestiaComponent::implementation
         }
         return L"";
     }
+
+    bool CelestiaSelection::Equals(CelestiaComponent::CelestiaSelection const& other)
+    {
+        if (other == nullptr)
+            return false;
+
+        return AsSelection() == get_self<CelestiaSelection>(other)->AsSelection();
+    }
 }
