@@ -1,0 +1,8 @@
+namespace CelestiaWinUI
+{
+    [default_interface]
+    runtimeclass SearchUserControl : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        SearchUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+    }
+}

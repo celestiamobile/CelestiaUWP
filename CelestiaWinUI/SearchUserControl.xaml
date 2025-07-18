@@ -1,0 +1,21 @@
+<UserControl
+    x:Class="CelestiaWinUI.SearchUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:CelestiaAppComponent"
+    xmlns:celestia="using:CelestiaComponent"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Margin="{StaticResource Margin}">
+        <AutoSuggestBox RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" x:Name="SearchBox" TextChanged="SearchBox_TextChanged" SuggestionChosen="SearchBox_SuggestionChosen" QuerySubmitted="SearchBox_QuerySubmitted" UpdateTextOnSelect="False">
+            <AutoSuggestBox.ItemTemplate>
+                <DataTemplate x:DataType="celestia:CelestiaCompletion">
+                    <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
+                </DataTemplate>
+            </AutoSuggestBox.ItemTemplate>
+        </AutoSuggestBox>
+        <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="SearchBox" Margin="{StaticResource TopSpacing}" x:Name="SearchResultContainer"/>
+    </RelativePanel>
+</UserControl>

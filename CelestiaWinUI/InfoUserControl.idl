@@ -4,6 +4,7 @@ namespace CelestiaWinUI
     runtimeclass InfoUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection);
+        InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection, Boolean preserveMargin);
         Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserInputAction> Actions{ get; };
     }
 }

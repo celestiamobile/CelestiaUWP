@@ -23,6 +23,7 @@
     <Page Include="CustomPage.xaml" />
     <Page Include="ObserverModeDialog.xaml" />
     <Page Include="InfoUserControl.xaml" />
+    <Page Include="SearchUserControl.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />

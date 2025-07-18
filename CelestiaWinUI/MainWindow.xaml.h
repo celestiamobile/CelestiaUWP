@@ -54,7 +54,7 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::IAsyncAction OpenFileOrURL();
         void CopyURL();
         Windows::Foundation::IAsyncAction PasteURL();
-        Windows::Foundation::IAsyncAction ShowSelectObject();
+        void ShowSearch();
         void CaptureImage();
         Windows::Foundation::IAsyncAction SaveScreenshot(hstring const path);
         void ShowTourGuide();

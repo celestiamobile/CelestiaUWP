@@ -524,11 +524,11 @@ namespace winrt::CelestiaWinUI::implementation
         navigationItem.Items().Append(MenuFlyoutSeparator());
 
         AppendCharEnterItem(navigationItem, LocalizationHelper::Localize(L"Select Sol", L""), 104, appCore, renderer, VirtualKey::H);
-        AppendItem(navigationItem, LocalizationHelper::Localize(L"Select Object", L"Select an object"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
+        AppendItem(navigationItem, LocalizationHelper::Localize(L"Search\u2026", L"Menu item to start searching"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
-                strong_this->ShowSelectObject();
+                strong_this->ShowSearch();
             });
         AppendItem(navigationItem, LocalizationHelper::Localize(L"Go to Object", L""), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
@@ -1053,26 +1053,26 @@ namespace winrt::CelestiaWinUI::implementation
         }
     }
 
-    IAsyncAction MainWindow::ShowSelectObject()
+    void MainWindow::ShowSearch()
     {
-        auto text = co_await ContentDialogHelper::GetText(Content(), LocalizationHelper::Localize(L"Object name:", L""));
-        if (text.empty()) co_return;
-
-        renderer.EnqueueTask([this, text]()
-            {
-               auto selection = appCore.Simulation().Find(text);
-                if (selection.IsEmpty())
-                {
-                    DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]
-                        {
-                            ShowObjectNotFound();
-                        });
-                }
-                else
-                {
-                    appCore.Simulation().Selection(selection);
-                }
-            });
+        const hstring id = L"Search";
+        auto trackedWindow = WindowHelper::GetTrackedWindow(id);
+        if (trackedWindow != nullptr)
+        {
+            trackedWindow.Activate();
+            return;
+        }
+        SearchUserControl userControl{ appCore, renderer };
+        Window window;
+        window.SystemBackdrop(Media::MicaBackdrop());
+        window.Title(LocalizationHelper::Localize(L"Search", L""));
+        window.Content(userControl);
+        WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowTheme(window);
+        WindowHelper::SetWindowFlowDirection(window);
+        WindowHelper::ResizeWindow(window, 500, 500);
+        WindowHelper::TrackWindow(window, id);
+        window.Activate();
     }
 
     void MainWindow::CaptureImage()

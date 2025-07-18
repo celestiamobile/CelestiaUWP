@@ -6,7 +6,7 @@ namespace winrt::CelestiaWinUI::implementation
 {
     struct InfoUserControl : InfoUserControlT<InfoUserControl>
     {
-        InfoUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaComponent::CelestiaSelection const& selection);
+        InfoUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaComponent::CelestiaSelection const& selection, bool preserveMargin = true);
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserInputAction> Actions();
@@ -16,6 +16,7 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         CelestiaComponent::CelestiaSelection selection;
+        bool preserveMargin;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserInputAction> actions;
     };
 }

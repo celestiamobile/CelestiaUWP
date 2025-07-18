@@ -228,6 +228,9 @@
     <Page Include="InfoUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="SearchUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EclipseFinderUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -516,6 +519,10 @@
       <DependentUpon>InfoUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SearchUserControl.xaml.h">
+      <DependentUpon>SearchUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="EclipseFinderUserControl.xaml.h">
       <DependentUpon>EclipseFinderUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -560,6 +567,10 @@
     </ClCompile>
     <ClCompile Include="InfoUserControl.xaml.cpp">
       <DependentUpon>InfoUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SearchUserControl.xaml.cpp">
+      <DependentUpon>SearchUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="EclipseFinderUserControl.xaml.cpp">
@@ -610,6 +621,10 @@
     </Midl>
     <Midl Include="InfoUserControl.idl">
       <DependentUpon>InfoUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SearchUserControl.idl">
+      <DependentUpon>SearchUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="EclipseFinderUserControl.idl">

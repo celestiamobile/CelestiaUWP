@@ -13,7 +13,7 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    InfoUserControl::InfoUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSelection const& selection) : appCore(appCore), renderer(renderer), selection(selection)
+    InfoUserControl::InfoUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSelection const& selection, bool preserveMargin) : appCore(appCore), renderer(renderer), selection(selection), preserveMargin(preserveMargin)
     {
         actions = single_threaded_observable_vector<BrowserInputAction>
         ({
@@ -29,6 +29,13 @@ namespace winrt::CelestiaWinUI::implementation
     void InfoUserControl::InitializeComponent()
     {
         InfoUserControlT::InitializeComponent();
+
+        if (!preserveMargin)
+        {
+            Thickness margin{ 0, 0, 0, 0 };
+            Container().Margin(margin);
+        }
+
         auto obj = selection.Object();
         if (obj == nullptr) return;
 
