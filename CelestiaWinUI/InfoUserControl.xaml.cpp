@@ -29,6 +29,19 @@ namespace winrt::CelestiaWinUI::implementation
     void InfoUserControl::InitializeComponent()
     {
         InfoUserControlT::InitializeComponent();
+
+        CockpitCheckbox().Content(box_value(LocalizationHelper::Localize(L"Use as Cockpit", L"Option to use a spacecraft as cockpit")));
+        auto body = selection.Object().try_as<CelestiaBody>();
+        if (body != nullptr && body.CanBeUsedAsCockpit())
+        {
+            CockpitCheckbox().Visibility(Visibility::Visible);
+            CockpitCheckbox().IsChecked(selection.Equals(appCore.Simulation().ActiveObserver().Cockpit()));
+        }
+        else
+        {
+            CockpitCheckbox().Visibility(Visibility::Collapsed);
+        }
+
         auto obj = selection.Object();
         if (obj == nullptr) return;
 
@@ -72,5 +85,25 @@ namespace winrt::CelestiaWinUI::implementation
                 strong_this->appCore.Simulation().Selection(strong_this->selection);
                 strong_this->appCore.CharEnter(action.Code());
             });
+    }
+
+    void InfoUserControl::CockpitCheckbox_Checked(IInspectable const&, RoutedEventArgs const&)
+    {
+        renderer.EnqueueTask([weak_this{ get_weak() }]()
+        {
+            auto strong_this{ weak_this.get() };
+            if (strong_this == nullptr) return;
+            strong_this->appCore.Simulation().ActiveObserver().Cockpit(strong_this->selection);
+        });
+    }
+
+    void InfoUserControl::CockpitCheckbox_Unchecked(IInspectable const&, RoutedEventArgs const&)
+    {
+        renderer.EnqueueTask([weak_this{ get_weak() }]()
+        {
+            auto strong_this{ weak_this.get() };
+            if (strong_this == nullptr) return;
+            strong_this->appCore.Simulation().ActiveObserver().Cockpit(CelestiaSelection());
+        });
     }
 }

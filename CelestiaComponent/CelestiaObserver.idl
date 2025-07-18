@@ -24,6 +24,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaObserver
     {
         String DisplayedSurfaceName;
+        CelestiaSelection Cockpit;
         void SetFrame(CoordinateSystem coordinateSystem, CelestiaSelection refObj, CelestiaSelection targetObj);
     }
 }

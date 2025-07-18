@@ -12,6 +12,9 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserInputAction> Actions();
         void ActionButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
 
+        void CockpitCheckbox_Checked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        void CockpitCheckbox_Unchecked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
