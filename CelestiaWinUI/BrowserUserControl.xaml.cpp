@@ -37,7 +37,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (item == nullptr) return;
         auto browserItem = item.try_as<BrowserItemTab>();
         if (browserItem == nullptr) return;
-        BrowserItemUserControl userControl{ appCore, renderer, browserItem };
+        BrowserItemUserControl userControl{ appCore, renderer, browserItem, false };
 
         userControl.GetInfo({ get_weak(), &BrowserUserControl::BrowserItem_GetInfo });
 
@@ -56,6 +56,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void BrowserUserControl::BrowserItem_GetInfo(IInspectable const&, BrowserItemGetInfoArgs const& args)
     {
+        args.Handled(true);
         InfoUserControl userControl{ appCore, renderer, args.Selection() };
         Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);
         Nav().IsBackEnabled(true);

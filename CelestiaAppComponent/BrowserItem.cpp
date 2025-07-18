@@ -9,6 +9,9 @@
 #if __has_include("BrowserGetInfoAction.g.cpp")
 #include "BrowserGetInfoAction.g.cpp"
 #endif
+#if __has_include("BrowserShowSubsystemAction.g.cpp")
+#include "BrowserShowSubsystemAction.g.cpp"
+#endif
 #if __has_include("BrowserInputAction.g.cpp")
 #include "BrowserInputAction.g.cpp"
 #endif
@@ -28,6 +31,15 @@ namespace winrt::CelestiaAppComponent::implementation
     hstring BrowserGetInfoAction::Name()
     {
         return LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object");
+    }
+
+    BrowserShowSubsystemAction::BrowserShowSubsystemAction()
+    {
+    }
+
+    hstring BrowserShowSubsystemAction::Name()
+    {
+        return LocalizationHelper::Localize(L"Subsystem", L"Subsystem of an object (e.g. planetarium system)");
     }
 
     BrowserInputAction::BrowserInputAction(hstring const& name, int16_t code) : name(name), code(code)

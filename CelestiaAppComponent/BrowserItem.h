@@ -4,6 +4,7 @@
 #include "BrowserItemTab.g.h"
 #include "BrowserAction.g.h"
 #include "BrowserGetInfoAction.g.h"
+#include "BrowserShowSubsystemAction.g.h"
 #include "BrowserInputAction.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
@@ -16,6 +17,12 @@ namespace winrt::CelestiaAppComponent::implementation
     struct BrowserGetInfoAction : BrowserGetInfoActionT<BrowserGetInfoAction, BrowserAction>
     {
         BrowserGetInfoAction();
+        hstring Name();
+    };
+
+    struct BrowserShowSubsystemAction : BrowserShowSubsystemActionT<BrowserShowSubsystemAction, BrowserAction>
+    {
+        BrowserShowSubsystemAction();
         hstring Name();
     };
 
@@ -65,6 +72,10 @@ namespace winrt::CelestiaAppComponent::implementation
 namespace winrt::CelestiaAppComponent::factory_implementation
 {
     struct BrowserGetInfoAction : BrowserGetInfoActionT<BrowserGetInfoAction, implementation::BrowserGetInfoAction>
+    {
+    };
+
+    struct BrowserShowSubsystemAction : BrowserShowSubsystemActionT<BrowserShowSubsystemAction, implementation::BrowserShowSubsystemAction>
     {
     };
 

@@ -10,13 +10,17 @@ namespace winrt::CelestiaWinUI::implementation
     {
         BrowserItemGetInfoArgs(CelestiaComponent::CelestiaSelection const& selection) : selection(selection) {}
         CelestiaComponent::CelestiaSelection Selection() { return selection; }
+        bool Handled() { return handled; }
+        void Handled(bool value) { handled = value; }
     private:
         CelestiaComponent::CelestiaSelection selection;
+        bool handled{ false };
     };
 
     struct BrowserItemUserControl : BrowserItemUserControlT<BrowserItemUserControl>
     {
-        BrowserItemUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::BrowserItemTab const& item);
+        BrowserItemUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::BrowserItemTab const& item, bool preserveMargin = true);
+        void InitializeComponent();
 
         Microsoft::UI::Xaml::Interop::IBindableObservableVector RootItem();
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> Actions();
@@ -29,6 +33,7 @@ namespace winrt::CelestiaWinUI::implementation
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
+        bool preserveMargin;
         Microsoft::UI::Xaml::Interop::IBindableObservableVector rootItem{ nullptr };
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> actions;
         event<Windows::Foundation::EventHandler<CelestiaWinUI::BrowserItemGetInfoArgs>> getInfoEvent;

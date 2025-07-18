@@ -4,12 +4,14 @@ namespace CelestiaWinUI
     runtimeclass BrowserItemGetInfoArgs
     {
         CelestiaComponent.CelestiaSelection Selection{ get; };
+        Boolean Handled;
     }
 
     [default_interface]
     runtimeclass BrowserItemUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         BrowserItemUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.BrowserItemTab item);
+        BrowserItemUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.BrowserItemTab item, Boolean preserveMargin);
 
         Microsoft.UI.Xaml.Interop.IBindableObservableVector RootItem{ get; };
         Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserAction> Actions{ get; };

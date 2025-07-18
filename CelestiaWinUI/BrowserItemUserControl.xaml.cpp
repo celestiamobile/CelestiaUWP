@@ -13,7 +13,7 @@ using namespace Microsoft::UI::Xaml::Controls;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    BrowserItemUserControl::BrowserItemUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, BrowserItemTab const& item) : appCore(appCore), renderer(renderer)
+    BrowserItemUserControl::BrowserItemUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, BrowserItemTab const& item, bool preserveMargin) : appCore(appCore), renderer(renderer), preserveMargin(preserveMargin)
     {
         actions = single_threaded_observable_vector<BrowserAction>
         ({
@@ -26,6 +26,17 @@ namespace winrt::CelestiaWinUI::implementation
             BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), 116)
         });
         rootItem = BrowserItem::ConvertToBindable(item.Children());
+    }
+
+    void BrowserItemUserControl::InitializeComponent()
+    {
+        BrowserItemUserControlT::InitializeComponent();
+
+        if (!preserveMargin)
+        {
+            Thickness margin{ 0, 0, 0, 0 };
+            Container().Margin(margin);
+        }
     }
 
     void BrowserItemUserControl::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
@@ -43,6 +54,19 @@ namespace winrt::CelestiaWinUI::implementation
         {
             auto args = make<BrowserItemGetInfoArgs>(selection);
             getInfoEvent(*this, args);
+            if (!args.Handled())
+            {
+                InfoUserControl userControl{ appCore, renderer, selection };
+                Window window;
+                window.SystemBackdrop(Media::MicaBackdrop());
+                window.Content(userControl);
+                window.Title(appCore.Simulation().Universe().NameForSelection(selection));
+                WindowHelper::SetWindowIcon(window);
+                WindowHelper::SetWindowTheme(window);
+                WindowHelper::SetWindowFlowDirection(window);
+                WindowHelper::ResizeWindow(window, 600, 400);
+                window.Activate();
+            }
         }
         else if (auto inputAction = context.try_as<BrowserInputAction>(); inputAction != nullptr)
         {

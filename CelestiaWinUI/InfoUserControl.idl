@@ -1,10 +1,19 @@
 namespace CelestiaWinUI
 {
     [default_interface]
+    runtimeclass InfoShowSubsystemArgs
+    {
+        CelestiaComponent.CelestiaSelection Selection{ get; };
+        Boolean Handled;
+    }
+
+    [default_interface]
     runtimeclass InfoUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection);
         InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection, Boolean preserveMargin);
-        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserInputAction> Actions{ get; };
+        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserAction> Actions{ get; };
+
+        event Windows.Foundation.EventHandler<InfoShowSubsystemArgs> ShowSubsystem;
     }
 }

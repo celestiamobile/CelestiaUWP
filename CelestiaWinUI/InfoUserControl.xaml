@@ -23,7 +23,7 @@
                     ItemsJustification="Start"/>
             </ItemsView.Layout>
             <ItemsView.ItemTemplate>
-                <DataTemplate x:DataType="app:BrowserInputAction">
+                <DataTemplate x:DataType="app:BrowserAction">
                     <ItemContainer>
                         <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
                     </ItemContainer>

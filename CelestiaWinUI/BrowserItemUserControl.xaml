@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <RelativePanel x:Name="ContentContainer">
+    <RelativePanel Margin="{StaticResource Margin}" x:Name="Container">
         <TreeView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" x:Name="Tree" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind RootItem, Mode=OneTime}" Margin="{StaticResource BottomSpacing}" RelativePanel.Above="ButtonStack" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="app:BrowserItem">
