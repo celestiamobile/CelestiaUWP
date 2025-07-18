@@ -28,6 +28,16 @@ namespace winrt::CelestiaComponent::implementation
 		o->setDisplayedSurface(to_string(displayedSurfaceName));
 	}
 
+	CelestiaComponent::CelestiaSelection CelestiaObserver::Cockpit()
+	{
+		return make<CelestiaSelection>(o->getCockpit());
+	}
+
+	void CelestiaObserver::Cockpit(CelestiaComponent::CelestiaSelection const& cockpit)
+	{
+		o->setCockpit(get_self<CelestiaSelection>(cockpit)->AsSelection());
+	}
+
     void CelestiaObserver::SetFrame(CelestiaComponent::CoordinateSystem coordinateSystem, CelestiaComponent::CelestiaSelection const& refObj, CelestiaComponent::CelestiaSelection const& targetObj)
     {
         o->setFrame(static_cast<ObserverFrame::CoordinateSystem>(coordinateSystem), get_self<CelestiaSelection>(refObj)->AsSelection(), get_self<CelestiaSelection>(targetObj)->AsSelection());

@@ -35,6 +35,7 @@
             <StackPanel Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical">
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="NameLabel"/>
                 <TextBlock Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" x:Name="DetailLabel"/>
+                <CheckBox Checked="CockpitCheckbox_Checked" Unchecked="CockpitCheckbox_Unchecked" x:Name="CockpitCheckbox"/>
                 <HyperlinkButton x:Name="LinkButton" Margin="0" Padding="0"/>
             </StackPanel>
         </ScrollViewer>

@@ -46,6 +46,9 @@ namespace winrt::CelestiaWinUI::implementation
         event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
         void ShowSubsystem(event_token const& token) noexcept;
 
+        void CockpitCheckbox_Checked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        void CockpitCheckbox_Unchecked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;

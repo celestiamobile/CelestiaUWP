@@ -93,4 +93,9 @@ namespace winrt::CelestiaComponent::implementation
     {
         return make<CelestiaTimeline>(static_cast<Body*>(obj)->getTimeline());
     }
+
+    bool CelestiaBody::CanBeUsedAsCockpit()
+    {
+        return GetBodyFeaturesManager()->canBeUsedAsCockpit(static_cast<Body*>(obj));
+    }
 }

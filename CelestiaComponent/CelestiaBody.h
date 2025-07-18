@@ -42,6 +42,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaOrbit OrbitAtTime(double julianDay);
         CelestiaComponent::CelestiaRotationModel RotationModelAtTime(double julianDay);
         CelestiaComponent::CelestiaTimeline Timeline();
+        bool CanBeUsedAsCockpit();
 
         CelestiaComponent::CelestiaPlanetarySystem p {nullptr};
     };

@@ -20,6 +20,8 @@ namespace winrt::CelestiaComponent::implementation
 
         hstring DisplayedSurfaceName();
         void DisplayedSurfaceName(hstring const& displayedSurfaceName);
+        CelestiaComponent::CelestiaSelection Cockpit();
+        void Cockpit(CelestiaComponent::CelestiaSelection const& cockpit);
 
         void SetFrame(CelestiaComponent::CoordinateSystem coordinateSystem, CelestiaComponent::CelestiaSelection const& refObj, CelestiaComponent::CelestiaSelection const& targetObj);
 

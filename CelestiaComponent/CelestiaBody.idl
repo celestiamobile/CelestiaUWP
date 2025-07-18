@@ -48,6 +48,7 @@ namespace CelestiaComponent
         Boolean IsEllipsoid{ get; };
         Single Radius{ get; };
         CelestiaTimeline Timeline{ get; };
+        Boolean CanBeUsedAsCockpit{ get; };
 
         CelestiaOrbit OrbitAtTime(Double julianDay);
         CelestiaRotationModel RotationModelAtTime(Double julianDay);
