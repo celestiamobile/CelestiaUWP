@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "InfoUserControl.xaml.h"
+#if __has_include("InfoTemplateSelector.g.cpp")
+#include "InfoTemplateSelector.g.cpp"
+#endif
 #if __has_include("InfoUserControl.g.cpp")
 #include "InfoUserControl.g.cpp"
 #endif
@@ -13,6 +16,42 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaWinUI::implementation
 {
+    InfoTemplateSelector::InfoTemplateSelector()
+    {
+    }
+
+    DataTemplate InfoTemplateSelector::Action()
+    {
+        return action;
+    }
+
+    void InfoTemplateSelector::Action(DataTemplate const& value)
+    {
+        action = value;
+    }
+
+    DataTemplate InfoTemplateSelector::DropDown()
+    {
+        return dropDown;
+    }
+
+    void InfoTemplateSelector::DropDown(DataTemplate const& value)
+    {
+        dropDown = value;
+    }
+
+    DataTemplate InfoTemplateSelector::SelectTemplateCore(IInspectable const& item, DependencyObject const&)
+    {
+        return SelectTemplateCore(item);
+    }
+
+    DataTemplate InfoTemplateSelector::SelectTemplateCore(IInspectable const& item)
+    {
+        if (item.try_as<BrowserMarkAction>() != nullptr) return dropDown;
+        if (item.try_as<BrowserAction>() != nullptr) return action;
+        return nullptr;
+    }
+
     InfoUserControl::InfoUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSelection const& selection, bool preserveMargin) : appCore(appCore), renderer(renderer), selection(selection), preserveMargin(preserveMargin)
     {
         actions = single_threaded_observable_vector<BrowserAction>
@@ -24,6 +63,7 @@ namespace winrt::CelestiaWinUI::implementation
             BrowserInputAction(LocalizationHelper::Localize(L"Chase", L""), 34),
             BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), 116),
             BrowserShowSubsystemAction(),
+            BrowserMarkAction(),
         });
     }
 
@@ -70,6 +110,42 @@ namespace winrt::CelestiaWinUI::implementation
         return actions;
     }
 
+    void InfoUserControl::MarkButton_Loaded(IInspectable const& sender, RoutedEventArgs const&)
+    {
+        auto button = sender.as<DropDownButton>();
+        auto action = button.DataContext().as<BrowserMarkAction>();
+        auto menuFlyout = button.Flyout().as<MenuFlyout>();
+        menuFlyout.Items().Clear();
+
+        for (const auto& menuItem : action.MenuItems())
+        {
+            MenuFlyoutItem menuFlyoutItem;
+            menuFlyoutItem.DataContext(menuItem);
+            menuFlyoutItem.Text(menuItem.Title());
+            menuFlyoutItem.Click({ get_weak(), &InfoUserControl::MarkMenuFlyoutItem_Click });
+            menuFlyout.Items().Append(menuFlyoutItem);
+        }
+    }
+
+    void InfoUserControl::MarkMenuFlyoutItem_Click(IInspectable const& sender, RoutedEventArgs const&)
+    {
+        auto menuItem = sender.as<MenuFlyoutItem>().DataContext().as<BrowserMarkMenuItem>();
+        renderer.EnqueueTask([weak_this{ get_weak() }, menuItem]()
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                if (!menuItem.Mark())
+                {
+                    strong_this->appCore.Simulation().Universe().UnmarkSelection(strong_this->selection);
+                }
+                else
+                {
+                    strong_this->appCore.Simulation().Universe().MarkSelection(strong_this->selection, menuItem.Marker());
+                    strong_this->appCore.ShowMarkers(true);
+                }
+            });
+    }
+
     void InfoUserControl::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
     {
         auto action = sender.as<Button>().DataContext().as<BrowserAction>();
@@ -94,7 +170,7 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::SetWindowIcon(window);
                 WindowHelper::SetWindowTheme(window);
                 WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 600, 400);
+                WindowHelper::ResizeWindow(window, 700, 400);
                 window.Activate();
             }
         }

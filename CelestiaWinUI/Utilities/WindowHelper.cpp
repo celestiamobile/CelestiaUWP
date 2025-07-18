@@ -115,7 +115,7 @@ namespace winrt::CelestiaWinUI::implementation
     void WindowHelper::ResizeWindow(Window const& window, int32_t width, int32_t height)
     {
         auto appWindow{ window.AppWindow() };
-        if (appWindow)
+        if (appWindow != nullptr)
         {
             auto scaleFactor = GetWindowScaleFactor(window);
             appWindow.Resize({ static_cast<int32_t>(width * scaleFactor), static_cast<int32_t>(height * scaleFactor) });

@@ -1145,7 +1145,7 @@ namespace winrt::CelestiaWinUI::implementation
         WindowHelper::SetWindowIcon(window);
         WindowHelper::SetWindowTheme(window);
         WindowHelper::SetWindowFlowDirection(window);
-        WindowHelper::ResizeWindow(window, 600, 400);
+        WindowHelper::ResizeWindow(window, 700, 400);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
     }
@@ -1161,7 +1161,7 @@ namespace winrt::CelestiaWinUI::implementation
         WindowHelper::SetWindowIcon(window);
         WindowHelper::SetWindowTheme(window);
         WindowHelper::SetWindowFlowDirection(window);
-        WindowHelper::ResizeWindow(window, 600, 400);
+        WindowHelper::ResizeWindow(window, 700, 400);
         window.Activate();
     }
 
@@ -1217,7 +1217,7 @@ namespace winrt::CelestiaWinUI::implementation
         WindowHelper::SetWindowIcon(window);
         WindowHelper::SetWindowTheme(window);
         WindowHelper::SetWindowFlowDirection(window);
-        WindowHelper::ResizeWindow(window, 600, 400);
+        WindowHelper::ResizeWindow(window, 700, 400);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
     }
@@ -1564,47 +1564,29 @@ namespace winrt::CelestiaWinUI::implementation
                 menu.Items().Append(MenuFlyoutSeparator());
 
                 MenuFlyoutSubItem markMenu;
-                markMenu.Text(LocalizationHelper::Localize(L"Mark", L"Mark an object"));
-                std::vector<std::pair<hstring, CelestiaMarkerRepresentation>> markers =
-                {
-                    { LocalizationHelper::Localize(L"Diamond", L"Marker"), CelestiaMarkerRepresentation::Diamond },
-                    { LocalizationHelper::Localize(L"Triangle", L"Marker"), CelestiaMarkerRepresentation::Triangle },
-                    { LocalizationHelper::Localize(L"Square", L"Marker"), CelestiaMarkerRepresentation::Square },
-                    { LocalizationHelper::Localize(L"Filled Square", L"Marker"), CelestiaMarkerRepresentation::FilledSquare },
-                    { LocalizationHelper::Localize(L"Plus", L"Marker"), CelestiaMarkerRepresentation::Plus },
-                    { LocalizationHelper::Localize(L"X", L"Marker"), CelestiaMarkerRepresentation::X },
-                    { LocalizationHelper::Localize(L"Left Arrow", L"Marker"), CelestiaMarkerRepresentation::LeftArrow },
-                    { LocalizationHelper::Localize(L"Right Arrow", L"Marker"), CelestiaMarkerRepresentation::RightArrow },
-                    { LocalizationHelper::Localize(L"Up Arrow", L"Marker"), CelestiaMarkerRepresentation::UpArrow },
-                    { LocalizationHelper::Localize(L"Down Arrow", L"Marker"), CelestiaMarkerRepresentation::DownArrow },
-                    { LocalizationHelper::Localize(L"Circle", L"Marker"), CelestiaMarkerRepresentation::Circle },
-                    { LocalizationHelper::Localize(L"Disk", L"Marker"), CelestiaMarkerRepresentation::Disk },
-                    { LocalizationHelper::Localize(L"Crosshair", L"Marker"), CelestiaMarkerRepresentation::Crosshair }
-                };
+                BrowserMarkAction markAction;
+                markMenu.Text(markAction.Name());
 
-                for (const auto& [name, type] : markers)
+                for (const auto menuItem : markAction.MenuItems())
                 {
-                    auto copiedType = type;
-                    AppendSubItem(markMenu, name, [weak_this{ get_weak() }, selection, copiedType](IInspectable const&, RoutedEventArgs const&)
+                    AppendSubItem(markMenu, menuItem.Title(), [weak_this{get_weak()}, selection, menuItem](IInspectable const&, RoutedEventArgs const&)
                         {
                             auto strong_this{ weak_this.get() };
                             if (strong_this == nullptr) return;
-                            strong_this->renderer.EnqueueTask([strong_this, selection, copiedType]()
+                            strong_this->renderer.EnqueueTask([strong_this, selection, menuItem]()
                                 {
-                                    strong_this->appCore.Simulation().Universe().MarkSelection(selection, copiedType);
-                                    strong_this->appCore.ShowMarkers(true);
+                                    if (!menuItem.Mark())
+                                    {
+                                        strong_this->appCore.Simulation().Universe().UnmarkSelection(selection);
+                                    }
+                                    else
+                                    {
+                                        strong_this->appCore.Simulation().Universe().MarkSelection(selection, menuItem.Marker());
+                                        strong_this->appCore.ShowMarkers(true);
+                                    }
                                 });
                         });
                 }
-                AppendSubItem(markMenu, LocalizationHelper::Localize(L"Unmark", L"Unmark an object"), [weak_this{ get_weak() }, selection](IInspectable const&, RoutedEventArgs const&)
-                    {
-                        auto strong_this{ weak_this.get() };
-                        if (strong_this == nullptr) return;
-                        strong_this->renderer.EnqueueTask([strong_this, selection]()
-                            {
-                                strong_this->appCore.Simulation().Universe().UnmarkSelection(selection);
-                            });
-                    });
                 menu.Items().Append(markMenu);
 
                 menu.ShowAt(GLView(), Point(x / scale, y / scale));

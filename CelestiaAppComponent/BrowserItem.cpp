@@ -12,6 +12,12 @@
 #if __has_include("BrowserShowSubsystemAction.g.cpp")
 #include "BrowserShowSubsystemAction.g.cpp"
 #endif
+#if __has_include("BrowserMarkMenuItem.g.cpp")
+#include "BrowserMarkMenuItem.g.cpp"
+#endif
+#if __has_include("BrowserMarkAction.g.cpp")
+#include "BrowserMarkAction.g.cpp"
+#endif
 #if __has_include("BrowserInputAction.g.cpp")
 #include "BrowserInputAction.g.cpp"
 #endif
@@ -54,6 +60,89 @@ namespace winrt::CelestiaAppComponent::implementation
     int16_t BrowserInputAction::Code()
     {
         return code;
+    }
+
+    BrowserMarkMenuItem::BrowserMarkMenuItem(bool mark, CelestiaComponent::CelestiaMarkerRepresentation marker) : mark(mark), marker(marker)
+    {
+    }
+
+    hstring BrowserMarkMenuItem::Title()
+    {
+        using namespace CelestiaComponent;
+        if (!mark)
+            return LocalizationHelper::Localize(L"Unmark", L"Unmark an object");
+        switch (marker)
+        {
+        case CelestiaMarkerRepresentation::Diamond:
+            return LocalizationHelper::Localize(L"Diamond", L"Marker");
+        case CelestiaMarkerRepresentation::Triangle:
+            return LocalizationHelper::Localize(L"Triangle", L"Marker");
+        case CelestiaMarkerRepresentation::Square:
+            return LocalizationHelper::Localize(L"Square", L"Marker");
+        case CelestiaMarkerRepresentation::FilledSquare:
+            return LocalizationHelper::Localize(L"Filled Square", L"Marker");
+        case CelestiaMarkerRepresentation::Plus:
+            return LocalizationHelper::Localize(L"Plus", L"Marker");
+        case CelestiaMarkerRepresentation::X:
+            return LocalizationHelper::Localize(L"X", L"Marker");
+        case CelestiaMarkerRepresentation::LeftArrow:
+            return LocalizationHelper::Localize(L"Left Arrow", L"Marker");
+        case CelestiaMarkerRepresentation::RightArrow:
+            return LocalizationHelper::Localize(L"Right Arrow", L"Marker");
+        case CelestiaMarkerRepresentation::UpArrow:
+            return LocalizationHelper::Localize(L"Up Arrow", L"Marker");
+        case CelestiaMarkerRepresentation::DownArrow:
+            return LocalizationHelper::Localize(L"Down Arrow", L"Marker");
+        case CelestiaMarkerRepresentation::Circle:
+            return LocalizationHelper::Localize(L"Circle", L"Marker");
+        case CelestiaMarkerRepresentation::Disk:
+            return LocalizationHelper::Localize(L"Disk", L"Marker");
+        case CelestiaMarkerRepresentation::Crosshair:
+            return LocalizationHelper::Localize(L"Crosshair", L"Marker");
+        }
+        return L"";
+    }
+
+    bool BrowserMarkMenuItem::Mark()
+    {
+        return mark;
+    }
+
+    CelestiaComponent::CelestiaMarkerRepresentation BrowserMarkMenuItem::Marker()
+    {
+        return marker;
+    }
+
+    BrowserMarkAction::BrowserMarkAction()
+    {
+        using namespace CelestiaComponent;
+        menuItems = single_threaded_observable_vector<CelestiaAppComponent::BrowserMarkMenuItem>
+        ({
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Diamond),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Triangle),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Square),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::FilledSquare),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Plus),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::X),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::LeftArrow),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::RightArrow),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::UpArrow),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::DownArrow),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Circle),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Disk),
+            CelestiaAppComponent::BrowserMarkMenuItem(true, CelestiaMarkerRepresentation::Crosshair),
+            CelestiaAppComponent::BrowserMarkMenuItem(false, CelestiaMarkerRepresentation::Diamond),
+        });
+    }
+
+    hstring BrowserMarkAction::Name()
+    {
+        return LocalizationHelper::Localize(L"Mark", L"Mark an object");
+    }
+
+    Collections::IObservableVector<CelestiaAppComponent::BrowserMarkMenuItem> BrowserMarkAction::MenuItems()
+    {
+        return menuItems;
     }
 
     BrowserItem::BrowserItem(CelestiaComponent::CelestiaBrowserItem const& item) : item(item)

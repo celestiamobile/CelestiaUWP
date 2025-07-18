@@ -26,6 +26,22 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
+    runtimeclass BrowserMarkMenuItem
+    {
+        BrowserMarkMenuItem(Boolean mark, CelestiaComponent.CelestiaMarkerRepresentation marker);
+        String Title{ get; };
+        Boolean Mark{ get; };
+        CelestiaComponent.CelestiaMarkerRepresentation Marker{ get; };
+    }
+
+    [default_interface]
+    runtimeclass BrowserMarkAction : BrowserAction
+    {
+        BrowserMarkAction();
+        Windows.Foundation.Collections.IObservableVector<BrowserMarkMenuItem> MenuItems{ get; };
+    }
+
+    [default_interface]
     runtimeclass BrowserItem
     {
         BrowserItem(CelestiaComponent.CelestiaBrowserItem item);

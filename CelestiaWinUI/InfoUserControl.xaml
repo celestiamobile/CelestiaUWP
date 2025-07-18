@@ -3,10 +3,33 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:app="using:CelestiaAppComponent"
+    xmlns:local="using:CelestiaWinUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="ActionItemTemplate" x:DataType="app:BrowserAction">
+            <ItemContainer>
+                <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
+            </ItemContainer>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DropDownItemTemplate" x:DataType="app:BrowserMarkAction">
+            <ItemContainer>
+                <DropDownButton DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Loaded="MarkButton_Loaded">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout/>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+            </ItemContainer>
+        </DataTemplate>
+
+        <local:InfoTemplateSelector
+            x:Key="InfoTemplateSelector"
+            Action="{StaticResource ActionItemTemplate}"
+            DropDown="{StaticResource DropDownItemTemplate}"/>
+    </UserControl.Resources>
     <RelativePanel Margin="{StaticResource Margin}" x:Name="Container">
         <ScrollViewer RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Above="ButtonStack" Margin="{StaticResource BottomSpacing}">
             <StackPanel Spacing="{StaticResource VerticalSpacing}" Orientation="Vertical">
@@ -15,20 +38,13 @@
                 <HyperlinkButton x:Name="LinkButton" Margin="0" Padding="0"/>
             </StackPanel>
         </ScrollViewer>
-        <ItemsView x:Name="ButtonStack" ItemsSource="{x:Bind Actions, Mode=OneTime}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+        <ItemsView x:Name="ButtonStack" ItemsSource="{x:Bind Actions, Mode=OneTime}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" ItemTemplate="{StaticResource InfoTemplateSelector}">
             <ItemsView.Layout>
                 <LinedFlowLayout
                     LineSpacing="{StaticResource VerticalSpacing}"
                     MinItemSpacing="{StaticResource HorizontalSpacing}"
                     ItemsJustification="Start"/>
             </ItemsView.Layout>
-            <ItemsView.ItemTemplate>
-                <DataTemplate x:DataType="app:BrowserAction">
-                    <ItemContainer>
-                        <Button DataContext="{x:Bind Mode=OneTime}" Content="{x:Bind Name, Mode=OneTime}" Click="ActionButton_Click"/>
-                    </ItemContainer>
-                </DataTemplate>
-            </ItemsView.ItemTemplate>
         </ItemsView>
     </RelativePanel>
 </UserControl>

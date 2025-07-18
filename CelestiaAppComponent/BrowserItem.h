@@ -3,6 +3,8 @@
 #include "BrowserItem.g.h"
 #include "BrowserItemTab.g.h"
 #include "BrowserAction.g.h"
+#include "BrowserMarkAction.g.h"
+#include "BrowserMarkMenuItem.g.h"
 #include "BrowserGetInfoAction.g.h"
 #include "BrowserShowSubsystemAction.g.h"
 #include "BrowserInputAction.g.h"
@@ -24,6 +26,28 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         BrowserShowSubsystemAction();
         hstring Name();
+    };
+
+    struct BrowserMarkMenuItem : BrowserMarkMenuItemT<BrowserMarkMenuItem>
+    {
+        BrowserMarkMenuItem(bool mark, CelestiaComponent::CelestiaMarkerRepresentation marker);
+        hstring Title();
+        bool Mark();
+        CelestiaComponent::CelestiaMarkerRepresentation Marker();
+
+    private:
+        bool mark;
+        CelestiaComponent::CelestiaMarkerRepresentation marker;
+    };
+
+    struct BrowserMarkAction : BrowserMarkActionT<BrowserMarkAction, BrowserAction>
+    {
+        BrowserMarkAction();
+        hstring Name();
+        Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserMarkMenuItem> MenuItems();
+
+    private:
+        Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserMarkMenuItem> menuItems;
     };
 
     struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, BrowserAction>
@@ -79,6 +103,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     {
     };
 
+    struct BrowserMarkAction : BrowserMarkActionT<BrowserMarkAction, implementation::BrowserMarkAction>
+    {
+    };
+
     struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, implementation::BrowserInputAction>
     {
     };
@@ -88,6 +116,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     };
 
     struct BrowserItemTab : BrowserItemTabT<BrowserItemTab, implementation::BrowserItemTab>
+    {
+    };
+
+    struct BrowserMarkMenuItem : BrowserMarkMenuItemT<BrowserMarkMenuItem, implementation::BrowserMarkMenuItem>
     {
     };
 }

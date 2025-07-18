@@ -64,7 +64,7 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::SetWindowIcon(window);
                 WindowHelper::SetWindowTheme(window);
                 WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 600, 400);
+                WindowHelper::ResizeWindow(window, 700, 400);
                 window.Activate();
             }
         }

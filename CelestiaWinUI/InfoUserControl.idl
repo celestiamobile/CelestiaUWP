@@ -8,6 +8,14 @@ namespace CelestiaWinUI
     }
 
     [default_interface]
+    runtimeclass InfoTemplateSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
+    {
+        InfoTemplateSelector();
+        Microsoft.UI.Xaml.DataTemplate Action;
+        Microsoft.UI.Xaml.DataTemplate DropDown;
+    }
+
+    [default_interface]
     runtimeclass InfoUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection);
