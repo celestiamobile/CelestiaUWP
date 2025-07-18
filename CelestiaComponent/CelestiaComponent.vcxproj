@@ -366,7 +366,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\location.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\lodspheremesh.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\octreebuilder.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\warpmesh.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\marker.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\meshmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\modelgeometry.h" />
@@ -597,7 +597,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\glsupport.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\location.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\warpmesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\marker.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\meshmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\modelgeometry.cpp" />

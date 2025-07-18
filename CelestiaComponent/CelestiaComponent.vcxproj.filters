@@ -238,7 +238,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\lodspheremesh.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\mapmanager.cpp">
+    <ClCompile Include="..\..\Celestia\src\celengine\warpmesh.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\marker.cpp">
@@ -889,7 +889,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\octreebuilder.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\mapmanager.h">
+    <ClInclude Include="..\..\Celestia\src\celengine\warpmesh.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\marker.h">
