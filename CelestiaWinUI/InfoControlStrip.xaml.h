@@ -1,6 +1,7 @@
 #pragma once
 
 #include "InfoShowSubsystemArgs.g.h"
+#include "InfoGetInfoArgs.g.h"
 #include "InfoTemplateSelector.g.h"
 #include "InfoControlStrip.g.h"
 
@@ -9,6 +10,17 @@ namespace winrt::CelestiaWinUI::implementation
     struct InfoShowSubsystemArgs : InfoShowSubsystemArgsT<InfoShowSubsystemArgs>
     {
         InfoShowSubsystemArgs(CelestiaComponent::CelestiaSelection const& selection) : selection(selection) {}
+        CelestiaComponent::CelestiaSelection Selection() { return selection; }
+        bool Handled() { return handled; }
+        void Handled(bool value) { handled = value; }
+    private:
+        CelestiaComponent::CelestiaSelection selection;
+        bool handled{ false };
+    };
+
+    struct InfoGetInfoArgs : InfoGetInfoArgsT<InfoGetInfoArgs>
+    {
+        InfoGetInfoArgs(CelestiaComponent::CelestiaSelection const& selection) : selection(selection) {}
         CelestiaComponent::CelestiaSelection Selection() { return selection; }
         bool Handled() { return handled; }
         void Handled(bool value) { handled = value; }
@@ -44,6 +56,9 @@ namespace winrt::CelestiaWinUI::implementation
         void Renderer(CelestiaComponent::CelestiaRenderer const&);
         void Selection(CelestiaComponent::CelestiaSelection const&);
 
+        bool ShowsGetInfo();
+        void ShowsGetInfo(bool);
+
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> Actions();
         void ActionButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
         void MarkButton_Loaded(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
@@ -51,13 +66,17 @@ namespace winrt::CelestiaWinUI::implementation
 
         event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
         void ShowSubsystem(event_token const& token) noexcept;
+        event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
+        void GetInfo(event_token const& token) noexcept;
 
     private:
+        bool showsGetInfo;
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         CelestiaComponent::CelestiaSelection selection;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> actions;
         event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs>> showSubsystemEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs>> getInfoEvent;
     };
 }
 

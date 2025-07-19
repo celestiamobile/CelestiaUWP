@@ -1,12 +1,7 @@
+import "InfoControlStrip.idl";
+
 namespace CelestiaWinUI
 {
-    [default_interface]
-    runtimeclass BrowserItemGetInfoArgs
-    {
-        CelestiaComponent.CelestiaSelection Selection{ get; };
-        Boolean Handled;
-    }
-
     [default_interface]
     runtimeclass BrowserItemUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
@@ -14,8 +9,7 @@ namespace CelestiaWinUI
         BrowserItemUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.BrowserItemTab item, Boolean preserveMargin);
 
         Microsoft.UI.Xaml.Interop.IBindableObservableVector RootItem{ get; };
-        Windows.Foundation.Collections.IObservableVector<CelestiaAppComponent.BrowserAction> Actions{ get; };
 
-        event Windows.Foundation.EventHandler<BrowserItemGetInfoArgs> GetInfo;
+        event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;
     }
 }

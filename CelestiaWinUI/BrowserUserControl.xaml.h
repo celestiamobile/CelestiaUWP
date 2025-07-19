@@ -14,7 +14,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
         void Nav_BackRequested(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewBackRequestedEventArgs const&);
-        void BrowserItem_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::BrowserItemGetInfoArgs const&);
+        void BrowserItem_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const&);
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;

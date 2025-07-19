@@ -52,7 +52,7 @@ namespace winrt::CelestiaWinUI::implementation
         return nullptr;
     }
 
-    InfoControlStrip::InfoControlStrip() : appCore(nullptr), renderer(nullptr), selection(nullptr)
+    InfoControlStrip::InfoControlStrip() : showsGetInfo(false), appCore(nullptr), renderer(nullptr), selection(nullptr)
     {
         actions = single_threaded_observable_vector<BrowserAction>
         ({
@@ -94,6 +94,29 @@ namespace winrt::CelestiaWinUI::implementation
         selection = value;
     }
 
+    bool InfoControlStrip::ShowsGetInfo()
+    {
+        return showsGetInfo;
+    }
+
+    void InfoControlStrip::ShowsGetInfo(bool value)
+    {
+        if (value != showsGetInfo)
+        {
+            if (value)
+            {
+                if (actions.Size() == 0 || actions.GetAt(0).try_as<BrowserGetInfoAction>() == nullptr)
+                    actions.InsertAt(0, BrowserGetInfoAction());
+            }
+            else
+            {
+                if (actions.Size() > 0 && actions.GetAt(0).try_as<BrowserGetInfoAction>() != nullptr)
+                    actions.RemoveAt(0);
+            }
+            showsGetInfo = value;
+        }
+    }
+
     Collections::IObservableVector<BrowserAction> InfoControlStrip::Actions()
     {
         return actions;
@@ -118,6 +141,8 @@ namespace winrt::CelestiaWinUI::implementation
 
     void InfoControlStrip::MarkMenuFlyoutItem_Click(IInspectable const& sender, RoutedEventArgs const&)
     {
+        if (selection == nullptr || selection.IsEmpty())
+            return;
         auto menuItem = sender.as<MenuFlyoutItem>().DataContext().as<BrowserMarkMenuItem>();
         renderer.EnqueueTask([weak_this{ get_weak() }, menuItem]()
             {
@@ -137,6 +162,8 @@ namespace winrt::CelestiaWinUI::implementation
 
     void InfoControlStrip::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
     {
+        if (selection == nullptr || selection.IsEmpty())
+            return;
         auto action = sender.as<Button>().DataContext().as<BrowserAction>();
         if (action.try_as<BrowserShowSubsystemAction>() != nullptr)
         {
@@ -159,7 +186,7 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::SetWindowIcon(window);
                 WindowHelper::SetWindowTheme(window);
                 WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 700, 400);
+                WindowHelper::ResizeWindow(window, 800, 400);
                 window.Activate();
             }
         }
@@ -173,9 +200,27 @@ namespace winrt::CelestiaWinUI::implementation
                     strong_this->appCore.CharEnter(inputAction.Code());
                 });
         }
+        else if (auto getInfoAction = action.try_as<BrowserGetInfoAction>(); getInfoAction != nullptr)
+        {
+            auto args = make<InfoGetInfoArgs>(selection);
+            getInfoEvent(*this, args);
+            if (!args.Handled())
+            {
+                InfoUserControl userControl{ appCore, renderer, selection };
+                Window window;
+                window.SystemBackdrop(Media::MicaBackdrop());
+                window.Content(userControl);
+                window.Title(appCore.Simulation().Universe().NameForSelection(selection));
+                WindowHelper::SetWindowIcon(window);
+                WindowHelper::SetWindowTheme(window);
+                WindowHelper::SetWindowFlowDirection(window);
+                WindowHelper::ResizeWindow(window, 800, 400);
+                window.Activate();
+            }
+        }
     }
 
-    event_token InfoControlStrip::ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
+    event_token InfoControlStrip::ShowSubsystem(EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
     {
         return showSubsystemEvent.add(handler);
     }
@@ -183,5 +228,15 @@ namespace winrt::CelestiaWinUI::implementation
     void InfoControlStrip::ShowSubsystem(event_token const& token) noexcept
     {
         showSubsystemEvent.remove(token);
+    }
+
+    event_token InfoControlStrip::GetInfo(EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler)
+    {
+        return getInfoEvent.add(handler);
+    }
+
+    void InfoControlStrip::GetInfo(event_token const& token) noexcept
+    {
+        getInfoEvent.remove(token);
     }
 }

@@ -8,6 +8,13 @@ namespace CelestiaWinUI
     }
 
     [default_interface]
+    runtimeclass InfoGetInfoArgs
+    {
+        CelestiaComponent.CelestiaSelection Selection{ get; };
+        Boolean Handled;
+    }
+
+    [default_interface]
     runtimeclass InfoTemplateSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
     {
         InfoTemplateSelector();
@@ -23,7 +30,9 @@ namespace CelestiaWinUI
         CelestiaComponent.CelestiaAppCore AppCore;
         CelestiaComponent.CelestiaRenderer Renderer;
         CelestiaComponent.CelestiaSelection Selection;
+        Boolean ShowsGetInfo;
 
         event Windows.Foundation.EventHandler<InfoShowSubsystemArgs> ShowSubsystem;
+        event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;
     }
 }

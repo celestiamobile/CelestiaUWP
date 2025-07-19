@@ -54,7 +54,7 @@ namespace winrt::CelestiaWinUI::implementation
         Nav().IsBackEnabled(false);
     }
 
-    void BrowserUserControl::BrowserItem_GetInfo(IInspectable const&, BrowserItemGetInfoArgs const& args)
+    void BrowserUserControl::BrowserItem_GetInfo(IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
     {
         args.Handled(true);
         InfoUserControl userControl{ appCore, renderer, args.Selection() };
