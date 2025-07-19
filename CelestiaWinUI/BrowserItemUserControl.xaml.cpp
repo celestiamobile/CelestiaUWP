@@ -19,6 +19,7 @@ namespace winrt::CelestiaWinUI::implementation
         ({
             BrowserGetInfoAction(),
             BrowserInputAction(LocalizationHelper::Localize(L"Go", L"Go to an object"), 103),
+            BrowserInputAction(LocalizationHelper::Localize(L"Center", L"Center an object"), 99),
             BrowserInputAction(LocalizationHelper::Localize(L"Follow", L""), 102),
             BrowserInputAction(LocalizationHelper::Localize(L"Sync Orbit", L""), 121),
             BrowserInputAction(LocalizationHelper::Localize(L"Lock Phase", L""), 58),

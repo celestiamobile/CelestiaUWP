@@ -24,6 +24,7 @@
     <Page Include="CustomPage.xaml" />
     <Page Include="ObserverModeDialog.xaml" />
     <Page Include="InfoUserControl.xaml" />
+    <Page Include="InfoControlStrip.xaml" />
     <Page Include="SearchUserControl.xaml" />
   </ItemGroup>
   <ItemGroup>

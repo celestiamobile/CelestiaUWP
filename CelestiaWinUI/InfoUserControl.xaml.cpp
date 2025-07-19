@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "InfoUserControl.xaml.h"
-#if __has_include("InfoTemplateSelector.g.cpp")
-#include "InfoTemplateSelector.g.cpp"
-#endif
 #if __has_include("InfoUserControl.g.cpp")
 #include "InfoUserControl.g.cpp"
 #endif
@@ -16,60 +13,16 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    InfoTemplateSelector::InfoTemplateSelector()
-    {
-    }
-
-    DataTemplate InfoTemplateSelector::Action()
-    {
-        return action;
-    }
-
-    void InfoTemplateSelector::Action(DataTemplate const& value)
-    {
-        action = value;
-    }
-
-    DataTemplate InfoTemplateSelector::DropDown()
-    {
-        return dropDown;
-    }
-
-    void InfoTemplateSelector::DropDown(DataTemplate const& value)
-    {
-        dropDown = value;
-    }
-
-    DataTemplate InfoTemplateSelector::SelectTemplateCore(IInspectable const& item, DependencyObject const&)
-    {
-        return SelectTemplateCore(item);
-    }
-
-    DataTemplate InfoTemplateSelector::SelectTemplateCore(IInspectable const& item)
-    {
-        if (item.try_as<BrowserMarkAction>() != nullptr) return dropDown;
-        if (item.try_as<BrowserAction>() != nullptr) return action;
-        return nullptr;
-    }
-
     InfoUserControl::InfoUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSelection const& selection, bool preserveMargin) : appCore(appCore), renderer(renderer), selection(selection), preserveMargin(preserveMargin)
     {
-        actions = single_threaded_observable_vector<BrowserAction>
-        ({
-            BrowserInputAction(LocalizationHelper::Localize(L"Go", L"Go to an object"), 103),
-            BrowserInputAction(LocalizationHelper::Localize(L"Follow", L""), 102),
-            BrowserInputAction(LocalizationHelper::Localize(L"Sync Orbit", L""), 121),
-            BrowserInputAction(LocalizationHelper::Localize(L"Lock Phase", L""), 58),
-            BrowserInputAction(LocalizationHelper::Localize(L"Chase", L""), 34),
-            BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), 116),
-            BrowserShowSubsystemAction(),
-            BrowserMarkAction(),
-        });
     }
 
     void InfoUserControl::InitializeComponent()
     {
         InfoUserControlT::InitializeComponent();
+        ControlStrip().AppCore(appCore);
+        ControlStrip().Renderer(renderer);
+        ControlStrip().Selection(selection);
 
         if (!preserveMargin)
         {
@@ -117,87 +70,6 @@ namespace winrt::CelestiaWinUI::implementation
             });
     }
 
-    Collections::IObservableVector<BrowserAction> InfoUserControl::Actions()
-    {
-        return actions;
-    }
-
-    void InfoUserControl::MarkButton_Loaded(IInspectable const& sender, RoutedEventArgs const&)
-    {
-        auto button = sender.as<DropDownButton>();
-        auto action = button.DataContext().as<BrowserMarkAction>();
-        auto menuFlyout = button.Flyout().as<MenuFlyout>();
-        menuFlyout.Items().Clear();
-
-        for (const auto& menuItem : action.MenuItems())
-        {
-            MenuFlyoutItem menuFlyoutItem;
-            menuFlyoutItem.DataContext(menuItem);
-            menuFlyoutItem.Text(menuItem.Title());
-            menuFlyoutItem.Click({ get_weak(), &InfoUserControl::MarkMenuFlyoutItem_Click });
-            menuFlyout.Items().Append(menuFlyoutItem);
-        }
-    }
-
-    void InfoUserControl::MarkMenuFlyoutItem_Click(IInspectable const& sender, RoutedEventArgs const&)
-    {
-        auto menuItem = sender.as<MenuFlyoutItem>().DataContext().as<BrowserMarkMenuItem>();
-        renderer.EnqueueTask([weak_this{ get_weak() }, menuItem]()
-            {
-                auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr) return;
-                if (!menuItem.Mark())
-                {
-                    strong_this->appCore.Simulation().Universe().UnmarkSelection(strong_this->selection);
-                }
-                else
-                {
-                    strong_this->appCore.Simulation().Universe().MarkSelection(strong_this->selection, menuItem.Marker());
-                    strong_this->appCore.ShowMarkers(true);
-                }
-            });
-    }
-
-    void InfoUserControl::ActionButton_Click(IInspectable const& sender, RoutedEventArgs const&)
-    {
-        auto action = sender.as<Button>().DataContext().as<BrowserAction>();
-        if (action.try_as<BrowserShowSubsystemAction>() != nullptr)
-        {
-            auto args = make<InfoShowSubsystemArgs>(selection);
-            showSubsystemEvent(*this, args);
-            if (!args.Handled())
-            {
-                CelestiaAppCore core = appCore;
-                auto items = single_threaded_observable_vector<BrowserItem>();
-                CelestiaBrowserItem browserItem{ appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [core](CelestiaBrowserItem const& item)
-                    {
-                        return CelestiaExtension::GetChildren(item, core);
-                    }, false };
-                items.Append(BrowserItem(browserItem));
-                BrowserItemUserControl userControl{ appCore, renderer, BrowserItemTab(items, L"") };
-                Window window;
-                window.SystemBackdrop(Media::MicaBackdrop());
-                window.Content(userControl);
-                window.Title(appCore.Simulation().Universe().NameForSelection(selection));
-                WindowHelper::SetWindowIcon(window);
-                WindowHelper::SetWindowTheme(window);
-                WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 700, 400);
-                window.Activate();
-            }
-        }
-        else if (auto inputAction = action.try_as<BrowserInputAction>(); inputAction != nullptr)
-        {
-            renderer.EnqueueTask([weak_this{ get_weak() }, inputAction]()
-                {
-                    auto strong_this{ weak_this.get() };
-                    if (strong_this == nullptr) return;
-                    strong_this->appCore.Simulation().Selection(strong_this->selection);
-                    strong_this->appCore.CharEnter(inputAction.Code());
-                });
-        }
-    }
-
     event_token InfoUserControl::ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
     {
         return showSubsystemEvent.add(handler);
@@ -226,5 +98,10 @@ namespace winrt::CelestiaWinUI::implementation
             if (strong_this == nullptr) return;
             strong_this->appCore.Simulation().ActiveObserver().Cockpit(CelestiaSelection());
         });
+    }
+
+    void InfoUserControl::ControlStrip_ShowSubsystem(IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+    {
+        showSubsystemEvent(*this, args);
     }
 }

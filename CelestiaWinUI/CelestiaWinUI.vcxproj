@@ -232,6 +232,9 @@
     <Page Include="TourGuideWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="InfoControlStrip.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="InfoUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -530,6 +533,10 @@
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="InfoControlStrip.xaml.h">
+      <DependentUpon>InfoControlStrip.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="InfoUserControl.xaml.h">
       <DependentUpon>InfoUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -578,6 +585,10 @@
     </ClCompile>
     <ClCompile Include="TourGuideWindow.xaml.cpp">
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="InfoControlStrip.xaml.cpp">
+      <DependentUpon>InfoControlStrip.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="InfoUserControl.xaml.cpp">
@@ -632,6 +643,10 @@
     </Midl>
     <Midl Include="TourGuideWindow.idl">
       <DependentUpon>TourGuideWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="InfoControlStrip.idl">
+      <DependentUpon>InfoControlStrip.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="InfoUserControl.idl">
