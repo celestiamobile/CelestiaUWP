@@ -39,27 +39,11 @@ namespace winrt::CelestiaWinUI::implementation
         if (browserItem == nullptr) return;
         BrowserItemUserControl userControl{ appCore, renderer, browserItem, false };
 
-        userControl.GetInfo({ get_weak(), &BrowserUserControl::BrowserItem_GetInfo });
-
         BrowserItemListContainer().Children().Append(userControl);
         BrowserItemListContainer().SetAlignTopWithPanel(userControl, true);
         BrowserItemListContainer().SetAlignBottomWithPanel(userControl, true);
         BrowserItemListContainer().SetAlignLeftWithPanel(userControl, true);
         BrowserItemListContainer().SetAlignRightWithPanel(userControl, true);
-    }
-
-    void BrowserUserControl::Nav_BackRequested(IInspectable const&, Controls::NavigationViewBackRequestedEventArgs const&)
-    {
-        Container().Content(BrowserItemListContainer());
-        Nav().IsBackEnabled(false);
-    }
-
-    void BrowserUserControl::BrowserItem_GetInfo(IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
-    {
-        args.Handled(true);
-        InfoUserControl userControl{ appCore, renderer, args.Selection() };
-        Container().Navigate(xaml_typename<CelestiaWinUI::CustomPage>(), userControl);
-        Nav().IsBackEnabled(true);
     }
 
     Collections::IObservableVector<BrowserItemTab> BrowserUserControl::RootItems()

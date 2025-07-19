@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Visible" IsBackEnabled="False" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged" BackRequested="Nav_BackRequested">
+    <NavigationView IsFocusEngagementEnabled="True" UseSystemFocusVisuals="True" MenuItemsSource="{x:Bind RootItems, Mode=OneWay}" x:Name="Nav" IsBackButtonVisible="Collapsed" IsBackEnabled="False" IsSettingsVisible="False" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged">
         <NavigationView.MenuItemTemplate>
             <DataTemplate x:DataType="app:BrowserItemTab">
                 <NavigationViewItem Content="{x:Bind TabName, Mode=OneTime}"/>

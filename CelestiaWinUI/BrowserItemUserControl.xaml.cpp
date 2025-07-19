@@ -64,11 +64,6 @@ namespace winrt::CelestiaWinUI::implementation
         ControlStrip().Selection(CelestiaSelection(object));
     }
 
-    void BrowserItemUserControl::ControlStrip_GetInfo(IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
-    {
-        getInfoEvent(*this, args);
-    }
-
     event_token BrowserItemUserControl::GetInfo(EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler)
     {
         return getInfoEvent.add(handler);

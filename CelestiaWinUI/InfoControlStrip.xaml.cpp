@@ -186,7 +186,7 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::SetWindowIcon(window);
                 WindowHelper::SetWindowTheme(window);
                 WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 800, 400);
+                WindowHelper::ResizeWindow(window, 600, 600);
                 window.Activate();
             }
         }
@@ -214,7 +214,7 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::SetWindowIcon(window);
                 WindowHelper::SetWindowTheme(window);
                 WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 800, 400);
+                WindowHelper::ResizeWindow(window, 600, 600);
                 window.Activate();
             }
         }

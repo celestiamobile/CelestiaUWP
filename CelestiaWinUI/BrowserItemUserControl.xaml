@@ -18,6 +18,6 @@
                 </DataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <local:InfoControlStrip x:Name="ControlStrip" ShowsGetInfo="True" GetInfo="ControlStrip_GetInfo" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
+        <local:InfoControlStrip x:Name="ControlStrip" ShowsGetInfo="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
     </RelativePanel>
 </UserControl>

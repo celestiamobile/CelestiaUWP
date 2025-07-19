@@ -13,7 +13,6 @@ namespace winrt::CelestiaWinUI::implementation
         Microsoft::UI::Xaml::Interop::IBindableObservableVector RootItem();
 
         void Tree_SelectionChanged(Microsoft::UI::Xaml::Controls::TreeView const&, Microsoft::UI::Xaml::Controls::TreeViewSelectionChangedEventArgs const&);
-        void ControlStrip_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const&);
 
         event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
         void GetInfo(event_token const& token) noexcept;
