@@ -23,6 +23,7 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaDSO : CelestiaDSOT<CelestiaDSO, CelestiaAstroObject>
     {
         CelestiaDSO(DeepSkyObject* dso);
+        CelestiaComponent::CelestiaDSOType ObjectType() const;
         hstring Type();
         hstring InfoURL();
         CelestiaComponent::CelestiaVector Position();

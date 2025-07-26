@@ -12,10 +12,19 @@ import "CelestiaVector.idl";
 
 namespace CelestiaComponent
 {
+    enum CelestiaDSOType
+    {
+        Galaxy = 0,
+        Globular = 1,
+        Nebula = 2,
+        OpenCluster = 3
+    };
+
     [default_interface]
     unsealed runtimeclass CelestiaDSO : CelestiaAstroObject
     {
         String Type{ get; };
+        CelestiaDSOType ObjectType{ get; };
         String InfoURL{ get; };
         CelestiaVector Position{ get; };
         String Description{ get; };

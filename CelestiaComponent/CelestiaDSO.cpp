@@ -22,6 +22,11 @@ namespace winrt::CelestiaComponent::implementation
 	{
 	}
 
+    CelestiaComponent::CelestiaDSOType CelestiaDSO::ObjectType() const
+    {
+        return static_cast<CelestiaComponent::CelestiaDSOType>(reinterpret_cast<DeepSkyObject*>(obj)->getObjType());
+    }
+
 	hstring CelestiaDSO::Type()
 	{
 		return to_hstring(reinterpret_cast<DeepSkyObject*>(obj)->getType());

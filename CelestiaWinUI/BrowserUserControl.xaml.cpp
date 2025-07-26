@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <unordered_map>
+
 #include "BrowserUserControl.xaml.h"
 #if __has_include("BrowserUserControl.g.cpp")
 #include "BrowserUserControl.g.cpp"
@@ -149,6 +152,11 @@ namespace winrt::CelestiaWinUI::implementation
                 L"Open cluster",
                 L"Unknown"
             };
+            std::unordered_map<CelestiaDSOType, int> objectTypeMapping = {
+                { CelestiaDSOType::Globular, 5 },
+                { CelestiaDSOType::OpenCluster, 6 },
+                { CelestiaDSOType::Nebula, 4 }
+            };
             std::vector<std::vector<CelestiaBrowserItem>> results;
             for (int i = 0; i < typeMap.size(); i++)
             {
@@ -170,13 +178,21 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 auto dso = dsoCatalog.DSOAt(i);
                 auto categoryIndex = typeMap.size() - 1;
-                auto type = std::wstring(dso.Type());
-                for (int j = 0; j < typeMap.size(); j++)
+                auto matchingIterator = objectTypeMapping.find(dso.ObjectType());
+                if (matchingIterator != objectTypeMapping.end())
                 {
-                    if ((typeMap[j].size() <= type.size()) && std::equal(typeMap[j].begin(), typeMap[j].end(), type.begin()))
+                    categoryIndex = matchingIterator->second;
+                }
+                else
+                {
+                    auto type = std::wstring(dso.Type());
+                    for (int j = 0; j < typeMap.size(); j++)
                     {
-                        categoryIndex = j;
-                        break;
+                        if ((typeMap[j].size() <= type.size()) && std::equal(typeMap[j].begin(), typeMap[j].end(), type.begin()))
+                        {
+                            categoryIndex = j;
+                            break;
+                        }
                     }
                 }
                 CelestiaBrowserItem item{ dsoCatalog.DSOName(dso), dso, [weak_this{ get_weak() }](CelestiaBrowserItem const& item)
