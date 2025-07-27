@@ -141,76 +141,103 @@ namespace winrt::CelestiaWinUI::implementation
         }
         else
         {
-            std::vector<std::wstring> typeMap
-            {
-                L"SB",
-                L"S",
-                L"E",
-                L"Irr",
-                L"Neb",
-                L"Glob",
-                L"Open cluster",
-                L"Unknown"
-            };
-            std::unordered_map<CelestiaDSOType, int> objectTypeMapping = {
-                { CelestiaDSOType::Globular, 5 },
-                { CelestiaDSOType::OpenCluster, 6 },
-                { CelestiaDSOType::Nebula, 4 }
-            };
-            std::vector<std::vector<CelestiaBrowserItem>> results;
-            for (int i = 0; i < typeMap.size(); i++)
-            {
-                results.emplace_back();
-            }
-            std::vector<hstring> categoryNames
-            {
-                LocalizationHelper::Localize(L"Galaxies (Barred Spiral)", L""),
-                LocalizationHelper::Localize(L"Galaxies (Spiral)", L""),
-                LocalizationHelper::Localize(L"Galaxies (Elliptical)", L""),
-                LocalizationHelper::Localize(L"Galaxies (Irregular)", L""),
-                LocalizationHelper::Localize(L"Nebulae", L""),
-                LocalizationHelper::Localize(L"Globulars", L""),
-                LocalizationHelper::Localize(L"Open Clusters", L""),
-                LocalizationHelper::Localize(L"Unknown", L""),
-            };
             auto dsoCatalog = universe.DSOCatalog();
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> barredSpiralItems = { LocalizationHelper::Localize(L"Barred Spiral", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> spiralItems = { LocalizationHelper::Localize(L"Spiral", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> ellipticalItems = { LocalizationHelper::Localize(L"Elliptical", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> irregularItems = { LocalizationHelper::Localize(L"Irregular", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> lenticularItems = { LocalizationHelper::Localize(L"Lenticular", L""), {} };
+            std::unordered_map<hstring, std::pair<hstring, std::vector<CelestiaBrowserItem>>&> galaxyItems = {
+                { L"SBa", barredSpiralItems },
+                { L"SBb", barredSpiralItems },
+                { L"SBc", barredSpiralItems },
+                { L"Sa", spiralItems },
+                { L"Sb", spiralItems },
+                { L"Sc", spiralItems },
+                { L"S0", lenticularItems },
+                { L"E0", ellipticalItems },
+                { L"E1", ellipticalItems },
+                { L"E2", ellipticalItems },
+                { L"E3", ellipticalItems },
+                { L"E4", ellipticalItems },
+                { L"E5", ellipticalItems },
+                { L"E6", ellipticalItems },
+                { L"E7", ellipticalItems },
+                { L"Irr", irregularItems },
+            };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> emissionItems = { LocalizationHelper::Localize(L"Emission", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> reflectionItems = { LocalizationHelper::Localize(L"Reflection", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> darkItems = { LocalizationHelper::Localize(L"Dark", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> planetaryItems = { LocalizationHelper::Localize(L"Planetary", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> supernovaRemnantItems = { LocalizationHelper::Localize(L"Supernova Remnant", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> hiiRegionItems = { LocalizationHelper::Localize(L"H II Region", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> protoplanetaryItems = { LocalizationHelper::Localize(L"Protoplanetary", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> unknownItems = { LocalizationHelper::Localize(L"Unknown", L""), {} };
+            std::unordered_map<hstring, std::pair<hstring, std::vector<CelestiaBrowserItem>>&> nebulaItems = {
+                { L"Emission", emissionItems },
+                { L"Reflection", reflectionItems },
+                { L"Dark", darkItems },
+                { L"Planetary", planetaryItems },
+                { L"SupernovaRemnant", supernovaRemnantItems },
+                { L"HII_Region", hiiRegionItems },
+                { L"Protoplanetary", protoplanetaryItems },
+                { L" ", unknownItems },
+            };
+            std::vector<CelestiaBrowserItem> globularItems;
+            std::vector<CelestiaBrowserItem> openClusterItems;
+
             for (int i = 0; i < dsoCatalog.Count(); i++)
             {
                 auto dso = dsoCatalog.DSOAt(i);
-                auto categoryIndex = typeMap.size() - 1;
-                auto matchingIterator = objectTypeMapping.find(dso.ObjectType());
-                if (matchingIterator != objectTypeMapping.end())
+                std::vector<CelestiaBrowserItem>* vectorToAdd = nullptr;
+                hstring type = dso.Type();
+                switch (dso.ObjectType())
                 {
-                    categoryIndex = matchingIterator->second;
+                case CelestiaDSOType::Galaxy:
+                    if (auto it = galaxyItems.find(type); it != galaxyItems.end())
+                        vectorToAdd = &it->second.second;
+                    break;
+                case CelestiaDSOType::Globular:
+                    vectorToAdd = &globularItems;
+                    break;
+                case CelestiaDSOType::Nebula:
+                    if (auto it = nebulaItems.find(type); it != nebulaItems.end())
+                        vectorToAdd = &it->second.second;
+                    break;
+                case CelestiaDSOType::OpenCluster:
+                    vectorToAdd = &openClusterItems;
+                    break;
                 }
-                else
-                {
-                    auto type = std::wstring(dso.Type());
-                    for (int j = 0; j < typeMap.size(); j++)
-                    {
-                        if ((typeMap[j].size() <= type.size()) && std::equal(typeMap[j].begin(), typeMap[j].end(), type.begin()))
-                        {
-                            categoryIndex = j;
-                            break;
-                        }
-                    }
-                }
+
+                if (vectorToAdd == nullptr) continue;
+
                 CelestiaBrowserItem item{ dsoCatalog.DSOName(dso), dso, [weak_this{ get_weak() }](CelestiaBrowserItem const& item)
-                    {
-                        auto strong_this{ weak_this.get() };
-                        if (strong_this == nullptr) return com_array<CelestiaBrowserItem>();
-                        return CelestiaExtension::GetChildren(item, strong_this->appCore);
-                    }, false };
-                results[categoryIndex].push_back(item);
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return com_array<CelestiaBrowserItem>();
+                    return CelestiaExtension::GetChildren(item, strong_this->appCore);
+                }, false };
+                vectorToAdd->push_back(item);
             }
             auto dsoCategories = single_threaded_observable_vector<BrowserItem>();
-            for (size_t i = 0; i < results.size(); i++)
+            std::vector<CelestiaBrowserItem> galaxyBrowserItems;
+            for (const auto& [name, items] : { barredSpiralItems, spiralItems, ellipticalItems, lenticularItems })
             {
-                if (results[i].size() > 0)
-                {
-                    dsoCategories.Append(BrowserItem(CelestiaBrowserItem(categoryNames[i], results[i], false)));
-                }
+                if (items.empty())
+                    continue;
+                galaxyBrowserItems.push_back(CelestiaBrowserItem(name, items, false));
             }
+            dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Galaxies", L""), galaxyBrowserItems, true)));
+            dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Globulars", L""), globularItems, false)));
+            std::vector<CelestiaBrowserItem> nebulaBrowserItems;
+            for (const auto& [name, items] : { emissionItems, reflectionItems, darkItems, planetaryItems, supernovaRemnantItems, hiiRegionItems, protoplanetaryItems, unknownItems })
+            {
+                if (items.empty())
+                    continue;
+                nebulaBrowserItems.push_back(CelestiaBrowserItem(name, items, false));
+            }
+            dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Nebulae", L""), nebulaBrowserItems, true)));
+            dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Open Clusters", L""), openClusterItems, false)));
             savedDsos = dsoCategories;
             rootItems.Append(BrowserItemTab(savedDsos, dsoTabName));
         }
