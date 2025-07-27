@@ -221,7 +221,7 @@ namespace winrt::CelestiaWinUI::implementation
             }
             auto dsoCategories = single_threaded_observable_vector<BrowserItem>();
             std::vector<CelestiaBrowserItem> galaxyBrowserItems;
-            for (const auto& [name, items] : { barredSpiralItems, spiralItems, ellipticalItems, lenticularItems })
+            for (const auto& [name, items] : { barredSpiralItems, spiralItems, ellipticalItems, lenticularItems, irregularItems })
             {
                 if (items.empty())
                     continue;
