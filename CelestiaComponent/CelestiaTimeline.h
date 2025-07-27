@@ -17,12 +17,13 @@ namespace winrt::CelestiaComponent::implementation
 {
     struct CelestiaTimelinePhase : CelestiaTimelinePhaseT<CelestiaTimelinePhase>
     {
-        CelestiaTimelinePhase(TimelinePhase::SharedConstPtr const &tp);
+        CelestiaTimelinePhase(TimelinePhase const &tp);
 
         double StartJulianDay();
         double EndJulianDay();
     private:
-        TimelinePhase::SharedConstPtr tp;
+        double phaseStartTime;
+        double phaseEndTime;
     };
 
     struct CelestiaTimeline : CelestiaTimelineT<CelestiaTimeline>

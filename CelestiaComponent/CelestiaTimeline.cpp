@@ -23,18 +23,18 @@ using namespace Windows::Foundation;
 
 namespace winrt::CelestiaComponent::implementation
 {
-    CelestiaTimelinePhase::CelestiaTimelinePhase(TimelinePhase::SharedConstPtr const& tp) : tp(tp)
+    CelestiaTimelinePhase::CelestiaTimelinePhase(TimelinePhase const& tp) : phaseStartTime(tp.startTime()), phaseEndTime(tp.endTime())
     {
     }
 
     double CelestiaTimelinePhase::StartJulianDay()
     {
-        return tp->startTime();
+        return phaseStartTime;
     }
 
     double CelestiaTimelinePhase::EndJulianDay()
     {
-        return tp->endTime();
+        return phaseEndTime;
     }
 
     CelestiaTimeline::CelestiaTimeline(const Timeline* t) : t(t)
