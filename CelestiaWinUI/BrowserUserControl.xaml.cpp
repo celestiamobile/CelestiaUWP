@@ -142,11 +142,11 @@ namespace winrt::CelestiaWinUI::implementation
         else
         {
             auto dsoCatalog = universe.DSOCatalog();
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> barredSpiralItems = { LocalizationHelper::Localize(L"Barred Spiral", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> spiralItems = { LocalizationHelper::Localize(L"Spiral", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> ellipticalItems = { LocalizationHelper::Localize(L"Elliptical", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> irregularItems = { LocalizationHelper::Localize(L"Irregular", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> lenticularItems = { LocalizationHelper::Localize(L"Lenticular", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> barredSpiralItems = { LocalizationHelper::Localize(L"Barred Spiral Galaxies", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> spiralItems = { LocalizationHelper::Localize(L"Spiral Galaxies", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> ellipticalItems = { LocalizationHelper::Localize(L"Elliptical Galaxies", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> irregularItems = { LocalizationHelper::Localize(L"Irregular Galaxies", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> lenticularItems = { LocalizationHelper::Localize(L"Lenticular Galaxies", L""), {} };
             std::unordered_map<hstring, std::pair<hstring, std::vector<CelestiaBrowserItem>>&> galaxyItems = {
                 { L"SBa", barredSpiralItems },
                 { L"SBb", barredSpiralItems },
@@ -165,14 +165,14 @@ namespace winrt::CelestiaWinUI::implementation
                 { L"E7", ellipticalItems },
                 { L"Irr", irregularItems },
             };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> emissionItems = { LocalizationHelper::Localize(L"Emission", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> reflectionItems = { LocalizationHelper::Localize(L"Reflection", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> darkItems = { LocalizationHelper::Localize(L"Dark", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> planetaryItems = { LocalizationHelper::Localize(L"Planetary", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> supernovaRemnantItems = { LocalizationHelper::Localize(L"Supernova Remnant", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> hiiRegionItems = { LocalizationHelper::Localize(L"H II Region", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> protoplanetaryItems = { LocalizationHelper::Localize(L"Protoplanetary", L""), {} };
-            std::pair<hstring, std::vector<CelestiaBrowserItem>> unknownItems = { LocalizationHelper::Localize(L"Unknown", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> emissionItems = { LocalizationHelper::Localize(L"Emission Nebulae", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> reflectionItems = { LocalizationHelper::Localize(L"Reflection Nebulae", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> darkItems = { LocalizationHelper::Localize(L"Dark Nebulae", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> planetaryItems = { LocalizationHelper::Localize(L"Planetary Nebulae", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> supernovaRemnantItems = { LocalizationHelper::Localize(L"Supernova Remnants", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> hiiRegionItems = { LocalizationHelper::Localize(L"H II Regions", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> protoplanetaryItems = { LocalizationHelper::Localize(L"Protoplanetary Nebulae", L""), {} };
+            std::pair<hstring, std::vector<CelestiaBrowserItem>> unknownItems = { LocalizationHelper::Localize(L"Unknown Nebulae", L""), {} };
             std::unordered_map<hstring, std::pair<hstring, std::vector<CelestiaBrowserItem>>&> nebulaItems = {
                 { L"Emission", emissionItems },
                 { L"Reflection", reflectionItems },
