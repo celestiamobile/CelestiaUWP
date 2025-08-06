@@ -153,31 +153,61 @@ namespace winrt::CelestiaComponent::implementation
                 }
             }
 
+            const EGLint configCount = 64;
+            EGLConfig configs[configCount];
             EGLint numConfigs;
             if (enableMultisample) {
                 // Try to enable multisample but fallback if not available
-                if (!eglChooseConfig(display, multisampleAttribs, &config, 1, &numConfigs) && !eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                if (eglChooseConfig(display, multisampleAttribs, configs, configCount, &numConfigs))
                 {
-                    printf("eglChooseConfig() returned error %d", eglGetError());
-                    Destroy();
-                    return false;
+                    for (EGLint i = 0; i < numConfigs; ++i)
+                    {
+                        if (eglGetConfigAttrib(display, configs[i], EGL_NATIVE_VISUAL_ID, &format))
+                        {
+                            config = configs[i];
+                            EGLint numSamples;
+                            if (eglGetConfigAttrib(display, config, EGL_SAMPLES, &numSamples) && numSamples > 1)
+                                sampleCount = numSamples;
+                            break;
+                        }
+                        else
+                        {
+                            printf("eglGetConfigAttrib() returned error %d", eglGetError());
+                        }
+                    }
                 }
-                EGLint numSamples;
-                if (eglGetConfigAttrib(display, config, EGL_SAMPLES, &numSamples) && numSamples > 1)
-                    sampleCount = numSamples;
-            }
-            else {
-                if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs))
+                else
                 {
                     printf("eglChooseConfig() returned error %d", eglGetError());
-                    Destroy();
-                    return false;
                 }
             }
 
-            if (!eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format))
+            if (config == nullptr)
             {
-                printf("eglGetConfigAttrib() returned error %d", eglGetError());
+                if (!eglChooseConfig(display, attribs, configs, configCount, &numConfigs))
+                {
+                    printf("eglChooseConfig() returned error %d", eglGetError());
+                    Destroy();
+                    return false;
+                }
+
+                for (EGLint i = 0; i < numConfigs; ++i)
+                {
+                    if (eglGetConfigAttrib(display, configs[i], EGL_NATIVE_VISUAL_ID, &format))
+                    {
+                        config = configs[i];
+                        break;
+                    }
+                    else
+                    {
+                        printf("eglGetConfigAttrib() returned error %d", eglGetError());
+                    }
+                }
+            }
+
+            if (config == nullptr)
+            {
+                printf("No suitable EGLConfig found");
                 Destroy();
                 return false;
             }

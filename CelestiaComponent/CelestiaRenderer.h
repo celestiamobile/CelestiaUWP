@@ -64,7 +64,7 @@ namespace winrt::CelestiaComponent::implementation
         EGLDisplay display = EGL_NO_DISPLAY;
         EGLSurface surface = EGL_NO_SURFACE;
         EGLContext context = EGL_NO_CONTEXT;
-        EGLConfig config{};
+        EGLConfig config { nullptr };
         EGLint format{};
 
     private:
