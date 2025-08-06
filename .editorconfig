@@ -1,6 +1,6 @@
 root = true
 [*]
-file_header_template = \n{fileName}\n\nCopyright © 2023 Celestia Development Team. All rights reserved.\n\nThis program is free software, you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation, either version 2\nof the License, or (at your option) any later version.\n
+file_header_template = {fileName}\n\nCopyright (C) 2025, Celestia Development Team\n\nThis program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n
 indent_size = 4
 indent_style = space
 trim_trailing_whitespace = true
