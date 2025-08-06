@@ -124,10 +124,15 @@ namespace winrt::CelestiaWinUI::implementation
     void WindowHelper::ResizeWindow(Window const& window, int32_t width, int32_t height)
     {
         auto appWindow{ window.AppWindow() };
+
         if (appWindow != nullptr)
         {
+            auto displayArea = Microsoft::UI::Windowing::DisplayArea::Primary().WorkArea();
             auto scaleFactor = GetWindowScaleFactor(window);
-            appWindow.Resize({ static_cast<int32_t>(width * scaleFactor), static_cast<int32_t>(height * scaleFactor) });
+            auto scaledWidth = static_cast<int32_t>(width * scaleFactor);
+            auto scaledHeight = static_cast<int32_t>(height * scaleFactor);
+
+            appWindow.MoveAndResize({ 100, (displayArea.Height - scaledHeight) / 2, scaledWidth, scaledHeight });
         }
     }
 

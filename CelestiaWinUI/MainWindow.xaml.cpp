@@ -9,6 +9,9 @@
 
 #include "pch.h"
 #include "MainWindow.xaml.h"
+#if __has_include("TestEntry.g.cpp")
+#include "TestEntry.g.cpp"
+#endif
 #if __has_include("MainWindow.g.cpp")
 #include "MainWindow.g.cpp"
 #endif
@@ -425,6 +428,16 @@ namespace winrt::CelestiaWinUI::implementation
         MenuBarItem fileItem;
         fileItem.Title(LocalizationHelper::Localize(L"File", L"File menu"));
 
+        std::vector<CelestiaWinUI::TestEntry> testInfos =
+        {
+            CelestiaWinUI::TestEntry(L"cel://Follow/Sol:Earth/2023-07-02T13:52:59.06554Z?x=gHqIoxcYrv7//////////w&y=JAcLdlkIUQ&z=ySumWO0O/v///////////w&ow=-0.73719114&ox=-0.26776052&oy=-0.6141897&oz=0.087318935&select=Sol:Earth&fov=15.534162&ts=1&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", L"", true),
+            CelestiaWinUI::TestEntry(L"cel://Follow/Sol/2023-06-10T04:01:09.36594Z?x=AADgxNkenTx7Ag&y=AAAAeu5N7SvJAw&z=AABAbpqtfATN+v///////w&ow=-0.1762914&ox=0.039147615&oy=0.9339327&oz=0.30847773&fov=15.497456&ts=1&ltd=0&p=0&rf=71227315&nrf=255&lm=6147&tsrc=0&ver=3", L"", false),
+            CelestiaWinUI::TestEntry(L"cel://SyncOrbit/Sol:Earth/2024-07-30T06:00:31.79943Z?x=5H8ym9O86f///////////w&y=Jx39zwAGIw&z=6bKOqSApDw&ow=0.88020444&ox=-0.3483816&oy=0.18829681&oz=-0.26156196&select=TYC%204123-1214-1&fov=51.175&ts=1&ltd=0&p=1&rf=71235487&nrf=255&lm=15&tsrc=0&ver=3", L"", false),
+            CelestiaWinUI::TestEntry(L"cel://Follow/Westerhout%2051/2023-06-10T03:31:39.13768Z?x=AAAAAABxRUqY3KUS&y=AAAAAAA1xr8Nhgv2/////w&z=AAAAAAC8ueP73lXs/////w&ow=-0.4382953&ox=0.5837729&oy=0.678968&oz=0.07815942&fov=15.497456&ts=1&ltd=0&p=0&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", L"", false),
+            CelestiaWinUI::TestEntry(L"cel://Follow/Sol:Jupiter:Callisto/2023-07-02T11:03:12.01362Z?x=YJG63ya8Sf///////////w&y=k1RN8wszCw&z=ZY4WNWkjGQ&ow=0.7285262&ox=-0.043709736&oy=0.682417&oz=0.0405734&fov=5.30302&ts=10&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", L"", false),
+            CelestiaWinUI::TestEntry(L"cel://Follow/Cygnus%20X-1/2023-07-02T13:52:59.06554Z?x=ACwEriWpVvv//////////w&y=cKpIoLiUl////////////w&z=AOyX+4hMTQg&ow=0.10665737&ox=-0.3053027&oy=-0.0070079123&oz=0.94623744&select=HD%20226868%20A&fov=15.534161&ts=10&ltd=0&p=1&rf=71227287&nrf=255&lm=2048&tsrc=0&ver=3", L"87D5FBAB-5722-70A9-6D4C-F4FD22EA87BC", false),
+        };
+
         AppendItem(fileItem, LocalizationHelper::Localize(L"Run Script\u2026", L""), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
                 auto strong_this{ weak_this.get() };
@@ -490,6 +503,19 @@ namespace winrt::CelestiaWinUI::implementation
                 if (strong_this == nullptr) return;
                 strong_this->PasteURL();
             }, pasteKeyboardAccelerator);
+
+
+        for (int i = 0; i < testInfos.size(); i += 1)
+        {
+            const auto entry = testInfos[i];
+            AppendItem(fileItem, hstring(fmt::format(L"Test {}", i)), [weak_this{ get_weak() }, entry](IInspectable const&, RoutedEventArgs const&)
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->ShowTest(entry);
+                });
+        }
+
         fileItem.Items().Append(MenuFlyoutSeparator());
 
         AppendItem(fileItem, LocalizationHelper::Localize(L"Settings", L""), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
@@ -1876,6 +1902,35 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 appCore.KeyUp(key, 0);
             });
+    }
+
+    void MainWindow::ShowTest(CelestiaWinUI::TestEntry const entry)
+    {
+        renderer.EnqueueTask([this, entry]()
+            {
+                appCore.GoToURL(entry.URL());
+            });
+
+        if (entry.ShowInfo())
+        {
+            renderer.EnqueueTask([this, entry]()
+                {
+                    auto selection = appCore.Simulation().Selection();
+                    if (!selection.IsEmpty())
+                    {
+                        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, selection]()
+                            {
+                                ShowInfo(selection);
+                            });
+                    }
+            });
+        }
+
+        if (!entry.Addon().empty())
+        {
+            urlToOpen = Uri(hstring(fmt::format(L"celaddon://item?item={}", std::wstring(entry.Addon()))));
+            OpenFileOrURL();
+        }
     }
 
     void AppendItem(MenuFlyout const& parent, hstring const& text, RoutedEventHandler const& click, Input::KeyboardAccelerator const& accelerator)

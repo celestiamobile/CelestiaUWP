@@ -10,6 +10,15 @@
 namespace CelestiaWinUI
 {
     [default_interface]
+    runtimeclass TestEntry
+    {
+        TestEntry(String url, String addon, Boolean showInfo);
+        String URL{ get; };
+        String Addon{ get; };
+        Boolean ShowInfo{ get; };
+    }
+
+    [default_interface]
     runtimeclass MainWindow : Microsoft.UI.Xaml.Window
     {
         MainWindow();

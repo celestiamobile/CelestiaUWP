@@ -9,10 +9,23 @@
 
 #pragma once
 
+#include "TestEntry.g.h"
 #include "MainWindow.g.h"
 
 namespace winrt::CelestiaWinUI::implementation
 {
+    struct TestEntry : TestEntryT<TestEntry>
+    {
+        TestEntry(hstring const& url, hstring const& addon, bool showInfo) : url(url), addon(addon), showInfo(showInfo) {}
+        hstring URL() { return url; }
+        hstring Addon() { return addon; }
+        bool ShowInfo() { return showInfo; }
+    private:
+        hstring url;
+        hstring addon;
+        bool showInfo;
+    };
+
     struct MainWindow : MainWindowT<MainWindow>
     {
         MainWindow();
@@ -88,6 +101,8 @@ namespace winrt::CelestiaWinUI::implementation
         HWND WindowHandle();
         Windows::Foundation::IAsyncOperation<hstring> GetLocale(hstring const& localePath);
 
+        void ShowTest(CelestiaWinUI::TestEntry const entry);
+
         winrt::fire_and_forget MainWindow_Loaded();
         void AppCore_ShowContextMenu(Windows::Foundation::IInspectable const&, CelestiaComponent::ShowContextMenuArgs const& args);
         void AppCore_FatalError(Windows::Foundation::IInspectable const&, CelestiaComponent::FatalErrorArgs const& args);
@@ -106,6 +121,10 @@ namespace winrt::CelestiaWinUI::implementation
 
 namespace winrt::CelestiaWinUI::factory_implementation
 {
+    struct TestEntry : TestEntryT<TestEntry, implementation::TestEntry>
+    {
+    };
+
     struct MainWindow : MainWindowT<MainWindow, implementation::MainWindow>
     {
     };
