@@ -7,7 +7,7 @@ jobs:
   variables:
     solution: '**/*.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ 'daf483126b6be7da268f1dc175d915de4659e098' }}
+    contentCommitHash: ${{ 'fe433a479a366cde21441344c00cef4b7851e124' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.10'
@@ -162,8 +162,8 @@ jobs:
 
       New-Item -Name "MSIX" -ItemType "directory"
       Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_Test\CelestiaWinUI_${version}_x64.msix" -Destination "MSIX"
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4188\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_x64.msixbundle
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4188\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_x64.msixbundle
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_x64.msixbundle
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_x64.msixbundle
 
       Compress-Archive -Path Output\* -Destination "output.zip"
       Rename-Item -Path "output.zip" -NewName "CelestiaWinUI_${version}_x64_bundle.msixupload"
