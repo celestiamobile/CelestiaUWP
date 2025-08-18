@@ -66,7 +66,7 @@ namespace winrt::CelestiaWinUI::implementation
         switch (resourceManager.StateForItem(item))
         {
         case ResourceItemState::Installed:
-            co_await resourceManager.Uninstall(item);
+            co_await RequestUninstall();
             break;
         case ResourceItemState::Downloading:
             resourceManager.Cancel(item);
@@ -80,6 +80,16 @@ namespace winrt::CelestiaWinUI::implementation
         auto strong_this = weak_this.get();
         if (strong_this)
             strong_this->UpdateState();
+    }
+
+    IAsyncAction ResourceItemUserControl::RequestUninstall()
+    {
+        bool result = co_await ContentDialogHelper::ShowOption(
+            Content(),
+            LocalizationHelper::Localize(L"Do you want to uninstall this add-on?", L"")
+        );
+        if (result)
+            co_await resourceManager.Uninstall(item);
     }
 
     bool FileExists(hstring const& path)

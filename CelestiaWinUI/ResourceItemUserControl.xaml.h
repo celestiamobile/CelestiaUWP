@@ -26,6 +26,7 @@ namespace winrt::CelestiaWinUI::implementation
         fire_and_forget ResourceManager_DownloadFailure(Windows::Foundation::IInspectable const&, CelestiaAppComponent::ResourceManagerDownloadFailureArgs const&);
 
         void CloseWebViewIfNeeded();
+        Windows::Foundation::IAsyncAction RequestUninstall();
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
