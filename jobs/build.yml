@@ -111,7 +111,7 @@ jobs:
   - pwsh: |
       $CurrentDir = Get-Location
       New-Item -Name "AppPackages" -ItemType "directory"
-      & "$(msbuild)" /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=CI /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
+      & "$(msbuild)" /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Never /p:UapAppxPackageBuildMode=CI /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
     displayName: 'Build MSIXUpload'
     condition: eq( variables['buildType'], 'msixupload' )
@@ -119,7 +119,7 @@ jobs:
   - pwsh: |
       $CurrentDir = Get-Location
       New-Item -Name "AppPackages" -ItemType "directory"
-      & "$(msbuild)" /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideLoadOnly /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
+      & "$(msbuild)" /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="x64" /p:AppxBundlePlatforms="x64" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Never /p:UapAppxPackageBuildMode=SideLoadOnly /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
     displayName: 'Build Sideload'
     condition: eq( variables['buildType'], 'sideload' )
@@ -130,9 +130,9 @@ jobs:
       $version = $packageManifestXML.Package.Identity.Version
 
       New-Item -Name "Symbols" -ItemType "directory"
-      Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_Test\CelestiaWinUI_${version}_x64.msixsym" -NewName "symbols.zip"
-      Expand-Archive "AppPackages\CelestiaWinUI_${version}_Test\symbols.zip" -Destination Symbols
-      Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_Test\symbols.zip" -NewName "CelestiaWinUI_${version}_x64.msixsym"
+      Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_x64_Test\CelestiaWinUI_${version}_x64.msixsym" -NewName "symbols.zip"
+      Expand-Archive "AppPackages\CelestiaWinUI_${version}_x64_Test\symbols.zip" -Destination Symbols
+      Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_x64_Test\symbols.zip" -NewName "CelestiaWinUI_${version}_x64.appxsym"
     displayName: 'Move Symbols'
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
 
@@ -161,7 +161,7 @@ jobs:
       Rename-Item -Path "Output\symbols.zip" -NewName "CelestiaWinUI_${version}_x64.appxsym"
 
       New-Item -Name "MSIX" -ItemType "directory"
-      Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_Test\CelestiaWinUI_${version}_x64.msix" -Destination "MSIX"
+      Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_x64_Test\CelestiaWinUI_${version}_x64.msix" -Destination "MSIX"
       packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_x64.msixbundle
       packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_x64.msixbundle
 
