@@ -29,7 +29,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     struct SettingsUserControl : SettingsUserControlT<SettingsUserControl>
     {
-        SettingsUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages);
+        SettingsUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, CelestiaWinUI::SettingParameter const& parameter);
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> ItemGroups();
@@ -37,6 +37,7 @@ namespace winrt::CelestiaWinUI::implementation
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
     private:
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> itemGroups;
+        CelestiaWinUI::SettingParameter parameter;
 
         void ItemGroupSelected(CelestiaWinUI::SettingsNavigationItemGroup const& itemGroup);
    };

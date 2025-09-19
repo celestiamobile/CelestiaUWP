@@ -40,6 +40,12 @@ namespace winrt::CelestiaAppComponent::implementation
         auto lastNewsIDResult = propertySet.TryLookup(L"LastNewsID");
         if (enableMSAAResult)
             lastNewsID = unbox_value_or(lastNewsIDResult, lastNewsID);
+        auto dataDirectoryPathResult = propertySet.TryLookup(L"DataDirectoryPath");
+        if (dataDirectoryPathResult)
+            dataDirectoryPath = unbox_value_or(dataDirectoryPathResult, dataDirectoryPath);
+        auto configFilePathResult = propertySet.TryLookup(L"ConfigFilePath");
+        if (configFilePathResult)
+            configFilePath = unbox_value_or(configFilePathResult, configFilePath);
         auto pickSensitivityResult = propertySet.TryLookup(L"PickSensitivity");
         if (pickSensitivityResult)
             pickSensitivity = unbox_value_or(pickSensitivityResult, pickSensitivity);
@@ -151,6 +157,26 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::LastNewsID(hstring const& value)
     {
         lastNewsID = value;
+    }
+
+    hstring AppSettings::DataDirectoryPath()
+    {
+        return dataDirectoryPath;
+    }
+
+    void AppSettings::DataDirectoryPath(hstring const& value)
+    {
+        dataDirectoryPath = value;
+    }
+
+    hstring AppSettings::ConfigFilePath()
+    {
+        return configFilePath;
+    }
+
+    void AppSettings::ConfigFilePath(hstring const& value)
+    {
+        configFilePath = value;
     }
 
     double AppSettings::PickSensitivity()
@@ -469,6 +495,12 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingStringEntry::LastNewsID:
             LastNewsID(value);
             break;
+        case CelestiaAppComponent::AppSettingStringEntry::DataDirectoryPath:
+            DataDirectoryPath(value);
+            break;
+        case CelestiaAppComponent::AppSettingStringEntry::ConfigFilePath:
+            ConfigFilePath(value);
+            break;
         default:
             break;
         }
@@ -482,6 +514,10 @@ namespace winrt::CelestiaAppComponent::implementation
             return LanguageOverride();
         case CelestiaAppComponent::AppSettingStringEntry::LastNewsID:
             return LastNewsID();
+        case CelestiaAppComponent::AppSettingStringEntry::DataDirectoryPath:
+            return DataDirectoryPath();
+        case CelestiaAppComponent::AppSettingStringEntry::ConfigFilePath:
+            return ConfigFilePath();
         default:
             return L"";
         }
@@ -518,6 +554,8 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"OnboardMessageDisplayed", box_value(onboardMessageDisplayed));
         settings.Values().Insert(L"LanguageOverride", box_value(languageOverride));
         settings.Values().Insert(L"LastNewsID", box_value(lastNewsID));
+        settings.Values().Insert(L"DataDirectoryPath", box_value(dataDirectoryPath));
+        settings.Values().Insert(L"ConfigFilePath", box_value(configFilePath));
         settings.Values().Insert(L"PickSensitivity", box_value(pickSensitivity));
         settings.Values().Insert(L"GamepadRemapA", box_value(static_cast<int>(gamepadRemapA)));
         settings.Values().Insert(L"GamepadRemapB", box_value(static_cast<int>(gamepadRemapB)));

@@ -42,7 +42,7 @@ namespace winrt::CelestiaWinUI::implementation
         return showRestartHint;
     }
 
-    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages)
+    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
     {
         itemGroups = single_threaded_observable_vector<CelestiaWinUI::SettingsNavigationItemGroup>();
         std::vector<IInspectable> displaySettingItems =
@@ -283,6 +283,14 @@ namespace winrt::CelestiaWinUI::implementation
             });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Game Controller", L"Settings for game controller"), gamepadSettingItemGroupItems, false));
 
+        auto dataLocationSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
+        dataLocationSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
+        {
+            SettingDataDirectoryItem(appSettings, localSettings),
+            SettingConfigFileItem(appSettings, localSettings),
+        });
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Data Location", L"Title for celestia.cfg, data location setting"), dataLocationSettingItemGroupItems, true));
+
         auto advancedSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         advancedSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
@@ -319,7 +327,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void SettingsUserControl::ItemGroupSelected(CelestiaWinUI::SettingsNavigationItemGroup const& itemGroup)
     {
-        SettingCommonUserControl userControl{ itemGroup.Items(), itemGroup.ShowRestartHint() };
+        SettingCommonUserControl userControl{ itemGroup.Items(), itemGroup.ShowRestartHint(), parameter };
         Container().Children().Clear();
         Container().Children().Append(userControl);
         Container().SetAlignTopWithPanel(userControl, true);

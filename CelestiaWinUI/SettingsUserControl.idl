@@ -7,6 +7,8 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 
+import "SettingCommonUserControl.idl";
+
 namespace CelestiaWinUI
 {
     [default_interface]
@@ -21,7 +23,7 @@ namespace CelestiaWinUI
     [default_interface]
     runtimeclass SettingsUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
-        SettingsUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.AppSettings appSettings, Windows.Storage.ApplicationDataContainer localSettings, Windows.Foundation.Collections.IVector<String> availableLanguages);
+        SettingsUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.AppSettings appSettings, Windows.Storage.ApplicationDataContainer localSettings, Windows.Foundation.Collections.IVector<String> availableLanguages, SettingParameter parameter);
         Windows.Foundation.Collections.IObservableVector<SettingsNavigationItemGroup> ItemGroups{ get; };
     }
 }

@@ -14,6 +14,8 @@
 #include "SettingInt32Item.g.h"
 #include "SettingDoubleItem.g.h"
 #include "SettingHeaderItem.g.h"
+#include "SettingDataDirectoryItem.g.h"
+#include "SettingConfigFileItem.g.h"
 #include "OptionPair.g.h"
 #include "AppCoreBooleanItem.g.h"
 #include "AppCoreInt32Item.g.h"
@@ -67,6 +69,44 @@ namespace winrt::CelestiaAppComponent::implementation
 
     protected:
         bool hasCorrectValue{ false };
+    };
+
+    struct SettingDataDirectoryItem : SettingDataDirectoryItemT<SettingDataDirectoryItem, SettingBaseItem>
+    {
+        SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings);
+        hstring Title();
+        hstring DisplayValue();
+        hstring ChangeButtonTitle();
+        hstring ResetButtonTitle();
+        hstring Path();
+        void Path(hstring const&);
+
+        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
+        void PropertyChanged(event_token const& token) noexcept;
+
+    private:
+        CelestiaAppComponent::AppSettings appSettings;
+        Windows::Storage::ApplicationDataContainer localSettings;
+        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
+    };
+
+    struct SettingConfigFileItem : SettingConfigFileItemT<SettingConfigFileItem, SettingBaseItem>
+    {
+        SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings);
+        hstring Title();
+        hstring DisplayValue();
+        hstring ChangeButtonTitle();
+        hstring ResetButtonTitle();
+        hstring Path();
+        void Path(hstring const&);
+
+        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
+        void PropertyChanged(event_token const& token) noexcept;
+
+    private:
+        CelestiaAppComponent::AppSettings appSettings;
+        Windows::Storage::ApplicationDataContainer localSettings;
+        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
     struct SettingHeaderItem : SettingHeaderItemT<SettingHeaderItem, SettingBaseItem>
@@ -235,6 +275,14 @@ namespace winrt::CelestiaAppComponent::implementation
 
 namespace winrt::CelestiaAppComponent::factory_implementation
 {
+    struct SettingDataDirectoryItem : SettingDataDirectoryItemT<SettingDataDirectoryItem, implementation::SettingDataDirectoryItem>
+    {
+    };
+
+    struct SettingConfigFileItem : SettingConfigFileItemT<SettingConfigFileItem, implementation::SettingConfigFileItem>
+    {
+    };
+
     struct SettingHeaderItem : SettingHeaderItemT<SettingHeaderItem, implementation::SettingHeaderItem>
     {
     };

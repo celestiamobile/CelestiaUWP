@@ -99,12 +99,40 @@ namespace winrt::CelestiaWinUI::implementation
 
         StorageFolder customDataFolder{ nullptr };
         StorageFile customConfigFile{ nullptr };
-        try
+
+        auto customDataFolderPathFromSettings = appSettings.DataDirectoryPath();
+        auto customConfigFilePathFromSettings = appSettings.ConfigFilePath();
+
+        if (!customDataFolderPathFromSettings.empty() || !customConfigFilePathFromSettings.empty())
         {
-            customDataFolder = co_await ApplicationData::Current().LocalFolder().GetFolderAsync(L"Override");
-            customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
+            // Try to use paths from settings
+            if (!customDataFolderPathFromSettings.empty())
+            {
+                try
+                {
+                    customDataFolder = co_await StorageFolder::GetFolderFromPathAsync(customDataFolderPathFromSettings);
+                }
+                catch (hresult_error const&) {}
+            }
+            if (!customConfigFilePathFromSettings.empty())
+            {
+                try
+                {
+                    customConfigFile = co_await StorageFile::GetFileFromPathAsync(customConfigFilePathFromSettings);
+                }
+                catch (hresult_error const&) {}
+            }
         }
-        catch (hresult_error const&) {}
+        else
+        {
+            // Read the Override path
+            try
+            {
+                customDataFolder = co_await ApplicationData::Current().LocalFolder().GetFolderAsync(L"Override");
+                customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
+            }
+            catch (hresult_error const&) {}
+        }
 
         auto resourcePath = customDataFolder != nullptr ? customDataFolder.Path() : defaultResourcePath;
         auto configPath = customConfigFile != nullptr ? customConfigFile.Path() : defaultConfigFilePath;
@@ -1286,8 +1314,11 @@ namespace winrt::CelestiaWinUI::implementation
         }
         auto languages = single_threaded_vector<hstring>();
         languages.ReplaceAll(availableLanguages);
-        SettingsUserControl userControl{ appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages };
         Window window;
+        SettingsUserControl userControl{ appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages, SettingParameter([weak_window{ make_weak(window)}]()
+            {
+                return weak_window.get();
+            }) };
         window.SystemBackdrop(Media::MicaBackdrop());
         window.Title(LocalizationHelper::Localize(L"Settings", L""));
         window.Content(userControl);

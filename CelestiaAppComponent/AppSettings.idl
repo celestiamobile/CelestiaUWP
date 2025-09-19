@@ -41,6 +41,8 @@ namespace CelestiaAppComponent
     {
         LanguageOverride,
         LastNewsID,
+        DataDirectoryPath,
+        ConfigFilePath,
     };
 
     enum AppSettingDoubleEntry
@@ -58,6 +60,8 @@ namespace CelestiaAppComponent
         Boolean OnboardMessageDisplayed;
         String LanguageOverride;
         String LastNewsID;
+        String DataDirectoryPath;
+        String ConfigFilePath;
         Double PickSensitivity;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapA;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapB;

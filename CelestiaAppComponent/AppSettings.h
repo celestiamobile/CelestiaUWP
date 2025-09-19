@@ -35,6 +35,12 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring LastNewsID();
         void LastNewsID(hstring const&);
 
+        hstring DataDirectoryPath();
+        void DataDirectoryPath(hstring const&);
+
+        hstring ConfigFilePath();
+        void ConfigFilePath(hstring const&);
+
         double PickSensitivity();
         void PickSensitivity(double);
 
@@ -104,6 +110,8 @@ namespace winrt::CelestiaAppComponent::implementation
         bool onboardMessageDisplayed{ false };
         hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
+        hstring dataDirectoryPath{ L"" };
+        hstring configFilePath{ L"" };
         double pickSensitivity{ 4.0 };
 
         CelestiaComponent::CelestiaGamepadAction gamepadRemapA{ CelestiaComponent::CelestiaGamepadAction::MoveSlower };

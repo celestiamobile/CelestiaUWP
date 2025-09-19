@@ -9,6 +9,12 @@
 
 #include "pch.h"
 #include "SettingItem.h"
+#if __has_include("SettingDataDirectoryItem.g.cpp")
+#include "SettingDataDirectoryItem.g.cpp"
+#endif
+#if __has_include("SettingConfigFileItem.g.cpp")
+#include "SettingConfigFileItem.g.cpp"
+#endif
 #if __has_include("SettingHeaderItem.g.cpp")
 #include "SettingHeaderItem.g.cpp"
 #endif
@@ -39,6 +45,7 @@
 
 using namespace winrt;
 using namespace CelestiaComponent;
+using namespace Microsoft::UI::Xaml;
 using namespace Windows::Foundation;
 using namespace Windows::Globalization;
 
@@ -46,6 +53,98 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     CRITICAL_SECTION appCoreCritSection;
     bool appCoreCritSectionInitialized = false;
+
+    SettingDataDirectoryItem::SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
+
+    hstring SettingDataDirectoryItem::Title()
+    {
+        return LocalizationHelper::Localize(L"Data Directory", L"Directory to load data from");
+    }
+
+    hstring SettingDataDirectoryItem::DisplayValue()
+    {
+        if (!appSettings.DataDirectoryPath().empty())
+            return LocalizationHelper::Localize(L"Custom", L"");
+        return LocalizationHelper::Localize(L"Default", L"");
+    }
+
+    hstring SettingDataDirectoryItem::ChangeButtonTitle()
+    {
+        return LocalizationHelper::Localize(L"Change", L"Change a value");
+    }
+
+    hstring SettingDataDirectoryItem::ResetButtonTitle()
+    {
+        return LocalizationHelper::Localize(L"Reset", L"Reset a value to default");
+    }
+
+    hstring SettingDataDirectoryItem::Path()
+    {
+        return appSettings.DataDirectoryPath();
+    }
+
+    void SettingDataDirectoryItem::Path(hstring const& value)
+    {
+        appSettings.DataDirectoryPath(value);
+        appSettings.Save(localSettings);
+        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"DisplayValue"));
+    }
+
+    event_token SettingDataDirectoryItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
+    {
+        return propertyChangedEvent.add(handler);
+    }
+
+    void SettingDataDirectoryItem::PropertyChanged(event_token const& token) noexcept
+    {
+        propertyChangedEvent.remove(token);
+    }
+
+    SettingConfigFileItem::SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
+
+    hstring SettingConfigFileItem::Title()
+    {
+        return LocalizationHelper::Localize(L"Config File", L"celestia.cfg");
+    }
+
+    hstring SettingConfigFileItem::DisplayValue()
+    {
+        if (!appSettings.ConfigFilePath().empty())
+            return LocalizationHelper::Localize(L"Custom", L"");
+        return LocalizationHelper::Localize(L"Default", L"");
+    }
+
+    hstring SettingConfigFileItem::ChangeButtonTitle()
+    {
+        return LocalizationHelper::Localize(L"Change", L"Change a value");
+    }
+
+    hstring SettingConfigFileItem::ResetButtonTitle()
+    {
+        return LocalizationHelper::Localize(L"Reset", L"Reset a value to default");
+    }
+
+    hstring SettingConfigFileItem::Path()
+    {
+        return appSettings.ConfigFilePath();
+    }
+
+    void SettingConfigFileItem::Path(hstring const& value)
+    {
+        appSettings.ConfigFilePath(value);
+        appSettings.Save(localSettings);
+        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"DisplayValue"));
+    }
+
+    event_token SettingConfigFileItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
+    {
+        return propertyChangedEvent.add(handler);
+    }
+
+    void SettingConfigFileItem::PropertyChanged(event_token const& token) noexcept
+    {
+        propertyChangedEvent.remove(token);
+    }
 
     SettingHeaderItem::SettingHeaderItem(hstring const& title) : title(title) {};
 

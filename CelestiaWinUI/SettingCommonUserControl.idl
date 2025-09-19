@@ -9,6 +9,15 @@
 
 namespace CelestiaWinUI
 {
+    delegate Microsoft.UI.Xaml.Window SettingWindowProvider();
+
+    [default_interface]
+    runtimeclass SettingParameter
+    {
+        SettingParameter(SettingWindowProvider windowProvider);
+        SettingWindowProvider WindowProvider{ get; };
+    }
+
     [default_interface]
     runtimeclass SettingTemplateSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
     {
@@ -17,12 +26,14 @@ namespace CelestiaWinUI
         Microsoft.UI.Xaml.DataTemplate Selection;
         Microsoft.UI.Xaml.DataTemplate Slider;
         Microsoft.UI.Xaml.DataTemplate Header;
+        Microsoft.UI.Xaml.DataTemplate DataDirectory;
+        Microsoft.UI.Xaml.DataTemplate ConfigFile;
     }
 
     [default_interface]
     runtimeclass SettingCommonUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
-        SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint);
+        SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint, SettingParameter parameter);
         Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
         Boolean ShowRestartHint{ get; };
     }
