@@ -5,7 +5,7 @@ jobs:
     vmImage: 'windows-2025'
 
   variables:
-    solution: '**/*.sln'
+    solution: 'CelestiaUWP/CelestiaUWP.sln'
     buildConfiguration: 'Release'
     contentCommitHash: ${{ '10bd43b0e8925f6ee9bb9687522708a95338d664' }}
     buildType: ${{ parameters.buildType }}
@@ -95,7 +95,7 @@ jobs:
 
       Write-Host "Downloading $packageName from GitHub releases..."
       Write-Host "URL: $releaseUrl"
-      
+
       # Download the package to current working directory
       Invoke-WebRequest -Uri $releaseUrl -OutFile $packageName
       Write-Host "Successfully downloaded $packageName to current directory"
@@ -106,6 +106,13 @@ jobs:
       command: custom
       arguments: 'install celestia-windows-$(arch)-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
     displayName: 'Install Dependencies'
+
+  - pwsh: |
+      Remove-Item -Path "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows\include\miniaudio.h"
+      Copy-Item -Path "patches\miniaudio.h" -Destination "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows\include\miniaudio.h"
+    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
+    displayName: 'Fix miniaudio Header'
+    condition: eq( variables['arch'], 'arm64' )
 
   - script: |
       RD Celestia\.git /S /Q
@@ -158,7 +165,7 @@ jobs:
     displayName: 'Publish Symbols'
     inputs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)\CelestiaUWP\Symbols'
-      ArtifactName: '$(buildType)-symbols'
+      ArtifactName: '$(buildType)-$(arch)-symbols'
       publishLocation: Container
 
   - script: |
@@ -174,20 +181,17 @@ jobs:
       New-Item -Name "Output" -ItemType "directory"
 
       Get-ChildItem -Path "packages\Celestia.ANGLE.$(angleVersion)\build\native\$(arch)\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
-      Get-ChildItem -Path "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows-$(arch)\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
+      Get-ChildItem -Path "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
       Compress-Archive -Path Symbols\* -Destination "Output\symbols.zip"
       Rename-Item -Path "Output\symbols.zip" -NewName "CelestiaWinUI_${version}_$(arch).appxsym"
 
       New-Item -Name "MSIX" -ItemType "directory"
       Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_$(arch)_Test\CelestiaWinUI_${version}_$(arch).msix" -Destination "MSIX"
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_$(arch).msixbundle
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_$(arch).msixbundle
 
-      Compress-Archive -Path Output\* -Destination "output.zip"
-      Rename-Item -Path "output.zip" -NewName "CelestiaWinUI_${version}_$(arch)_bundle.msixupload"
       Remove-Item -Path "AppPackages" -Recurse -Force
       New-Item -Name "AppPackages" -ItemType "directory"
-      Move-Item -Path "CelestiaWinUI_${version}_$(arch)_bundle.msixupload" -Destination "AppPackages"
+      Move-Item -Path "MSIX\CelestiaWinUI_${version}_$(arch).msix" -Destination "AppPackages"
+      Move-Item -Path "Output\CelestiaWinUI_${version}_$(arch).appxsym" -Destination "AppPackages"
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
     displayName: 'Bundle'
     condition: eq( variables['buildType'], 'msixupload' )
@@ -196,5 +200,5 @@ jobs:
     displayName: 'Publish Artifact'
     inputs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)\CelestiaUWP\AppPackages'
-      ArtifactName: '$(buildType)'
+      ArtifactName: '$(buildType)-$(arch)'
       publishLocation: Container

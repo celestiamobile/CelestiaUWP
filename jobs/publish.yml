@@ -4,22 +4,33 @@ jobs:
   pool:
     vmImage: 'windows-2025'
 
-  variables:
-    publishType: ${{ parameters.publishType }}
-
   steps:
   - task: DownloadBuildArtifacts@0
-    displayName: 'Download Sideload Artifacts'
+    displayName: 'Download Sideload Artifacts (x64)'
     inputs:
-      artifactName: 'sideload'
+      artifactName: 'sideload-x64'
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Sideload Artifacts (arm64)'
+    inputs:
+      artifactName: 'sideload-arm64'
 
   - script: |
-      DEL $(System.ArtifactsDirectory)\$(publishType)\*.appxsym /S /Q
+      DEL $(System.ArtifactsDirectory)\sideload-x64\*.appxsym /S /Q
+      DEL $(System.ArtifactsDirectory)\sideload-arm64\*.appxsym /S /Q
     displayName: 'Remove .appxsym'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact'
+    displayName: 'Publish Artifact (x64)'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\$(publishType)'
-      ArtifactName: CelestiaSL
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\sideload-x64'
+      ArtifactName: CelestiaSL-x64
       publishLocation: Container
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact (arm64)'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\sideload-arm64'
+      ArtifactName: CelestiaSL-arm64
+      publishLocation: Container
+

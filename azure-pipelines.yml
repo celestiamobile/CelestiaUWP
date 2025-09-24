@@ -18,16 +18,25 @@ trigger:
 - develop
 
 stages:
-- stage: Build_MSIXUpload
-  displayName: 'Build MSIXUpload'
+- stage: Build_MSIX_X64
+  displayName: 'Build MSIX x64'
   jobs:
   - template: jobs/build.yml
     parameters:
       buildType: msixupload
       arch: x64
 
-- stage: Build_Sideload
-  displayName: 'Build Sideload'
+- stage: Build_MSIX_ARM64
+  displayName: 'Build MSIX arm64'
+  dependsOn: []
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      buildType: msixupload
+      arch: arm64
+
+- stage: Build_Sideload_X64
+  displayName: 'Build Sideload x64'
   dependsOn: []
   jobs:
   - template: jobs/build.yml
@@ -35,11 +44,27 @@ stages:
       buildType: sideload
       arch: x64
 
+- stage: Build_Sideload_ARM64
+  displayName: 'Build Sideload arm64'
+  dependsOn: []
+  jobs:
+  - template: jobs/build.yml
+    parameters:
+      buildType: sideload
+      arch: arm64
+
 - stage: Publish_Sideload
   displayName: 'Publish Sideload'
   dependsOn:
-  - Build_Sideload
+  - Build_Sideload_X64
+  - Build_Sideload_ARM64
   jobs:
   - template: jobs/publish.yml
-    parameters:
-      publishType: sideload
+
+- stage: Bundle_MSIX
+  displayName: 'Bundle MSIX'
+  dependsOn:
+  - Build_MSIX_X64
+  - Build_MSIX_ARM64
+  jobs:
+  - template: jobs/bundle.yml
