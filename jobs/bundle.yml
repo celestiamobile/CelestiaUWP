@@ -1,0 +1,101 @@
+jobs:
+- job: Bundle
+  displayName: 'Bundle'
+  pool:
+    vmImage: 'windows-2025'
+
+  variables:
+    solution: 'CelestiaUWP.sln'
+    dependencyVersion: '1.0.2'
+
+  steps:
+  - checkout: self
+    fetchDepth: 0
+
+  - script: |
+      git apply patches/nuget/nuget-x64.patch --ignore-whitespace --whitespace=nowarn
+    displayName: 'Apply Nuget Patches'
+
+  - task: NuGetToolInstaller@1
+    displayName: 'Install Nuget'
+
+  - pwsh: |
+      $packageName = "celestia-windows-x64-dependencies.$(dependencyVersion).nupkg"
+      $releaseUrl = "https://github.com/celestiamobile/windows-dependencies/releases/download/$(dependencyVersion)/$packageName"
+
+      Write-Host "Downloading $packageName from GitHub releases..."
+      Write-Host "URL: $releaseUrl"
+
+      # Download the package to current working directory
+      Invoke-WebRequest -Uri $releaseUrl -OutFile $packageName
+      Write-Host "Successfully downloaded $packageName to current directory"
+    displayName: 'Download Dependencies from GitHub'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: custom
+      arguments: 'install celestia-windows-x64-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory packages'
+    displayName: 'Install Dependencies'
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+      feedsToUse: 'select'
+      vstsFeed: '9f9dcde1-dcba-4537-8214-71c8a03b99a0/14bb1031-e6b2-40ac-b287-73e7fcb5900e'
+    displayName: 'Restore Solution'
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download MSIX Artifacts (x64)'
+    inputs:
+      artifactName: 'msixupload-x64'
+
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download MSIX Artifacts (arm64)'
+    inputs:
+      artifactName: 'msixupload-arm64'
+
+  - task: DownloadSecureFile@1
+    name: signingCert
+    displayName: 'Download CA certificate'
+    inputs:
+      secureFile: '3d.pfx'
+
+  - pwsh: |
+      New-Item -Name "msix-files" -ItemType "directory"
+      Copy-Item -Path "$(System.ArtifactsDirectory)\msixupload-x64\*.msix" -Destination "msix-files"
+      Copy-Item -Path "$(System.ArtifactsDirectory)\msixupload-arm64\*.msix" -Destination "msix-files"
+    displayName: 'Prepare MSIX files'
+
+  - pwsh: |
+      $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
+      $packageManifestXML = [xml]$packageManifestContent
+      $version = $packageManifestXML.Package.Identity.Version
+
+      # Create bundle using makeappx.exe
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
+      # Sign the bundle using signtool.exe
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\signtool.exe sign /f "$(signingCert.secureFilePath)" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
+    displayName: 'Create and Sign MSIX Bundle'
+
+  - pwsh: |
+      $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
+      $packageManifestXML = [xml]$packageManifestContent
+      $version = $packageManifestXML.Package.Identity.Version
+
+      New-Item -Name "UploadPackage" -ItemType "directory"
+      Copy-Item -Path "CelestiaWinUI_${version}_x64_arm64.msixbundle" -Destination "UploadPackage"
+      Copy-Item -Path "$(System.ArtifactsDirectory)\msixupload-x64\*.appxsym" -Destination "UploadPackage"
+      Copy-Item -Path "$(System.ArtifactsDirectory)\msixupload-arm64\*.appxsym" -Destination "UploadPackage"
+      Compress-Archive -Path UploadPackage\* -Destination "upload.zip"
+      Rename-Item -Path "upload.zip" -NewName "CelestiaWinUI_${version}_x64_arm64.msixupload"
+
+      New-Item -Name "MSIXUpload" -ItemType "directory"
+      Move-Item -Path "CelestiaWinUI_${version}_x64_arm64.msixupload" -Destination "MSIXUpload"
+    displayName: 'Prepare Upload Package'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)\MSIXUpload'
+      ArtifactName: 'msixupload'
+      publishLocation: Container
