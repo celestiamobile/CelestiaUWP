@@ -162,8 +162,8 @@ jobs:
 
       New-Item -Name "MSIX" -ItemType "directory"
       Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_x64_Test\CelestiaWinUI_${version}_x64.msix" -Destination "MSIX"
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_x64.msixbundle
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4654\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_x64.msixbundle
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\makeappx.exe bundle /d MSIX /bv ${version} /o /p Output\CelestiaWinUI_${version}_x64.msixbundle
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\bin\10.0.26100.0\x64\signtool.exe sign /a /v /fd SHA256 /f "$(signingCert.secureFilePath)" Output\CelestiaWinUI_${version}_x64.msixbundle
 
       Compress-Archive -Path Output\* -Destination "output.zip"
       Rename-Item -Path "output.zip" -NewName "CelestiaWinUI_${version}_x64_bundle.msixupload"
