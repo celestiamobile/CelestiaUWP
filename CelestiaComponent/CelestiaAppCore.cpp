@@ -19,7 +19,6 @@
 #include <celutil/gettext.h>
 #include <celutil/localeutil.h>
 #include <fmt/format.h>
-#include <fmt/xchar.h>
 #endif
 #include <icu.h>
 #include "CelestiaAppCore.h"
@@ -413,7 +412,7 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetLocaleDirectory(hstring const& localeDirectory, hstring const& locale)
     {
-        auto uloc = std::wstring(locale);
+        hstring uloc = locale;
         bool shouldAppendCountryCode = false;
         UErrorCode status = U_ZERO_ERROR;
         if (uloc == L"zh_CN")
@@ -428,16 +427,16 @@ namespace winrt::CelestiaComponent::implementation
         }
         else
         {
-            shouldAppendCountryCode = uloc.find(L'_') == std::wstring::npos;
+            shouldAppendCountryCode = std::wstring(uloc).find(L'_') == std::wstring::npos;
         }
         if (shouldAppendCountryCode)
         {
             Windows::Globalization::GeographicRegion region;
-            std::wstring code = std::wstring(region.CodeTwoLetter());
+            hstring code = region.CodeTwoLetter();
             if (code.size() == 2 && code != L"ZZ")
             {
-                auto fullLoc = fmt::format(L"{}_{}", uloc, code);
-                uloc_setDefault(to_string(hstring(fullLoc)).c_str(), &status);
+                auto fullLoc = fmt::format("{}_{}", to_string(uloc), to_string(code));
+                uloc_setDefault(fullLoc.c_str(), &status);
             }
             else
             {
@@ -488,7 +487,7 @@ namespace winrt::CelestiaComponent::implementation
 #ifdef ENABLE_NLS
         if (original.empty())
             return original;
-        std::string auxStr = fmt::format("{}\004{}", to_string(context).c_str(), to_string(original).c_str());
+        std::string auxStr = fmt::format("{}\004{}", to_string(context), to_string(original));
         const char *aux = auxStr.c_str();
         const char *translation = dgettext(to_string(domain).c_str(), aux);
         return translation == aux ? original : to_hstring(translation);

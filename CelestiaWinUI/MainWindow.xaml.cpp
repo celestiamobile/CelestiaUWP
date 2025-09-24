@@ -15,7 +15,6 @@
 
 #include <fmt/format.h>
 #include <fmt/printf.h>
-#include <fmt/xchar.h>
 #include <shlobj_core.h>
 
 using namespace winrt;
@@ -186,7 +185,7 @@ namespace winrt::CelestiaWinUI::implementation
         bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [this](hstring const status) {
             DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, status]()
                 {
-                    auto textToDisplay = hstring(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), std::wstring(status)));
+                    auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
                     LoadingText().Text(textToDisplay);
                 });
             });
@@ -204,7 +203,7 @@ namespace winrt::CelestiaWinUI::implementation
                 if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [this](hstring const status) {
                     DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, status]()
                         {
-                            auto textToDisplay = hstring(fmt::sprintf(std::wstring(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), std::wstring(status)));
+                            auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
                             LoadingText().Text(textToDisplay);
                         });
                     }))
@@ -1467,23 +1466,23 @@ namespace winrt::CelestiaWinUI::implementation
             co_await FileIO::WriteTextAsync(renderInfoFile, renderInfo);
             co_await FileIO::WriteTextAsync(urlInfoFile, url);
             auto addons = co_await resourceManager.InstalledItems();
-            std::wstring installedAddonList = L"";
+            hstring installedAddonList = L"";
             for (const auto& addon : addons)
-                installedAddonList += fmt::format(L"{}/{}\n", std::wstring(addon.Name()), std::wstring(addon.ID()));
+                installedAddonList = installedAddonList + to_hstring(fmt::format("{}/{}\n", to_string(addon.Name()), to_string(addon.ID())));
 
             if (!installedAddonList.empty())
                 co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
             auto systemInfo = SystemInformation::Instance();
             auto version = systemInfo.ApplicationVersion();
-            auto systemInfoText = hstring(fmt::format(
-                L"Application Version: {}.{}.{}.{}\nOperating System: {}\nOperating System Version: {}\nOperating System Architecture: {}\nDevice Family: {}\nDevice Model: {}\nDevice Manufacturer: {}",
+            auto systemInfoText = to_hstring(fmt::format(
+                "Application Version: {}.{}.{}.{}\nOperating System: {}\nOperating System Version: {}\nOperating System Architecture: {}\nDevice Family: {}\nDevice Model: {}\nDevice Manufacturer: {}",
                 version.Major, version.Minor, version.Build, version.Revision,
-                std::wstring(systemInfo.OperatingSystem()),
-                std::wstring(systemInfo.OperatingSystemVersion()),
-                std::wstring(systemInfo.OperatingSystemArchitectureString()),
-                std::wstring(systemInfo.DeviceFamily()),
-                std::wstring(systemInfo.DeviceModel()),
-                std::wstring(systemInfo.DeviceManufacturer())
+                to_string(systemInfo.OperatingSystem()),
+                to_string(systemInfo.OperatingSystemVersion()),
+                to_string(systemInfo.OperatingSystemArchitectureString()),
+                to_string(systemInfo.DeviceFamily()),
+                to_string(systemInfo.DeviceModel()),
+                to_string(systemInfo.DeviceManufacturer())
             ));
             co_await FileIO::WriteTextAsync(systemInfoFile, systemInfoText);
             Collections::IVector<StorageFile> attachments = single_threaded_vector<StorageFile>();

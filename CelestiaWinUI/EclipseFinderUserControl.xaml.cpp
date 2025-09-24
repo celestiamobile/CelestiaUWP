@@ -25,7 +25,6 @@
 #endif
 
 #include <fmt/format.h>
-#include <fmt/xchar.h>
 
 using namespace winrt;
 using namespace CelestiaComponent;
@@ -178,7 +177,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto computedEclipses = eclipseFinder.Search(kind, computeStartTime, computeEndTime);
         for (const auto& eclipse : computedEclipses)
         {
-            hstring displayName = hstring(fmt::format(L"{} - {}", std::wstring(eclipse.Occulter().Name()), std::wstring(eclipse.Receiver().Name())));
+            hstring displayName = to_hstring(fmt::format("{} - {}", to_string(eclipse.Occulter().Name()), to_string(eclipse.Receiver().Name())));
             vectorResults.Append(CelestiaWinUI::EclipseResult(eclipse, displayName));
         }
         co_await ui_thread;

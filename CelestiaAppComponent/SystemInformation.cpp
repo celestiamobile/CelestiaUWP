@@ -14,7 +14,6 @@
 #endif
 
 #include <fmt/format.h>
-#include <fmt/xchar.h>
 
 using namespace std;
 using namespace winrt;
@@ -39,7 +38,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto [ptr, ec] = std::from_chars(versionString.data(), versionString.data() + versionString.size(), version);
         if (ec != std::errc{} || ptr != versionString.data() + versionString.size())
             version = 0;
-        operatingSystemVersion = hstring(fmt::format(L"{0}.{1}.{2}.{3}", (version & 0xFFFF000000000000L) >> 48, (version & 0x0000FFFF00000000L) >> 32, (version & 0x00000000FFFF0000L) >> 16, (version & 0x000000000000FFFFL)));
+        operatingSystemVersion = to_hstring(fmt::format("{0}.{1}.{2}.{3}", (version & 0xFFFF000000000000L) >> 48, (version & 0x0000FFFF00000000L) >> 32, (version & 0x00000000FFFF0000L) >> 16, (version & 0x000000000000FFFFL)));
     }
 
     Windows::ApplicationModel::PackageVersion SystemInformation::ApplicationVersion()

@@ -13,9 +13,6 @@
 #include "TimeSettingDialog.g.cpp"
 #endif
 
-#include <fmt/printf.h>
-#include <fmt/xchar.h>
-
 using namespace winrt;
 using namespace CelestiaAppComponent;
 using namespace CelestiaComponent;

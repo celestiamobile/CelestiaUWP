@@ -14,7 +14,6 @@
 #endif
 
 #include <fmt/format.h>
-#include <fmt/xchar.h>
 
 using namespace winrt;
 using namespace CelestiaAppComponent;
@@ -40,7 +39,7 @@ namespace winrt::CelestiaWinUI::implementation
         LinkButton().NavigateUri(Uri(url));
 
         auto version = SystemInformation::Instance().ApplicationVersion();
-        VersionLabel().Text(hstring(fmt::format(L"Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision)));
+        VersionLabel().Text(to_hstring(fmt::format("Celestia {0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision)));
 
         LoadAuthorTranslator();
     }
