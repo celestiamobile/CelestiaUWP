@@ -43,7 +43,8 @@ namespace winrt::CelestiaWinUI::implementation
                 {L"item", item.ID()},
                 {L"platform", isXbox ? L"xbox" : L"uwp"},
                 {L"titleVisibility", L"visible"},
-                {L"transparentBackground", L"1"}
+                {L"transparentBackground", L"1"},
+                {L"api", L"2"},
             }
         ).ToString();
         webPage = CelestiaWinUI::SafeWebUserControl(CelestiaWinUI::CommonWebParameter(Uri(uriString), single_threaded_vector<hstring>(std::vector<hstring>{ L"item" }), appCore, renderer, resourceManager.ItemPath(item), nullptr, windowProvider));

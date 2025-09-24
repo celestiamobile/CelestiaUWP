@@ -874,6 +874,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {L"guide", guide},
                 {L"platform", isXbox ? L"xbox" : L"uwp"},
                 {L"transparentBackground", L"1"},
+                {L"api", L"2"},
             });
         return Uri(hstring(L"https://celestia.mobi/resources/guide") + L"?" + query.ToString());
     }
@@ -887,6 +888,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {L"lang", LocalizationHelper::Locale()},
                 {L"platform", isXbox ? L"xbox" : L"uwp"},
                 {L"transparentBackground", L"1"},
+                {L"api", L"2"},
             });
         return Uri(hstring(L"https://celestia.mobi") + path + L"?" + query.ToString());
     }
