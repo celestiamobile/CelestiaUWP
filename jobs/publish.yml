@@ -14,8 +14,8 @@ jobs:
       artifactName: 'sideload'
 
   - script: |
-      DEL $(System.ArtifactsDirectory)\$(publishType)\*.msixsym /S /Q
-    displayName: 'Remove .msixsym'
+      DEL $(System.ArtifactsDirectory)\$(publishType)\*.appxsym /S /Q
+    displayName: 'Remove .appxsym'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
