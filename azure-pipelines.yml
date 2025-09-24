@@ -24,6 +24,7 @@ stages:
   - template: jobs/build.yml
     parameters:
       buildType: msixupload
+      arch: x64
 
 - stage: Build_Sideload
   displayName: 'Build Sideload'
@@ -32,6 +33,7 @@ stages:
   - template: jobs/build.yml
     parameters:
       buildType: sideload
+      arch: x64
 
 - stage: Publish_Sideload
   displayName: 'Publish Sideload'
