@@ -92,7 +92,6 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::MainWindow_Loaded()
     {
-        auto strong_this{ get_strong() };
         if (appSettings.UseFullDPI())
             scale = WindowHelper::GetWindowScaleFactor(*this);
 
@@ -182,11 +181,15 @@ namespace winrt::CelestiaWinUI::implementation
         hstring localeDirectory = PathHelper::Combine(resourcePath, L"locale");
         CelestiaAppCore::SetLocaleDirectory(localeDirectory, locale);
 
-        bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [this](hstring const status) {
-            DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, status]()
+        bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [weak_this{ get_weak() }](hstring const status) {
+            auto strong_this{ weak_this.get() };
+            if (strong_this == nullptr) return;
+            strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, status]()
                 {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
                     auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
-                    LoadingText().Text(textToDisplay);
+                    strong_this->LoadingText().Text(textToDisplay);
                 });
             });
         if (!loadSuccess)
@@ -194,17 +197,23 @@ namespace winrt::CelestiaWinUI::implementation
             if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
             {
                 // Try to restore originial settings
-                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]()
+                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
                     {
-                        ContentDialogHelper::ShowAlert(Content(), LocalizationHelper::Localize(L"Error loading data, fallback to original configuration.", L""));
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        ContentDialogHelper::ShowAlert(strong_this->Content(), LocalizationHelper::Localize(L"Error loading data, fallback to original configuration.", L""));
                     });
                 SetCurrentDirectoryW(defaultResourcePath.c_str());
                 CelestiaAppCore::SetLocaleDirectory(PathHelper::Combine(defaultResourcePath, L"locale"), locale);
-                if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [this](hstring const status) {
-                    DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, status]()
+                if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [weak_this{ get_weak() }](hstring const status) {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, status]()
                         {
+                            auto strong_this{ weak_this.get() };
+                            if (strong_this == nullptr) return;
                             auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
-                            LoadingText().Text(textToDisplay);
+                            strong_this->LoadingText().Text(textToDisplay);
                         });
                     }))
                 {
@@ -245,9 +254,11 @@ namespace winrt::CelestiaWinUI::implementation
 
         readyForInput = true;
 
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]()
+        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
             {
-                OpenFileOrURL();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->OpenFileOrURL();
             });
         return true;
     }
@@ -324,9 +335,11 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::ShowLoadingFailure()
     {
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]()
+        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
             {
-                LoadingText().Text(LocalizationHelper::Localize(L"Loading Celestia failed\u2026", L"Celestia loading failed"));
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->LoadingText().Text(LocalizationHelper::Localize(L"Loading Celestia failed\u2026", L"Celestia loading failed"));
             });
     }
 
@@ -769,12 +782,16 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::ShowTimeSetting()
     {
-        renderer.EnqueueTask([this]()
+        renderer.EnqueueTask([weak_this{ get_weak() }]()
             {
-                double julianDay = appCore.Simulation().JulianDay();
-                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, julianDay]()
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                double julianDay = strong_this->appCore.Simulation().JulianDay();
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, julianDay]()
                     {
-                        ShowTimeSetting(julianDay);
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->ShowTimeSetting(julianDay);
                     });
             });
     }
@@ -785,9 +802,11 @@ namespace winrt::CelestiaWinUI::implementation
         if (co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog) == ContentDialogResult::Primary)
         {
             auto newDay = dialog.JulianDay();
-            renderer.EnqueueTask([this, newDay]()
+            renderer.EnqueueTask([weak_this{ get_weak() }, newDay]()
                 {
-                    appCore.Simulation().JulianDay(newDay);
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->appCore.Simulation().JulianDay(newDay);
                 });
         }
     }
@@ -808,10 +827,12 @@ namespace winrt::CelestiaWinUI::implementation
             auto longitude = dialog.Longitude();
             auto distance = dialog.Distance();
             auto unit = dialog.UnitType();
-            renderer.EnqueueTask([this, object, latitude, longitude, distance, unit]
+            renderer.EnqueueTask([weak_this{ get_weak() }, object, latitude, longitude, distance, unit]
                 {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
                     CelestiaGotoLocation location{ object, latitude, longitude, distance, unit };
-                    appCore.Simulation().GoToLocation(location);
+                    strong_this->appCore.Simulation().GoToLocation(location);
                 });
         }
     }
@@ -841,12 +862,14 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto dispatcherQueue{ DispatcherQueue() };
         if (dispatcherQueue == nullptr) return;
-        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, scriptFile]()
+        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, scriptFile]()
             {
-                scriptFileToOpen = scriptFile;
-                urlToOpen = nullptr;
-                if (readyForInput)
-                    OpenFileOrURL();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->scriptFileToOpen = scriptFile;
+                strong_this->urlToOpen = nullptr;
+                if (strong_this->readyForInput)
+                    strong_this->OpenFileOrURL();
             });
     }
 
@@ -854,12 +877,14 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto dispatcherQueue{ DispatcherQueue() };
         if (dispatcherQueue == nullptr) return;
-        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, url]()
+        dispatcherQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, url]()
             {
-                urlToOpen = url;
-                scriptFileToOpen = nullptr;
-                if (readyForInput)
-                    OpenFileOrURL();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->urlToOpen = url;
+                strong_this->scriptFileToOpen = nullptr;
+                if (strong_this->readyForInput)
+                    strong_this->OpenFileOrURL();
             });
     }
 
@@ -902,9 +927,11 @@ namespace winrt::CelestiaWinUI::implementation
         {
             if (co_await ContentDialogHelper::ShowOption(Content(), LocalizationHelper::Localize(L"Run script?", L"Request user consent to run a script")))
             {
-                renderer.EnqueueTask([this, scriptFile]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, scriptFile]()
                     {
-                        appCore.RunScript(scriptFile.Path());
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->appCore.RunScript(scriptFile.Path());
                     });
             }
             co_return;
@@ -915,9 +942,11 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 if (co_await ContentDialogHelper::ShowOption(Content(), LocalizationHelper::Localize(L"Open URL?", L"Request user consent to open a URL")))
                 {
-                    renderer.EnqueueTask([this, url]()
+                    renderer.EnqueueTask([weak_this{ get_weak() }, url]()
                         {
-                            appCore.GoToURL(url.AbsoluteUri());
+                            auto strong_this{ weak_this.get() };
+                            if (strong_this == nullptr) return;
+                            strong_this->appCore.GoToURL(url.AbsoluteUri());
                         });
                 }
                 co_return;
@@ -1067,10 +1096,12 @@ namespace winrt::CelestiaWinUI::implementation
     void MainWindow::CopyURL()
     {
         using namespace Windows::ApplicationModel::DataTransfer;
-        renderer.EnqueueTask([this]()
+        renderer.EnqueueTask([weak_this{ get_weak() }]()
             {
-                auto url = appCore.CurrentURL();
-                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [url]()
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                auto url = strong_this->appCore.CurrentURL();
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [url]()
                     {
                         DataPackage dataPackage;
                         dataPackage.RequestedOperation(DataPackageOperation::Copy);
@@ -1117,20 +1148,26 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
         auto path = PathHelper::Combine(tempFolder.Path(), to_hstring(GuidHelper::CreateNewGuid()) + L".png");
-        renderer.EnqueueTask([this, path]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, path]()
             {
-                if (appCore.SaveScreenshot(path))
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                if (strong_this->appCore.SaveScreenshot(path))
                 {
-                    DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, path]()
+                    strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, path]()
                         {
-                            SaveScreenshot(path);
+                            auto strong_this{ weak_this.get() };
+                            if (strong_this == nullptr) return;
+                            strong_this->SaveScreenshot(path);
                         });
                 }
                 else
                 {
-                    DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this]()
+                    strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }]()
                         {
-                            ContentDialogHelper::ShowAlert(Content(), LocalizationHelper::Localize(L"Failed in capturing screenshot.", L""));
+                            auto strong_this{ weak_this.get() };
+                            if (strong_this == nullptr) return;
+                            ContentDialogHelper::ShowAlert(strong_this->Content(), LocalizationHelper::Localize(L"Failed in capturing screenshot.", L""));
                         });
                 }
             });
@@ -1232,9 +1269,11 @@ namespace winrt::CelestiaWinUI::implementation
         auto coordinateSystem = dialog.SelectedCoordinateSystem();
         auto referenceObject = dialog.ReferenceObject();
         auto targetObject = dialog.TargetObject();
-        renderer.EnqueueTask([this, coordinateSystem, referenceObject, targetObject]()
+        renderer.EnqueueTask([weak_this { get_weak() }, coordinateSystem, referenceObject, targetObject]()
             {
-                appCore.Simulation().ActiveObserver().SetFrame(coordinateSystem, referenceObject, targetObject);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.Simulation().ActiveObserver().SetFrame(coordinateSystem, referenceObject, targetObject);
             });
     }
 
@@ -1423,15 +1462,19 @@ namespace winrt::CelestiaWinUI::implementation
             auto systemInfoFile = co_await parentFolder.CreateFileAsync(L"systeminfo.txt");
             auto addonInfoFile = co_await parentFolder.CreateFileAsync(L"addoninfo.txt");
             hstring screenshotFilePath = screenshotFile.Path();
-            renderer.EnqueueTask([this, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, screenshotFilePath]()
+            renderer.EnqueueTask([weak_this{ get_weak() }, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, screenshotFilePath]()
                 {
-                    auto renderInfo = appCore.RenderInfo();
-                    auto url = appCore.CurrentURL();
-                    bool saveScreenshotSuccess = appCore.SaveScreenshot(screenshotFilePath);
-                    DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url, saveScreenshotSuccess]()
-                    {
-                        ReportBug(saveScreenshotSuccess ? screenshotFile : nullptr, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
-                    });
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    auto renderInfo = strong_this->appCore.RenderInfo();
+                    auto url = strong_this->appCore.CurrentURL();
+                    bool saveScreenshotSuccess = strong_this->appCore.SaveScreenshot(screenshotFilePath);
+                    strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, screenshotFile, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url, saveScreenshotSuccess]()
+                        {
+                            auto strong_this{ weak_this.get() };
+                            if (strong_this == nullptr) return;
+                            strong_this->ReportBug(saveScreenshotSuccess ? screenshotFile : nullptr, renderInfoFile, urlInfoFile, systemInfoFile, addonInfoFile, renderInfo, url);
+                        });
                 });
         }
         catch (hresult_error const&)
@@ -1543,13 +1586,16 @@ namespace winrt::CelestiaWinUI::implementation
         auto x = args.X();
         auto y = args.Y();
         auto selection = args.Selection();
-        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, selection, x, y]()
+        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, selection, x, y]()
             {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+
                 MenuFlyout menu;
-                AppendItem(menu, appCore.Simulation().Universe().NameForSelection(selection), nullptr);
+                AppendItem(menu, strong_this->appCore.Simulation().Universe().NameForSelection(selection), nullptr);
                 menu.Items().Append(MenuFlyoutSeparator());
 
-                AppendItem(menu, LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object"), [weak_this{ get_weak() }, selection](IInspectable const&, RoutedEventArgs const&)
+                AppendItem(menu, LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object"), [weak_this{ strong_this->get_weak() }, selection](IInspectable const&, RoutedEventArgs const&)
                     {
                         auto strong_this{ weak_this.get() };
                         if (strong_this == nullptr) return;
@@ -1562,7 +1608,7 @@ namespace winrt::CelestiaWinUI::implementation
                 for (const auto& [name, code] : actions)
                 {
                     auto copiedCode = code;
-                    AppendItem(menu, name, [weak_this{ get_weak() }, selection, copiedCode](IInspectable const&, RoutedEventArgs const&)
+                    AppendItem(menu, name, [weak_this{ strong_this->get_weak() }, selection, copiedCode](IInspectable const&, RoutedEventArgs const&)
                         {
                             auto strong_this{ weak_this.get() };
                             if (strong_this == nullptr) return;
@@ -1576,11 +1622,11 @@ namespace winrt::CelestiaWinUI::implementation
                 CelestiaBody body = selection.Object().try_as<CelestiaBody>();
                 if (body != nullptr)
                 {
-                    PopulateBodyMenu(body, menu, appCore, renderer);
+                    PopulateBodyMenu(body, menu, strong_this->appCore, strong_this->renderer);
                 }
 
                 std::vector<MenuFlyoutItemBase> browserMenuItems;
-                CelestiaBrowserItem browserItem{ appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [weak_this{ get_weak() }](CelestiaBrowserItem const& item)
+                CelestiaBrowserItem browserItem{ strong_this->appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [weak_this{ strong_this->get_weak() }](CelestiaBrowserItem const& item)
                     {
                         auto strong_this{ weak_this.get() };
                         if (strong_this == nullptr) return com_array<CelestiaBrowserItem>();
@@ -1590,7 +1636,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     for (const auto& child : children)
                     {
-                        browserMenuItems.push_back(CreateMenuItem(child, appCore, renderer));
+                        browserMenuItems.push_back(CreateMenuItem(child, strong_this->appCore, strong_this->renderer));
                     }
                 }
 
@@ -1610,7 +1656,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                 for (const auto menuItem : markAction.MenuItems())
                 {
-                    AppendSubItem(markMenu, menuItem.Title(), [weak_this{get_weak()}, selection, menuItem](IInspectable const&, RoutedEventArgs const&)
+                    AppendSubItem(markMenu, menuItem.Title(), [weak_this{ strong_this->get_weak() }, selection, menuItem](IInspectable const&, RoutedEventArgs const&)
                         {
                             auto strong_this{ weak_this.get() };
                             if (strong_this == nullptr) return;
@@ -1630,7 +1676,7 @@ namespace winrt::CelestiaWinUI::implementation
                 }
                 menu.Items().Append(markMenu);
 
-                menu.ShowAt(GLView(), Point(x / scale, y / scale));
+                menu.ShowAt(strong_this->GLView(), Point(x / strong_this->scale, y / strong_this->scale));
             });
     }
 
@@ -1689,11 +1735,13 @@ namespace winrt::CelestiaWinUI::implementation
                 auto position{ args.GetCurrentPoint(sender.as<UIElement>()).Position() };
                 auto scaledPosition = Point(position.X * scale, position.Y * scale);
 
-                renderer.EnqueueTask([this, scaledPosition, currentButton, newButtonPressed]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, scaledPosition, currentButton, newButtonPressed]()
                     {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
                         if (currentButton.has_value())
-                            appCore.MouseButtonUp(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), currentButton.value());
-                        appCore.MouseButtonDown(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), newButtonPressed.value());
+                            strong_this->appCore.MouseButtonUp(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), currentButton.value());
+                        strong_this->appCore.MouseButtonDown(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), newButtonPressed.value());
                     });
 
                 lastMousePosition = position;
@@ -1731,9 +1779,11 @@ namespace winrt::CelestiaWinUI::implementation
             auto y = scaledPosition.Y - oldScaledPosition.Y;
             auto button = currentPressedButton.value();
 
-            renderer.EnqueueTask([this, x, y, button]()
+            renderer.EnqueueTask([weak_this{ get_weak() }, x, y, button]()
                 {
-                    appCore.MouseMove((float)x, (float)y, button);
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->appCore.MouseMove((float)x, (float)y, button);
                 });
 
 #if LOCK_CURSOR
@@ -1782,9 +1832,11 @@ namespace winrt::CelestiaWinUI::implementation
                 auto button = currentPressedButton.value();
                 auto position = args.GetCurrentPoint(sender.as<UIElement>()).Position();
                 auto scaledPosition = Point(position.X * scale, position.Y * scale);
-                renderer.EnqueueTask([this, scaledPosition, button]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, scaledPosition, button]()
                     {
-                        appCore.MouseButtonUp(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), button);
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->appCore.MouseButtonUp(static_cast<float>(scaledPosition.X), static_cast<float>(scaledPosition.Y), button);
                     });
                 lastMousePosition = std::nullopt;
                 currentPressedButton = std::nullopt;
@@ -1805,9 +1857,11 @@ namespace winrt::CelestiaWinUI::implementation
     void MainWindow::GLView_PointerWheelChanged(IInspectable const& sender, Input::PointerRoutedEventArgs const& args)
     {
         auto delta = args.GetCurrentPoint(sender.as<UIElement>()).Properties().MouseWheelDelta();
-        renderer.EnqueueTask([this, delta]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, delta]()
             {
-                appCore.MouseWheel(delta > 0 ? -1.0f : 1.0f, 0);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.MouseWheel(delta > 0 ? -1.0f : 1.0f, 0);
             });
     }
 
@@ -1838,18 +1892,22 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
 
-        renderer.EnqueueTask([this, glViewHasFocus]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, glViewHasFocus]()
             {
-                isGLViewFocused = glViewHasFocus;
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->isGLViewFocused = glViewHasFocus;
             });
     }
 
     void MainWindow::FocusHelperControl_CharacterReceived(IInspectable const&, Input::CharacterReceivedRoutedEventArgs const& args)
     {
         int16_t key = args.Character();
-        renderer.EnqueueTask([this, key]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, key]()
             {
-                appCore.CharEnter(key);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.CharEnter(key);
             });
     }
 
@@ -1867,9 +1925,11 @@ namespace winrt::CelestiaWinUI::implementation
         if (isShiftPressed)
             modifiers |= 8;
 
-        renderer.EnqueueTask([this, key, modifiers]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, key, modifiers]()
             {
-                appCore.KeyDown(static_cast<int32_t>(key), modifiers);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.KeyDown(static_cast<int32_t>(key), modifiers);
             });
     }
 
@@ -1904,9 +1964,11 @@ namespace winrt::CelestiaWinUI::implementation
 
         auto key = static_cast<int32_t>(args.Key());
 
-        renderer.EnqueueTask([this, key]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, key]()
             {
-                appCore.KeyUp(key, 0);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.KeyUp(key, 0);
             });
     }
 

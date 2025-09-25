@@ -116,6 +116,7 @@ namespace winrt::CelestiaComponent::implementation
                 case CelestiaComponent::SystemAccessRequestResult::Denied:
                     return CelestiaCore::ScriptSystemAccessPolicy::Deny;
                 }
+                return CelestiaCore::ScriptSystemAccessPolicy::Ask;
             });
     }
 
