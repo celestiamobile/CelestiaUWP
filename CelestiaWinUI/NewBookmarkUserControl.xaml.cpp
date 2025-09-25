@@ -52,13 +52,17 @@ namespace winrt::CelestiaWinUI::implementation
         if (nameText.empty()) return;
         auto name = nameText;
 
-        renderer.EnqueueTask([this, name]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, name]()
             {
-                auto url = appCore.CurrentURL();
-                DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [this, name, url]()
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                auto url = strong_this->appCore.CurrentURL();
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, name, url]()
                     {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
                         BookmarkNode bookmark{ false, name, url, single_threaded_observable_vector<BookmarkNode>() };
-                        organizer.InsertBookmarkAtSelection(bookmark);
+                        strong_this->organizer.InsertBookmarkAtSelection(bookmark);
                     });
             });
     }

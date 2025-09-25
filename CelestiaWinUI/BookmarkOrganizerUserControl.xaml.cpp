@@ -163,9 +163,11 @@ namespace winrt::CelestiaWinUI::implementation
         auto bookmark = selectedItem.try_as<BookmarkNode>();
         if (bookmark == nullptr) return;
         if (bookmark.IsFolder() || bookmark.URL().empty()) return;
-        renderer.EnqueueTask([this, bookmark]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, bookmark]()
             {
-                appCore.GoToURL(bookmark.URL());
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.GoToURL(bookmark.URL());
             });
     }
 

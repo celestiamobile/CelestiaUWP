@@ -27,22 +27,26 @@ namespace winrt::CelestiaAppComponent::implementation
         for (const auto& gamepad : Gamepad::Gamepads())
             connectedGamepads.Append(gamepad);
 
-        Gamepad::GamepadAdded([this](IInspectable const&, Gamepad const& gamepad)
+        Gamepad::GamepadAdded([weak_this{ get_weak() }](IInspectable const&, Gamepad const& gamepad)
             {
-                connectedGamepadMutex.lock();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->connectedGamepadMutex.lock();
                 uint32_t index;
-                if (!connectedGamepads.IndexOf(gamepad, index))
-                    connectedGamepads.Append(gamepad);
-                connectedGamepadMutex.unlock();
+                if (!strong_this->connectedGamepads.IndexOf(gamepad, index))
+                    strong_this->connectedGamepads.Append(gamepad);
+                strong_this->connectedGamepadMutex.unlock();
             });
 
-        Gamepad::GamepadRemoved([this](IInspectable const&, Gamepad const& gamepad)
+        Gamepad::GamepadRemoved([weak_this{ get_weak() }](IInspectable const&, Gamepad const& gamepad)
             {
-                connectedGamepadMutex.lock();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->connectedGamepadMutex.lock();
                 uint32_t index;
-                if (connectedGamepads.IndexOf(gamepad, index))
-                    connectedGamepads.RemoveAt(index);
-                connectedGamepadMutex.unlock();
+                if (strong_this->connectedGamepads.IndexOf(gamepad, index))
+                    strong_this->connectedGamepads.RemoveAt(index);
+                strong_this->connectedGamepadMutex.unlock();
             });
     }
 

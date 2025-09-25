@@ -58,9 +58,11 @@ namespace winrt::CelestiaWinUI::implementation
         auto item = DestinationSelection().SelectedItem();
         if (item == nullptr) return;
         auto destination = item.as<CelestiaDestination>();
-        renderer.EnqueueTask([this, destination]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, destination]()
             {
-                appCore.Simulation().GoToDestination(destination);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.Simulation().GoToDestination(destination);
             });
     }
 }

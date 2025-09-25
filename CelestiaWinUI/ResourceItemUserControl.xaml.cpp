@@ -106,9 +106,11 @@ namespace winrt::CelestiaWinUI::implementation
             auto scriptPath = resourceManager.ScriptPath(item);
             if (!scriptPath.empty())
             {
-                renderer.EnqueueTask([this, scriptPath]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, scriptPath]()
                     {
-                        appCore.RunScript(scriptPath);
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->appCore.RunScript(scriptPath);
                     });
             }
         }
@@ -117,13 +119,15 @@ namespace winrt::CelestiaWinUI::implementation
             auto demoObjectName = item.DemoObjectName();
             if (!demoObjectName.empty())
             {
-                renderer.EnqueueTask([this, demoObjectName]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, demoObjectName]()
                     {
-                        auto selection = appCore.Simulation().Find(demoObjectName);
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        auto selection = strong_this->appCore.Simulation().Find(demoObjectName);
                         if (!selection.IsEmpty())
                         {
-                            appCore.Simulation().Selection(selection);
-                            appCore.CharEnter(103);
+                            strong_this->appCore.Simulation().Selection(selection);
+                            strong_this->appCore.CharEnter(103);
                         }
                     });
             }

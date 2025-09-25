@@ -192,9 +192,11 @@ namespace winrt::CelestiaWinUI::implementation
             return;
         
         auto eclipse = selectedEclipse.as<CelestiaEclipse>();
-        renderer.EnqueueTask([this, eclipse]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, eclipse]()
             {
-                appCore.Simulation().GoToEclipse(eclipse);
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->appCore.Simulation().GoToEclipse(eclipse);
             });
     }
 
