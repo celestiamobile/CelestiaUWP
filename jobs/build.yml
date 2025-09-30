@@ -10,7 +10,7 @@ jobs:
     contentCommitHash: ${{ '10bd43b0e8925f6ee9bb9687522708a95338d664' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.2'
+    dependencyVersion: '1.0.7'
     angleVersion: '1.0.6'
 
   steps:
@@ -106,13 +106,6 @@ jobs:
       command: custom
       arguments: 'install celestia-windows-$(arch)-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
     displayName: 'Install Dependencies'
-
-  - pwsh: |
-      Remove-Item -Path "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows\include\miniaudio.h"
-      Copy-Item -Path "patches\miniaudio.h" -Destination "packages\celestia-windows-$(arch)-dependencies.$(dependencyVersion)\installed\$(arch)-windows\include\miniaudio.h"
-    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
-    displayName: 'Fix miniaudio Header'
-    condition: eq( variables['arch'], 'arm64' )
 
   - script: |
       RD Celestia\.git /S /Q

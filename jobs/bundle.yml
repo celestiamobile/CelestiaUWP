@@ -6,7 +6,7 @@ jobs:
 
   variables:
     solution: 'CelestiaUWP.sln'
-    dependencyVersion: '1.0.2'
+    dependencyVersion: '1.0.7'
 
   steps:
   - checkout: self
