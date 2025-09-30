@@ -6,7 +6,7 @@ index 1885f06..bb34034 100644
    <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props')" />
-+  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" />
++  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" />
    <PropertyGroup Label="Globals">
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -14,7 +14,7 @@ index 1885f06..bb34034 100644
      <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets')" />
      <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" />
-+    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" />
++    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
@@ -22,8 +22,8 @@ index 1885f06..bb34034 100644
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
  </Project>
 \ No newline at end of file
@@ -35,7 +35,7 @@ index b283eb2..33ca82b 100644
    <package id="Microsoft.Windows.CppWinRT" version="2.0.250303.1" targetFramework="native" />
    <package id="Microsoft.Windows.SDK.BuildTools" version="10.0.26100.6584" targetFramework="native" />
    <package id="Microsoft.WindowsAppSDK" version="1.7.250909003" targetFramework="native" />
-+  <package id="celestia-windows-arm64-dependencies" version="1.0.2" targetFramework="native" />
++  <package id="celestia-windows-arm64-dependencies" version="1.0.7" targetFramework="native" />
  </packages>
 \ No newline at end of file
 diff --git a/CelestiaComponent/CelestiaComponent.vcxproj b/CelestiaComponent/CelestiaComponent.vcxproj
@@ -46,7 +46,7 @@ index 5fca3ce..199ffe6 100644
    <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props')" />
-+  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" />
++  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" />
    <ItemGroup Label="ProjectConfigurations">
      <ProjectConfiguration Include="Debug|ARM">
        <Configuration>Debug</Configuration>
@@ -55,7 +55,7 @@ index 5fca3ce..199ffe6 100644
      <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" />
      <Import Project="..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets')" />
 +    <Import Project="..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets" Condition="Exists('..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets')" />
-+    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" />
++    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
@@ -64,8 +64,8 @@ index 5fca3ce..199ffe6 100644
      <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets'))" />
      <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets'))" />
 +    <Error Condition="!Exists('..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Celestia.ANGLE.1.0.6\build\native\Celestia.ANGLE.targets'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
  </Project>
 \ No newline at end of file
@@ -77,7 +77,7 @@ index c4c9d12..1ccf36e 100644
    <package id="Microsoft.Windows.CppWinRT" version="2.0.250303.1" targetFramework="native" />
    <package id="Microsoft.Windows.SDK.BuildTools" version="10.0.26100.6584" targetFramework="native" />
    <package id="Microsoft.WindowsAppSDK" version="1.7.250909003" targetFramework="native" />
-+  <package id="celestia-windows-arm64-dependencies" version="1.0.2" targetFramework="native" />
++  <package id="celestia-windows-arm64-dependencies" version="1.0.7" targetFramework="native" />
  </packages>
 \ No newline at end of file
 diff --git a/CelestiaWinUI/CelestiaWinUI.vcxproj b/CelestiaWinUI/CelestiaWinUI.vcxproj
@@ -88,7 +88,7 @@ index f3901aa..963800b 100644
    <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.6584\build\Microsoft.Windows.SDK.BuildTools.props')" />
-+  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" />
++  <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" />
    <PropertyGroup Label="Globals">
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -96,7 +96,7 @@ index f3901aa..963800b 100644
      <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets')" />
      <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" />
-+    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" />
++    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
@@ -104,8 +104,8 @@ index f3901aa..963800b 100644
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.props'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.1.7.250909003\build\native\Microsoft.WindowsAppSDK.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.3485.44\build\native\Microsoft.Web.WebView2.targets'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.props'))" />
-+    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.2\build\native\celestia-windows-arm64-dependencies.targets'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.props'))" />
++    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.7\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
  </Project>
 \ No newline at end of file
@@ -117,6 +117,6 @@ index 916e20b..2e0fe8b 100644
    <package id="Microsoft.Windows.ImplementationLibrary" version="1.0.250325.1" targetFramework="native" />
    <package id="Microsoft.Windows.SDK.BuildTools" version="10.0.26100.6584" targetFramework="native" />
    <package id="Microsoft.WindowsAppSDK" version="1.7.250909003" targetFramework="native" />
-+  <package id="celestia-windows-arm64-dependencies" version="1.0.2" targetFramework="native" />
++  <package id="celestia-windows-arm64-dependencies" version="1.0.7" targetFramework="native" />
  </packages>
 \ No newline at end of file
