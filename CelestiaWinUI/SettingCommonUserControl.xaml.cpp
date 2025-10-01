@@ -25,6 +25,7 @@ using namespace CelestiaComponent;
 using namespace Windows::Foundation;
 using namespace Windows::Storage;
 using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::Windows::Storage::Pickers;
 
 namespace winrt::CelestiaWinUI::implementation
 {
@@ -145,20 +146,12 @@ namespace winrt::CelestiaWinUI::implementation
         auto window = parameter.WindowProvider()();
         if (window == nullptr) return;
 
-        auto windowNative = window.try_as<::IWindowNative>();
-        if (windowNative == nullptr) return;
-        HWND hWnd{ 0 };
-        windowNative->get_WindowHandle(&hWnd);
-        if (hWnd == 0) return;
-
-        Pickers::FolderPicker picker;
-        picker.ViewMode(Pickers::PickerViewMode::Thumbnail);
-        picker.SuggestedStartLocation(Pickers::PickerLocationId::Downloads);
-        auto initializeWithWindow{ picker.as<::IInitializeWithWindow>() };
-        initializeWithWindow->Initialize(hWnd);
-        if (auto folder = co_await picker.PickSingleFolderAsync(); folder != nullptr)
+        FolderPicker picker{ window.AppWindow().Id() };
+        picker.ViewMode(PickerViewMode::Thumbnail);
+        picker.SuggestedStartLocation(PickerLocationId::Downloads);
+        if (auto folderResult = co_await picker.PickSingleFolderAsync(); folderResult != nullptr)
         {
-            item.Path(folder.Path());
+            item.Path(folderResult.Path());
         }
     }
 
@@ -177,21 +170,13 @@ namespace winrt::CelestiaWinUI::implementation
         auto window = parameter.WindowProvider()();
         if (window == nullptr) return;
 
-        auto windowNative = window.try_as<::IWindowNative>();
-        if (windowNative == nullptr) return;
-        HWND hWnd{ 0 };
-        windowNative->get_WindowHandle(&hWnd);
-        if (hWnd == 0) return;
-
-        Pickers::FileOpenPicker picker;
-        picker.ViewMode(Pickers::PickerViewMode::Thumbnail);
-        picker.SuggestedStartLocation(Pickers::PickerLocationId::Downloads);
+        FileOpenPicker picker{ window.AppWindow().Id() };
+        picker.ViewMode(PickerViewMode::Thumbnail);
+        picker.SuggestedStartLocation(PickerLocationId::Downloads);
         picker.FileTypeFilter().Append(L".cfg");
-        auto initializeWithWindow{ picker.as<::IInitializeWithWindow>() };
-        initializeWithWindow->Initialize(hWnd);
-        if (auto file = co_await picker.PickSingleFileAsync(); file != nullptr)
+        if (auto fileResult = co_await picker.PickSingleFileAsync(); fileResult != nullptr)
         {
-            item.Path(file.Path());
+            item.Path(fileResult.Path());
         }
     }
 

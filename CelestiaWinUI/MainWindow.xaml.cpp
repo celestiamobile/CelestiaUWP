@@ -22,6 +22,7 @@ using namespace CelestiaAppComponent;
 using namespace CelestiaComponent;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
+using namespace Microsoft::Windows::Storage::Pickers;
 using namespace Windows::Data::Json;
 using namespace Windows::Foundation;
 using namespace Windows::Globalization;
@@ -847,15 +848,20 @@ namespace winrt::CelestiaWinUI::implementation
         auto hWnd = WindowHandle();
         if (hWnd == 0) return;
 
-        Pickers::FileOpenPicker picker;
-        picker.ViewMode(Pickers::PickerViewMode::Thumbnail);
-        picker.SuggestedStartLocation(Pickers::PickerLocationId::Downloads);
+        FileOpenPicker picker{ AppWindow().Id() };
+        picker.ViewMode(PickerViewMode::Thumbnail);
+        picker.SuggestedStartLocation(PickerLocationId::Downloads);
         picker.FileTypeFilter().Append(L".cel");
         picker.FileTypeFilter().Append(L".celx");
-        auto initializeWithWindow{ picker.as<::IInitializeWithWindow>() };
-        initializeWithWindow->Initialize(hWnd);
-        if (auto file = co_await picker.PickSingleFileAsync(); file != nullptr)
-            OpenFileIfReady(file);
+        if (auto fileResult = co_await picker.PickSingleFileAsync(); fileResult != nullptr)
+        {
+            try
+            {
+                auto file = co_await StorageFile::GetFileFromPathAsync(fileResult.Path());
+                OpenFileIfReady(file);
+            }
+            catch (hresult_error const&) {}
+        }
     }
 
     void MainWindow::OpenFileIfReady(StorageFile const scriptFile)
@@ -1183,20 +1189,19 @@ namespace winrt::CelestiaWinUI::implementation
             auto hWnd = WindowHandle();
             if (hWnd == 0) co_return;
 
-            Pickers::FileSavePicker savePicker;
-            savePicker.SuggestedStartLocation(Pickers::PickerLocationId::DocumentsLibrary);
+            FileSavePicker savePicker{ AppWindow().Id() };
+            savePicker.SuggestedStartLocation(PickerLocationId::DocumentsLibrary);
             // Dropdown of file types the user can save the file as
             auto fileExtensions = winrt::single_threaded_observable_vector<winrt::hstring>();
             fileExtensions.Append(L".png");
             savePicker.FileTypeChoices().Insert(LocalizationHelper::Localize(L"Image", L"Sharing option, image"), fileExtensions);
             // Default file name if the user does not type one in or select a file to replace
             savePicker.SuggestedFileName(LocalizationHelper::Localize(L"Celestia Screenshot", L""));
-            auto initializeWithWindow{ savePicker.as<::IInitializeWithWindow>() };
-            initializeWithWindow->Initialize(hWnd);
 
-            StorageFile file{ co_await savePicker.PickSaveFileAsync() };
-            if (file == nullptr) co_return;
+            auto fileResult{ co_await savePicker.PickSaveFileAsync() };
+            if (fileResult == nullptr) co_return;
 
+            auto file = co_await StorageFile::GetFileFromPathAsync(fileResult.Path());
             co_await originalFile.CopyAndReplaceAsync(file);
         }
         catch (hresult_error const&)

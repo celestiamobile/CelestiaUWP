@@ -29,7 +29,6 @@
 #include <winrt/Windows.Globalization.NumberFormatting.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.Streams.h>
-#include <winrt/Windows.Storage.Pickers.h>
 #include <winrt/Windows.System.Profile.h>
 #include <winrt/Windows.System.Threading.h>
 #include <winrt/Windows.UI.ViewManagement.h>
@@ -54,6 +53,7 @@
 #include <winrt/Microsoft.UI.Windowing.h>
 #include <winrt/Microsoft.Web.WebView2.Core.h>
 #include <winrt/Microsoft.Windows.AppLifecycle.h>
+#include <winrt/Microsoft.Windows.Storage.Pickers.h>
 #include <microsoft.ui.xaml.window.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <winrt/CelestiaComponent.h>
