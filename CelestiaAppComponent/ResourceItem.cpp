@@ -20,7 +20,7 @@ using namespace Windows::Data::Json;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
-    ResourceItem::ResourceItem(hstring const& name, hstring const& id, hstring const& url, hstring const& type, hstring const& demoObjectName, hstring const& mainScriptName) : name(name), id(id), url(url), type(type), demoObjectName(demoObjectName), mainScriptName(mainScriptName)
+    ResourceItem::ResourceItem(hstring const& name, hstring const& id, hstring const& url, hstring const& checksum, hstring const& type, hstring const& demoObjectName, hstring const& mainScriptName) : name(name), id(id), url(url), checksum(checksum), type(type), demoObjectName(demoObjectName), mainScriptName(mainScriptName)
     {
     }
 
@@ -37,6 +37,11 @@ namespace winrt::CelestiaAppComponent::implementation
     hstring ResourceItem::URL()
     {
         return url;
+    }
+
+    hstring ResourceItem::Checksum()
+    {
+        return checksum;
     }
 
     hstring ResourceItem::Type()
@@ -63,9 +68,10 @@ namespace winrt::CelestiaAppComponent::implementation
         auto url = object.GetNamedString(L"item");
         auto type = object.GetNamedString(L"type");
         // Get optional fields
+        auto checksum = object.GetNamedString(L"checksum");
         auto demoObjectName = object.GetNamedString(L"objectName", L"");
         auto mainScriptName = object.GetNamedString(L"mainScriptName", L"");
-        return CelestiaAppComponent::ResourceItem(name, id, url, type, demoObjectName, mainScriptName);
+        return CelestiaAppComponent::ResourceItem(name, id, url, checksum, type, demoObjectName, mainScriptName);
     }
 
     JsonObject ResourceItem::JSONRepresentation()
@@ -75,6 +81,9 @@ namespace winrt::CelestiaAppComponent::implementation
         object.SetNamedValue(L"id", JsonValue::CreateStringValue(id));
         object.SetNamedValue(L"item", JsonValue::CreateStringValue(url));
         object.SetNamedValue(L"type", JsonValue::CreateStringValue(type));
+
+        if (!checksum.empty())
+            object.SetNamedValue(L"checksum", JsonValue::CreateStringValue(checksum));
         if (!demoObjectName.empty())
             object.SetNamedValue(L"objectName", JsonValue::CreateStringValue(demoObjectName));
         if (!mainScriptName.empty())

@@ -15,10 +15,11 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     struct ResourceItem : ResourceItemT<ResourceItem>
     {
-        ResourceItem(hstring const& name, hstring const& id, hstring const& url, hstring const& type, hstring const& demoObjectName, hstring const& mainScriptName);
+        ResourceItem(hstring const& name, hstring const& id, hstring const& url, hstring const& checksum, hstring const& type, hstring const& demoObjectName, hstring const& mainScriptName);
         hstring Name();
         hstring ID();
         hstring URL();
+        hstring Checksum();
         hstring Type();
         hstring DemoObjectName();
         hstring MainScriptName();
@@ -31,6 +32,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring name;
         hstring id;
         hstring url;
+        hstring checksum;
         hstring type;
         hstring demoObjectName;
         hstring mainScriptName;

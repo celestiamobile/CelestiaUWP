@@ -12,10 +12,11 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass ResourceItem
     {
-        ResourceItem(String name, String id, String url, String type, String demoObjectName, String mainScriptName);
+        ResourceItem(String name, String id, String url, String checksum, String type, String demoObjectName, String mainScriptName);
         String Name{ get; };
         String ID{ get; };
         String URL{ get; };
+        String Checksum{ get; };
         String Type{ get; };
         String DemoObjectName{ get; };
         String MainScriptName{ get; };
