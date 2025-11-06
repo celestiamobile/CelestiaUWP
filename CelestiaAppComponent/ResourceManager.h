@@ -59,6 +59,7 @@ namespace winrt::CelestiaAppComponent::implementation
         Windows::Foundation::IAsyncAction Uninstall(CelestiaAppComponent::ResourceItem const item);
 
         Windows::Foundation::IAsyncOperation<Windows::Foundation::Collections::IVector<CelestiaAppComponent::ResourceItem>> InstalledItems();
+        Windows::Foundation::IAsyncOperation<CelestiaAppComponent::ResourceItem> InstalledItem(CelestiaAppComponent::ResourceItem const item);
 
         event_token DownloadProgressUpdate(Windows::Foundation::EventHandler<CelestiaAppComponent::ResourceManagerDownloadProgressArgs> const&);
         void DownloadProgressUpdate(event_token const&);

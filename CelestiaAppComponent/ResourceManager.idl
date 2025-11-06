@@ -63,6 +63,7 @@ namespace CelestiaAppComponent
         void Cancel(ResourceItem item);
         Windows.Foundation.IAsyncAction Uninstall(ResourceItem item);
         Windows.Foundation.IAsyncOperation<Windows.Foundation.Collections.IVector<ResourceItem> > InstalledItems();
+        Windows.Foundation.IAsyncOperation<ResourceItem> InstalledItem(ResourceItem item);
 
         event Windows.Foundation.EventHandler<ResourceManagerDownloadProgressArgs> DownloadProgressUpdate;
         event Windows.Foundation.EventHandler<ResourceManagerDownloadSuccessArgs> DownloadSuccess;

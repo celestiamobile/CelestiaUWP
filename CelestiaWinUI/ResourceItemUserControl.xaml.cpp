@@ -23,13 +23,19 @@ namespace winrt::CelestiaWinUI::implementation
     ResourceItemUserControl::ResourceItemUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::ResourceItem const& item, ResourceManager const& resourceManager, CelestiaWinUI::WebWindowProvider const& windowProvider)
         : appCore(appCore), renderer(renderer), item(item), resourceManager(resourceManager), windowProvider(windowProvider)
     {
+        auto accentButtonStyleValue = Resources().TryLookup(box_value(L"AccentButtonStyle"));
+        if (accentButtonStyleValue != nullptr)
+            accentButtonStyle = accentButtonStyleValue.try_as<Microsoft::UI::Xaml::Style>();
     }
 
     void ResourceItemUserControl::InitializeComponent()
     {
         ResourceItemUserControlT::InitializeComponent();
 
+        UpdateButton().Content(box_value(LocalizationHelper::Localize(L"Update", L"")));
+
         UpdateState();
+        ReloadItemOnDisk();
         ReloadItem();
 
         resourceManager.DownloadSuccess({ get_weak(), &ResourceItemUserControl::ResourceManager_DownloadSuccess });
@@ -78,6 +84,20 @@ namespace winrt::CelestiaWinUI::implementation
         default:
             break;
         }
+        auto strong_this = weak_this.get();
+        if (strong_this)
+            strong_this->UpdateState();
+    }
+
+    fire_and_forget ResourceItemUserControl::UpdateButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto weak_this{ get_weak() };
+
+        auto addon = item;
+        auto manager = resourceManager;
+        co_await manager.Uninstall(addon);
+        manager.Download(addon);
+
         auto strong_this = weak_this.get();
         if (strong_this)
             strong_this->UpdateState();
@@ -143,7 +163,9 @@ namespace winrt::CelestiaWinUI::implementation
     void ResourceItemUserControl::ResourceManager_DownloadSuccess(IInspectable const&, ResourceManagerDownloadSuccessArgs const& args)
     {
         if (item.ID() != args.Item().ID()) return;
+        installedAddonChecksum = L"";
         UpdateState();
+        ReloadItemOnDisk();
     }
 
     fire_and_forget ResourceItemUserControl::ResourceManager_DownloadFailure(IInspectable const&, ResourceManagerDownloadFailureArgs const& args)
@@ -187,15 +209,21 @@ namespace winrt::CelestiaWinUI::implementation
         {
         case ResourceItemState::Installed:
             InstallProgressBar().Visibility(Visibility::Collapsed);
+            ActionButton().Style(defaultButtonStyle);
             ActionButton().Content(box_value(LocalizationHelper::Localize(L"Uninstall", L"")));
+            UpdateButton().Visibility(installedAddonChecksum != item.Checksum() && !installedAddonChecksum.empty() && !item.Checksum().empty() ? Visibility::Visible : Visibility::Collapsed);
             break;
         case ResourceItemState::Downloading:
             InstallProgressBar().Visibility(Visibility::Visible);
+            ActionButton().Style(defaultButtonStyle);
             ActionButton().Content(box_value(LocalizationHelper::Localize(L"Cancel", L"")));
+            UpdateButton().Visibility(Visibility::Collapsed);
             break;
         case ResourceItemState::None:
             InstallProgressBar().Visibility(Visibility::Collapsed);
+            ActionButton().Style(accentButtonStyle);
             ActionButton().Content(box_value(LocalizationHelper::Localize(L"Install", L"")));
+            UpdateButton().Visibility(Visibility::Collapsed);
             break;
         default:
             break;
@@ -253,5 +281,13 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
         catch (hresult_error const&) {}
+    }
+
+
+    fire_and_forget ResourceItemUserControl::ReloadItemOnDisk()
+    {
+        auto itemOnDisk = co_await resourceManager.InstalledItem(item);
+        installedAddonChecksum = itemOnDisk == nullptr ? L"" : itemOnDisk.Checksum();
+        UpdateState();
     }
 }

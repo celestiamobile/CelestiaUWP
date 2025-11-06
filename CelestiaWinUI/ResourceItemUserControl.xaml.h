@@ -19,6 +19,7 @@ namespace winrt::CelestiaWinUI::implementation
         void InitializeComponent();
 
         fire_and_forget ActionButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        fire_and_forget UpdateButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
         void GoButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
 
         void ResourceManager_DownloadProgressUpdate(Windows::Foundation::IInspectable const&, CelestiaAppComponent::ResourceManagerDownloadProgressArgs const&);
@@ -35,9 +36,14 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaAppComponent::ResourceManager resourceManager;
         CelestiaWinUI::WebWindowProvider windowProvider;
         CelestiaWinUI::SafeWebUserControl webPage{ nullptr };
+        hstring installedAddonChecksum;
+
+        Microsoft::UI::Xaml::Style accentButtonStyle{ nullptr };
+        Microsoft::UI::Xaml::Style defaultButtonStyle{ nullptr };
 
         void UpdateState();
         fire_and_forget ReloadItem();
+        fire_and_forget ReloadItemOnDisk();
     };
 }
 

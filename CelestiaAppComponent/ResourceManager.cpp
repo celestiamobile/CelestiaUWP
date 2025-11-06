@@ -414,6 +414,20 @@ namespace winrt::CelestiaAppComponent::implementation
         co_return single_threaded_vector<CelestiaAppComponent::ResourceItem>({ items.begin(), items.end() });
     }
 
+    IAsyncOperation<CelestiaAppComponent::ResourceItem> ResourceManager::InstalledItem(CelestiaAppComponent::ResourceItem const item)
+    {
+        CelestiaAppComponent::ResourceItem itemOnDisk = nullptr;
+        try
+        {
+            auto folder = co_await StorageFolder::GetFolderFromPathAsync(ItemPath(item));
+            auto descriptionFile = co_await folder.GetFileAsync(L"description.json");
+            auto fileContent = co_await FileIO::ReadTextAsync(descriptionFile);
+            itemOnDisk = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
+        }
+        catch (hresult_error const&) {}
+        co_return itemOnDisk;
+    }
+
     event_token ResourceManager::DownloadProgressUpdate(EventHandler<CelestiaAppComponent::ResourceManagerDownloadProgressArgs> const& handler)
     {
         return downloadProgressUpdateEvent.add(handler);

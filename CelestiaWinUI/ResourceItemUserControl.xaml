@@ -14,10 +14,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ProgressBar x:Name="InstallProgressBar" Visibility="Collapsed" Maximum="1.0" Minimum="0.0" Grid.Column="0"/>
             <Button Style="{StaticResource AccentButtonStyle}" Content="Go" x:Name="GoButton" Visibility="Collapsed" Click="GoButton_Click" Grid.Column="1"/>
-            <Button Style="{StaticResource AccentButtonStyle}" Content="Install" x:Name="ActionButton" Click="ActionButton_Click" Grid.Column="2"/>
+            <Button Style="{StaticResource AccentButtonStyle}" Content="Update" x:Name="UpdateButton" Click="UpdateButton_Click" Grid.Column="2"/>
+            <Button Content="Install" x:Name="ActionButton" Click="ActionButton_Click" Grid.Column="3"/>
         </Grid>
     </RelativePanel>
 </UserControl>
