@@ -259,7 +259,7 @@ namespace winrt::CelestiaWinUI::implementation
         using namespace Windows::Web::Http;
 
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"item", item.ID()}, {L"lang", LocalizationHelper::Locale()}});
+        HttpFormUrlEncodedContent query({ {L"item", item.ID()}, {L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
         auto url = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
         auto weak_this{ get_weak() };
         try
@@ -272,13 +272,9 @@ namespace winrt::CelestiaWinUI::implementation
             if (strong_this == nullptr)
                 co_return;
 
-            auto requestResult = RequestResult::TryParse(content);
-            if (requestResult.Status() == 0)
-            {
-                auto newItem = ResourceItem::TryParse(requestResult.Info().Detail());
-                strong_this->item = newItem;
-                strong_this->UpdateState();
-            }
+            auto newItem = ResourceItem::TryParse(content);
+            strong_this->item = newItem;
+            strong_this->UpdateState();
         }
         catch (hresult_error const&) {}
     }

@@ -967,39 +967,35 @@ namespace winrt::CelestiaWinUI::implementation
                     if (!addon.empty())
                     {
                         HttpClient client;
-                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()} });
+                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
                         auto itemURL = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
                         try
                         {
                             auto response = co_await client.GetAsync(Uri(itemURL));
                             response.EnsureSuccessStatusCode();
                             auto content = co_await response.Content().ReadAsStringAsync();
-                            auto requestResult = RequestResult::TryParse(content);
-                            if (requestResult.Status() == 0)
+                            auto item = ResourceItem::TryParse(content);
+                            auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
+                            if (trackedWindow != nullptr)
                             {
-                                auto item = ResourceItem::TryParse(requestResult.Info().Detail());
-                                auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
-                                if (trackedWindow != nullptr)
-                                {
-                                    trackedWindow.Activate();
-                                    co_return;
-                                }
-                                Window window;
-                                window.SystemBackdrop(Media::MicaBackdrop());
-                                window.Title(item.Name());
-                                ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, [weak_window{ make_weak(window) }]()
-                                    {
-                                        return weak_window.get();
-                                    }
-                                };
-                                window.Content(userControl);
-                                WindowHelper::SetWindowIcon(window);
-                                WindowHelper::SetWindowTheme(window);
-                                WindowHelper::SetWindowFlowDirection(window);
-                                WindowHelper::ResizeWindow(window, 400, 600);
-                                WindowHelper::TrackWindow(window, item.ID());
-                                window.Activate();
+                                trackedWindow.Activate();
+                                co_return;
                             }
+                            Window window;
+                            window.SystemBackdrop(Media::MicaBackdrop());
+                            window.Title(item.Name());
+                            ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, [weak_window{ make_weak(window) }]()
+                                {
+                                    return weak_window.get();
+                                }
+                            };
+                            window.Content(userControl);
+                            WindowHelper::SetWindowIcon(window);
+                            WindowHelper::SetWindowTheme(window);
+                            WindowHelper::SetWindowFlowDirection(window);
+                            WindowHelper::ResizeWindow(window, 400, 600);
+                            WindowHelper::TrackWindow(window, item.ID());
+                            window.Activate();
                         }
                         catch (hresult_error const&) {}
                     }
@@ -1051,49 +1047,45 @@ namespace winrt::CelestiaWinUI::implementation
         }
 
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()} });
+        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
         auto latestGuideURL = hstring(L"https://celestia.mobi/api") + L"/resource/latest" + L"?" + query.ToString();
         try
         {
             auto response = co_await client.GetAsync(Uri(latestGuideURL));
             response.EnsureSuccessStatusCode();
             auto content = co_await response.Content().ReadAsStringAsync();
-            auto requestResult = RequestResult::TryParse(content);
-            if (requestResult.Status() == 0)
+            auto item = GuideItem::TryParse(content);
+            if (appSettings.LastNewsID() != item.ID())
             {
-                auto item = GuideItem::TryParse(requestResult.Info().Detail());
-                if (appSettings.LastNewsID() != item.ID())
+                auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
+                if (trackedWindow != nullptr)
                 {
-                    auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
-                    if (trackedWindow != nullptr)
-                    {
-                        trackedWindow.Activate();
-                        co_return;
-                    }
-                    Window window;
-                    window.SystemBackdrop(Media::MicaBackdrop());
-                    window.Title(item.Title());
-                    SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(item.ID()), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }](hstring const& id)
-                        {
-                            auto strong_this = weak_this.get();
-                            if (strong_this)
-                            {
-                                strong_this->appSettings.LastNewsID(id);
-                                strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
-                            }
-                        }, [weak_window{ make_weak(window)}]()
-                        {
-                            return weak_window.get();
-                        }) };
-                    window.Content(userControl);
-                    WindowHelper::SetWindowIcon(window);
-                    WindowHelper::SetWindowTheme(window);
-                    WindowHelper::SetWindowFlowDirection(window);
-                    WindowHelper::ResizeWindow(window, 400, 600);
-                    WindowHelper::TrackWindow(window, item.ID());
-                    window.Activate();
+                    trackedWindow.Activate();
                     co_return;
                 }
+                Window window;
+                window.SystemBackdrop(Media::MicaBackdrop());
+                window.Title(item.Title());
+                SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(item.ID()), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }](hstring const& id)
+                    {
+                        auto strong_this = weak_this.get();
+                        if (strong_this)
+                        {
+                            strong_this->appSettings.LastNewsID(id);
+                            strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
+                        }
+                    }, [weak_window{ make_weak(window)}]()
+                    {
+                        return weak_window.get();
+                    }) };
+                window.Content(userControl);
+                WindowHelper::SetWindowIcon(window);
+                WindowHelper::SetWindowTheme(window);
+                WindowHelper::SetWindowFlowDirection(window);
+                WindowHelper::ResizeWindow(window, 400, 600);
+                WindowHelper::TrackWindow(window, item.ID());
+                window.Activate();
+                co_return;
             }
         }
         catch (hresult_error const&) {}
