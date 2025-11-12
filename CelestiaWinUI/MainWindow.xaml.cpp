@@ -967,8 +967,8 @@ namespace winrt::CelestiaWinUI::implementation
                     if (!addon.empty())
                     {
                         HttpClient client;
-                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
-                        auto itemURL = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
+                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()} });
+                        auto itemURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/item" + L"?" + query.ToString();
                         try
                         {
                             auto response = co_await client.GetAsync(Uri(itemURL));
@@ -1047,8 +1047,8 @@ namespace winrt::CelestiaWinUI::implementation
         }
 
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
-        auto latestGuideURL = hstring(L"https://celestia.mobi/api") + L"/resource/latest" + L"?" + query.ToString();
+        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()} });
+        auto latestGuideURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/latest" + L"?" + query.ToString();
         try
         {
             auto response = co_await client.GetAsync(Uri(latestGuideURL));

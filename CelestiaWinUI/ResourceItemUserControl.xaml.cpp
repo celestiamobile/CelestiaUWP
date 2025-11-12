@@ -259,8 +259,8 @@ namespace winrt::CelestiaWinUI::implementation
         using namespace Windows::Web::Http;
 
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"item", item.ID()}, {L"lang", LocalizationHelper::Locale()}, {L"errorAsHttpStatus", L"true"} });
-        auto url = hstring(L"https://celestia.mobi/api") + L"/resource/item" + L"?" + query.ToString();
+        HttpFormUrlEncodedContent query({ {L"item", item.ID()}, {L"lang", LocalizationHelper::Locale()} });
+        auto url = hstring(L"https://celestia.mobi/api/2") + L"/resource/item" + L"?" + query.ToString();
         auto weak_this{ get_weak() };
         try
         {
