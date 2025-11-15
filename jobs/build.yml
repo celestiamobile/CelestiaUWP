@@ -11,7 +11,7 @@ jobs:
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.9'
-    angleVersion: '1.0.7'
+    angleVersion: '1.1.8'
 
   steps:
   - checkout: Celestia
@@ -101,11 +101,29 @@ jobs:
       Write-Host "Successfully downloaded $packageName to current directory"
     displayName: 'Download Dependencies from GitHub'
 
+  - pwsh: |
+      $packageName = "Celestia.ANGLE.$(angleVersion).nupkg"
+      $releaseUrl = "https://github.com/celestiamobile/angle-windows/releases/download/angle-$(angleVersion)/$packageName"
+
+      Write-Host "Downloading $packageName from GitHub releases..."
+      Write-Host "URL: $releaseUrl"
+
+      # Download the package to current working directory
+      Invoke-WebRequest -Uri $releaseUrl -OutFile $packageName
+      Write-Host "Successfully downloaded $packageName to current directory"
+    displayName: 'Download ANGLE from GitHub'
+
   - task: NuGetCommand@2
     inputs:
       command: custom
       arguments: 'install celestia-windows-$(arch)-dependencies -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
     displayName: 'Install Dependencies'
+
+  - task: NuGetCommand@2
+    inputs:
+      command: custom
+      arguments: 'install Celestia.ANGLE -source $(System.DefaultWorkingDirectory) -OutputDirectory CelestiaUWP/packages'
+    displayName: 'Install ANGLE'
 
   - script: |
       RD Celestia\.git /S /Q
