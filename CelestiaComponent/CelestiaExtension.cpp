@@ -175,6 +175,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanumLabels;
         else if (name == L"ShowChasmaLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowChasmaLabels;
+        else if (name == L"ShowCollumLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollumLabels;
         else if (name == L"ShowPateraLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPateraLabels;
         else if (name == L"ShowMareLabels")
@@ -402,6 +404,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"ShowPlanumLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowChasmaLabels:
             return L"ShowChasmaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollumLabels:
+            return L"ShowCollumLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPateraLabels:
             return L"ShowPateraLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowMareLabels:
@@ -706,6 +710,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowChasmaLabels:
             appCore.ShowChasmaLabels(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollumLabels:
+            appCore.ShowCollumLabels(value);
+            break;
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPateraLabels:
             appCore.ShowPateraLabels(value);
             break;
@@ -984,6 +991,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.ShowPlanumLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowChasmaLabels:
             return appCore.ShowChasmaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollumLabels:
+            return appCore.ShowCollumLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPateraLabels:
             return appCore.ShowPateraLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowMareLabels:

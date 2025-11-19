@@ -100,6 +100,7 @@ namespace CelestiaComponent
         ShowMonsLabels,
         ShowPlanumLabels,
         ShowChasmaLabels,
+        ShowCollumLabels,
         ShowPateraLabels,
         ShowMareLabels,
         ShowRupesLabels,

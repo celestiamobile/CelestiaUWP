@@ -229,6 +229,7 @@ namespace CelestiaComponent
         Boolean ShowMonsLabels;
         Boolean ShowPlanumLabels;
         Boolean ShowChasmaLabels;
+        Boolean ShowCollumLabels;
         Boolean ShowPateraLabels;
         Boolean ShowMareLabels;
         Boolean ShowRupesLabels;

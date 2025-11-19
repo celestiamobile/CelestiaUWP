@@ -637,6 +637,7 @@ void CelestiaAppCore::Show##flag##Labels(bool value) \
     FEATUREMETHODS(Mons)
     FEATUREMETHODS(Planum)
     FEATUREMETHODS(Chasma)
+    FEATUREMETHODS(Collum)
     FEATUREMETHODS(Patera)
     FEATUREMETHODS(Mare)
     FEATUREMETHODS(Rupes)

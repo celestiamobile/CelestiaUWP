@@ -234,6 +234,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowPlanumLabels(bool showPlanumLabels);
         bool ShowChasmaLabels();
         void ShowChasmaLabels(bool showChasmaLabels);
+        bool ShowCollumLabels();
+        void ShowCollumLabels(bool showCollumLabels);
         bool ShowPateraLabels();
         void ShowPateraLabels(bool showPateraLabels);
         bool ShowMareLabels();
