@@ -10,7 +10,7 @@ jobs:
     contentCommitHash: ${{ 'e707d64080558860ea647f72f25571f3f9b05f53' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
-    dependencyVersion: '1.0.9'
+    dependencyVersion: '1.0.11'
     angleVersion: '1.1.8'
 
   steps:
