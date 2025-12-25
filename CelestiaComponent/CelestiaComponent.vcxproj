@@ -535,6 +535,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\buffile.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\color.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\dateformatter.h" />
@@ -576,6 +577,7 @@
     <ClCompile Include="..\..\Celestia\src\celastro\units.cpp" />
     <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\atmosphere.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />
@@ -734,6 +736,7 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp" />
     <ClCompile Include="..\..\Celestia\src\celttf\truetypefont.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\associativearray.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celutil\buffile.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\dateformatter.cpp" />
     <ClCompile Include="..\..\Celestia\src\celutil\filetype.cpp" />

@@ -64,6 +64,9 @@
     <ClCompile Include="..\..\Celestia\src\celutil\associativearray.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celutil\buffile.cpp">
+      <Filter>Celestia\celutil</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\color.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -164,6 +167,9 @@
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\atmosphere.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp">
@@ -659,6 +665,9 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\buffile.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h">
