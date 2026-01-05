@@ -336,7 +336,6 @@
     <ClInclude Include="..\..\Celestia\src\celastro\date.h" />
     <ClInclude Include="..\..\Celestia\src\celastro\units.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\charconv.h" />
-    <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\filesystem.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers.h" />
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h" />
@@ -564,7 +563,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\unicode.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\uniquedel.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\watcher.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\winutil.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="pch.h" />
@@ -575,7 +573,6 @@
     <ClCompile Include="..\..\Celestia\src\celastro\astro.cpp" />
     <ClCompile Include="..\..\Celestia\src\celastro\date.cpp" />
     <ClCompile Include="..\..\Celestia\src\celastro\units.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\atmosphere.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
@@ -597,6 +594,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\frametree.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\galaxy.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\galaxyform.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\geometry.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\globular.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\glshader.cpp" />

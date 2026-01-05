@@ -226,6 +226,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\galaxyform.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\geometry.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\glmarker.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -553,9 +556,6 @@
     <ClCompile Include="..\..\Celestia\src\celutil\logger.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celcompat\charconv_impl.cpp">
-      <Filter>Celestia\celcompat</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celutil\greek.cpp">
       <Filter>Celestia\celutil</Filter>
     </ClCompile>
@@ -713,9 +713,6 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\utf8.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\watcher.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\winutil.h">
@@ -1227,9 +1224,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\localeutil.h">
       <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celcompat\charconv_impl.h">
-      <Filter>Celestia\celcompat</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers.h">
       <Filter>Celestia\celcompat</Filter>
