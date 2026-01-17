@@ -373,7 +373,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\marker.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\meshmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\modelgeometry.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\multitexture.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\name.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\nebula.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\objectrenderer.h" />
@@ -536,6 +535,7 @@
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\buffile.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\bytes.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\classops.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\color.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\dateformatter.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\filetype.h" />
@@ -552,11 +552,10 @@
     <ClInclude Include="..\..\Celestia\src\celutil\range.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\r128util.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\stringutils.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\strnatcmp.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tee.h" />
+    <ClInclude Include="..\..\Celestia\src\celutil\texhandle.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\timer.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\tzutil.h" />
@@ -605,7 +604,6 @@
     <ClCompile Include="..\..\Celestia\src\celengine\marker.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\meshmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\modelgeometry.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\multitexture.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\name.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\nebula.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\observer.cpp" />
@@ -690,7 +688,6 @@
     <ClCompile Include="..\..\Celestia\src\celimage\png.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\frustum.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmath\randutils.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celmodel\material.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\model.cpp" />
     <ClCompile Include="..\..\Celestia\src\celmodel\modelfile.cpp" />

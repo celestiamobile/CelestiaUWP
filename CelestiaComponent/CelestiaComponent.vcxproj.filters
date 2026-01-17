@@ -106,9 +106,6 @@
     <ClCompile Include="..\..\Celestia\src\cel3ds\3dsread.cpp">
       <Filter>Celestia\cel3ds</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celmodel\material.cpp">
-      <Filter>Celestia\celmodel</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celmodel\mesh.cpp">
       <Filter>Celestia\celmodel</Filter>
     </ClCompile>
@@ -257,9 +254,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\modelgeometry.cpp">
-      <Filter>Celestia\celengine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\multitexture.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\name.cpp">
@@ -691,12 +685,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\gettext.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\reshandle.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\resmanager.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\stringutils.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
@@ -905,9 +893,6 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\modelgeometry.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\multitexture.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\name.h">
@@ -1208,6 +1193,12 @@
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\classops.h">
+      <Filter>Celestia\celutil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celutil\texhandle.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\tokenizer.h">

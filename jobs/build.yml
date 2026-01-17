@@ -7,7 +7,7 @@ jobs:
   variables:
     solution: 'CelestiaUWP/CelestiaUWP.sln'
     buildConfiguration: 'Release'
-    contentCommitHash: ${{ '11df382b228de58a24fe74e3fa9dd227639977ae' }}
+    contentCommitHash: ${{ '7c1a1f7f9189b5c207d0ef185e880077136716a3' }}
     buildType: ${{ parameters.buildType }}
     arch: ${{ parameters.arch }}
     dependencyVersion: '1.0.16'

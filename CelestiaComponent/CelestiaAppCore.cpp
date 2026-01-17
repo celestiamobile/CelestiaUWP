@@ -135,7 +135,7 @@ namespace winrt::CelestiaComponent::implementation
 
     bool CelestiaAppCore::StartRenderer()
     {
-        bool success = core->initRenderer();
+        bool success = core->initRenderer(celestia::engine::TextureResolution::medres);
 
         // start with default values
         constexpr auto DEFAULT_ORBIT_MASK = BodyClassification::Planet | BodyClassification::Moon | BodyClassification::Stellar;
@@ -144,7 +144,6 @@ namespace winrt::CelestiaComponent::implementation
         constexpr float DEFAULT_VISUAL_MAGNITUDE = 8.0f;
         constexpr auto DEFAULT_STAR_STYLE = ::StarStyle::FuzzyPointStars;
         constexpr ColorTableType DEFAULT_STARS_COLOR = ColorTableType::SunWhite;
-        constexpr auto DEFAULT_TEXTURE_RESOLUTION = TextureResolution::medres;
         constexpr float DEFAULT_TINT_SATURATION = 0.5f;
 
         core->getRenderer()->setRenderFlags(RenderFlags::DefaultRenderFlags);
@@ -153,7 +152,6 @@ namespace winrt::CelestiaComponent::implementation
         core->getRenderer()->setAmbientLightLevel(DEFAULT_AMBIENT_LIGHT_LEVEL);
         core->getRenderer()->setTintSaturation(DEFAULT_TINT_SATURATION);
         core->getRenderer()->setStarStyle(DEFAULT_STAR_STYLE);
-        core->getRenderer()->setResolution(DEFAULT_TEXTURE_RESOLUTION);
         core->getRenderer()->setStarColorTable(DEFAULT_STARS_COLOR);
 
         core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
@@ -698,7 +696,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::Resolution(int32_t resolution)
     {
-        core->getRenderer()->setResolution(static_cast<TextureResolution>(resolution));
+        core->getRenderer()->setResolution(static_cast<celestia::engine::TextureResolution>(resolution));
     }
 
     int32_t CelestiaAppCore::StarStyle()
