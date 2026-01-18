@@ -91,9 +91,9 @@ jobs:
       $version = $packageManifestXML.Package.Identity.Version
 
       # Create bundle using makeappx.exe
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7175\bin\10.0.26100.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\bin\10.0.26100.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
       # Sign the bundle using signtool.exe
-      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7175\bin\10.0.26100.0\x64\signtool.exe sign /f "$(signingCert.secureFilePath)" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
+      packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\bin\10.0.26100.0\x64\signtool.exe sign /f "$(signingCert.secureFilePath)" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
     displayName: 'Create and Sign MSIX Bundle'
 
   - pwsh: |
