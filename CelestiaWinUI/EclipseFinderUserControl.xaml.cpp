@@ -118,6 +118,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         if (finder != nullptr)
         {
+            aborted = true;
             finder.Abort();
             finder = nullptr;
             return;
@@ -145,9 +146,10 @@ namespace winrt::CelestiaWinUI::implementation
         ResultList().Visibility(Visibility::Collapsed);
 
         auto weak_this{ get_weak() };
+        aborted = false;
         auto computedEclipses = co_await ComputeEclipsesAsync(body, kind, startTime, endTime);
         auto strong_this = weak_this.get();
-        if (strong_this == nullptr)
+        if (strong_this == nullptr || strong_this->aborted)
             co_return;
 
         strong_this->eclipses.ReplaceAll(std::vector<CelestiaWinUI::EclipseResult>(computedEclipses.begin(), computedEclipses.end()));

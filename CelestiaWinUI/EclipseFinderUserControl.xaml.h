@@ -80,6 +80,7 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::EclipseResult> eclipses;
         bool findLunar{ true };
         bool findSolar{ true };
+        bool aborted{ false };
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
         hstring objectPath{ L"" };
 
