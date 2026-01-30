@@ -3,7 +3,7 @@ index 83c43da..b5580ef 100644
 --- a/CelestiaAppComponent/CelestiaAppComponent.vcxproj
 +++ b/CelestiaAppComponent/CelestiaAppComponent.vcxproj
 @@ -7,6 +7,7 @@
-   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
+   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props')" />
 +  <Import Project="..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props" Condition="Exists('..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props')" />
@@ -43,7 +43,7 @@ index 02ba5cf..aa46bf9 100644
 --- a/CelestiaComponent/CelestiaComponent.vcxproj
 +++ b/CelestiaComponent/CelestiaComponent.vcxproj
 @@ -7,6 +7,7 @@
-   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
+   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props')" />
 +  <Import Project="..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props" Condition="Exists('..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props')" />
@@ -83,7 +83,7 @@ index c1dfa1a..bc40a60 100644
 --- a/CelestiaWinUI/CelestiaWinUI.vcxproj
 +++ b/CelestiaWinUI/CelestiaWinUI.vcxproj
 @@ -7,6 +7,7 @@
-   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
+   <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.251221100\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
    <Import Project="..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7463\build\Microsoft.Windows.SDK.BuildTools.props')" />
 +  <Import Project="..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props" Condition="Exists('..\packages\celestia-windows-x64-dependencies.1.0.18\build\native\celestia-windows-x64-dependencies.props')" />
