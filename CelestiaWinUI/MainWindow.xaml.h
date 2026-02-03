@@ -81,7 +81,8 @@ namespace winrt::CelestiaWinUI::implementation
         fire_and_forget SuggestFeature();
         fire_and_forget ReportBugOrSuggestFeatureFallback();
         fire_and_forget ReportBug(Windows::Storage::StorageFile const screenshotFile, Windows::Storage::StorageFile const renderInfoFile, Windows::Storage::StorageFile const urlInfoFile, Windows::Storage::StorageFile const systemInfoFile, Windows::Storage::StorageFile const addonInfoFile, hstring const renderInfo, hstring const url);
-        winrt::fire_and_forget ShowSystemAccessRequest(HANDLE semaphore, CelestiaComponent::SystemAccessRequestArgs const args);
+        fire_and_forget InitialSetUpComplete();
+        fire_and_forget ShowSystemAccessRequest(HANDLE semaphore, CelestiaComponent::SystemAccessRequestArgs const args);
         void OpenFileIfReady(Windows::Storage::StorageFile const scriptFileToOpen);
         void OpenURLIfReady(Windows::Foundation::Uri const urlToOpen);
 
