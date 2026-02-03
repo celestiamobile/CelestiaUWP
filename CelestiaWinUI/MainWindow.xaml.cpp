@@ -17,6 +17,11 @@
 #include <fmt/printf.h>
 #include <shlobj_core.h>
 
+#if defined(_M_IX86) || defined(_M_X64)
+#define SUPPORTS_SENTRY
+#include <sentry.h>
+#endif
+
 using namespace winrt;
 using namespace CelestiaAppComponent;
 using namespace CelestiaComponent;
@@ -247,6 +252,7 @@ namespace winrt::CelestiaWinUI::implementation
                 strong_this->resourceManager = ResourceManager(strong_this->extraAddonFolder, strong_this->extraScriptFolder);
                 strong_this->SetUpGLViewInteractions();
                 strong_this->PopulateMenuBar(resourcePath);
+                strong_this->InitialSetUpComplete();
             });
 
         ApplySettings(defaultSettings);
@@ -1555,6 +1561,26 @@ namespace winrt::CelestiaWinUI::implementation
     fire_and_forget MainWindow::ReportBugOrSuggestFeatureFallback()
     {
         co_await Launcher::LaunchUriAsync(Uri(feedbackLinkAddress));
+    }
+
+    fire_and_forget MainWindow::InitialSetUpComplete()
+    {
+#ifdef SUPPORTS_SENTRY
+        auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder();
+        try
+        {
+            auto sentryDatabaseFolder = co_await localFolder.GetFolderAsync(L"sentry");
+            auto addonInfoFile = co_await sentryDatabaseFolder.CreateFileAsync(L"installed-addons.txt", CreationCollisionOption::ReplaceExisting);
+            auto addons = co_await resourceManager.InstalledItems();
+            hstring installedAddonList = L"";
+            for (const auto& addon : addons)
+                installedAddonList = installedAddonList + to_hstring(fmt::format("{}/{}\n", to_string(addon.Name()), to_string(addon.ID())));
+            co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
+        }
+        catch (hresult_error const&) {}
+#else
+        co_return;
+#endif
     }
 
     fire_and_forget MainWindow::ShowSystemAccessRequest(HANDLE semaphore, SystemAccessRequestArgs const args)

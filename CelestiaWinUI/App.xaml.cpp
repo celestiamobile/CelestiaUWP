@@ -15,6 +15,7 @@
 #if defined(_M_IX86) || defined(_M_X64)
 #define SUPPORTS_SENTRY
 #include <sentry.h>
+#include <filesystem>
 #endif
 
 using namespace winrt;
@@ -37,8 +38,15 @@ App::App()
 
     sentry_options_t* options = sentry_options_new();
     sentry_options_set_dsn(options, "SENTRY-DSN");
-    sentry_options_set_handler_path(options, to_string(crashpadHandlerPath).c_str());
-    sentry_options_set_database_path(options, to_string(sentryDatabasePath).c_str());
+    sentry_options_set_handler_pathw(options, crashpadHandlerPath.c_str());
+    sentry_options_set_database_pathw(options, sentryDatabasePath.c_str());
+    try
+    {
+        auto installedAddonFilePath = PathHelper::Combine(sentryDatabasePath, L"installed-addons.txt");
+        if (std::filesystem::exists(to_string(installedAddonFilePath)))
+            sentry_options_add_attachmentw(options, installedAddonFilePath.c_str());
+    }
+    catch (const std::exception&) {}
     sentry_options_set_release(options, "celestia-windows@2.1.22");
     sentry_init(options);
 #endif
