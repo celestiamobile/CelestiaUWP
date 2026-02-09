@@ -27,6 +27,7 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaAppComponent::GamepadManager gamepadManager{ nullptr };
         CelestiaAppComponent::ResourceManager resourceManager{ nullptr };
         float scale{ 1.0f };
+        float textScaleFactor{ 1.0f };
         bool readyForInput{ false };
         hstring defaultParentPath{ L""};
         hstring defaultResourcePath{ L"" };
@@ -49,7 +50,7 @@ namespace winrt::CelestiaWinUI::implementation
         bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();
         void ShowLoadingFailure();
-        void UpdateScale();
+        void UpdateScale(bool updateCelestia);
         void SetUpGLViewInteractions();
         void PopulateMenuBar(hstring const& resourcePath);
         void ShowTimeSetting();

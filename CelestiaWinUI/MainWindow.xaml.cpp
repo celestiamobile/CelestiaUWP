@@ -98,8 +98,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::MainWindow_Loaded()
     {
-        if (appSettings.UseFullDPI())
-            scale = WindowHelper::GetWindowScaleFactor(*this);
+        UpdateScale(false);
 
         StorageFolder customDataFolder{ nullptr };
         StorageFile customConfigFile{ nullptr };
@@ -242,12 +241,63 @@ namespace winrt::CelestiaWinUI::implementation
 
         LocalizationHelper::Locale(CelestiaAppCore::Language());
         appCore.LayoutDirection(layoutDirection);
-        UpdateScale();
+        appCore.ScreenDPI(static_cast<int>(96.0f * scale));
+        appCore.PickTolerance(scale * static_cast<float>(appSettings.PickSensitivity()));
+        appCore.TextScaleFactor(textScaleFactor);
+
+        auto regularFont = L"NotoSans-Regular.ttf";
+        auto regularFontIndex = 0;
+        auto boldFont = L"NotoSans-Bold.ttf";
+        auto boldFontIndex = 0;
+        auto celestiaLocale = LocalizationHelper::Locale();
+        if (celestiaLocale == L"ja")
+        {
+            regularFont = L"NotoSansCJK-Regular.ttc";
+            boldFont = L"NotoSansCJK-Bold.ttc";
+        }
+        else if (celestiaLocale == L"ko")
+        {
+            regularFont = L"NotoSansCJK-Regular.ttc";
+            regularFontIndex = 1;
+            boldFont = L"NotoSansCJK-Bold.ttc";
+            boldFontIndex = 1;
+        }
+        else if (celestiaLocale == L"zh_CN")
+        {
+            regularFont = L"NotoSansCJK-Regular.ttc";
+            regularFontIndex = 2;
+            boldFont = L"NotoSansCJK-Bold.ttc";
+            boldFontIndex = 2;
+        }
+        else if (celestiaLocale == L"zh_TW")
+        {
+            regularFont = L"NotoSansCJK-Regular.ttc";
+            regularFontIndex = 3;
+            boldFont = L"NotoSansCJK-Bold.ttc";
+            boldFontIndex = 3;
+        }
+        else if (celestiaLocale == L"ar")
+        {
+            regularFont = L"NotoSansArabic-Regular.ttf";
+            boldFont = L"NotoSansArabic-Bold.ttf";
+        }
+        else if (celestiaLocale == L"ka")
+        {
+            regularFont = L"NotoSansGeorgian-Regular.ttf";
+            boldFont = L"NotoSansGeorgian-Bold.ttf";
+        }
+
+        auto pathPrefix = PathHelper::Combine(defaultResourcePath, L"fonts");
+        appCore.SetHudFont(PathHelper::Combine(pathPrefix, regularFont), regularFontIndex, 9);
+        appCore.SetHudTitleFont(PathHelper::Combine(pathPrefix, boldFont), boldFontIndex, 15);
+        appCore.SetRenderFont(PathHelper::Combine(pathPrefix, regularFont), regularFontIndex, 9, CelestiaFontStyle::Normal);
+        appCore.SetRenderFont(PathHelper::Combine(pathPrefix, boldFont), boldFontIndex, 15, CelestiaFontStyle::Large);
 
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, resourcePath]()
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
+                strong_this->UpdateScale(true);
                 strong_this->LoadingText().Visibility(Visibility::Collapsed);
                 strong_this->resourceManager = ResourceManager(strong_this->extraAddonFolder, strong_this->extraScriptFolder);
                 strong_this->SetUpGLViewInteractions();
@@ -350,59 +400,27 @@ namespace winrt::CelestiaWinUI::implementation
             });
     }
 
-    void MainWindow::UpdateScale()
+    void MainWindow::UpdateScale(bool updateCelestia)
     {
-        appCore.SetDPI(static_cast<int>(96.0f * scale));
-        appCore.PickTolerance(scale * static_cast<float>(appSettings.PickSensitivity()));
+        float scaleValue = 1.0f;
+        if (appSettings.UseFullDPI())
+            scaleValue = WindowHelper::GetWindowScaleFactor(*this);
 
-        auto regularFont = L"NotoSans-Regular.ttf";
-        auto regularFontIndex = 0;
-        auto boldFont = L"NotoSans-Bold.ttf";
-        auto boldFontIndex = 0;
-        auto locale = LocalizationHelper::Locale();
-        if (locale == L"ja")
-        {
-            regularFont = L"NotoSansCJK-Regular.ttc";
-            boldFont = L"NotoSansCJK-Bold.ttc";
-        }
-        else if (locale == L"ko")
-        {
-            regularFont = L"NotoSansCJK-Regular.ttc";
-            regularFontIndex = 1;
-            boldFont = L"NotoSansCJK-Bold.ttc";
-            boldFontIndex = 1;
-        }
-        else if (locale == L"zh_CN")
-        {
-            regularFont = L"NotoSansCJK-Regular.ttc";
-            regularFontIndex = 2;
-            boldFont = L"NotoSansCJK-Bold.ttc";
-            boldFontIndex = 2;
-        }
-        else if (locale == L"zh_TW")
-        {
-            regularFont = L"NotoSansCJK-Regular.ttc";
-            regularFontIndex = 3;
-            boldFont = L"NotoSansCJK-Bold.ttc";
-            boldFontIndex = 3;
-        }
-        else if (locale == L"ar")
-        {
-            regularFont = L"NotoSansArabic-Regular.ttf";
-            boldFont = L"NotoSansArabic-Bold.ttf";
-        }
-        else if (locale == L"ka")
-        {
-            regularFont = L"NotoSansGeorgian-Regular.ttf";
-            boldFont = L"NotoSansGeorgian-Bold.ttf";
-        }
+        auto textScaleFactorValue = Windows::UI::ViewManagement::UISettings().TextScaleFactor();
 
-        auto textScaleFactor = Windows::UI::ViewManagement::UISettings().TextScaleFactor();
-        auto pathPrefix = PathHelper::Combine(defaultResourcePath, L"fonts");
-        appCore.SetHudFont(PathHelper::Combine(pathPrefix, regularFont), regularFontIndex, static_cast<int32_t>(9 * textScaleFactor));
-        appCore.SetHudTitleFont(PathHelper::Combine(pathPrefix, boldFont), boldFontIndex, static_cast<int32_t>(15 * textScaleFactor));
-        appCore.SetRenderFont(PathHelper::Combine(pathPrefix, regularFont), regularFontIndex, static_cast<int32_t>(9 * textScaleFactor), CelestiaFontStyle::Normal);
-        appCore.SetRenderFont(PathHelper::Combine(pathPrefix, boldFont), boldFontIndex, static_cast<int32_t>(15 * textScaleFactor), CelestiaFontStyle::Large);
+        scale = scaleValue;
+        textScaleFactor = textScaleFactorValue;
+        if (updateCelestia)
+        {
+            renderer.EnqueueTask([weak_this{ get_weak() }, scaleValue, textScaleFactorValue]()
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->appCore.ScreenDPI(static_cast<int>(96.0f * scaleValue));
+                    strong_this->appCore.PickTolerance(scaleValue * static_cast<float>(strong_this->appSettings.PickSensitivity()));
+                    strong_this->appCore.TextScaleFactor(textScaleFactorValue);
+                });
+        }
     }
 
     IAsyncOperation<hstring> MainWindow::GetLocale(hstring const& localePath)

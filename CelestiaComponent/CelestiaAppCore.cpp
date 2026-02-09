@@ -194,9 +194,24 @@ namespace winrt::CelestiaComponent::implementation
         core->start();
     }
 
-    void CelestiaAppCore::SetDPI(int32_t dpi)
+    int32_t CelestiaAppCore::ScreenDPI()
+    {
+        return core->getScreenDpi();
+    }
+
+    void CelestiaAppCore::ScreenDPI(int32_t dpi)
     {
         core->setScreenDpi(dpi);
+    }
+
+    float CelestiaAppCore::TextScaleFactor()
+    {
+        return core->getTextScaleFactor();
+    }
+
+    void CelestiaAppCore::TextScaleFactor(float textScaleFactor)
+    {
+        core->setTextScaleFactor(textScaleFactor);
     }
 
     void CelestiaAppCore::SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom)

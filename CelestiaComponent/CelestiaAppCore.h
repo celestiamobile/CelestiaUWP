@@ -72,7 +72,10 @@ namespace winrt::CelestiaComponent::implementation
         int32_t GetWidth();
         int32_t GetHeight();
         void Start();
-        void SetDPI(int32_t dpi);
+        int32_t ScreenDPI();
+        void ScreenDPI(int32_t dpi);
+        float TextScaleFactor();
+        void TextScaleFactor(float textScaleFactor);
         void SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom);
         void MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button);
         void MouseButtonUp(float x, float y, CelestiaComponent::CelestiaMouseButton button);
