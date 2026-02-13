@@ -47,7 +47,7 @@ App::App()
             sentry_options_add_attachmentw(options, installedAddonFilePath.c_str());
     }
     catch (const std::exception&) {}
-    sentry_options_set_release(options, "celestia-windows@2.1.24");
+    sentry_options_set_release(options, "celestia-windows@2.1.25");
     sentry_init(options);
 #endif
 

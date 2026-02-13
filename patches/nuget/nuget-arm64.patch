@@ -11,17 +11,17 @@ index 83c43da..b5580ef 100644
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
 @@ -324,6 +325,7 @@
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
 +    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
 @@ -344,5 +346,7 @@
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
@@ -32,9 +32,9 @@ index a1902d8..af5920f 100644
 --- a/CelestiaAppComponent/packages.config
 +++ b/CelestiaAppComponent/packages.config
 @@ -8,4 +8,5 @@
-   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.251220000" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.251217001" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.251222000" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.260203002" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.260125001" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.260204000" targetFramework="native" />
 +  <package id="celestia-windows-arm64-dependencies" version="1.0.18" targetFramework="native" />
  </packages>
 \ No newline at end of file
@@ -51,17 +51,17 @@ index 02ba5cf..aa46bf9 100644
      <ProjectConfiguration Include="Debug|ARM">
        <Configuration>Debug</Configuration>
 @@ -1204,6 +1205,7 @@
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
 +    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
 @@ -1225,5 +1227,7 @@
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
@@ -72,9 +72,9 @@ index d53fe46..90e4821 100644
 --- a/CelestiaComponent/packages.config
 +++ b/CelestiaComponent/packages.config
 @@ -9,4 +9,5 @@
-   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.251220000" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.251217001" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.251222000" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.260203002" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.260125001" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.260204000" targetFramework="native" />
 +  <package id="celestia-windows-arm64-dependencies" version="1.0.18" targetFramework="native" />
  </packages>
 \ No newline at end of file
@@ -91,17 +91,17 @@ index c1dfa1a..bc40a60 100644
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
 @@ -745,6 +746,7 @@
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.251217001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
-     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
+     <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
 +    <Import Project="..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets" Condition="Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" />
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
 @@ -766,5 +768,7 @@
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.251220000\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
-     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.251222000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.1.8.260203002\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
+     <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.props'))" />
 +    <Error Condition="!Exists('..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\celestia-windows-arm64-dependencies.1.0.18\build\native\celestia-windows-arm64-dependencies.targets'))" />
    </Target>
@@ -112,9 +112,9 @@ index fd42a0d..6794f1a 100644
 --- a/CelestiaWinUI/packages.config
 +++ b/CelestiaWinUI/packages.config
 @@ -9,4 +9,5 @@
-   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.251220000" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.251217001" targetFramework="native" />
-   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.251222000" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.Foundation" version="1.8.260203002" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.InteractiveExperiences" version="1.8.260125001" targetFramework="native" />
+   <package id="Microsoft.WindowsAppSDK.WinUI" version="1.8.260204000" targetFramework="native" />
 +  <package id="celestia-windows-arm64-dependencies" version="1.0.18" targetFramework="native" />
  </packages>
 \ No newline at end of file
