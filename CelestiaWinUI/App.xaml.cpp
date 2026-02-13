@@ -16,6 +16,7 @@
 #define SUPPORTS_SENTRY
 #include <sentry.h>
 #include <filesystem>
+#include <fmt/format.h>
 #endif
 
 using namespace winrt;
@@ -47,7 +48,9 @@ App::App()
             sentry_options_add_attachmentw(options, installedAddonFilePath.c_str());
     }
     catch (const std::exception&) {}
-    sentry_options_set_release(options, "celestia-windows@2.1.24");
+    auto packageVersion = Windows::ApplicationModel::Package::Current().Id().Version();
+    auto sentryRelease = fmt::format("celestia-windows@{}.{}.{}.{}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+    sentry_options_set_release(options, sentryRelease.c_str());
     sentry_init(options);
 #endif
 

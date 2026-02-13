@@ -78,6 +78,19 @@ jobs:
       cat CelestiaWinUI/App.xaml.cpp
     displayName: 'Replace Sentry Placeholder'
 
+  - pwsh: |
+      $manifestPath = "CelestiaWinUI\Package.appxmanifest"
+      [xml]$manifest = Get-Content $manifestPath -Raw
+      $currentVersion = $manifest.Package.Identity.Version
+      $versionParts = $currentVersion.Split('.')
+      $versionParts[3] = "$(Build.BuildId)"
+      $newVersion = $versionParts -join '.'
+      $manifest.Package.Identity.Version = $newVersion
+      $manifest.Save((Resolve-Path $manifestPath))
+      Write-Host "Updated version from $currentVersion to $newVersion"
+    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
+    displayName: 'Stamp Build Number in Version'
+
   - script: |
       call "$(System.DefaultWorkingDirectory)\CelestiaUWP\scripts\copy_general_data.bat" "$(System.DefaultWorkingDirectory)\CelestiaUWP" "$(System.DefaultWorkingDirectory)\CelestiaUWP\CelestiaWinUI\Resources"
     displayName: 'Copy General Data'
