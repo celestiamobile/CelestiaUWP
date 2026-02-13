@@ -17,6 +17,18 @@ jobs:
       git apply patches/nuget/nuget-x64.patch --ignore-whitespace --whitespace=nowarn
     displayName: 'Apply Nuget Patches'
 
+  - pwsh: |
+      $manifestPath = "CelestiaWinUI\Package.appxmanifest"
+      [xml]$manifest = Get-Content $manifestPath -Raw
+      $currentVersion = $manifest.Package.Identity.Version
+      $versionParts = $currentVersion.Split('.')
+      $versionParts[3] = "$(Build.BuildId)"
+      $newVersion = $versionParts -join '.'
+      $manifest.Package.Identity.Version = $newVersion
+      $manifest.Save((Resolve-Path $manifestPath))
+      Write-Host "Updated version from $currentVersion to $newVersion"
+    displayName: 'Stamp Build Number in Version'
+
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
