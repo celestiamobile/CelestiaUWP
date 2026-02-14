@@ -48,16 +48,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Object:" x:Name="ObjectHint" Grid.Column="0" VerticalAlignment="Center"/>
-                <AutoSuggestBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjects}" Grid.Column="1" TextChanged="ObjectChooser_TextChanged" SuggestionChosen="ObjectChooser_SuggestionChosen" UpdateTextOnSelect="False">
+                <AutoSuggestBox x:Name="ObjectChooser" ItemsSource="{x:Bind AvailableObjects}" Grid.Column="0" Grid.ColumnSpan="2" TextChanged="ObjectChooser_TextChanged" SuggestionChosen="ObjectChooser_SuggestionChosen" UpdateTextOnSelect="False">
                     <AutoSuggestBox.ItemTemplate>
                         <DataTemplate x:DataType="app:SearchObjectEntry">
                             <TextBlock Text="{x:Bind Name, Mode=OneTime}"/>
                         </DataTemplate>
                     </AutoSuggestBox.ItemTemplate>
                 </AutoSuggestBox>
-                <CheckBox Content="Solar" IsChecked="{x:Bind FindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2"/>
-                <CheckBox Content="Lunar" IsChecked="{x:Bind FindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3"></CheckBox>
+                <CheckBox Content="Solar" IsChecked="{x:Bind FindSolar, Mode=TwoWay}" x:Name="SolarEclipseButton" Grid.Column="2" VerticalAlignment="Bottom"/>
+                <CheckBox Content="Lunar" IsChecked="{x:Bind FindLunar, Mode=TwoWay}" x:Name="LunarEclipseButton" Grid.Column="3" VerticalAlignment="Bottom"/>
             </Grid>
             <RelativePanel>
                 <Button Content="Compute" x:Name="ComputeButton" Click="ComputeButton_Click" RelativePanel.AlignLeftWithPanel="True"/>

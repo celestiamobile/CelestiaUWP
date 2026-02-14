@@ -43,7 +43,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         availableObjects = single_threaded_observable_vector<SearchObjectEntry>({ SearchObjectEntry(CelestiaAppCore::LocalizedString(L"Earth", L"celestia-data"), L"Sol/Earth"), SearchObjectEntry(CelestiaAppCore::LocalizedString(L"Jupiter", L"celestia-data"), L"Sol/Jupiter")});
         eclipses = single_threaded_observable_vector<CelestiaWinUI::EclipseResult>();
-        startTime = clock::now();
+        startTime = clock::now() - std::chrono::hours(24 * 365);
         endTime = clock::now();
     }
 
@@ -55,7 +55,7 @@ namespace winrt::CelestiaWinUI::implementation
         ComputeButton().Content(box_value(LocalizationHelper::Localize(L"Compute", L"Compute for eclipses")));
         StartTimeHint().Text(LocalizationHelper::Localize(L"Start time:", L"In eclipse finder, range of time to find eclipse in"));
         EndTimeHint().Text(LocalizationHelper::Localize(L"End time:", L"In eclipse finder, range of time to find eclipse in"));
-        ObjectHint().Text(LocalizationHelper::Localize(L"Object:", L"In Go to, Windows, In eclipse finder, object to find eclipse with"));
+        ObjectChooser().Header(box_value(LocalizationHelper::Localize(L"Object", L"In eclipse finder, object to find eclipse with, or in go to")));
         SolarEclipseButton().Content(box_value(LocalizationHelper::Localize(L"Solar", L"Solar eclipses.")));
         LunarEclipseButton().Content(box_value(LocalizationHelper::Localize(L"Lunar", L"Lunar eclipses.")));
         EmptyHintText().Text(LocalizationHelper::Localize(L"Find eclipses for an object in a time range", L""));
@@ -193,12 +193,12 @@ namespace winrt::CelestiaWinUI::implementation
         if (selectedEclipse == nullptr)
             return;
         
-        auto eclipse = selectedEclipse.as<CelestiaEclipse>();
+        auto eclipse = selectedEclipse.as<CelestiaWinUI::EclipseResult>();
         renderer.EnqueueTask([weak_this{ get_weak() }, eclipse]()
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
-                strong_this->appCore.Simulation().GoToEclipse(eclipse);
+                strong_this->appCore.Simulation().GoToEclipse(eclipse.Eclipse());
             });
     }
 

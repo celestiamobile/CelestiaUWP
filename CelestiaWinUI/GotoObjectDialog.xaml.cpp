@@ -43,10 +43,10 @@ namespace winrt::CelestiaWinUI::implementation
         Title(box_value(LocalizationHelper::Localize(L"Go to Object", L"")));
         PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
         SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
-        ObjectNameText().PlaceholderText(LocalizationHelper::Localize(L"Object Name", L""));
-        LongitudeText().PlaceholderText(LocalizationHelper::Localize(L"Longitude", L"Coordinates"));
-        LatitudeText().PlaceholderText(LocalizationHelper::Localize(L"Latitude", L"Coordinates"));
-        DistanceText().PlaceholderText(LocalizationHelper::Localize(L"Distance", L"Distance to the object (in Go to)"));
+        ObjectNameText().Header(box_value(LocalizationHelper::Localize(L"Object Name", L"")));
+        LongitudeText().Header(box_value(LocalizationHelper::Localize(L"Longitude", L"Coordinates")));
+        LatitudeText().Header(box_value(LocalizationHelper::Localize(L"Latitude", L"Coordinates")));
+        DistanceText().Header(box_value(LocalizationHelper::Localize(L"Distance", L"Distance to the object (in Go to)")));
     }
 
     float GotoObjectDialog::Latitude()
