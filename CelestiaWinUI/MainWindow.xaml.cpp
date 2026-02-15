@@ -792,7 +792,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
-                AboutDialog dialog{ PathHelper::Combine(strong_this->defaultResourcePath, L"AUTHORS"), PathHelper::Combine(strong_this->defaultResourcePath, L"TRANSLATORS") };
+                AboutDialog dialog;
                 ContentDialogHelper::ShowContentDialogAsync(strong_this->Content(), dialog);
             });
 

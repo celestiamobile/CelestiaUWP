@@ -15,14 +15,8 @@ namespace winrt::CelestiaWinUI::implementation
 {
     struct AboutDialog : AboutDialogT<AboutDialog>
     {
-        AboutDialog(hstring const& authorsFilePath, hstring const& translatorsFilePath);
+        AboutDialog();
         void InitializeComponent();
-
-    private:
-        hstring authorsFilePath;
-        hstring translatorsFilePath;
-
-        fire_and_forget LoadAuthorTranslator();
     };
 }
 
