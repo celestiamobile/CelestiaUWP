@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <atomic>
 #include "MainWindow.g.h"
 
 namespace winrt::CelestiaWinUI::implementation
@@ -45,7 +46,7 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::Uri urlToOpen{ nullptr };
         bool isXbox{ false };
         bool isGLViewFocused{ false };
-        bool isClosed{ false };
+        std::atomic<bool> isClosed{ false };
 
         bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();

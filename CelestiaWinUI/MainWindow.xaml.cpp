@@ -167,7 +167,7 @@ namespace winrt::CelestiaWinUI::implementation
         renderer = CelestiaRenderer(appSettings.EnableMSAA(), [weak_this{ get_weak() }, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t)
             {
                 auto strong_this{ weak_this.get() };
-                return strong_this == nullptr ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings);
+                return (strong_this == nullptr || strong_this->isClosed) ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings);
             });
         renderer.SetCorePointer(appCore.Pointer());
         renderer.SetSurface(GLView(), scale);
@@ -186,13 +186,14 @@ namespace winrt::CelestiaWinUI::implementation
         hstring localeDirectory = PathHelper::Combine(resourcePath, L"locale");
         CelestiaAppCore::SetLocaleDirectory(localeDirectory, locale);
 
+        auto ref = get_strong(); // Keep it alive
         bool loadSuccess = appCore.StartSimulation(configPath, extraPaths, [weak_this{ get_weak() }](hstring const status) {
             auto strong_this{ weak_this.get() };
-            if (strong_this == nullptr) return;
+            if (strong_this == nullptr || strong_this->isClosed) return;
             strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, status]()
                 {
                     auto strong_this{ weak_this.get() };
-                    if (strong_this == nullptr) return;
+                    if (strong_this == nullptr || strong_this->isClosed) return;
                     auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
                     strong_this->LoadingText().Text(textToDisplay);
                 });
@@ -201,6 +202,9 @@ namespace winrt::CelestiaWinUI::implementation
         {
             if (resourcePath != defaultResourcePath || configPath != defaultConfigFilePath)
             {
+                if (isClosed)
+                    return false;
+
                 // Try to restore originial settings
                 DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
                     {
@@ -212,11 +216,11 @@ namespace winrt::CelestiaWinUI::implementation
                 CelestiaAppCore::SetLocaleDirectory(PathHelper::Combine(defaultResourcePath, L"locale"), locale);
                 if (!appCore.StartSimulation(defaultConfigFilePath, extraPaths, [weak_this{ get_weak() }](hstring const status) {
                     auto strong_this{ weak_this.get() };
-                    if (strong_this == nullptr) return;
+                    if (strong_this == nullptr || strong_this->isClosed) return;
                     strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, status]()
                         {
                             auto strong_this{ weak_this.get() };
-                            if (strong_this == nullptr) return;
+                            if (strong_this == nullptr || strong_this->isClosed) return;
                             auto textToDisplay = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Loading: %s", L"Celestia initialization, loading file")), to_string(status)));
                             strong_this->LoadingText().Text(textToDisplay);
                         });
@@ -293,10 +297,13 @@ namespace winrt::CelestiaWinUI::implementation
         appCore.SetRenderFont(PathHelper::Combine(pathPrefix, regularFont), regularFontIndex, 9, CelestiaFontStyle::Normal);
         appCore.SetRenderFont(PathHelper::Combine(pathPrefix, boldFont), boldFontIndex, 15, CelestiaFontStyle::Large);
 
+        if (isClosed)
+            return false;
+
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }, resourcePath]()
             {
                 auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr) return;
+                if (strong_this == nullptr || strong_this->isClosed) return;
                 strong_this->UpdateScale(true);
                 strong_this->LoadingText().Visibility(Visibility::Collapsed);
                 strong_this->resourceManager = ResourceManager(strong_this->extraAddonFolder, strong_this->extraScriptFolder);
@@ -311,10 +318,13 @@ namespace winrt::CelestiaWinUI::implementation
 
         readyForInput = true;
 
+        if (isClosed)
+            return false;
+
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
             {
                 auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr) return;
+                if (strong_this == nullptr || strong_this->isClosed) return;
                 strong_this->OpenFileOrURL();
             });
         return true;
