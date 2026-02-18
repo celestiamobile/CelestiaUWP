@@ -16,7 +16,10 @@
         <SwapChainPanel FlowDirection="LeftToRight" x:Name="GLView" RelativePanel.Below="MenuBar" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <ContentControl x:Name="FocusHelperControl" HorizontalAlignment="Left" Height="0"  VerticalAlignment="Top" Width="0"/>
         </SwapChainPanel>
-        <TextBlock x:Name="LoadingText" Style="{StaticResource TitleTextBlockStyle}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"></TextBlock>
+        <StackPanel x:Name="LoadingTextContainer" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Spacing="{StaticResource VerticalSpacing}">
+            <Image Source="/Assets/StoreLogo.png" Width="128" Height="128" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="LoadingText" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
+        </StackPanel>
         <MenuBar Visibility="Collapsed" x:Name="MenuBar" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"></MenuBar>
     </RelativePanel>
 </Window>

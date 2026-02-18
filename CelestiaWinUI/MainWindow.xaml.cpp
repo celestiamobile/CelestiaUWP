@@ -305,7 +305,7 @@ namespace winrt::CelestiaWinUI::implementation
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr || strong_this->isClosed) return;
                 strong_this->UpdateScale(true);
-                strong_this->LoadingText().Visibility(Visibility::Collapsed);
+                strong_this->LoadingTextContainer().Visibility(Visibility::Collapsed);
                 strong_this->resourceManager = ResourceManager(strong_this->extraAddonFolder, strong_this->extraScriptFolder);
                 strong_this->SetUpGLViewInteractions();
                 strong_this->PopulateMenuBar(resourcePath);
