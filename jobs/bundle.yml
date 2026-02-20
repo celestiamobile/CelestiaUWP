@@ -6,8 +6,8 @@ jobs:
 
   variables:
     solution: 'CelestiaUWP.sln'
-    dependencyVersion: '1.0.18'
-    angleVersion: '1.1.10'
+    dependencyVersion: '1.0.21'
+    angleVersion: '1.1.12'
 
   steps:
   - checkout: self
