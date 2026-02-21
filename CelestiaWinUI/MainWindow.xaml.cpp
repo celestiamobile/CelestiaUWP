@@ -41,6 +41,11 @@ using namespace Windows::UI::ViewManagement;
 
 namespace winrt::CelestiaWinUI::implementation
 {
+    enum class ObjectURLAction
+    {
+        Select, Go, Center, Follow, Chase, Track, SyncOrbit, Lock, Land,
+    };
+
     MainWindow::MainWindow()
     {
         CelestiaAppCore::SetUpLocale();
@@ -416,7 +421,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (appSettings.UseFullDPI())
             scaleValue = WindowHelper::GetWindowScaleFactor(*this);
 
-        auto textScaleFactorValue = Windows::UI::ViewManagement::UISettings().TextScaleFactor();
+        auto textScaleFactorValue = static_cast<float>(Windows::UI::ViewManagement::UISettings().TextScaleFactor());
 
         scale = scaleValue;
         textScaleFactor = textScaleFactorValue;
@@ -1123,20 +1128,78 @@ namespace winrt::CelestiaWinUI::implementation
             auto segments = UriHelper::PathSegments(url);
             auto objectPath = StringHelper::Join(segments, L"/");
 
+            std::optional<ObjectURLAction> action = std::nullopt;
+            std::unordered_map<hstring, ObjectURLAction> actionMap{ {L"select", ObjectURLAction::Select}, {L"go", ObjectURLAction::Go}, {L"center", ObjectURLAction::Center}, {L"follow",ObjectURLAction::Follow}, {L"chase", ObjectURLAction::Chase}, {L"track", ObjectURLAction::Track}, {L"syncOrbit", ObjectURLAction::SyncOrbit}, {L"lock", ObjectURLAction::Lock}, {L"land", ObjectURLAction::Land} };
+            if (auto parsed = url.QueryParsed(); parsed != nullptr)
+            {
+                if (auto key = parsed.GetFirstValueByName(L"action"); !key.empty())
+                {
+                    if (auto iter = actionMap.find(key); iter != actionMap.end())
+                    {
+                        action = iter->second;
+                    }
+                }
+            }
             if (!objectPath.empty())
             {
-                renderer.EnqueueTask([weak_this{ get_weak() }, objectPath]()
+                renderer.EnqueueTask([weak_this{ get_weak() }, objectPath, action]()
                     {
                         auto strong_this{ weak_this.get() };
                         if (strong_this == nullptr || strong_this->isClosed) return;
-                        auto selection{ strong_this->appCore.Simulation().Find(objectPath) };
+                        auto appCore{ strong_this->appCore };
+                        auto selection{ appCore.Simulation().Find(objectPath) };
                         if (selection.IsEmpty()) return;
-                        strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, selection]()
+
+                        if (action.has_value())
+                        {
+                            switch (action.value())
                             {
-                                auto strong_this{ weak_this.get() };
-                                if (strong_this == nullptr || strong_this->isClosed) return;
-                                strong_this->ShowInfo(selection);
-                            });
+                            case ObjectURLAction::Select:
+                                appCore.Simulation().Selection(selection);
+                                break;
+                            case ObjectURLAction::Go:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(103);
+                                break;
+                            case ObjectURLAction::Center:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(99);
+                                break;
+                            case ObjectURLAction::Follow:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(102);
+                                break;
+                            case ObjectURLAction::Chase:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(34);
+                                break;
+                            case ObjectURLAction::Track:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(116);
+                                break;
+                            case ObjectURLAction::SyncOrbit:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(121);
+                                break;
+                            case ObjectURLAction::Lock:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(58);
+                                break;
+                            case ObjectURLAction::Land:
+                                appCore.Simulation().Selection(selection);
+                                appCore.CharEnter(7);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, selection]()
+                                {
+                                    auto strong_this{ weak_this.get() };
+                                    if (strong_this == nullptr || strong_this->isClosed) return;
+                                    strong_this->ShowInfo(selection);
+                                });
+                        }
                     });
                 co_return true;
             }
