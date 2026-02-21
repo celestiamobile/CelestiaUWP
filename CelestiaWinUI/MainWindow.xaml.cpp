@@ -976,101 +976,11 @@ namespace winrt::CelestiaWinUI::implementation
             }
             co_return;
         }
-        if (url != nullptr)
+
+        if (url != nullptr && co_await OpenURL(url))
         {
-            if (url.SchemeName() == L"cel")
-            {
-                if (co_await ContentDialogHelper::ShowOption(Content(), LocalizationHelper::Localize(L"Open URL?", L"Request user consent to open a URL")))
-                {
-                    renderer.EnqueueTask([weak_this{ get_weak() }, url]()
-                        {
-                            auto strong_this{ weak_this.get() };
-                            if (strong_this == nullptr) return;
-                            strong_this->appCore.GoToURL(url.AbsoluteUri());
-                        });
-                }
-                co_return;
-            }
-
-            if (resourceManager != nullptr && url.SchemeName() == L"celaddon" && url.Host() == L"item" && !url.Query().empty())
-            {
-                auto parsed = url.QueryParsed();
-                if (parsed != nullptr)
-                {
-                    auto addon = parsed.GetFirstValueByName(L"item");
-                    if (!addon.empty())
-                    {
-                        HttpClient client;
-                        HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()} });
-                        auto itemURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/item" + L"?" + query.ToString();
-                        try
-                        {
-                            auto response = co_await client.GetAsync(Uri(itemURL));
-                            response.EnsureSuccessStatusCode();
-                            auto content = co_await response.Content().ReadAsStringAsync();
-                            auto item = ResourceItem::TryParse(content);
-                            auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
-                            if (trackedWindow != nullptr)
-                            {
-                                trackedWindow.Activate();
-                                co_return;
-                            }
-                            Window window;
-                            window.SystemBackdrop(Media::MicaBackdrop());
-                            window.Title(item.Name());
-                            ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, [weak_window{ make_weak(window) }]()
-                                {
-                                    return weak_window.get();
-                                }
-                            };
-                            window.Content(userControl);
-                            WindowHelper::SetWindowIcon(window);
-                            WindowHelper::SetWindowTheme(window);
-                            WindowHelper::SetWindowFlowDirection(window);
-                            WindowHelper::ResizeWindow(window, 400, 600);
-                            WindowHelper::TrackWindow(window, item.ID());
-                            window.Activate();
-                        }
-                        catch (hresult_error const&) {}
-                    }
-                }
-                co_return;
-            }
-
-            if (url.SchemeName() == L"celguide" && url.Host() == L"guide" && !url.Query().empty())
-            {
-                auto parsed = url.QueryParsed();
-                if (parsed != nullptr)
-                {
-                    auto guide = parsed.GetFirstValueByName(L"guide");
-                    if (!guide.empty())
-                    {
-                        auto trackedWindow = WindowHelper::GetTrackedWindow(guide);
-                        if (trackedWindow != nullptr)
-                        {
-                            trackedWindow.Activate();
-                            co_return;
-                        }
-                        Window window;
-                        window.SystemBackdrop(Media::MicaBackdrop());
-                        window.Title(L"Celestia");
-                        SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(guide), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", nullptr, [weak_window{ make_weak(window)}]()
-                            {
-                                return weak_window.get();
-                            }, true) };
-                        window.Content(userControl);
-                        WindowHelper::SetWindowIcon(window);
-                        WindowHelper::SetWindowTheme(window);
-                        WindowHelper::SetWindowFlowDirection(window);
-                        WindowHelper::ResizeWindow(window, 400, 600);
-                        WindowHelper::TrackWindow(window, guide);
-                        window.Activate();
-                    }
-                }
-                co_return;
-            }
+            co_return;
         }
-
 
         if (!appSettings.OnboardMessageDisplayed())
         {
@@ -1091,38 +1001,158 @@ namespace winrt::CelestiaWinUI::implementation
             auto item = GuideItem::TryParse(content);
             if (appSettings.LastNewsID() != item.ID())
             {
-                auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
-                if (trackedWindow != nullptr)
-                {
-                    trackedWindow.Activate();
-                    co_return;
-                }
-                Window window;
-                window.SystemBackdrop(Media::MicaBackdrop());
-                window.Title(item.Title());
-                SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(item.ID()), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }](hstring const& id)
-                    {
-                        auto strong_this = weak_this.get();
-                        if (strong_this)
-                        {
-                            strong_this->appSettings.LastNewsID(id);
-                            strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
-                        }
-                    }, [weak_window{ make_weak(window)}]()
-                    {
-                        return weak_window.get();
-                    }) };
-                window.Content(userControl);
-                WindowHelper::SetWindowIcon(window);
-                WindowHelper::SetWindowTheme(window);
-                WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 400, 600);
-                WindowHelper::TrackWindow(window, item.ID());
-                window.Activate();
+                OpenArticle(item.ID(), item.Title(), true);
                 co_return;
             }
         }
         catch (hresult_error const&) {}
+    }
+
+    IAsyncOperation<bool> MainWindow::OpenURL(Uri const url)
+    {
+        using namespace Windows::Web::Http;
+
+        // Convert to modern URL
+        if (url.SchemeName() == L"celaddon")
+        {
+            if (url.Host() == L"item" && !url.Query().empty())
+            {
+                if (auto parsed = url.QueryParsed(); parsed != nullptr)
+                {
+                    if (auto addon = parsed.GetFirstValueByName(L"item"); !addon.empty())
+                    {
+                        if (auto uri = Uri(hstring(L"celestia://addon/") + Uri::EscapeComponent(addon)); uri != nullptr)
+                            return co_await OpenURL(uri);
+                    }
+                }
+            }
+            co_return false;
+        }
+
+        if (url.SchemeName() == L"celguide")
+        {
+            if (url.Host() == L"guide" && !url.Query().empty())
+            {
+                if (auto parsed = url.QueryParsed(); parsed != nullptr)
+                {
+                    if (auto guide = parsed.GetFirstValueByName(L"guide"); !guide.empty())
+                    {
+                        if (auto uri = Uri(hstring(L"celestia://article/") + Uri::EscapeComponent(guide)); uri != nullptr)
+                            co_return co_await OpenURL(uri);
+                    }
+                }
+            }
+            co_return false;
+        }
+
+        if (url.SchemeName() == L"cel")
+        {
+            if (co_await ContentDialogHelper::ShowOption(Content(), LocalizationHelper::Localize(L"Open URL?", L"Request user consent to open a URL")))
+            {
+                renderer.EnqueueTask([weak_this{ get_weak() }, url]()
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->appCore.GoToURL(url.AbsoluteUri());
+                    });
+            }
+            co_return true;
+        }
+
+        // Unsupported scheme
+        if (url.SchemeName() != L"celestia")
+            co_return false;
+
+        if (resourceManager != nullptr && url.Host() == L"addon")
+        {
+            auto segments = UriHelper::PathSegments(url);
+            auto addon = segments.Size() > 0 ? segments.GetAt(0) : L"";
+            if (!addon.empty())
+            {
+                HttpClient client;
+                HttpFormUrlEncodedContent query({ {L"item", addon}, { L"lang", LocalizationHelper::Locale()} });
+                auto itemURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/item" + L"?" + query.ToString();
+                try
+                {
+                    auto response = co_await client.GetAsync(Uri(itemURL));
+                    response.EnsureSuccessStatusCode();
+                    auto content = co_await response.Content().ReadAsStringAsync();
+                    auto item = ResourceItem::TryParse(content);
+                    auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
+                    if (trackedWindow != nullptr)
+                    {
+                        trackedWindow.Activate();
+                        co_return true;
+                    }
+                    Window window;
+                    window.SystemBackdrop(Media::MicaBackdrop());
+                    window.Title(item.Name());
+                    ResourceItemUserControl userControl{ appCore, renderer, item, resourceManager, [weak_window{ make_weak(window) }]()
+                        {
+                            return weak_window.get();
+                        }
+                    };
+                    window.Content(userControl);
+                    WindowHelper::SetWindowIcon(window);
+                    WindowHelper::SetWindowTheme(window);
+                    WindowHelper::SetWindowFlowDirection(window);
+                    WindowHelper::ResizeWindow(window, 400, 600);
+                    WindowHelper::TrackWindow(window, item.ID());
+                    window.Activate();
+                    co_return true;
+                }
+                catch (hresult_error const&) {}
+            }
+            co_return false;
+        }
+
+        if (url.Host() == L"article")
+        {
+            auto segments = UriHelper::PathSegments(url);
+            auto guide = segments.Size() > 0 ? segments.GetAt(0) : L"";
+            if (!guide.empty())
+            {
+                OpenArticle(guide, L"", false);
+                co_return true;
+            }
+            co_return false;
+        }
+        co_return true;
+    }
+
+    void MainWindow::OpenArticle(hstring const& id, hstring const& title, bool trackLastNewsID)
+    {
+        auto trackedWindow = WindowHelper::GetTrackedWindow(id);
+        if (trackedWindow != nullptr)
+        {
+            trackedWindow.Activate();
+            return;
+        }
+        Window window;
+        window.SystemBackdrop(Media::MicaBackdrop());
+        window.Title(title.empty() ? L"Celestia" : title);
+        SafeWebUserControl userControl{ CelestiaWinUI::CommonWebParameter(GetURIForGuide(id), single_threaded_vector(std::vector<hstring>({ L"guide" })), appCore, renderer, L"", [weak_this{ get_weak() }, trackLastNewsID](hstring const& id)
+            {
+                if (trackLastNewsID)
+                {
+                    auto strong_this = weak_this.get();
+                    if (strong_this)
+                    {
+                        strong_this->appSettings.LastNewsID(id);
+                        strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
+                    }
+                }
+            }, [weak_window{ make_weak(window)}]()
+            {
+                return weak_window.get();
+            }, title.empty()) };
+        window.Content(userControl);
+        WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowTheme(window);
+        WindowHelper::SetWindowFlowDirection(window);
+        WindowHelper::ResizeWindow(window, 400, 600);
+        WindowHelper::TrackWindow(window, id);
+        window.Activate();
     }
 
     void MainWindow::CopyURL()

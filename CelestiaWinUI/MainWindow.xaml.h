@@ -87,6 +87,8 @@ namespace winrt::CelestiaWinUI::implementation
         fire_and_forget ShowSystemAccessRequest(HANDLE semaphore, CelestiaComponent::SystemAccessRequestArgs const args);
         void OpenFileIfReady(Windows::Storage::StorageFile const scriptFileToOpen);
         void OpenURLIfReady(Windows::Foundation::Uri const urlToOpen);
+        Windows::Foundation::IAsyncOperation<bool> OpenURL(Windows::Foundation::Uri const url);
+        void OpenArticle(hstring const& id, hstring const& title, bool trackLastNewsID);
 
         HWND WindowHandle();
         Windows::Foundation::IAsyncOperation<hstring> GetLocale(hstring const& localePath);
