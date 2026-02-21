@@ -15,7 +15,7 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     struct StringHelper : StringHelperT<StringHelper>
     {
-        static hstring Join(Windows::Foundation::Collections::IVector<hstring const> const components, hstring const& separator);
+        static hstring Join(Windows::Foundation::Collections::IVector<hstring> const& components, hstring const& separator);
     };
 }
 

@@ -13,13 +13,33 @@
 #include "StringHelper.g.cpp"
 #endif
 
+#include <sstream>
+
 using namespace winrt;
 using namespace Windows::Foundation;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
-    hstring StringHelper::Join(Collections::IVector<hstring const> const components, hstring const& separator)
+    hstring StringHelper::Join(Collections::IVector<hstring> const& components, hstring const& separator)
     {
-        return L"";
+        if (components.Size() == 0)
+        {
+            return L"";
+        }
+
+        std::basic_ostringstream<wchar_t> result;
+
+        for (uint32_t i = 0; i < components.Size(); ++i)
+        {
+            result << std::wstring(components.GetAt(i));
+
+            // Only add the separator if we aren't at the last element
+            if (i < components.Size() - 1)
+            {
+                result << std::wstring(separator);
+            }
+        }
+
+        return hstring{ result.str() };
     }
 }

@@ -1117,7 +1117,34 @@ namespace winrt::CelestiaWinUI::implementation
             }
             co_return false;
         }
-        co_return true;
+
+        if (url.Host() == L"object")
+        {
+            auto segments = UriHelper::PathSegments(url);
+            auto objectPath = StringHelper::Join(segments, L"/");
+
+            if (!objectPath.empty())
+            {
+                renderer.EnqueueTask([weak_this{ get_weak() }, objectPath]()
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr || strong_this->isClosed) return;
+                        auto selection{ strong_this->appCore.Simulation().Find(objectPath) };
+                        if (selection.IsEmpty()) return;
+                        strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, selection]()
+                            {
+                                auto strong_this{ weak_this.get() };
+                                if (strong_this == nullptr || strong_this->isClosed) return;
+                                strong_this->ShowInfo(selection);
+                            });
+                    });
+                co_return true;
+            }
+
+            co_return false;
+        }
+
+        co_return false;
     }
 
     void MainWindow::OpenArticle(hstring const& id, hstring const& title, bool trackLastNewsID)
