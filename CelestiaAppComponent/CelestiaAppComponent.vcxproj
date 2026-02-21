@@ -176,6 +176,9 @@
     <ClInclude Include="PathHelper.h">
       <DependentUpon>PathHelper.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <DependentUpon>StringHelper.idl</DependentUpon>
+    </ClInclude>
     <ClInclude Include="UriHelper.h">
       <DependentUpon>UriHelper.idl</DependentUpon>
     </ClInclude>
@@ -235,6 +238,9 @@
     <ClCompile Include="PathHelper.cpp">
       <DependentUpon>PathHelper.idl</DependentUpon>
     </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <DependentUpon>StringHelper.idl</DependentUpon>
+    </ClCompile>
     <ClCompile Include="UriHelper.cpp">
       <DependentUpon>UriHelper.idl</DependentUpon>
     </ClCompile>
@@ -288,6 +294,7 @@
   <ItemGroup>
     <Midl Include="LocalizationHelper.idl" />
     <Midl Include="PathHelper.idl" />
+    <Midl Include="StringHelper.idl" />
     <Midl Include="UriHelper.idl" />
     <Midl Include="RequestResult.idl" />
     <Midl Include="GuideItem.idl" />

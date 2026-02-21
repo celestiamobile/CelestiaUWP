@@ -196,6 +196,7 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadSuccessArgs" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManagerDownloadFailureArgs" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceManager" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.StringHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.UriHelper" ThreadingModel="both" />
         </InProcessServer>
     </Extension>
