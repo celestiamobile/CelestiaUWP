@@ -711,7 +711,7 @@ namespace winrt::CelestiaWinUI::implementation
         AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"10x Faster", L"10x time speed"), CelestiaAction::Faster, appCore, renderer, VirtualKey::L);
         AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"10x Slower", L"0.1x time speed"), CelestiaAction::Slower, appCore, renderer, VirtualKey::K);
         AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Freeze", L"Freeze time"), CelestiaAction::PlayPause, appCore, renderer, VirtualKey::Space);
-        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Real Time", L"Reset time speed to 1x"), CelestiaAction::CurrentTime, appCore, renderer);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Real Time", L"Reset time speed to 1x"), CelestiaAction::RealTime, appCore, renderer);
         AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Reverse Time", L""), CelestiaAction::Reverse, appCore, renderer, VirtualKey::J);
 
         timeItem.Items().Append(MenuFlyoutSeparator());
