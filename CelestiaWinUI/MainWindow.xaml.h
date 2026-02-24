@@ -106,6 +106,7 @@ namespace winrt::CelestiaWinUI::implementation
         void FocusHelperControl_KeyDown(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         void FocusHelperControl_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         void MenuBar_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
+        Microsoft::UI::Xaml::Controls::MenuFlyoutItemBase CreateMenuItem(CelestiaComponent::CelestiaBrowserItem const item);
     };
 }
 

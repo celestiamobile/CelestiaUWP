@@ -470,7 +470,6 @@ namespace winrt::CelestiaWinUI::implementation
     void AppendCharEnterItem(MenuBarItem const& item, hstring const& title, short input, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key = std::nullopt, std::optional<VirtualKeyModifiers> modifiers = std::nullopt);
     void AppendPerformActionItem(MenuBarItem const& item, hstring const& title, CelestiaAction action, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key = std::nullopt, std::optional<VirtualKeyModifiers> modifiers = std::nullopt);
     void PopulateBodyMenu(CelestiaBody const& body, MenuFlyout const& menu, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer);
-    MenuFlyoutItemBase CreateMenuItem(CelestiaBrowserItem const item, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer);
 
     void MainWindow::SetUpGLViewInteractions()
     {
@@ -1777,7 +1776,26 @@ namespace winrt::CelestiaWinUI::implementation
 
                 menu.Items().Append(MenuFlyoutSeparator());
 
-                std::vector<std::pair<hstring, CelestiaAction>> actions = { {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo}, {LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow}, {LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit} };
+                AppendItem(menu, LocalizationHelper::Localize(L"Select", L"Select an object"), [weak_this{ strong_this->get_weak() }, selection](IInspectable const&, RoutedEventArgs const&)
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->renderer.EnqueueTask([strong_this, selection]()
+                            {
+                                strong_this->appCore.Simulation().Selection(selection);
+                            });
+                    });
+                std::vector<std::pair<hstring, CelestiaAction>> actions =
+                {
+                    {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo},
+                    {LocalizationHelper::Localize(L"Center", L"Center an object"), CelestiaAction::Center},
+                    {LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow},
+                    {LocalizationHelper::Localize(L"Chase", L""), CelestiaAction::Chase},
+                    {LocalizationHelper::Localize(L"Track", L"Track an object"), CelestiaAction::Track},
+                    {LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit},
+                    {LocalizationHelper::Localize(L"Lock", L""), CelestiaAction::Lock},
+                    {LocalizationHelper::Localize(L"Land", L"Go to surface of an object"), CelestiaAction::GoToSurface},
+                };
                 for (const auto& [name, code] : actions)
                 {
                     auto copiedCode = code;
@@ -1809,7 +1827,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     for (const auto& child : children)
                     {
-                        browserMenuItems.push_back(CreateMenuItem(child, strong_this->appCore, strong_this->renderer));
+                        browserMenuItems.push_back(strong_this->CreateMenuItem(child));
                     }
                 }
 
@@ -2343,13 +2361,16 @@ namespace winrt::CelestiaWinUI::implementation
         menu.Items().Append(refMarkMenu);
     }
 
-    MenuFlyoutItemBase CreateMenuItem(CelestiaBrowserItem const item, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer)
+    MenuFlyoutItemBase MainWindow::CreateMenuItem(CelestiaBrowserItem const item)
     {
         MenuFlyoutSubItem menu;
         menu.Text(item.Name());
 
-        menu.Loaded([appCore, renderer, item](IInspectable const& sender, RoutedEventArgs const&)
+        menu.Loaded([weak_this{ get_weak() }, item](IInspectable const& sender, RoutedEventArgs const&)
             {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+
                 auto senderMenu = sender.as<MenuFlyoutSubItem>();
                 if (auto subItems = senderMenu.Items(); subItems != nullptr && subItems.Size() > 0) return;
 
@@ -2357,9 +2378,21 @@ namespace winrt::CelestiaWinUI::implementation
                 auto obj = item.Object();
                 if (obj != nullptr)
                 {
+                    MenuFlyoutItem getInfoItem;
+                    getInfoItem.Text(LocalizationHelper::Localize(L"Get Info", L"Action for getting info about current selected object"));
+                    getInfoItem.Click([weak_this{ strong_this->get_weak() }, obj](IInspectable const&, RoutedEventArgs const&)
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr) return;
+                        strong_this->ShowInfo(CelestiaSelection(obj));
+                    });
+                    children.push_back(getInfoItem);
+
+                    children.push_back(MenuFlyoutSeparator());
+
                     MenuFlyoutItem selectItem;
                     selectItem.Text(LocalizationHelper::Localize(L"Select", L"Select an object"));
-                    selectItem.Click([appCore, renderer, obj](IInspectable const&, RoutedEventArgs const&)
+                    selectItem.Click([appCore = strong_this->appCore, renderer = strong_this->renderer, obj](IInspectable const&, RoutedEventArgs const&)
                         {
                             renderer.EnqueueTask([appCore, obj]()
                                 {
@@ -2368,6 +2401,33 @@ namespace winrt::CelestiaWinUI::implementation
                                 });
                         });
                     children.push_back(selectItem);
+                    std::vector<std::pair<hstring, CelestiaAction>> actions =
+                    {
+                        {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo},
+                        {LocalizationHelper::Localize(L"Center", L"Center an object"), CelestiaAction::Center},
+                        {LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow},
+                        {LocalizationHelper::Localize(L"Chase", L""), CelestiaAction::Chase},
+                        {LocalizationHelper::Localize(L"Track", L"Track an object"), CelestiaAction::Track},
+                        {LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit},
+                        {LocalizationHelper::Localize(L"Lock", L""), CelestiaAction::Lock},
+                        {LocalizationHelper::Localize(L"Land", L"Go to surface of an object"), CelestiaAction::GoToSurface},
+                    };
+                    for (const auto& [name, code] : actions)
+                    {
+                        auto copiedCode = code;
+                        MenuFlyoutItem item;
+                        item.Text(name);
+                        item.Click([appCore = strong_this->appCore, renderer = strong_this->renderer, obj, copiedCode](IInspectable const&, RoutedEventArgs const&)
+                        {
+                            renderer.EnqueueTask([appCore, obj, copiedCode]()
+                                {
+                                    CelestiaSelection selection{ obj };
+                                    appCore.Simulation().Selection(selection);
+                                    appCore.Perform(copiedCode);
+                                });
+                        });
+                        children.push_back(item);
+                    }
                 }
                 if (auto items = item.Children(); items != nullptr && items.Size() > 0)
                 {
@@ -2375,7 +2435,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                     for (const auto child : items)
                     {
-                        children.push_back(CreateMenuItem(child, appCore, renderer));
+                        children.push_back(strong_this->CreateMenuItem(child));
                     }
                 }
                 for (const auto& child : children)
