@@ -83,6 +83,27 @@ namespace CelestiaComponent
         RTL = 1,
     };
 
+    enum CelestiaAction
+    {
+        GoTo = 103,
+        GoToSurface = 7,
+        Center = 99,
+        PlayPause = 32,
+        Reverse = 106,
+        Slower = 107,
+        Faster = 108,
+        CurrentTime = 33,
+        SyncOrbit = 121,
+        Lock = 58,
+        Chase = 34,
+        Track = 116,
+        Follow = 102,
+        CancelScript = 27,
+        Home = 104,
+        Stop = 115,
+        ReverseSpeed = 113,
+    };
+
     delegate void CelestiaLoadCallback(String status);
 
     [default_interface]
@@ -145,6 +166,7 @@ namespace CelestiaComponent
         void JoystickButtonDown(CelestiaJoystickButton button);
         void JoystickButtonUp(CelestiaJoystickButton button);
         void JoystickAxis(CelestiaJoystickAxis axis, Single amount);
+        void Perform(CelestiaAction action);
         void SetHudFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetHudTitleFont(String fontPath, Int32 collectionIndex, Int32 fontSize);
         void SetRenderFont(String fontPath, Int32 collectionIndex, Int32 fontSize, CelestiaFontStyle fontStyle);

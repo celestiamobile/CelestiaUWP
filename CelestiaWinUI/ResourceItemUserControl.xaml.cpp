@@ -14,6 +14,7 @@
 #endif
 
 using namespace winrt;
+using namespace CelestiaComponent;
 using namespace CelestiaAppComponent;
 using namespace Windows::Foundation;
 using namespace Microsoft::UI::Xaml;
@@ -147,7 +148,7 @@ namespace winrt::CelestiaWinUI::implementation
                         if (!selection.IsEmpty())
                         {
                             strong_this->appCore.Simulation().Selection(selection);
-                            strong_this->appCore.CharEnter(103);
+                            strong_this->appCore.Perform(CelestiaAction::GoTo);
                         }
                     });
             }

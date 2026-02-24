@@ -65,13 +65,14 @@ namespace winrt::CelestiaWinUI::implementation
     {
         actions = single_threaded_observable_vector<BrowserAction>
         ({
-            BrowserInputAction(LocalizationHelper::Localize(L"Go", L"Go to an object"), 103),
-            BrowserInputAction(LocalizationHelper::Localize(L"Center", L"Center an object"), 99),
-            BrowserInputAction(LocalizationHelper::Localize(L"Follow", L""), 102),
-            BrowserInputAction(LocalizationHelper::Localize(L"Sync Orbit", L""), 121),
-            BrowserInputAction(LocalizationHelper::Localize(L"Lock Phase", L""), 58),
-            BrowserInputAction(LocalizationHelper::Localize(L"Chase", L""), 34),
-            BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), 116),
+            BrowserSelectAction(),
+            BrowserInputAction(LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo),
+            BrowserInputAction(LocalizationHelper::Localize(L"Center", L"Center an object"), CelestiaAction::Center),
+            BrowserInputAction(LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow),
+            BrowserInputAction(LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit),
+            BrowserInputAction(LocalizationHelper::Localize(L"Lock Phase", L""), CelestiaAction::Lock),
+            BrowserInputAction(LocalizationHelper::Localize(L"Chase", L""), CelestiaAction::Chase),
+            BrowserInputAction(LocalizationHelper::Localize(L"Track", L"Track an object"), CelestiaAction::Track),
             BrowserShowSubsystemAction(),
             BrowserMarkAction(),
         });
@@ -206,7 +207,7 @@ namespace winrt::CelestiaWinUI::implementation
                     auto strong_this{ weak_this.get() };
                     if (strong_this == nullptr) return;
                     strong_this->appCore.Simulation().Selection(strong_this->selection);
-                    strong_this->appCore.CharEnter(inputAction.Code());
+                    strong_this->appCore.Perform(inputAction.Action());
                 });
         }
         else if (auto getInfoAction = action.try_as<BrowserGetInfoAction>(); getInfoAction != nullptr)
@@ -226,6 +227,15 @@ namespace winrt::CelestiaWinUI::implementation
                 WindowHelper::ResizeWindow(window, 600, 600);
                 window.Activate();
             }
+        }
+        else if (action.try_as<BrowserSelectAction>() != nullptr)
+        {
+            renderer.EnqueueTask([weak_this{ get_weak() }]()
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->appCore.Simulation().Selection(strong_this->selection);
+                });
         }
     }
 

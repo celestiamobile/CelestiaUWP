@@ -30,6 +30,9 @@
 #if __has_include("BrowserInputAction.g.cpp")
 #include "BrowserInputAction.g.cpp"
 #endif
+#if __has_include("BrowserSelectAction.g.cpp")
+#include "BrowserSelectAction.g.cpp"
+#endif
 
 #include "ObservableVector.h"
 
@@ -57,7 +60,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return LocalizationHelper::Localize(L"Subsystem", L"Subsystem of an object (e.g. planetarium system)");
     }
 
-    BrowserInputAction::BrowserInputAction(hstring const& name, int16_t code) : name(name), code(code)
+    BrowserInputAction::BrowserInputAction(hstring const& name, CelestiaComponent::CelestiaAction action) : name(name), action(action)
     {
     }
 
@@ -66,9 +69,18 @@ namespace winrt::CelestiaAppComponent::implementation
         return name;
     }
 
-    int16_t BrowserInputAction::Code()
+    CelestiaComponent::CelestiaAction BrowserInputAction::Action()
     {
-        return code;
+        return action;
+    }
+
+    BrowserSelectAction::BrowserSelectAction()
+    {
+    }
+
+    hstring BrowserSelectAction::Name()
+    {
+        return LocalizationHelper::Localize(L"Select", L"Select an object");
     }
 
     BrowserMarkMenuItem::BrowserMarkMenuItem(bool mark, CelestiaComponent::CelestiaMarkerRepresentation marker) : mark(mark), marker(marker)

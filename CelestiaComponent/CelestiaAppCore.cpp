@@ -330,6 +330,14 @@ namespace winrt::CelestiaComponent::implementation
         core->joystickAxis(static_cast<CelestiaCore::JoyAxis>(axis), amount);
     }
 
+    void CelestiaAppCore::Perform(CelestiaComponent::CelestiaAction action)
+    {
+        if (core->getTextEnterMode() != celestia::Hud::TextEnterMode::Normal)
+            core->setTextEnterMode(celestia::Hud::TextEnterMode::Normal);
+
+        core->charEntered(static_cast<char>(action));
+    }
+
     void CelestiaAppCore::SetHudFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize)
     {
         core->setHudFont(to_string(fontPath), collectionIndex, fontSize);

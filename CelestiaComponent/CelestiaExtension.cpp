@@ -1113,11 +1113,11 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaGamepadAction::StopSpeed:
             if (up)
-                appCore.CharEnter(115);
+                appCore.Perform(CelestiaAction::Stop);
             break;
         case CelestiaGamepadAction::ReverseSpeed:
             if (up)
-                appCore.CharEnter(113);
+                appCore.Perform(CelestiaAction::ReverseSpeed);
             break;
         case CelestiaGamepadAction::ReverseOrientation:
             if (up)
@@ -1132,11 +1132,11 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaGamepadAction::GoTo:
             if (up)
-                appCore.CharEnter(103);
+                appCore.Perform(CelestiaAction::GoTo);
             break;
         case CelestiaGamepadAction::Esc:
             if (up)
-                appCore.CharEnter(27);
+                appCore.Perform(CelestiaAction::CancelScript);
             break;
         case CelestiaGamepadAction::PitchUp:
             up ? appCore.KeyUp(static_cast<int32_t>(VirtualKey::NumberPad2), 0) : appCore.KeyDown(static_cast<int32_t>(VirtualKey::NumberPad2), 0);

@@ -17,6 +17,7 @@
 #include "BrowserGetInfoAction.g.h"
 #include "BrowserShowSubsystemAction.g.h"
 #include "BrowserInputAction.g.h"
+#include "BrowserSelectAction.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
 {
@@ -61,13 +62,19 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, BrowserAction>
     {
-        BrowserInputAction(hstring const& name, int16_t code);
+        BrowserInputAction(hstring const& name, CelestiaComponent::CelestiaAction action);
         hstring Name();
-        int16_t Code();
+        CelestiaComponent::CelestiaAction Action();
 
     private:
         hstring name;
-        int16_t code;
+        CelestiaComponent::CelestiaAction action;
+    };
+
+    struct BrowserSelectAction : BrowserSelectActionT<BrowserSelectAction, BrowserAction>
+    {
+        BrowserSelectAction();
+        hstring Name();
     };
 
     struct BrowserItem : BrowserItemT<BrowserItem>
@@ -117,6 +124,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     };
 
     struct BrowserInputAction : BrowserInputActionT<BrowserInputAction, implementation::BrowserInputAction>
+    {
+    };
+
+    struct BrowserSelectAction : BrowserSelectActionT<BrowserSelectAction, implementation::BrowserSelectAction>
     {
     };
 

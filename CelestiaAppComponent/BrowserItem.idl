@@ -30,8 +30,8 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass BrowserInputAction : BrowserAction
     {
-        BrowserInputAction(String name, Int16 code);
-        Int16 Code{ get; };
+        BrowserInputAction(String name, CelestiaComponent.CelestiaAction action);
+        CelestiaComponent.CelestiaAction Action{ get; };
     }
 
     [default_interface]
@@ -48,6 +48,12 @@ namespace CelestiaAppComponent
     {
         BrowserMarkAction();
         Windows.Foundation.Collections.IObservableVector<BrowserMarkMenuItem> MenuItems{ get; };
+    }
+
+    [default_interface]
+    runtimeclass BrowserSelectAction : BrowserAction
+    {
+        BrowserSelectAction();
     }
 
     [default_interface]

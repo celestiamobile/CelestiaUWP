@@ -468,6 +468,7 @@ namespace winrt::CelestiaWinUI::implementation
     void AppendSubItem(MenuFlyoutSubItem const& parent, hstring const& text, RoutedEventHandler click);
     void AppendToggleSubItem(MenuFlyoutSubItem const& parent, hstring const& text, bool isChecked, RoutedEventHandler const& click);
     void AppendCharEnterItem(MenuBarItem const& item, hstring const& title, short input, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key = std::nullopt, std::optional<VirtualKeyModifiers> modifiers = std::nullopt);
+    void AppendPerformActionItem(MenuBarItem const& item, hstring const& title, CelestiaAction action, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key = std::nullopt, std::optional<VirtualKeyModifiers> modifiers = std::nullopt);
     void PopulateBodyMenu(CelestiaBody const& body, MenuFlyout const& menu, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer);
     MenuFlyoutItemBase CreateMenuItem(CelestiaBrowserItem const item, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer);
 
@@ -612,7 +613,7 @@ namespace winrt::CelestiaWinUI::implementation
             });
         navigationItem.Items().Append(MenuFlyoutSeparator());
 
-        AppendCharEnterItem(navigationItem, LocalizationHelper::Localize(L"Select Sol", L""), 104, appCore, renderer, VirtualKey::H);
+        AppendPerformActionItem(navigationItem, LocalizationHelper::Localize(L"Select Sol", L""), CelestiaAction::Home, appCore, renderer, VirtualKey::H);
         AppendItem(navigationItem, LocalizationHelper::Localize(L"Search\u2026", L"Menu item to start searching"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
                 auto strong_this{ weak_this.get() };
@@ -628,18 +629,18 @@ namespace winrt::CelestiaWinUI::implementation
         navigationItem.Items().Append(MenuFlyoutSeparator());
 
 
-        std::vector<std::pair<hstring, int16_t>> actions =
+        std::vector<std::pair<hstring, CelestiaAction>> actions =
         {
-            {LocalizationHelper::Localize(L"Center Selection", L"Center selected object"), (int16_t)99},
-            {LocalizationHelper::Localize(L"Go to Selection", L"Go to selected object"), (int16_t)103},
-            {LocalizationHelper::Localize(L"Follow Selection", L""), (int16_t)102},
-            {LocalizationHelper::Localize(L"Sync Orbit Selection", L""), (int16_t)121},
-            {LocalizationHelper::Localize(L"Track Selection", L"Track selected object"), (int16_t)116}
+            {LocalizationHelper::Localize(L"Center Selection", L"Center selected object"), CelestiaAction::Center},
+            {LocalizationHelper::Localize(L"Go to Selection", L"Go to selected object"), CelestiaAction::GoTo},
+            {LocalizationHelper::Localize(L"Follow Selection", L""), CelestiaAction::Follow},
+            {LocalizationHelper::Localize(L"Sync Orbit Selection", L""), CelestiaAction::SyncOrbit},
+            {LocalizationHelper::Localize(L"Track Selection", L"Track selected object"), CelestiaAction::Track}
         };
 
         for (const auto& [name, code] : actions)
         {
-            AppendCharEnterItem(navigationItem, name, code, appCore, renderer, (VirtualKey)(code - 32));
+            AppendPerformActionItem(navigationItem, name, code, appCore, renderer, static_cast<VirtualKey>((static_cast<int>(code) - 32)));
         }
         navigationItem.Items().Append(MenuFlyoutSeparator());
 
@@ -707,11 +708,11 @@ namespace winrt::CelestiaWinUI::implementation
 
         MenuBarItem timeItem;
         timeItem.Title(LocalizationHelper::Localize(L"Time", L""));
-        AppendCharEnterItem(timeItem, LocalizationHelper::Localize(L"10x Faster", L"10x time speed"), 108, appCore, renderer, VirtualKey::L);
-        AppendCharEnterItem(timeItem, LocalizationHelper::Localize(L"10x Slower", L"0.1x time speed"), 107, appCore, renderer, VirtualKey::K);
-        AppendCharEnterItem(timeItem, LocalizationHelper::Localize(L"Freeze", L"Freeze time"), 32, appCore, renderer, VirtualKey::Space);
-        AppendCharEnterItem(timeItem, LocalizationHelper::Localize(L"Real Time", L"Reset time speed to 1x"), 33, appCore, renderer);
-        AppendCharEnterItem(timeItem, LocalizationHelper::Localize(L"Reverse Time", L""), 106, appCore, renderer, VirtualKey::J);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"10x Faster", L"10x time speed"), CelestiaAction::Faster, appCore, renderer, VirtualKey::L);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"10x Slower", L"0.1x time speed"), CelestiaAction::Slower, appCore, renderer, VirtualKey::K);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Freeze", L"Freeze time"), CelestiaAction::PlayPause, appCore, renderer, VirtualKey::Space);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Real Time", L"Reset time speed to 1x"), CelestiaAction::CurrentTime, appCore, renderer);
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Reverse Time", L""), CelestiaAction::Reverse, appCore, renderer, VirtualKey::J);
 
         timeItem.Items().Append(MenuFlyoutSeparator());
 
@@ -1159,35 +1160,35 @@ namespace winrt::CelestiaWinUI::implementation
                                 break;
                             case ObjectURLAction::Go:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(103);
+                                appCore.Perform(CelestiaAction::GoTo);
                                 break;
                             case ObjectURLAction::Center:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(99);
+                                appCore.Perform(CelestiaAction::Center);
                                 break;
                             case ObjectURLAction::Follow:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(102);
+                                appCore.Perform(CelestiaAction::Follow);
                                 break;
                             case ObjectURLAction::Chase:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(34);
+                                appCore.Perform(CelestiaAction::Chase);
                                 break;
                             case ObjectURLAction::Track:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(116);
+                                appCore.Perform(CelestiaAction::Track);
                                 break;
                             case ObjectURLAction::SyncOrbit:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(121);
+                                appCore.Perform(CelestiaAction::SyncOrbit);
                                 break;
                             case ObjectURLAction::Lock:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(58);
+                                appCore.Perform(CelestiaAction::Lock);
                                 break;
                             case ObjectURLAction::Land:
                                 appCore.Simulation().Selection(selection);
-                                appCore.CharEnter(7);
+                                appCore.Perform(CelestiaAction::GoToSurface);
                                 break;
                             }
                         }
@@ -1775,7 +1776,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                 menu.Items().Append(MenuFlyoutSeparator());
 
-                std::vector<std::pair<hstring, int16_t>> actions = { {LocalizationHelper::Localize(L"Go", L"Go to an object"), (int16_t)103}, {LocalizationHelper::Localize(L"Follow", L""), (int16_t)102}, {LocalizationHelper::Localize(L"Sync Orbit", L""), (int16_t)121} };
+                std::vector<std::pair<hstring, CelestiaAction>> actions = { {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo}, {LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow}, {LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit} };
                 for (const auto& [name, code] : actions)
                 {
                     auto copiedCode = code;
@@ -1786,7 +1787,7 @@ namespace winrt::CelestiaWinUI::implementation
                             strong_this->renderer.EnqueueTask([strong_this, selection, copiedCode]()
                                 {
                                     strong_this->appCore.Simulation().Selection(selection);
-                                    strong_this->appCore.CharEnter(copiedCode);
+                                    strong_this->appCore.Perform(copiedCode);
                                 });
                         });
                 }
@@ -2181,6 +2182,30 @@ namespace winrt::CelestiaWinUI::implementation
         item.Text(text);
         item.Click(click);
         parent.Items().Append(item);
+    }
+
+    void AppendPerformActionItem(MenuBarItem const& item, hstring const& title, CelestiaAction action, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key, std::optional<VirtualKeyModifiers> modifiers)
+    {
+        Input::KeyboardAccelerator keyboardAccelerator = nullptr;
+        if (key.has_value())
+        {
+            keyboardAccelerator = Input::KeyboardAccelerator();
+            keyboardAccelerator.Key(key.value());
+            if (modifiers.has_value())
+            {
+                keyboardAccelerator.Modifiers(modifiers.value());
+            }
+        }
+        AppendItem(item, title, [appCore, renderer, action](IInspectable const& sender, RoutedEventArgs const&)
+            {
+                auto flyoutItem = sender.as<MenuFlyoutItem>();
+                if (!flyoutItem.IsLoaded())
+                    return;
+                renderer.EnqueueTask([appCore, action]
+                    {
+                        appCore.Perform(action);
+                    });
+            }, keyboardAccelerator);
     }
 
     void AppendCharEnterItem(MenuBarItem const& item, hstring const& title, short input, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, std::optional<VirtualKey> key, std::optional<VirtualKeyModifiers> modifiers)

@@ -160,6 +160,7 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserItemTab" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserMarkAction" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserMarkMenuItem" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserSelectAction" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.BrowserShowSubsystemAction" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ContentDialogHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.GamepadManager" ThreadingModel="both" />
