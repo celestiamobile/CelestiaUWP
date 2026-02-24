@@ -716,6 +716,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         timeItem.Items().Append(MenuFlyoutSeparator());
 
+        AppendPerformActionItem(timeItem, LocalizationHelper::Localize(L"Set to Current Time", L"Set simulation time to device"), CelestiaAction::CurrentTime, appCore, renderer);
         AppendItem(timeItem, LocalizationHelper::Localize(L"Set Time\u2026", L"Select simulation time"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
                 auto strong_this{ weak_this.get() };
