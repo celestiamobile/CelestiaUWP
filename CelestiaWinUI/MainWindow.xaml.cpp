@@ -2415,9 +2415,9 @@ namespace winrt::CelestiaWinUI::implementation
                     for (const auto& [name, code] : actions)
                     {
                         auto copiedCode = code;
-                        MenuFlyoutItem item;
-                        item.Text(name);
-                        item.Click([appCore = strong_this->appCore, renderer = strong_this->renderer, obj, copiedCode](IInspectable const&, RoutedEventArgs const&)
+                        MenuFlyoutItem newItem;
+                        newItem.Text(name);
+                        newItem.Click([appCore = strong_this->appCore, renderer = strong_this->renderer, obj, copiedCode](IInspectable const&, RoutedEventArgs const&)
                         {
                             renderer.EnqueueTask([appCore, obj, copiedCode]()
                                 {
@@ -2426,7 +2426,7 @@ namespace winrt::CelestiaWinUI::implementation
                                     appCore.Perform(copiedCode);
                                 });
                         });
-                        children.push_back(item);
+                        children.push_back(newItem);
                     }
                 }
                 if (auto items = item.Children(); items != nullptr && items.Size() > 0)

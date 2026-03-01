@@ -184,8 +184,8 @@ jobs:
       Expand-Archive "AppPackages\CelestiaWinUI_${version}_$(arch)_Test\symbols.zip" -Destination Symbols
       Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_$(arch)_Test\symbols.zip" -NewName "CelestiaWinUI_${version}_$(arch).appxsym"
 
-      New-Item -Name "Binaries" -ItemType "directory"
-      Get-ChildItem -Path "AppPackages\CelestiaWinUI_${version}_$(arch)_Test" -Include *.dll,*.exe -Recurse | Copy-Item -Destination Binaries\
+      New-Item -Name "AppBinaries" -ItemType "directory"
+      Expand-Archive "AppPackages\CelestiaWinUI_${version}_$(arch)_Test\CelestiaWinUI_${version}_$(arch).msix" -Destination AppBinaries
     displayName: 'Move Symbols'
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
 
@@ -197,14 +197,9 @@ jobs:
       publishLocation: Container
 
   - script: |
-      sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) --include-sources Symbols
+      sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) --include-sources Symbols AppBinaries
     workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
     displayName: 'Upload Symbols'
-
-  - script: |
-      sentry-cli debug-files upload -o celestia-vs -p windows --auth-token $(SENTRY_AUTH_TOKEN) Binaries
-    workingDirectory: '$(System.DefaultWorkingDirectory)\CelestiaUWP'
-    displayName: 'Upload Binaries'
 
   - pwsh: |
       $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
