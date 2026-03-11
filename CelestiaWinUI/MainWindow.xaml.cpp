@@ -1065,6 +1065,52 @@ namespace winrt::CelestiaWinUI::implementation
             co_return true;
         }
 
+        if (url.SchemeName() == L"http" || url.SchemeName() == L"https")
+        {
+            if (url.Host() == L"celestia.mobi")
+            {
+                auto segments = UriHelper::PathSegments(url);
+                if (segments.Size() >= 2 && segments.GetAt(0) == L"resources")
+                {
+                    auto type = segments.GetAt(1);
+                    auto id = segments.Size() > 2 ? segments.GetAt(2) : L"";
+                    if (type == L"item")
+                    {
+                        if (id.empty())
+                        {
+                            if (auto parsed = url.QueryParsed(); parsed != nullptr)
+                            {
+                                id = parsed.GetFirstValueByName(L"item");
+                            }
+                        }
+
+                        if (!id.empty())
+                        {
+                            if (auto uri = Uri(hstring(L"celestia://item/") + Uri::EscapeComponent(id)); uri != nullptr)
+                                co_return co_await OpenURL(uri);
+                        }
+                    }
+                    else if (type == L"guide")
+                    {
+                        if (id.empty())
+                        {
+                            if (auto parsed = url.QueryParsed(); parsed != nullptr)
+                            {
+                                id = parsed.GetFirstValueByName(L"guide");
+                            }
+                        }
+
+                        if (!id.empty())
+                        {
+                            if (auto uri = Uri(hstring(L"celestia://guide/") + Uri::EscapeComponent(id)); uri != nullptr)
+                                co_return co_await OpenURL(uri);
+                        }
+                    }
+                }
+            }
+            co_return false;
+        }
+
         // Unsupported scheme
         if (url.SchemeName() != L"celestia")
             co_return false;

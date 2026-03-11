@@ -105,6 +105,11 @@
             <uap:DisplayName>Celestia Launcher</uap:DisplayName>
           </uap:Protocol>
         </uap:Extension>
+        <uap3:Extension Category="windows.appUriHandler">
+          <uap3:AppUriHandler>
+            <uap3:Host Name="celestia.mobi" />
+          </uap3:AppUriHandler>
+        </uap3:Extension>
       </Extensions>
     </Application>
   </Applications>
