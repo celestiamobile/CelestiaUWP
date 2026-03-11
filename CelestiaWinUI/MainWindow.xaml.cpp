@@ -1086,7 +1086,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                         if (!id.empty())
                         {
-                            if (auto uri = Uri(hstring(L"celestia://item/") + Uri::EscapeComponent(id)); uri != nullptr)
+                            if (auto uri = Uri(hstring(L"celestia://addon/") + Uri::EscapeComponent(id)); uri != nullptr)
                                 co_return co_await OpenURL(uri);
                         }
                     }
@@ -1102,7 +1102,7 @@ namespace winrt::CelestiaWinUI::implementation
 
                         if (!id.empty())
                         {
-                            if (auto uri = Uri(hstring(L"celestia://guide/") + Uri::EscapeComponent(id)); uri != nullptr)
+                            if (auto uri = Uri(hstring(L"celestia://article/") + Uri::EscapeComponent(id)); uri != nullptr)
                                 co_return co_await OpenURL(uri);
                         }
                     }
