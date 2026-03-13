@@ -52,6 +52,20 @@ App::App()
     auto sentryRelease = fmt::format("celestia-windows@{}.{}.{}.{}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
     sentry_options_set_release(options, sentryRelease.c_str());
     sentry_init(options);
+
+    auto localSettings = Windows::Storage::ApplicationData::Current().LocalSettings();
+    auto userIdResult = localSettings.Values().TryLookup(L"UserId");
+    hstring userId;
+    if (userIdResult)
+        userId = unbox_value_or(userIdResult, L"");
+    if (userId.empty())
+    {
+        userId = to_hstring(GuidHelper::CreateNewGuid());
+        localSettings.Values().Insert(L"UserId", box_value(userId));
+    }
+
+    auto user = sentry_value_new_user(to_string(userId).c_str(), nullptr, nullptr, nullptr);
+    sentry_set_user(user);
 #endif
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
