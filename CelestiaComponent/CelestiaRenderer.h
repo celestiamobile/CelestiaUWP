@@ -20,10 +20,21 @@
 #include <mutex>
 
 #include "CelestiaRenderer.g.h"
+#include "DisplayInformation.g.h"
 #include "completion_source.h"
 
 namespace winrt::CelestiaComponent::implementation
 {
+    struct DisplayInformation : DisplayInformationT<DisplayInformation>
+    {
+        DisplayInformation(int32_t maximumSwapInterval, int32_t minimumSwapInterval);
+        int32_t MaximumSwapInterval();
+        int32_t MinimumSwapInterval();
+    private:
+        int32_t maximumSwapInterval;
+        int32_t minimumSwapInterval;
+    };
+
     struct CelestiaRenderer : CelestiaRendererT<CelestiaRenderer>
     {
         CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
@@ -44,6 +55,8 @@ namespace winrt::CelestiaComponent::implementation
         void EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task);
         void SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task);
         std::pair<std::vector<CelestiaComponent::CelestiaRendererTask>, CelestiaComponent::CelestiaRendererTask> RetrieveAndResetTasks();
+
+        CelestiaComponent::DisplayInformation DisplayInformation();
         static DWORD WINAPI Main(LPVOID context);
 
         void MakeContextCurrent();

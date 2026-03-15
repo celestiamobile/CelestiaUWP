@@ -2491,4 +2491,23 @@ namespace winrt::CelestiaWinUI::implementation
             });
         return menu;
     }
+
+    std::optional<int32_t> MainWindow::MaximumDisplayFrequency()
+    {
+        auto hWnd = WindowHandle();
+        if (hWnd == 0) return std::nullopt;
+
+        HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+        if (hMonitor == NULL) return std::nullopt;
+
+        MONITORINFOEXW info = {};
+        info.cbSize = sizeof(MONITORINFOEXW);
+        if (!GetMonitorInfoW(hMonitor, &info)) return std::nullopt;
+
+        DEVMODEW devMode = {};
+        devMode.dmSize = sizeof(DEVMODEW);
+        if (!EnumDisplaySettingsW(info.szDevice, ENUM_CURRENT_SETTINGS, &devMode)) return std::nullopt;
+
+        return static_cast<int32_t>(devMode.dmDisplayFrequency);
+    }
 }

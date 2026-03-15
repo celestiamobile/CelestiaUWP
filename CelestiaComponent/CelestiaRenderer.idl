@@ -13,6 +13,13 @@ namespace CelestiaComponent
     delegate void CelestiaRendererTask();
 
     [default_interface]
+    runtimeclass DisplayInformation
+    {
+        Int32 MaximumSwapInterval{ get; };
+        Int32 MinimumSwapInterval{ get; };
+    }
+
+    [default_interface]
     runtimeclass CelestiaRenderer
     {
         CelestiaRenderer(Boolean enableMultisample, CelestiaRendererEngineStartedHandler engineStarted);
@@ -25,5 +32,6 @@ namespace CelestiaComponent
         void EnqueueTask(CelestiaRendererTask task);
         void SetPreRenderTask(CelestiaRendererTask task);
         void MakeContextCurrent();
+        DisplayInformation DisplayInformation{ get; };
     }
 }

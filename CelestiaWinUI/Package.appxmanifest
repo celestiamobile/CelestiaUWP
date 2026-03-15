@@ -150,6 +150,7 @@
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniversalCoord" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaUniverse" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaVector" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.DisplayInformation" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
 
