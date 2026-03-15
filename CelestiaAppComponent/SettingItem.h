@@ -24,6 +24,7 @@
 #include "AppSettingsInt32Item.g.h"
 #include "AppSettingsDoubleItem.g.h"
 #include "LanguageInt32Item.g.h"
+#include "FrameRateInt32Item.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
 {
@@ -271,6 +272,26 @@ namespace winrt::CelestiaAppComponent::implementation
         Windows::Foundation::Collections::IVector<hstring> availableLanguages;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
     };
+
+    struct FrameRateInt32Item : FrameRateInt32ItemT<FrameRateInt32Item, SettingInt32Item>
+    {
+        FrameRateInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaComponent::CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, CelestiaComponent::DisplayInformation const& displayInformation, Windows::Storage::ApplicationDataContainer const& localSettings);
+        int32_t Value();
+        void Value(int32_t);
+        hstring Title();
+        Windows::Foundation::Collections::IObservableVector<hstring> Options();
+        hstring Note();
+        bool NoteVisibility();
+
+    private:
+        hstring title;
+        CelestiaAppComponent::AppSettings appSettings;
+        CelestiaComponent::CelestiaRenderer renderer;
+        int32_t maximumDisplayFrequency;
+        CelestiaComponent::DisplayInformation displayInformation;
+        Windows::Storage::ApplicationDataContainer localSettings;
+        Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
+    };
 }
 
 namespace winrt::CelestiaAppComponent::factory_implementation
@@ -316,6 +337,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     };
 
     struct LanguageInt32Item : LanguageInt32ItemT<LanguageInt32Item, implementation::LanguageInt32Item>
+    {
+    };
+
+    struct FrameRateInt32Item : FrameRateInt32ItemT<FrameRateInt32Item, implementation::FrameRateInt32Item>
     {
     };
 }

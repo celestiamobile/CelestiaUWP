@@ -22,7 +22,7 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaRenderer
     {
-        CelestiaRenderer(Boolean enableMultisample, CelestiaRendererEngineStartedHandler engineStarted);
+        CelestiaRenderer(Boolean enableMultisample, Int32 swapInterval, CelestiaRendererEngineStartedHandler engineStarted);
         Windows.Foundation.IAsyncAction Start();
         void Stop();
         void Pause();

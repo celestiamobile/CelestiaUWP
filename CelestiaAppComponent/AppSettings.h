@@ -92,6 +92,9 @@ namespace winrt::CelestiaAppComponent::implementation
         bool GamepadEnableRightThumbstick();
         void GamepadEnableRightThumbstick(bool);
 
+        int32_t SwapInterval();
+        void SwapInterval(int32_t);
+
         void SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value);
         bool GetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry);
         void SetInt32(CelestiaAppComponent::AppSettingInt32Entry entry, int32_t value);
@@ -113,6 +116,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring dataDirectoryPath{ L"" };
         hstring configFilePath{ L"" };
         double pickSensitivity{ 4.0 };
+        int32_t swapInterval{ 1 };
 
         CelestiaComponent::CelestiaGamepadAction gamepadRemapA{ CelestiaComponent::CelestiaGamepadAction::MoveSlower };
         CelestiaComponent::CelestiaGamepadAction gamepadRemapB{ CelestiaComponent::CelestiaGamepadAction::None };

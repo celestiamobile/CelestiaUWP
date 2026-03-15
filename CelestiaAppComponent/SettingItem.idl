@@ -126,6 +126,12 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
+    runtimeclass FrameRateInt32Item : SettingInt32Item
+    {
+        FrameRateInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaComponent.CelestiaRenderer renderer, Int32 maximumDisplayFrequency, CelestiaComponent.DisplayInformation displayInformation, Windows.Storage.ApplicationDataContainer localSettings);
+    }
+
+    [default_interface]
     runtimeclass AppCoreSingleItem : SettingDoubleItem
     {
         AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings);

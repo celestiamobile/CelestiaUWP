@@ -37,7 +37,7 @@ namespace winrt::CelestiaComponent::implementation
 
     struct CelestiaRenderer : CelestiaRendererT<CelestiaRenderer>
     {
-        CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
+        CelestiaRenderer(bool enableMultisample, int32_t swapInterval, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted);
 
         bool Initialize();
         void Destroy();
@@ -100,6 +100,7 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
         bool enableMSAA;
+        int32_t swapInterval;
 
         completion_source<bool> *startCompletionSource{ nullptr };
     };

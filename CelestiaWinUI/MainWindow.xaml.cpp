@@ -169,7 +169,7 @@ namespace winrt::CelestiaWinUI::implementation
         co_await CreateExtraFolders();
         auto defaultSettings = co_await ReadDefaultSettings();
 
-        renderer = CelestiaRenderer(appSettings.EnableMSAA(), [weak_this{ get_weak() }, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t)
+        renderer = CelestiaRenderer(appSettings.EnableMSAA(), appSettings.SwapInterval(), [weak_this{get_weak()}, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t)
             {
                 auto strong_this{ weak_this.get() };
                 return (strong_this == nullptr || strong_this->isClosed) ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings);
@@ -575,8 +575,20 @@ namespace winrt::CelestiaWinUI::implementation
         AppendItem(fileItem, LocalizationHelper::Localize(L"Settings", L""), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
                 auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr) return;
-                strong_this->ShowSettings();
+                if (strong_this == nullptr || strong_this->isClosed) return;
+                strong_this->renderer.EnqueueTask([weak_this{ strong_this->get_weak() }]
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr || strong_this->isClosed) return;
+                        strong_this->renderer.MakeContextCurrent();
+                        auto displayInformation = strong_this->renderer.DisplayInformation();
+                        strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ strong_this->get_weak() }, displayInformation]()
+                            {
+                                auto strong_this{ weak_this.get() };
+                                if (strong_this == nullptr || strong_this->isClosed) return;
+                                strong_this->ShowSettings(displayInformation);
+                            });
+                    });
             });
         fileItem.Items().Append(MenuFlyoutSeparator());
 
@@ -1541,7 +1553,7 @@ namespace winrt::CelestiaWinUI::implementation
         window.Activate();
     }
 
-    void MainWindow::ShowSettings()
+    void MainWindow::ShowSettings(DisplayInformation const& displayInformation)
     {
         const hstring id = L"Settings";
         auto trackedWindow = WindowHelper::GetTrackedWindow(id);
@@ -1553,7 +1565,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto languages = single_threaded_vector<hstring>();
         languages.ReplaceAll(availableLanguages);
         Window window;
-        SettingsUserControl userControl{ appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages, SettingParameter([weak_window{ make_weak(window)}]()
+        SettingsUserControl userControl{ appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages, MaximumDisplayFrequency(), displayInformation, SettingParameter([weak_window{make_weak(window)}]()
             {
                 return weak_window.get();
             }) };
@@ -2492,7 +2504,7 @@ namespace winrt::CelestiaWinUI::implementation
         return menu;
     }
 
-    std::optional<int32_t> MainWindow::MaximumDisplayFrequency()
+    Windows::Foundation::IReference<int32_t> MainWindow::MaximumDisplayFrequency()
     {
         auto hWnd = WindowHandle();
         if (hWnd == 0) return std::nullopt;

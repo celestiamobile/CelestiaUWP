@@ -97,6 +97,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto gamepadEnableRightThumbstickResult = propertySet.TryLookup(L"GamepadEnableRightThumbstick");
         if (gamepadEnableRightThumbstickResult)
             gamepadEnableRightThumbstick = unbox_value_or(gamepadEnableRightThumbstickResult, gamepadEnableRightThumbstick);
+        auto swapIntervalResult = propertySet.TryLookup(L"SwapInterval");
+        if (swapIntervalResult)
+            swapInterval = unbox_value_or(swapIntervalResult, swapInterval);
     }
 
     bool AppSettings::UseFullDPI()
@@ -349,6 +352,16 @@ namespace winrt::CelestiaAppComponent::implementation
         gamepadEnableRightThumbstick = value;
     }
 
+    int32_t AppSettings::SwapInterval()
+    {
+        return swapInterval;
+    }
+
+    void AppSettings::SwapInterval(int32_t value)
+    {
+        swapInterval = value;
+    }
+
     void AppSettings::SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value)
     {
         switch (entry)
@@ -447,6 +460,9 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
             GamepadRemapDpadRight(static_cast<CelestiaGamepadAction>(value));
             break;
+        case CelestiaAppComponent::AppSettingInt32Entry::SwapInterval:
+            SwapInterval(value);
+            break;
         default:
             break;
         }
@@ -480,6 +496,8 @@ namespace winrt::CelestiaAppComponent::implementation
             return static_cast<int32_t>(GamepadRemapDpadLeft());
         case CelestiaAppComponent::AppSettingInt32Entry::GamepadRemapDpadRight:
             return static_cast<int32_t>(GamepadRemapDpadRight());
+        case CelestiaAppComponent::AppSettingInt32Entry::SwapInterval:
+            return SwapInterval();
         default:
             return 0;
         }
@@ -573,5 +591,6 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"GamepadInvertY", box_value(gamepadInvertY));
         settings.Values().Insert(L"GamepadEnableLeftThumbstick", box_value(gamepadEnableLeftThumbstick));
         settings.Values().Insert(L"GamepadEnableRightThumbstick", box_value(gamepadEnableRightThumbstick));
+        settings.Values().Insert(L"SwapInterval", box_value(swapInterval));
     }
 }
