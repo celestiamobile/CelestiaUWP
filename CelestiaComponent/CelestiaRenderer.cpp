@@ -12,6 +12,9 @@
 #if __has_include("CelestiaRenderer.g.cpp")
 #include "CelestiaRenderer.g.cpp"
 #endif
+#if __has_include("DisplayInformation.g.cpp")
+#include "DisplayInformation.g.cpp"
+#endif
 
 #ifndef EGL_EGLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
@@ -43,6 +46,22 @@ using namespace std;
 
 namespace winrt::CelestiaComponent::implementation
 {
+    DisplayInformation::DisplayInformation(int32_t maximumSwapInterval, int32_t minimumSwapInterval) :
+        maximumSwapInterval(maximumSwapInterval),
+        minimumSwapInterval(minimumSwapInterval)
+    {
+    }
+
+    int32_t DisplayInformation::MaximumSwapInterval()
+    {
+        return maximumSwapInterval;
+    }
+
+    int32_t DisplayInformation::MinimumSwapInterval()
+    {
+        return minimumSwapInterval;
+    }
+
     CelestiaRenderer::CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
         CelestiaRendererT<CelestiaRenderer>(),
         engineStarted(engineStarted),
@@ -470,6 +489,17 @@ namespace winrt::CelestiaComponent::implementation
         auto tasksCopy = tasks;
         tasks.clear();
         return {tasksCopy, preRenderTask};
+    }
+
+    CelestiaComponent::DisplayInformation CelestiaRenderer::DisplayInformation()
+    {
+        EGLint minInterval = 1, maxInterval = 1;
+        if (eglGetConfigAttrib(display, config, EGL_MIN_SWAP_INTERVAL, &minInterval) == EGL_FALSE ||
+            eglGetConfigAttrib(display, config, EGL_MAX_SWAP_INTERVAL, &maxInterval) == EGL_FALSE)
+        {
+            return nullptr;
+        }
+        return make<implementation::DisplayInformation>(static_cast<int32_t>(maxInterval), static_cast<int32_t>(minInterval));
     }
 
     void CelestiaRenderer::MakeContextCurrent()
