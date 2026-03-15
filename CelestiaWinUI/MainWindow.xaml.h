@@ -10,7 +10,6 @@
 #pragma once
 
 #include <atomic>
-#include <optional>
 
 #include "MainWindow.g.h"
 
@@ -76,7 +75,7 @@ namespace winrt::CelestiaWinUI::implementation
         void ShowNewBookmark();
         Windows::Foundation::IAsyncOperation<Windows::Data::Json::JsonObject> ReadDefaultSettings();
         void ApplySettings(Windows::Data::Json::JsonObject const& defaultSettings);
-        void ShowSettings();
+        void ShowSettings(CelestiaComponent::DisplayInformation const& displayInformation);
         void ShowAddonManagement();
         winrt::fire_and_forget ShowOnlineAddons();
         void ToggleFullScreen();
@@ -109,7 +108,7 @@ namespace winrt::CelestiaWinUI::implementation
         void FocusHelperControl_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         void MenuBar_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         Microsoft::UI::Xaml::Controls::MenuFlyoutItemBase CreateMenuItem(CelestiaComponent::CelestiaBrowserItem const item);
-        std::optional<int32_t> MaximumDisplayFrequency();
+        Windows::Foundation::IReference<int32_t> MaximumDisplayFrequency();
     };
 }
 

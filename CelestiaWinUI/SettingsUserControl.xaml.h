@@ -29,7 +29,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     struct SettingsUserControl : SettingsUserControlT<SettingsUserControl>
     {
-        SettingsUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, CelestiaWinUI::SettingParameter const& parameter);
+        SettingsUserControl(CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, Windows::Foundation::IReference<int32_t> maximumDisplayFrequency, CelestiaComponent::DisplayInformation const& displayInformation, CelestiaWinUI::SettingParameter const& parameter);
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> ItemGroups();

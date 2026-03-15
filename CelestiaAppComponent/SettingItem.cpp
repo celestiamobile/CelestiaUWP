@@ -42,6 +42,11 @@
 #if __has_include("LanguageInt32Item.g.cpp")
 #include "LanguageInt32Item.g.cpp"
 #endif
+#if __has_include("FrameRateInt32Item.g.cpp")
+#include "FrameRateInt32Item.g.cpp"
+#endif
+
+#include <fmt/printf.h>
 
 using namespace winrt;
 using namespace CelestiaComponent;
@@ -573,6 +578,62 @@ namespace winrt::CelestiaAppComponent::implementation
     }
 
     bool LanguageInt32Item::NoteVisibility()
+    {
+        return false;
+    }
+
+    FrameRateInt32Item::FrameRateInt32Item(hstring const& title, AppSettings const& appSettings, CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, DisplayInformation const& displayInformation, Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), renderer(renderer), localSettings(localSettings), maximumDisplayFrequency(maximumDisplayFrequency), displayInformation(displayInformation)
+    {
+        itemTitles = single_threaded_observable_vector<hstring>();
+        Windows::Globalization::NumberFormatting::DecimalFormatter numberFormatter;
+        numberFormatter.IsGrouped(true);
+        numberFormatter.FractionDigits(0);
+        for (int32_t i = 1; i <= displayInformation.MaximumSwapInterval(); i += 1)
+        {
+            hstring optionDisplayTitle;
+            if (i == 1)
+                optionDisplayTitle = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Maximum (%s FPS)", L"")), to_string(numberFormatter.FormatInt(maximumDisplayFrequency))));
+            else
+                optionDisplayTitle = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"%s FPS", L"")), to_string(numberFormatter.FormatInt(maximumDisplayFrequency / i))));
+            itemTitles.Append(optionDisplayTitle);
+        }
+    }
+
+    int32_t FrameRateInt32Item::Value()
+    {
+        // Must be queried before setting
+        if (!hasCorrectValue)
+            hasCorrectValue = true;
+        auto swapInterval = appSettings.SwapInterval();
+        return std::clamp(swapInterval - 1, 0, displayInformation.MaximumSwapInterval() - 1);
+    }
+
+    void FrameRateInt32Item::Value(int32_t value)
+    {
+        // Must be queried before setting
+        if (!hasCorrectValue)
+            return;
+
+        appSettings.SwapInterval(value + 1);
+        appSettings.Save(localSettings);
+    }
+
+    hstring FrameRateInt32Item::Title()
+    {
+        return title;
+    }
+
+    Collections::IObservableVector<hstring> FrameRateInt32Item::Options()
+    {
+        return itemTitles;
+    }
+
+    hstring FrameRateInt32Item::Note()
+    {
+        return L"";
+    }
+
+    bool FrameRateInt32Item::NoteVisibility()
     {
         return false;
     }

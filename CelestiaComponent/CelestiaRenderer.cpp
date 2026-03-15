@@ -62,10 +62,11 @@ namespace winrt::CelestiaComponent::implementation
         return minimumSwapInterval;
     }
 
-    CelestiaRenderer::CelestiaRenderer(bool enableMultisample, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
+    CelestiaRenderer::CelestiaRenderer(bool enableMultisample, int32_t swapInterval, CelestiaComponent::CelestiaRendererEngineStartedHandler const& engineStarted) :
         CelestiaRendererT<CelestiaRenderer>(),
         engineStarted(engineStarted),
-        enableMultisample(enableMultisample)
+        enableMultisample(enableMultisample),
+        swapInterval(swapInterval)
     {
         InitializeCriticalSection(&msgCritSection);
         InitializeConditionVariable(&resumeCond);
@@ -280,6 +281,13 @@ namespace winrt::CelestiaComponent::implementation
             if (!eglMakeCurrent(display, surface, surface, context))
             {
                 printf("eglMakeCurrent() returned error %d", eglGetError());
+                Destroy();
+                return false;
+            }
+
+            if (!eglSwapInterval(display, static_cast<EGLint>(swapInterval)))
+            {
+                printf("eglSwapInterval() returned error %d", eglGetError());
                 Destroy();
                 return false;
             }

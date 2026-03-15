@@ -42,7 +42,7 @@ namespace winrt::CelestiaWinUI::implementation
         return showRestartHint;
     }
 
-    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
+    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, IReference<int32_t> maximumDisplayFrequency, DisplayInformation const& displayInformation, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
     {
         itemGroups = single_threaded_observable_vector<CelestiaWinUI::SettingsNavigationItemGroup>();
         std::vector<IInspectable> displaySettingItems =
@@ -178,6 +178,9 @@ namespace winrt::CelestiaWinUI::implementation
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
         };
+
+        if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)
+            rendererSettingItems.push_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
 
         auto rendererSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         rendererSettingItemGroupItems.ReplaceAll(rendererSettingItems);
