@@ -701,6 +701,19 @@
       <DependentUpon>Utilities\EmailHelper.cpp</DependentUpon>
     </Midl>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FeatureFlags.h">
+      <DependentUpon>FeatureFlags.idl</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FeatureFlags.cpp">
+      <DependentUpon>FeatureFlags.idl</DependentUpon>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="FeatureFlags.idl" />
+  </ItemGroup>
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget

@@ -46,6 +46,7 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Storage::StorageFile scriptFileToOpen{ nullptr };
         Windows::Foundation::Uri urlToOpen{ nullptr };
         bool isXbox{ false };
+        CelestiaWinUI::FeatureFlags featureFlags;
         bool isGLViewFocused{ false };
         std::atomic<bool> isClosed{ false };
 

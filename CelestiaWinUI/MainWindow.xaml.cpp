@@ -103,6 +103,8 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::MainWindow_Loaded()
     {
+        featureFlags = FeatureFlags::Get(ApplicationData::Current().LocalSettings());
+
         UpdateScale(false);
 
         StorageFolder customDataFolder{ nullptr };
@@ -1768,6 +1770,12 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::InitialSetUpComplete()
     {
+        try
+        {
+            co_await FeatureFlags::UpdateAsync(isXbox, Windows::Storage::ApplicationData::Current().LocalSettings());
+        }
+        catch (hresult_error const&) {}
+
 #ifdef SUPPORTS_SENTRY
         auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder();
         try
