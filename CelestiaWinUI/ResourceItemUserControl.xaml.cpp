@@ -265,9 +265,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto weak_this{ get_weak() };
         try
         {
-            auto response = co_await client.GetAsync(Uri(url));
-            response.EnsureSuccessStatusCode();
-            auto content = co_await response.Content().ReadAsStringAsync();
+            auto content = co_await client.GetStringAsync(Uri(url));
 
             auto strong_this = weak_this.get();
             if (strong_this == nullptr)

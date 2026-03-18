@@ -1013,9 +1013,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto latestGuideURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/latest" + L"?" + query.ToString();
         try
         {
-            auto response = co_await client.GetAsync(Uri(latestGuideURL));
-            response.EnsureSuccessStatusCode();
-            auto content = co_await response.Content().ReadAsStringAsync();
+            auto content = co_await client.GetStringAsync(Uri(latestGuideURL));
             auto item = GuideItem::TryParse(content);
             if (appSettings.LastNewsID() != item.ID())
             {
@@ -1138,9 +1136,7 @@ namespace winrt::CelestiaWinUI::implementation
                 auto itemURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/item" + L"?" + query.ToString();
                 try
                 {
-                    auto response = co_await client.GetAsync(Uri(itemURL));
-                    response.EnsureSuccessStatusCode();
-                    auto content = co_await response.Content().ReadAsStringAsync();
+                    auto content = co_await client.GetStringAsync(Uri(itemURL));
                     auto item = ResourceItem::TryParse(content);
                     auto trackedWindow = WindowHelper::GetTrackedWindow(item.ID());
                     if (trackedWindow != nullptr)
