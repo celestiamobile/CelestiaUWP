@@ -21,22 +21,14 @@ env:
   CONTENT_COMMIT_HASH: '54e4760132be3617e4782fee8eefcfce6694f4ff'
 
 jobs:
-  build:
-    name: 'Build ${{ matrix.buildType }} ${{ matrix.arch }}'
+  build-msixupload:
+    name: 'Build msixupload ${{ matrix.arch }}'
     runs-on: windows-2025
 
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - buildType: msixupload
-            arch: x64
-          - buildType: msixupload
-            arch: arm64
-          - buildType: sideload
-            arch: x64
-          - buildType: sideload
-            arch: arm64
+        arch: [x64, arm64]
 
     steps:
       - name: Checkout CelestiaUWP
@@ -157,7 +149,6 @@ jobs:
         run: echo "${{ secrets.SIGNING_CERT_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/3d.pfx"
 
       - name: Build MSIXUpload
-        if: matrix.buildType == 'msixupload'
         shell: pwsh
         working-directory: '${{ github.workspace }}\CelestiaUWP'
         run: |
@@ -165,8 +156,193 @@ jobs:
           New-Item -Name "AppPackages" -ItemType "directory"
           msbuild /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="${{ matrix.arch }}" /p:AppxBundlePlatforms="${{ matrix.arch }}" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Never /p:UapAppxPackageBuildMode=CI /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$env:RUNNER_TEMP\3d.pfx" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
 
+      - name: Move Symbols
+        shell: pwsh
+        working-directory: '${{ github.workspace }}\CelestiaUWP'
+        run: |
+          $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
+          $packageManifestXML = [xml]$packageManifestContent
+          $version = $packageManifestXML.Package.Identity.Version
+
+          New-Item -Name "Symbols" -ItemType "directory"
+          Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -NewName "symbols.zip"
+          Expand-Archive "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\symbols.zip" -Destination Symbols
+          Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\symbols.zip" -NewName "CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym"
+
+          New-Item -Name "AppBinaries" -ItemType "directory"
+          Expand-Archive "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination AppBinaries
+
+      - name: Upload Symbols Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'msixupload-${{ matrix.arch }}-symbols'
+          path: '${{ github.workspace }}\CelestiaUWP\Symbols'
+          retention-days: 90
+
+      - name: Upload Symbols to Sentry
+        shell: cmd
+        working-directory: '${{ github.workspace }}\CelestiaUWP'
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: sentry-cli debug-files upload -o celestia-vs -p windows --include-sources Symbols AppBinaries
+
+      - name: Bundle
+        shell: pwsh
+        working-directory: '${{ github.workspace }}\CelestiaUWP'
+        run: |
+          $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
+          $packageManifestXML = [xml]$packageManifestContent
+          $version = $packageManifestXML.Package.Identity.Version
+
+          New-Item -Name "Output" -ItemType "directory"
+          Get-ChildItem -Path "packages\Celestia.ANGLE.${{ env.ANGLE_VERSION }}\build\native\${{ matrix.arch }}\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
+          Get-ChildItem -Path "packages\celestia-windows-${{ matrix.arch }}-dependencies.${{ env.DEPENDENCY_VERSION }}\installed\${{ matrix.arch }}-windows\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
+          Compress-Archive -Path Symbols\* -Destination "Output\symbols.zip"
+          Rename-Item -Path "Output\symbols.zip" -NewName "CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym"
+
+          New-Item -Name "MSIX" -ItemType "directory"
+          Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination "MSIX"
+
+          Remove-Item -Path "AppPackages" -Recurse -Force
+          New-Item -Name "AppPackages" -ItemType "directory"
+          Move-Item -Path "MSIX\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination "AppPackages"
+          Move-Item -Path "Output\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -Destination "AppPackages"
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'msixupload-${{ matrix.arch }}'
+          path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
+          retention-days: 90
+
+  build-sideload:
+    name: 'Build sideload ${{ matrix.arch }}'
+    runs-on: windows-2025
+
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, arm64]
+
+    steps:
+      - name: Checkout CelestiaUWP
+        uses: actions/checkout@v4
+        with:
+          path: CelestiaUWP
+          fetch-depth: 0
+
+      - name: Checkout Celestia
+        uses: actions/checkout@v4
+        with:
+          repository: celestiamobile/Celestia
+          path: Celestia
+          fetch-depth: 0
+
+      - name: Checkout CelestiaContent
+        uses: actions/checkout@v4
+        with:
+          repository: CelestiaProject/CelestiaContent
+          path: CelestiaContent
+          fetch-depth: 0
+
+      - name: Checkout CelestiaLocalization
+        uses: actions/checkout@v4
+        with:
+          repository: celestiamobile/CelestiaLocalization
+          path: CelestiaLocalization
+          fetch-depth: 0
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install Build Dependencies
+        run: choco install sentry-cli imagemagick
+
+      - name: Checkout Branch
+        if: github.event_name != 'pull_request'
+        run: |
+          cd Celestia
+          git checkout origin/${{ github.ref_name }}
+          cd ../CelestiaLocalization
+          git checkout origin/${{ github.ref_name }}
+
+      - name: Checkout Branch (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          cd Celestia
+          git checkout origin/${{ github.event.pull_request.base.ref }}
+          cd ../CelestiaLocalization
+          git checkout origin/${{ github.event.pull_request.base.ref }}
+
+      - name: Checkout Content
+        run: |
+          cd CelestiaContent
+          git checkout ${{ env.CONTENT_COMMIT_HASH }}
+
+      - name: Apply NuGet Patches
+        run: |
+          cd CelestiaUWP
+          git apply patches/nuget/nuget-${{ matrix.arch }}.patch --ignore-whitespace --whitespace=nowarn
+
+      - name: Running imagemagick
+        shell: cmd
+        run: call "${{ github.workspace }}\CelestiaUWP\scripts\downsize_textures.bat" "${{ github.workspace }}\CelestiaUWP"
+
+      - name: Running gperf
+        shell: cmd
+        run: call "${{ github.workspace }}\CelestiaUWP\scripts\run_gperf.bat" "${{ github.workspace }}\CelestiaUWP"
+
+      - name: Replace Sentry Placeholder
+        shell: bash
+        working-directory: '${{ github.workspace }}/CelestiaUWP'
+        run: sed -ie "s#SENTRY-DSN#${{ secrets.SENTRY_DSN }}#g" CelestiaWinUI/App.xaml.cpp
+
+      - name: Copy General Data
+        shell: cmd
+        run: call "${{ github.workspace }}\CelestiaUWP\scripts\copy_general_data.bat" "${{ github.workspace }}\CelestiaUWP" "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Resources"
+
+      - name: Convert POs
+        shell: cmd
+        run: call "${{ github.workspace }}\CelestiaUWP\scripts\convert_po.bat" "${{ github.workspace }}\CelestiaUWP" "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Resources"
+
+      - name: Install NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Download Dependencies from GitHub
+        shell: pwsh
+        run: |
+          $packageName = "celestia-windows-${{ matrix.arch }}-dependencies.${{ env.DEPENDENCY_VERSION }}.nupkg"
+          $releaseUrl = "https://github.com/celestiamobile/windows-dependencies/releases/download/${{ env.DEPENDENCY_VERSION }}/$packageName"
+          Invoke-WebRequest -Uri $releaseUrl -OutFile $packageName
+
+      - name: Download ANGLE from GitHub
+        shell: pwsh
+        run: |
+          $packageName = "Celestia.ANGLE.${{ env.ANGLE_VERSION }}.nupkg"
+          $releaseUrl = "https://github.com/celestiamobile/angle-windows/releases/download/angle-${{ env.ANGLE_VERSION }}/$packageName"
+          Invoke-WebRequest -Uri $releaseUrl -OutFile $packageName
+
+      - name: Install Dependencies
+        run: nuget install celestia-windows-${{ matrix.arch }}-dependencies -source "${{ github.workspace }}" -OutputDirectory CelestiaUWP/packages
+
+      - name: Install ANGLE
+        run: nuget install Celestia.ANGLE -source "${{ github.workspace }}" -OutputDirectory CelestiaUWP/packages
+
+      - name: Remove Unneeded Files
+        shell: cmd
+        run: |
+          RD Celestia\.git /S /Q
+          RD CelestiaContent\.git /S /Q
+          RD CelestiaUWP\.git /S /Q
+
+      - name: Restore Solution
+        run: nuget restore CelestiaUWP/CelestiaUWP.sln -PackagesDirectory CelestiaUWP/packages
+
+      - name: Decode Signing Certificate
+        shell: bash
+        run: echo "${{ secrets.SIGNING_CERT_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/3d.pfx"
+
       - name: Build Sideload
-        if: matrix.buildType == 'sideload'
         shell: pwsh
         working-directory: '${{ github.workspace }}\CelestiaUWP'
         run: |
@@ -193,7 +369,7 @@ jobs:
       - name: Upload Symbols Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: '${{ matrix.buildType }}-${{ matrix.arch }}-symbols'
+          name: 'sideload-${{ matrix.arch }}-symbols'
           path: '${{ github.workspace }}\CelestiaUWP\Symbols'
           retention-days: 90
 
@@ -204,40 +380,17 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: sentry-cli debug-files upload -o celestia-vs -p windows --include-sources Symbols AppBinaries
 
-      - name: Bundle
-        if: matrix.buildType == 'msixupload'
-        shell: pwsh
-        working-directory: '${{ github.workspace }}\CelestiaUWP'
-        run: |
-          $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
-          $packageManifestXML = [xml]$packageManifestContent
-          $version = $packageManifestXML.Package.Identity.Version
-
-          New-Item -Name "Output" -ItemType "directory"
-          Get-ChildItem -Path "packages\Celestia.ANGLE.${{ env.ANGLE_VERSION }}\build\native\${{ matrix.arch }}\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
-          Get-ChildItem -Path "packages\celestia-windows-${{ matrix.arch }}-dependencies.${{ env.DEPENDENCY_VERSION }}\installed\${{ matrix.arch }}-windows\bin" -Include *.pdb -Recurse | Copy-Item -Destination Symbols\
-          Compress-Archive -Path Symbols\* -Destination "Output\symbols.zip"
-          Rename-Item -Path "Output\symbols.zip" -NewName "CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym"
-
-          New-Item -Name "MSIX" -ItemType "directory"
-          Copy-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination "MSIX"
-
-          Remove-Item -Path "AppPackages" -Recurse -Force
-          New-Item -Name "AppPackages" -ItemType "directory"
-          Move-Item -Path "MSIX\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination "AppPackages"
-          Move-Item -Path "Output\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -Destination "AppPackages"
-
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: '${{ matrix.buildType }}-${{ matrix.arch }}'
+          name: 'sideload-${{ matrix.arch }}'
           path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
           retention-days: 90
 
   publish-sideload:
     name: 'Publish Sideload'
     runs-on: windows-2025
-    needs: build
+    needs: build-sideload
 
     steps:
       - name: Download Sideload Artifacts (x64)
@@ -275,7 +428,7 @@ jobs:
   bundle-msix:
     name: 'Bundle MSIX'
     runs-on: windows-2025
-    needs: build
+    needs: build-msixupload
 
     steps:
       - name: Checkout CelestiaUWP
