@@ -14,9 +14,11 @@
 #endif
 
 #include <random>
+#include <fmt/format.h>
 
 using namespace std;
 using namespace winrt;
+using namespace CelestiaAppComponent;
 using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::Data::Json;
@@ -64,8 +66,11 @@ namespace winrt::CelestiaWinUI::implementation
 
     IAsyncAction FeatureFlags::UpdateAsync(bool isXbox, Windows::Storage::ApplicationDataContainer const& settings)
     {
+        auto version = SystemInformation::Instance().ApplicationVersion();
+        auto versionText = to_hstring(fmt::format("{0}.{1}.{2}", version.Major, version.Minor, version.Build));
+
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"platform", isXbox ? L"xbox" : L"uwp"}, {L"lang", CelestiaAppComponent::LocalizationHelper::Locale()} });
+        HttpFormUrlEncodedContent query({ {L"platform", isXbox ? L"xbox" : L"uwp"}, {L"lang", LocalizationHelper::Locale()}, {L"version", versionText} });
         auto url = hstring(L"https://celestia.mobi/api/2") + L"/resource/features" + L"?" + query.ToString();
         auto content = co_await client.GetStringAsync(Uri(url));
 
