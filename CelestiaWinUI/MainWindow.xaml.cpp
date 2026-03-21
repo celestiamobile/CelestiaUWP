@@ -1787,6 +1787,15 @@ namespace winrt::CelestiaWinUI::implementation
             for (const auto& addon : addons)
                 installedAddonList = installedAddonList + to_hstring(fmt::format("{}/{}\n", to_string(addon.Name()), to_string(addon.ID())));
             co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
+
+            auto localSettings = ApplicationData::Current().LocalSettings();
+            auto stored = localSettings.Values().TryLookup(L"FeatureFlags");
+            if (stored)
+            {
+                auto featureFlags = unbox_value<hstring>(stored);
+                auto featureFlagsFile = co_await sentryDatabaseFolder.CreateFileAsync(L"feature-flags.txt", CreationCollisionOption::ReplaceExisting);
+                co_await FileIO::WriteTextAsync(featureFlagsFile, featureFlags);
+            }
         }
         catch (hresult_error const&) {}
 #else

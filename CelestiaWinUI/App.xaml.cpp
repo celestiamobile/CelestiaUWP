@@ -48,6 +48,13 @@ App::App()
             sentry_options_add_attachmentw(options, installedAddonFilePath.c_str());
     }
     catch (const std::exception&) {}
+    try
+    {
+        auto featureFlagsFilePath = PathHelper::Combine(sentryDatabasePath, L"feature-flags.txt");
+        if (std::filesystem::exists(to_string(featureFlagsFilePath)))
+            sentry_options_add_attachmentw(options, featureFlagsFilePath.c_str());
+    }
+    catch (const std::exception&) {}
     auto packageVersion = Windows::ApplicationModel::Package::Current().Id().Version();
     auto sentryRelease = fmt::format("celestia-windows@{}.{}.{}.{}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
     sentry_options_set_release(options, sentryRelease.c_str());
