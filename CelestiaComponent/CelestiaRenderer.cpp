@@ -51,6 +51,7 @@ static const wchar_t EGLRenderResolutionScaleProperty[] = L"EGLRenderResolutionS
 #define EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE 0x320F
 #define EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE 0x33A4
 #define EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE 0x33A9
+#define EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE 0x33A8
 
 using namespace std;
 
@@ -109,18 +110,20 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_NONE
             };
 
+            // EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE is incompatible with MSAA (requires direct backbuffer rendering).
             const EGLint defaultDisplayAttributes[] =
             {
                 // These are the default display attributes, used to request ANGLE's D3D11 renderer.
                 // eglInitialize will only succeed with these attributes if the hardware supports D3D11 Feature Level 10_0+.
                 EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
 
-                // EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE is an option that enables ANGLE to automatically call 
-                // the IDXGIDevice3::Trim method on behalf of the application when it gets suspended. 
+                // EGL.PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE is an option that enables ANGLE to automatically call
+                // the IDXGIDevice3::Trim method on behalf of the application when it gets suspended.
                 // Calling IDXGIDevice3::Trim when an application is suspended is a Windows Store application certification requirement.
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
                 // Use fast present path https://github.com/microsoft/angle/wiki/Getting-Good-Performance-From-ANGLE#--use-the-fast-present-path-aka-render-to-backbuffer-flags
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                // Not used for MSAA path as it requires direct backbuffer rendering.
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
@@ -132,7 +135,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9,
                 EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3,
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
@@ -143,7 +146,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
                 EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_WARP_ANGLE,
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
