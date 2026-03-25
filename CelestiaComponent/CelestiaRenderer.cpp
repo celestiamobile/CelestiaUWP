@@ -16,18 +16,14 @@
 #include "DisplayInformation.g.cpp"
 #endif
 
-#include <cstdio>
-#include <cstdarg>
+#include "CelestiaLogger.h"
+#include <fmt/format.h>
 
-static void CelestiaLog(const char* fmt, ...)
+template<typename... Args>
+static void CelestiaLog(fmt::format_string<Args...> fmt, Args&&... args)
 {
-    char buf[512];
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, args);
-    va_end(args);
-
-    winrt::CelestiaComponent::CelestiaLogger::Log(winrt::to_hstring(buf));
+    auto msg = fmt::format("[CelestiaRenderer] {}", fmt::format(fmt, std::forward<Args>(args)...));
+    winrt::CelestiaComponent::CelestiaLogger::Log(winrt::to_hstring(msg));
 }
 
 #ifndef EGL_EGLEXT_PROTOTYPES
@@ -154,7 +150,7 @@ namespace winrt::CelestiaComponent::implementation
             display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, defaultDisplayAttributes);
             if (display == EGL_NO_DISPLAY)
             {
-                CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
+                CelestiaLog("eglGetPlatformDisplayEXT() failed for D3D11 default, error {}", eglGetError());
                 return false;
             }
 
@@ -166,7 +162,7 @@ namespace winrt::CelestiaComponent::implementation
                     fl9_3DisplayAttributes);
                 if (display == EGL_NO_DISPLAY)
                 {
-                    CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
+                    CelestiaLog("eglGetPlatformDisplayEXT() failed for D3D11 FL9_3, error {}", eglGetError());
                     return false;
                 }
 
@@ -179,7 +175,7 @@ namespace winrt::CelestiaComponent::implementation
                         warpDisplayAttributes);
                     if (display == EGL_NO_DISPLAY)
                     {
-                        CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
+                        CelestiaLog("eglGetPlatformDisplayEXT() failed for D3D11 WARP, error {}", eglGetError());
                         return false;
                     }
 
@@ -187,7 +183,7 @@ namespace winrt::CelestiaComponent::implementation
                     {
                         // If all of the calls to eglInitialize returned EGL.FALSE then an error has occurred.
                         Destroy();
-                        CelestiaLog("eglInitialize() returned error %d", eglGetError());
+                        CelestiaLog("eglInitialize() failed for all display types, error {}", eglGetError());
                         return false;
                     }
                 }
@@ -212,13 +208,13 @@ namespace winrt::CelestiaComponent::implementation
                         }
                         else
                         {
-                            CelestiaLog("eglGetConfigAttrib() returned error %d", eglGetError());
+                            CelestiaLog("eglGetConfigAttrib() failed for multisample config {}, error {}", i, eglGetError());
                         }
                     }
                 }
                 else
                 {
-                    CelestiaLog("eglChooseConfig() returned error %d", eglGetError());
+                    CelestiaLog("eglChooseConfig() failed for multisample, error {}", eglGetError());
                 }
             }
 
@@ -226,7 +222,7 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (!eglChooseConfig(display, attribs, configs, configCount, &numConfigs))
                 {
-                    CelestiaLog("eglChooseConfig() returned error %d", eglGetError());
+                    CelestiaLog("eglChooseConfig() failed, error {}", eglGetError());
                     Destroy();
                     return false;
                 }
@@ -240,7 +236,7 @@ namespace winrt::CelestiaComponent::implementation
                     }
                     else
                     {
-                        CelestiaLog("eglGetConfigAttrib() returned error %d", eglGetError());
+                        CelestiaLog("eglGetConfigAttrib() failed for config {}, error {}", i, eglGetError());
                     }
                 }
             }
@@ -260,7 +256,7 @@ namespace winrt::CelestiaComponent::implementation
 
             if (!(context = eglCreateContext(display, config, nullptr, contextAttributes)))
             {
-                CelestiaLog("eglCreateContext() returned error %d", eglGetError());
+                CelestiaLog("eglCreateContext() returned error {}", eglGetError());
                 Destroy();
                 return false;
             }
@@ -287,21 +283,21 @@ namespace winrt::CelestiaComponent::implementation
 
             if (!(surface = eglCreateWindowSurface(display, config, win, surfaceAttributes)))
             {
-                CelestiaLog("eglCreateWindowSurface() returned error %d", eglGetError());
+                CelestiaLog("eglCreateWindowSurface() returned error {}", eglGetError());
                 Destroy();
                 return false;
             }
 
             if (!eglMakeCurrent(display, surface, surface, context))
             {
-                CelestiaLog("eglMakeCurrent() returned error %d", eglGetError());
+                CelestiaLog("eglMakeCurrent() returned error {}", eglGetError());
                 Destroy();
                 return false;
             }
 
             if (!eglSwapInterval(display, static_cast<EGLint>(swapInterval)))
             {
-                CelestiaLog("eglSwapInterval() returned error %d", eglGetError());
+                CelestiaLog("eglSwapInterval() returned error {}", eglGetError());
                 Destroy();
                 return false;
             }
@@ -404,7 +400,7 @@ namespace winrt::CelestiaComponent::implementation
                 renderer->ResizeIfNeeded();
                 renderer->TickAndDraw();
                 if (!eglSwapBuffers(renderer->display, renderer->surface))
-                    CelestiaLog("eglSwapBuffers() returned error %d", eglGetError());
+                    CelestiaLog("eglSwapBuffers() failed in render loop, error {}", eglGetError());
             }
         }
         renderer->Destroy();
