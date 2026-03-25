@@ -31,10 +31,12 @@ using namespace CelestiaWinUI::implementation;
 
 App::App()
 {
+    auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder().Path();
+    CelestiaComponent::CelestiaLogger::SetLogFilePath(PathHelper::Combine(localFolder, L"celestia.log"));
+
 #ifdef SUPPORTS_SENTRY
     auto installedLocation = Windows::ApplicationModel::Package::Current().InstalledLocation().Path();
     auto crashpadHandlerPath = PathHelper::Combine(installedLocation, L"crashpad_handler.exe");
-    auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder().Path();
     auto sentryDatabasePath = PathHelper::Combine(localFolder, L"sentry");
 
     sentry_options_t* options = sentry_options_new();
@@ -107,6 +109,7 @@ fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const args)
 #ifdef SUPPORTS_SENTRY
             sentry_close();
 #endif
+            CelestiaComponent::CelestiaLogger::Close();
             Application::Current().Exit();
         });
     Launch(args, nullptr);

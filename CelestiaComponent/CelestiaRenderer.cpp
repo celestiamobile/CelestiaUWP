@@ -16,6 +16,20 @@
 #include "DisplayInformation.g.cpp"
 #endif
 
+#include <cstdio>
+#include <cstdarg>
+
+static void CelestiaLog(const char* fmt, ...)
+{
+    char buf[512];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+
+    winrt::CelestiaComponent::CelestiaLogger::Log(winrt::to_hstring(buf));
+}
+
 #ifndef EGL_EGLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
 #endif
@@ -76,7 +90,7 @@ namespace winrt::CelestiaComponent::implementation
     {
         if (context == EGL_NO_CONTEXT)
         {
-            printf("Initializing context");
+            CelestiaLog("Initializing context");
 
             const EGLint multisampleAttribs[] =
             {
@@ -140,7 +154,7 @@ namespace winrt::CelestiaComponent::implementation
             display = eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, defaultDisplayAttributes);
             if (display == EGL_NO_DISPLAY)
             {
-                printf("eglGetDisplay() returned error %d", eglGetError());
+                CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
                 return false;
             }
 
@@ -152,7 +166,7 @@ namespace winrt::CelestiaComponent::implementation
                     fl9_3DisplayAttributes);
                 if (display == EGL_NO_DISPLAY)
                 {
-                    printf("eglGetDisplay() returned error %d", eglGetError());
+                    CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
                     return false;
                 }
 
@@ -165,7 +179,7 @@ namespace winrt::CelestiaComponent::implementation
                         warpDisplayAttributes);
                     if (display == EGL_NO_DISPLAY)
                     {
-                        printf("eglGetDisplay() returned error %d", eglGetError());
+                        CelestiaLog("eglGetDisplay() returned error %d", eglGetError());
                         return false;
                     }
 
@@ -173,7 +187,7 @@ namespace winrt::CelestiaComponent::implementation
                     {
                         // If all of the calls to eglInitialize returned EGL.FALSE then an error has occurred.
                         Destroy();
-                        printf("eglInitialize() returned error %d", eglGetError());
+                        CelestiaLog("eglInitialize() returned error %d", eglGetError());
                         return false;
                     }
                 }
@@ -198,13 +212,13 @@ namespace winrt::CelestiaComponent::implementation
                         }
                         else
                         {
-                            printf("eglGetConfigAttrib() returned error %d", eglGetError());
+                            CelestiaLog("eglGetConfigAttrib() returned error %d", eglGetError());
                         }
                     }
                 }
                 else
                 {
-                    printf("eglChooseConfig() returned error %d", eglGetError());
+                    CelestiaLog("eglChooseConfig() returned error %d", eglGetError());
                 }
             }
 
@@ -212,7 +226,7 @@ namespace winrt::CelestiaComponent::implementation
             {
                 if (!eglChooseConfig(display, attribs, configs, configCount, &numConfigs))
                 {
-                    printf("eglChooseConfig() returned error %d", eglGetError());
+                    CelestiaLog("eglChooseConfig() returned error %d", eglGetError());
                     Destroy();
                     return false;
                 }
@@ -226,14 +240,14 @@ namespace winrt::CelestiaComponent::implementation
                     }
                     else
                     {
-                        printf("eglGetConfigAttrib() returned error %d", eglGetError());
+                        CelestiaLog("eglGetConfigAttrib() returned error %d", eglGetError());
                     }
                 }
             }
 
             if (config == nullptr)
             {
-                printf("No suitable EGLConfig found");
+                CelestiaLog("No suitable EGLConfig found");
                 Destroy();
                 return false;
             }
@@ -246,7 +260,7 @@ namespace winrt::CelestiaComponent::implementation
 
             if (!(context = eglCreateContext(display, config, nullptr, contextAttributes)))
             {
-                printf("eglCreateContext() returned error %d", eglGetError());
+                CelestiaLog("eglCreateContext() returned error %d", eglGetError());
                 Destroy();
                 return false;
             }
@@ -273,21 +287,21 @@ namespace winrt::CelestiaComponent::implementation
 
             if (!(surface = eglCreateWindowSurface(display, config, win, surfaceAttributes)))
             {
-                printf("eglCreateWindowSurface() returned error %d", eglGetError());
+                CelestiaLog("eglCreateWindowSurface() returned error %d", eglGetError());
                 Destroy();
                 return false;
             }
 
             if (!eglMakeCurrent(display, surface, surface, context))
             {
-                printf("eglMakeCurrent() returned error %d", eglGetError());
+                CelestiaLog("eglMakeCurrent() returned error %d", eglGetError());
                 Destroy();
                 return false;
             }
 
             if (!eglSwapInterval(display, static_cast<EGLint>(swapInterval)))
             {
-                printf("eglSwapInterval() returned error %d", eglGetError());
+                CelestiaLog("eglSwapInterval() returned error %d", eglGetError());
                 Destroy();
                 return false;
             }
@@ -390,7 +404,7 @@ namespace winrt::CelestiaComponent::implementation
                 renderer->ResizeIfNeeded();
                 renderer->TickAndDraw();
                 if (!eglSwapBuffers(renderer->display, renderer->surface))
-                    printf("eglSwapBuffers() returned error %d", eglGetError());
+                    CelestiaLog("eglSwapBuffers() returned error %d", eglGetError());
             }
         }
         renderer->Destroy();

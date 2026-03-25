@@ -131,6 +131,7 @@
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipse" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaEclipseFinder" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaExtension" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaLogger" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGalaxy" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaGotoLocation" ThreadingModel="both" />
         <ActivatableClass ActivatableClassId="CelestiaComponent.CelestiaHelper" ThreadingModel="both" />

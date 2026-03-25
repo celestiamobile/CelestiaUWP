@@ -816,6 +816,20 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CelestiaLogger.h">
+      <DependentUpon>CelestiaLogger.cpp</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CelestiaLogger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CelestiaLogger.idl">
+      <SubType>Code</SubType>
+      <DependentUpon>CelestiaLogger.cpp</DependentUpon>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="CelestiaRenderer.h">
       <DependentUpon>CelestiaRenderer.cpp</DependentUpon>
     </ClInclude>
