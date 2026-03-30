@@ -35,10 +35,6 @@ using namespace Windows::Storage;
 using namespace Windows::System;
 using namespace Windows::UI::ViewManagement;
 
-#ifndef LOCK_CURSOR
-#define LOCK_CURSOR 1
-#endif
-
 namespace winrt::CelestiaWinUI::implementation
 {
     enum class ObjectURLAction
@@ -2007,21 +2003,23 @@ namespace winrt::CelestiaWinUI::implementation
                     });
 
                 lastMousePosition = position;
-#if LOCK_CURSOR
-                POINT globalPosition;
-                if (GetCursorPos(&globalPosition))
-                    lastMouseGlobalPosition = Point(static_cast<float>(globalPosition.x), static_cast<float>(globalPosition.y));
-                else
-                    lastMouseGlobalPosition = std::nullopt;
-#endif
 
-                if (!isMouseHidden)
+                if (appSettings.InfiniteDragging())
+                {
+                    POINT globalPosition;
+                    if (GetCursorPos(&globalPosition))
+                        lastMouseGlobalPosition = Point(static_cast<float>(globalPosition.x), static_cast<float>(globalPosition.y));
+                    else
+                        lastMouseGlobalPosition = std::nullopt;
+                }
+
+                if (appSettings.HideCursorDuringDragging() && !isMouseHidden)
                 {
                     GLView().as<IUIElementProtected>().ProtectedCursor(Microsoft::UI::Input::InputSystemCursor::Create(Microsoft::UI::Input::InputSystemCursorShape::Arrow));
                     GLView().as<IUIElementProtected>().ProtectedCursor().Close();
-                    GLView().CapturePointer(args.Pointer());
                     isMouseHidden = true;
                 }
+                GLView().CapturePointer(args.Pointer());
             }
         }
     }
@@ -2048,8 +2046,7 @@ namespace winrt::CelestiaWinUI::implementation
                     strong_this->appCore.MouseMove((float)x, (float)y, button);
                 });
 
-#if LOCK_CURSOR
-            if (lastMouseGlobalPosition.has_value())
+            if (appSettings.InfiniteDragging() && lastMouseGlobalPosition.has_value())
             {
                 int globalX = static_cast<int>(lastMouseGlobalPosition.value().X);
                 int globalY = static_cast<int>(lastMouseGlobalPosition.value().Y);
@@ -2063,9 +2060,6 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 lastMousePosition = position;
             }
-#else
-            lastMousePosition = position;
-#endif
         }
     }
 
@@ -2102,16 +2096,14 @@ namespace winrt::CelestiaWinUI::implementation
                     });
                 lastMousePosition = std::nullopt;
                 currentPressedButton = std::nullopt;
-#if LOCK_CURSOR
                 lastMouseGlobalPosition = std::nullopt;
-#endif
 
                 if (isMouseHidden)
                 {
                     GLView().as<IUIElementProtected>().ProtectedCursor(Microsoft::UI::Input::InputSystemCursor::Create(Microsoft::UI::Input::InputSystemCursorShape::Arrow));
-                    GLView().ReleasePointerCapture(args.Pointer());
                     isMouseHidden = false;
                 }
+                GLView().ReleasePointerCapture(args.Pointer());
             }
         }
     }

@@ -19,6 +19,8 @@ namespace CelestiaAppComponent
         GamepadInvertY,
         GamepadEnableLeftThumbstick,
         GamepadEnableRightThumbstick,
+        HideCursorDuringDragging,
+        InfiniteDragging,
     };
 
     enum AppSettingInt32Entry
@@ -59,6 +61,8 @@ namespace CelestiaAppComponent
         Boolean EnableMSAA;
         Boolean IgnoreXboxWelcomeMessage;
         Boolean OnboardMessageDisplayed;
+        Boolean HideCursorDuringDragging;
+        Boolean InfiniteDragging;
         String LanguageOverride;
         String LastNewsID;
         String DataDirectoryPath;

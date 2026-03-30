@@ -34,6 +34,12 @@ namespace winrt::CelestiaAppComponent::implementation
         auto onboardMessageDisplayedResult = propertySet.TryLookup(L"OnboardMessageDisplayed");
         if (onboardMessageDisplayedResult)
             onboardMessageDisplayed = unbox_value_or(onboardMessageDisplayedResult, onboardMessageDisplayed);
+        auto hideCursorDuringDraggingResult = propertySet.TryLookup(L"HideCursorDuringDragging");
+        if (hideCursorDuringDraggingResult)
+            hideCursorDuringDragging = unbox_value_or(hideCursorDuringDraggingResult, hideCursorDuringDragging);
+        auto infiniteDraggingResult = propertySet.TryLookup(L"InfiniteDragging");
+        if (infiniteDraggingResult)
+            infiniteDragging = unbox_value_or(infiniteDraggingResult, infiniteDragging);
         auto languageOverrideResult = propertySet.TryLookup(L"LanguageOverride");
         if (languageOverrideResult)
             languageOverride = unbox_value_or(languageOverrideResult, languageOverride);
@@ -140,6 +146,26 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::OnboardMessageDisplayed(bool value)
     {
         onboardMessageDisplayed = value;
+    }
+
+    bool AppSettings::HideCursorDuringDragging()
+    {
+        return hideCursorDuringDragging;
+    }
+
+    void AppSettings::HideCursorDuringDragging(bool value)
+    {
+        hideCursorDuringDragging = value;
+    }
+
+    bool AppSettings::InfiniteDragging()
+    {
+        return infiniteDragging;
+    }
+
+    void AppSettings::InfiniteDragging(bool value)
+    {
+        infiniteDragging = value;
     }
 
     hstring AppSettings::LanguageOverride()
@@ -390,6 +416,12 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
             OnboardMessageDisplayed(value);
             break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::HideCursorDuringDragging:
+            HideCursorDuringDragging(value);
+            break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::InfiniteDragging:
+            InfiniteDragging(value);
+            break;
         default:
             break;
         }
@@ -415,6 +447,10 @@ namespace winrt::CelestiaAppComponent::implementation
             return GamepadEnableRightThumbstick();
         case CelestiaAppComponent::AppSettingBooleanEntry::OnboardMessageDisplayed:
             return OnboardMessageDisplayed();
+        case CelestiaAppComponent::AppSettingBooleanEntry::HideCursorDuringDragging:
+            return HideCursorDuringDragging();
+        case CelestiaAppComponent::AppSettingBooleanEntry::InfiniteDragging:
+            return InfiniteDragging();
         default:
             return false;
         }
@@ -570,6 +606,8 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"EnableMSAA", box_value(enableMSAA));
         settings.Values().Insert(L"IgnoreXboxWelcomeMessage", box_value(ignoreXboxWelcomeMessage));
         settings.Values().Insert(L"OnboardMessageDisplayed", box_value(onboardMessageDisplayed));
+        settings.Values().Insert(L"HideCursorDuringDragging", box_value(hideCursorDuringDragging));
+        settings.Values().Insert(L"InfiniteDragging", box_value(infiniteDragging));
         settings.Values().Insert(L"LanguageOverride", box_value(languageOverride));
         settings.Values().Insert(L"LastNewsID", box_value(lastNewsID));
         settings.Values().Insert(L"DataDirectoryPath", box_value(dataDirectoryPath));

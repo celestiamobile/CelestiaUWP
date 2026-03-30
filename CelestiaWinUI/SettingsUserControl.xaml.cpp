@@ -234,6 +234,8 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Ray-Based Dragging", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging, localSettings, LocalizationHelper::Localize(L"Dragging behavior based on change of pick rays instead of screen coordinates", L"")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Focus Zooming", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming, localSettings, LocalizationHelper::Localize(L"Zooming behavior keeping the original focus location on screen", L"")),
             AppSettingsDoubleItem(LocalizationHelper::Localize(L"Sensitivity", L"Setting for sensitivity for selecting an object"), appSettings, AppSettingDoubleEntry::PickSensitivity, 1.0, 20.0, 1.0, localSettings, LocalizationHelper::Localize(L"Sensitivity for object selection", L"Notes for the sensitivity setting")),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"Hide Cursor During Dragging", L""), appSettings, AppSettingBooleanEntry::HideCursorDuringDragging, localSettings, LocalizationHelper::Localize(L"Hide the mouse cursor during dragging", L"")),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"Infinite Dragging", L""), appSettings, AppSettingBooleanEntry::InfiniteDragging, localSettings, LocalizationHelper::Localize(L"Mouse cursor is warped to the location when the dragging starts. Only effective when the cursor is hidden during dragging", L"")),
         });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), interactionSettingItemGroupItems, true));
 

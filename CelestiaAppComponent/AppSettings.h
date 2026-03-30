@@ -29,6 +29,12 @@ namespace winrt::CelestiaAppComponent::implementation
         bool OnboardMessageDisplayed();
         void OnboardMessageDisplayed(bool);
 
+        bool HideCursorDuringDragging();
+        void HideCursorDuringDragging(bool);
+
+        bool InfiniteDragging();
+        void InfiniteDragging(bool);
+
         hstring LanguageOverride();
         void LanguageOverride(hstring const&);
 
@@ -111,6 +117,8 @@ namespace winrt::CelestiaAppComponent::implementation
         bool enableMSAA{ false };
         bool ignoreXboxWelcomeMessage{ false };
         bool onboardMessageDisplayed{ false };
+        bool hideCursorDuringDragging{ true };
+        bool infiniteDragging{ true };
         hstring languageOverride{ L"" };
         hstring lastNewsID{ L"" };
         hstring dataDirectoryPath{ L"" };
