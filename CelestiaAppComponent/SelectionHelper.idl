@@ -21,6 +21,6 @@ namespace CelestiaAppComponent
     runtimeclass SelectionHelper
     {
         static String GetOverview(CelestiaComponent.CelestiaSelection selection, CelestiaComponent.CelestiaAppCore appCore);
-        static OverviewTimeLink[] GetTimeLinks(CelestiaComponent.CelestiaSelection selection, CelestiaComponent.CelestiaAppCore appCore);
+        static Windows.Foundation.Collections.IVector<OverviewTimeLink> GetTimeLinks(CelestiaComponent.CelestiaSelection selection, CelestiaComponent.CelestiaAppCore appCore);
     };
 }

@@ -252,16 +252,19 @@ namespace winrt::CelestiaAppComponent::implementation
         return LocalizationHelper::Localize(L"No overview available.", L"No overview for an object");
     }
 
-    winrt::com_array<CelestiaAppComponent::OverviewTimeLink> SelectionHelper::GetTimeLinks(CelestiaSelection const& selection, CelestiaAppCore const& appCore)
+    Windows::Foundation::Collections::IVector<CelestiaAppComponent::OverviewTimeLink> SelectionHelper::GetTimeLinks(CelestiaSelection const& selection, CelestiaAppCore const& appCore)
     {
+        auto result = single_threaded_vector<CelestiaAppComponent::OverviewTimeLink>();
         auto obj = selection.Object();
-        if (obj == nullptr) return {};
+        if (obj == nullptr) return result;
         auto body = obj.try_as<CelestiaBody>();
         if (body != nullptr)
         {
-            auto links = GetBodyTimeLinks(body, appCore);
-            return winrt::com_array<CelestiaAppComponent::OverviewTimeLink>(links);
+            for (auto const& link : GetBodyTimeLinks(body, appCore))
+            {
+                result.Append(link);
+            }
         }
-        return {};
+        return result;
     }
 }

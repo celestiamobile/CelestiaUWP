@@ -188,6 +188,7 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.ResourceItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.SearchObjectEntry" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.SelectionHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBaseItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingBooleanItem" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.SettingInt32Item" ThreadingModel="both" />
