@@ -1260,6 +1260,29 @@ namespace winrt::CelestiaWinUI::implementation
             co_return false;
         }
 
+        if (url.Host() == L"settime")
+        {
+            if (auto parsed = url.QueryParsed(); parsed != nullptr)
+            {
+                if (auto julianDayStr = parsed.GetFirstValueByName(L"julianDay"); !julianDayStr.empty())
+                {
+                    wchar_t* end = nullptr;
+                    double julianDay = std::wcstod(julianDayStr.c_str(), &end);
+                    if (end != julianDayStr.c_str())
+                    {
+                        renderer.EnqueueTask([weak_this{ get_weak() }, julianDay]()
+                            {
+                                auto strong_this{ weak_this.get() };
+                                if (strong_this == nullptr || strong_this->isClosed) return;
+                                strong_this->appCore.Simulation().JulianDay(julianDay);
+                            });
+                        co_return true;
+                    }
+                }
+            }
+            co_return false;
+        }
+
         co_return false;
     }
 
