@@ -90,7 +90,32 @@ namespace winrt::CelestiaWinUI::implementation
                                 strong_this->DetailLabel().Inlines().Append(prefixRun);
 
                                 Microsoft::UI::Xaml::Documents::Hyperlink hyperlink;
-                                hyperlink.NavigateUri(Uri(link.URL));
+                                auto linkURL = link.URL;
+                                hyperlink.Click([weak_this{ strong_this->get_weak() }, linkURL](Microsoft::UI::Xaml::Documents::Hyperlink const&, Microsoft::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+                                    {
+                                        auto strong_this{ weak_this.get() };
+                                        if (strong_this == nullptr) return;
+                                        auto uri = Uri(linkURL);
+                                        strong_this->renderer.EnqueueTask([weak_this, uri]()
+                                            {
+                                                auto strong_this{ weak_this.get() };
+                                                if (strong_this == nullptr) return;
+                                                auto parsed = uri.QueryParsed();
+                                                if (parsed != nullptr)
+                                                {
+                                                    auto julianDayStr = parsed.GetFirstValueByName(L"julianDay");
+                                                    if (!julianDayStr.empty())
+                                                    {
+                                                        wchar_t* end = nullptr;
+                                                        double julianDay = std::wcstod(julianDayStr.c_str(), &end);
+                                                        if (end != julianDayStr.c_str())
+                                                        {
+                                                            strong_this->appCore.Simulation().JulianDay(julianDay);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                    });
                                 Microsoft::UI::Xaml::Documents::Run linkRun;
                                 linkRun.Text(hstring(timeStr));
                                 hyperlink.Inlines().Append(linkRun);
