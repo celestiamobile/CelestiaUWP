@@ -60,11 +60,57 @@ namespace winrt::CelestiaWinUI::implementation
                 if (strong_this == nullptr) return;
                 auto name = strong_this->appCore.Simulation().Universe().NameForSelection(strong_this->selection);
                 auto detail = SelectionHelper::GetOverview(strong_this->selection, strong_this->appCore);
+                auto timeLinks = SelectionHelper::GetTimeLinks(strong_this->selection, strong_this->appCore);
                 auto url = strong_this->selection.InfoURL();
-                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [strong_this, name, detail, url]()
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [strong_this, name, detail, timeLinks, url]()
                     {
                         strong_this->NameLabel().Text(name);
-                        strong_this->DetailLabel().Text(detail);
+                        strong_this->DetailLabel().Inlines().Clear();
+                        if (!detail.empty())
+                        {
+                            Microsoft::UI::Xaml::Documents::Run detailRun;
+                            detailRun.Text(detail);
+                            strong_this->DetailLabel().Inlines().Append(detailRun);
+                        }
+                        for (auto const& link : timeLinks)
+                        {
+                            if (strong_this->DetailLabel().Inlines().Size() > 0)
+                            {
+                                Microsoft::UI::Xaml::Documents::Run newline;
+                                newline.Text(L"\n");
+                                strong_this->DetailLabel().Inlines().Append(newline);
+                            }
+                            auto label = std::wstring_view(link.Label);
+                            auto timeStr = std::wstring_view(link.TimeString);
+                            auto pos = label.find(timeStr);
+                            if (pos != std::wstring_view::npos)
+                            {
+                                Microsoft::UI::Xaml::Documents::Run prefixRun;
+                                prefixRun.Text(hstring(label.substr(0, pos)));
+                                strong_this->DetailLabel().Inlines().Append(prefixRun);
+
+                                Microsoft::UI::Xaml::Documents::Hyperlink hyperlink;
+                                hyperlink.NavigateUri(Uri(link.URL));
+                                Microsoft::UI::Xaml::Documents::Run linkRun;
+                                linkRun.Text(hstring(timeStr));
+                                hyperlink.Inlines().Append(linkRun);
+                                strong_this->DetailLabel().Inlines().Append(hyperlink);
+
+                                auto suffix = label.substr(pos + timeStr.size());
+                                if (!suffix.empty())
+                                {
+                                    Microsoft::UI::Xaml::Documents::Run suffixRun;
+                                    suffixRun.Text(hstring(suffix));
+                                    strong_this->DetailLabel().Inlines().Append(suffixRun);
+                                }
+                            }
+                            else
+                            {
+                                Microsoft::UI::Xaml::Documents::Run fallbackRun;
+                                fallbackRun.Text(link.Label);
+                                strong_this->DetailLabel().Inlines().Append(fallbackRun);
+                            }
+                        }
                         if (!url.empty())
                         {
                             strong_this->LinkButton().NavigateUri(Uri(url));

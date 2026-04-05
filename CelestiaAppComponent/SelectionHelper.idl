@@ -10,9 +10,17 @@
 
 namespace CelestiaAppComponent
 {
+    struct OverviewTimeLink
+    {
+        String Label;
+        String TimeString;
+        String URL;
+    };
+
     [default_interface]
     runtimeclass SelectionHelper
     {
         static String GetOverview(CelestiaComponent.CelestiaSelection selection, CelestiaComponent.CelestiaAppCore appCore);
-    }
+        static OverviewTimeLink[] GetTimeLinks(CelestiaComponent.CelestiaSelection selection, CelestiaComponent.CelestiaAppCore appCore);
+    };
 }

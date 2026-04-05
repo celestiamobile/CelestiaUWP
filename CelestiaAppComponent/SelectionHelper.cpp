@@ -110,43 +110,61 @@ namespace winrt::CelestiaAppComponent::implementation
             lines.push_back(to_string(LocalizationHelper::Localize(L"Has atmosphere", L"Indicate that an object has atmosphere")));
         }
 
+        return JoinLines(lines);
+    }
+
+    std::vector<CelestiaAppComponent::OverviewTimeLink> GetBodyTimeLinks(CelestiaBody const& body, CelestiaAppCore const&)
+    {
+        std::vector<CelestiaAppComponent::OverviewTimeLink> results;
         auto timeline{ body.Timeline() };
         if (timeline.PhaseCount() > 0)
         {
             using namespace Windows::Globalization::DateTimeFormatting;
             DateTimeFormatter dateFormatter{ L"shortdate shorttime" };
+            DecimalFormatter numberFormatter;
+            numberFormatter.FractionDigits(0);
+            numberFormatter.IsGrouped(true);
 
             auto startJulianDay = timeline.PhaseAtIndex(0).StartJulianDay();
             auto endJulianDay = timeline.PhaseAtIndex(0).EndJulianDay();
             if (!std::isinf(startJulianDay))
             {
+                hstring label;
+                hstring timeString;
                 if (startJulianDay < CelestiaHelper::MinRepresentableJulianDay() || startJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    startJulianDay = std::round(startJulianDay * 10000.0) / 10000.0;
-                    lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Start Julian day: %s", L"Template for displaying when start time cannot be correctly formatted by the system")), to_string(numberFormatter.FormatDouble(startJulianDay))));
+                    auto rounded = std::round(startJulianDay * 10000.0) / 10000.0;
+                    timeString = numberFormatter.FormatDouble(rounded);
+                    label = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Start Julian day: %s", L"Template for displaying when start time cannot be correctly formatted by the system")), to_string(timeString)));
                 }
                 else
                 {
                     auto startTime = CelestiaHelper::DateTimeFromJulianDay(startJulianDay);
-                    lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Start time: %s", L"Template for the start time of a body, usually a spacecraft")), to_string(dateFormatter.Format(startTime))));
+                    timeString = dateFormatter.Format(startTime);
+                    label = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Start time: %s", L"Template for the start time of a body, usually a spacecraft")), to_string(timeString)));
                 }
+                results.push_back({ label, timeString, L"celestia://settime?julianDay=" + to_hstring(startJulianDay) });
             }
             if (!std::isinf(endJulianDay))
             {
+                hstring label;
+                hstring timeString;
                 if (endJulianDay < CelestiaHelper::MinRepresentableJulianDay() || endJulianDay > CelestiaHelper::MaxRepresentableJulianDay())
                 {
-                    endJulianDay = std::round(endJulianDay * 10000.0) / 10000.0;
-                    lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"End Julian day: %s", L"Template for displaying when end time cannot be correctly formatted by the system")), to_string(numberFormatter.FormatDouble(endJulianDay))));
+                    auto rounded = std::round(endJulianDay * 10000.0) / 10000.0;
+                    timeString = numberFormatter.FormatDouble(rounded);
+                    label = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"End Julian day: %s", L"Template for displaying when end time cannot be correctly formatted by the system")), to_string(timeString)));
                 }
                 else
                 {
                     auto endTime = CelestiaHelper::DateTimeFromJulianDay(endJulianDay);
-                    lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"End time: %s", L"Template for the end time of a body, usually a spacecraft")), to_string(dateFormatter.Format(endTime))));
+                    timeString = dateFormatter.Format(endTime);
+                    label = to_hstring(fmt::sprintf(to_string(LocalizationHelper::Localize(L"End time: %s", L"Template for the end time of a body, usually a spacecraft")), to_string(timeString)));
                 }
+                results.push_back({ label, timeString, L"celestia://settime?julianDay=" + to_hstring(endJulianDay) });
             }
         }
-
-        return JoinLines(lines);
+        return results;
     }
 
     hstring GetStarOverview(CelestiaStar const& star, CelestiaAppCore const& appCore)
@@ -232,5 +250,18 @@ namespace winrt::CelestiaAppComponent::implementation
             return GetDSOOveriew(dso, appCore);
         }
         return LocalizationHelper::Localize(L"No overview available.", L"No overview for an object");
+    }
+
+    com::array<CelestiaAppComponent::OverviewTimeLink> SelectionHelper::GetTimeLinks(CelestiaSelection const& selection, CelestiaAppCore const& appCore)
+    {
+        auto obj = selection.Object();
+        if (obj == nullptr) return {};
+        auto body = obj.try_as<CelestiaBody>();
+        if (body != nullptr)
+        {
+            auto links = GetBodyTimeLinks(body, appCore);
+            return com::array<CelestiaAppComponent::OverviewTimeLink>(links);
+        }
+        return {};
     }
 }

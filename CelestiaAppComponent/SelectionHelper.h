@@ -17,6 +17,7 @@ namespace winrt::CelestiaAppComponent::implementation
     struct SelectionHelper : SelectionHelperT<SelectionHelper>
     {
         static hstring GetOverview(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::CelestiaAppCore const& appCore);
+        static com::array<CelestiaAppComponent::OverviewTimeLink> GetTimeLinks(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::CelestiaAppCore const& appCore);
     };
 }
 
