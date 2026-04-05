@@ -50,6 +50,24 @@ namespace winrt::CelestiaWinUI::implementation
         auto browserItem = item.try_as<BrowserItemTab>();
         if (browserItem == nullptr) return;
         BrowserItemUserControl userControl{ appCore, renderer, browserItem, false };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->openURLEvent(*strong_this, url);
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->getInfoEvent(*strong_this, args);
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->showSubsystemEvent(*strong_this, args);
+            });
 
         BrowserItemListContainer().Children().Append(userControl);
         BrowserItemListContainer().SetAlignTopWithPanel(userControl, true);
@@ -251,5 +269,35 @@ namespace winrt::CelestiaWinUI::implementation
             rootItems.Append(BrowserItemTab(savedDsos, dsoTabName));
         }
         Nav().SelectedItem(rootItems.GetAt(0));
+    }
+
+    event_token BrowserUserControl::OpenURL(EventHandler<hstring> const& handler)
+    {
+        return openURLEvent.add(handler);
+    }
+
+    void BrowserUserControl::OpenURL(event_token const& token) noexcept
+    {
+        openURLEvent.remove(token);
+    }
+
+    event_token BrowserUserControl::GetInfo(EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler)
+    {
+        return getInfoEvent.add(handler);
+    }
+
+    void BrowserUserControl::GetInfo(event_token const& token) noexcept
+    {
+        getInfoEvent.remove(token);
+    }
+
+    event_token BrowserUserControl::ShowSubsystem(EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
+    {
+        return showSubsystemEvent.add(handler);
+    }
+
+    void BrowserUserControl::ShowSubsystem(event_token const& token) noexcept
+    {
+        showSubsystemEvent.remove(token);
     }
 }

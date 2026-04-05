@@ -16,6 +16,6 @@
                 <HyperlinkButton x:Name="LinkButton" Margin="0" Padding="0"/>
             </StackPanel>
         </ScrollViewer>
-        <local:InfoControlStrip x:Name="ControlStrip" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" ShowSubsystem="ControlStrip_ShowSubsystem"/>
+        <local:InfoControlStrip x:Name="ControlStrip" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" ShowSubsystem="ControlStrip_ShowSubsystem" GetInfo="ControlStrip_GetInfo"/>
     </RelativePanel>
 </UserControl>

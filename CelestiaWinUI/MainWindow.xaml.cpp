@@ -1360,6 +1360,26 @@ namespace winrt::CelestiaWinUI::implementation
             return;
         }
         SearchUserControl userControl{ appCore, renderer };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->OpenURLIfReady(Uri(url));
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowInfo(args.Selection());
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowSubsystem(args.Selection());
+            });
         Window window;
         window.SystemBackdrop(Media::MicaBackdrop());
         window.Title(LocalizationHelper::Localize(L"Search", L""));
@@ -1456,6 +1476,67 @@ namespace winrt::CelestiaWinUI::implementation
     {
         // No need for tracking...
         InfoUserControl userControl{ appCore, renderer, selection };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->OpenURLIfReady(Uri(url));
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowInfo(args.Selection());
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowSubsystem(args.Selection());
+            });
+        Window window;
+        window.SystemBackdrop(Media::MicaBackdrop());
+        window.Content(userControl);
+        window.Title(appCore.Simulation().Universe().NameForSelection(selection));
+        WindowHelper::SetWindowIcon(window);
+        WindowHelper::SetWindowTheme(window);
+        WindowHelper::SetWindowFlowDirection(window);
+        WindowHelper::ResizeWindow(window, 600, 600);
+        window.Activate();
+    }
+
+    void MainWindow::ShowSubsystem(CelestiaSelection const& selection)
+    {
+        CelestiaAppCore core = appCore;
+        auto items = single_threaded_observable_vector<BrowserItem>();
+        CelestiaBrowserItem browserItem{ appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [core](CelestiaBrowserItem const& item)
+            {
+                return CelestiaExtension::GetChildren(item, core);
+            }, false };
+        items.Append(BrowserItem(browserItem));
+        BrowserItemUserControl userControl{ appCore, renderer, BrowserItemTab(items, L"") };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->OpenURLIfReady(Uri(url));
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowInfo(args.Selection());
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowSubsystem(args.Selection());
+            });
         Window window;
         window.SystemBackdrop(Media::MicaBackdrop());
         window.Content(userControl);
@@ -1514,6 +1595,26 @@ namespace winrt::CelestiaWinUI::implementation
             return;
         }
         BrowserUserControl userControl{ appCore, renderer };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->OpenURLIfReady(Uri(url));
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowInfo(args.Selection());
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                args.Handled(true);
+                strong_this->ShowSubsystem(args.Selection());
+            });
         Window window;
         window.SystemBackdrop(Media::MicaBackdrop());
         window.Title(LocalizationHelper::Localize(L"Star Browser", L""));

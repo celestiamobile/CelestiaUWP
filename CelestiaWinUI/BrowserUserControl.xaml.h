@@ -23,12 +23,22 @@ namespace winrt::CelestiaWinUI::implementation
 
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
 
+        event_token OpenURL(Windows::Foundation::EventHandler<hstring> const& handler);
+        void OpenURL(event_token const& token) noexcept;
+        event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
+        void GetInfo(event_token const& token) noexcept;
+        event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
+        void ShowSubsystem(event_token const& token) noexcept;
+
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserItemTab> rootItems;
 
         void LoadData();
+        event<Windows::Foundation::EventHandler<hstring>> openURLEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs>> getInfoEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs>> showSubsystemEvent;
     };
 }
 

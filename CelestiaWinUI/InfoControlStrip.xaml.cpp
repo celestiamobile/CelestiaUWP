@@ -179,26 +179,6 @@ namespace winrt::CelestiaWinUI::implementation
         {
             auto args = make<InfoShowSubsystemArgs>(selection);
             showSubsystemEvent(*this, args);
-            if (!args.Handled())
-            {
-                CelestiaAppCore core = appCore;
-                auto items = single_threaded_observable_vector<BrowserItem>();
-                CelestiaBrowserItem browserItem{ appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [core](CelestiaBrowserItem const& item)
-                    {
-                        return CelestiaExtension::GetChildren(item, core);
-                    }, false };
-                items.Append(BrowserItem(browserItem));
-                BrowserItemUserControl userControl{ appCore, renderer, BrowserItemTab(items, L"") };
-                Window window;
-                window.SystemBackdrop(Media::MicaBackdrop());
-                window.Content(userControl);
-                window.Title(appCore.Simulation().Universe().NameForSelection(selection));
-                WindowHelper::SetWindowIcon(window);
-                WindowHelper::SetWindowTheme(window);
-                WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 600, 600);
-                window.Activate();
-            }
         }
         else if (auto inputAction = action.try_as<BrowserInputAction>(); inputAction != nullptr)
         {
@@ -214,19 +194,6 @@ namespace winrt::CelestiaWinUI::implementation
         {
             auto args = make<InfoGetInfoArgs>(selection);
             getInfoEvent(*this, args);
-            if (!args.Handled())
-            {
-                InfoUserControl userControl{ appCore, renderer, selection };
-                Window window;
-                window.SystemBackdrop(Media::MicaBackdrop());
-                window.Content(userControl);
-                window.Title(appCore.Simulation().Universe().NameForSelection(selection));
-                WindowHelper::SetWindowIcon(window);
-                WindowHelper::SetWindowTheme(window);
-                WindowHelper::SetWindowFlowDirection(window);
-                WindowHelper::ResizeWindow(window, 600, 600);
-                window.Activate();
-            }
         }
         else if (action.try_as<BrowserSelectAction>() != nullptr)
         {

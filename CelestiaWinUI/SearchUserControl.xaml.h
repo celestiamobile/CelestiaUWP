@@ -23,10 +23,20 @@ namespace winrt::CelestiaWinUI::implementation
         void SearchBox_QuerySubmitted(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::AutoSuggestBoxQuerySubmittedEventArgs const&);
         void ShowSearchResult(CelestiaComponent::CelestiaSelection const&);
 
+        event_token OpenURL(Windows::Foundation::EventHandler<hstring> const& handler);
+        void OpenURL(event_token const& token) noexcept;
+        event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
+        void GetInfo(event_token const& token) noexcept;
+        event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
+        void ShowSubsystem(event_token const& token) noexcept;
+
     private:
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         CelestiaComponent::CelestiaSelection object;
+        event<Windows::Foundation::EventHandler<hstring>> openURLEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs>> getInfoEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs>> showSubsystemEvent;
     };
 }
 

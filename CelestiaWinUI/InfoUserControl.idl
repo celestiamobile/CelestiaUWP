@@ -18,5 +18,7 @@ namespace CelestiaWinUI
         InfoUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSelection selection, Boolean preserveMargin);
 
         event Windows.Foundation.EventHandler<InfoShowSubsystemArgs> ShowSubsystem;
+        event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;
+        event Windows.Foundation.EventHandler<String> OpenURL;
     }
 }

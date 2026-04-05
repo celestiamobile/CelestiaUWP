@@ -93,10 +93,58 @@ namespace winrt::CelestiaWinUI::implementation
             return;
 
         InfoUserControl userControl{ appCore, renderer, selection, false };
+        userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->openURLEvent(*strong_this, url);
+            });
+        userControl.GetInfo([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->getInfoEvent(*strong_this, args);
+            });
+        userControl.ShowSubsystem([weak_this{ get_weak() }](IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->showSubsystemEvent(*strong_this, args);
+            });
         SearchResultContainer().Children().Append(userControl);
         SearchResultContainer().SetAlignTopWithPanel(userControl, true);
         SearchResultContainer().SetAlignBottomWithPanel(userControl, true);
         SearchResultContainer().SetAlignLeftWithPanel(userControl, true);
         SearchResultContainer().SetAlignRightWithPanel(userControl, true);
+    }
+
+    event_token SearchUserControl::OpenURL(Windows::Foundation::EventHandler<hstring> const& handler)
+    {
+        return openURLEvent.add(handler);
+    }
+
+    void SearchUserControl::OpenURL(event_token const& token) noexcept
+    {
+        openURLEvent.remove(token);
+    }
+
+    event_token SearchUserControl::GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler)
+    {
+        return getInfoEvent.add(handler);
+    }
+
+    void SearchUserControl::GetInfo(event_token const& token) noexcept
+    {
+        getInfoEvent.remove(token);
+    }
+
+    event_token SearchUserControl::ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
+    {
+        return showSubsystemEvent.add(handler);
+    }
+
+    void SearchUserControl::ShowSubsystem(event_token const& token) noexcept
+    {
+        showSubsystemEvent.remove(token);
     }
 }

@@ -69,6 +69,7 @@ namespace winrt::CelestiaWinUI::implementation
         Windows::Foundation::IAsyncAction SaveScreenshot(hstring const path);
         void ShowTourGuide();
         void ShowInfo(CelestiaComponent::CelestiaSelection const& selection);
+        void ShowSubsystem(CelestiaComponent::CelestiaSelection const& selection);
         void ShowEclipseFinder();
         winrt::fire_and_forget ShowObserverMode();
         void ShowBrowser();

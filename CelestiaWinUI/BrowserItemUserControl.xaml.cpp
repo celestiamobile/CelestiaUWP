@@ -82,4 +82,34 @@ namespace winrt::CelestiaWinUI::implementation
     {
         getInfoEvent.remove(token);
     }
+
+    event_token BrowserItemUserControl::OpenURL(Windows::Foundation::EventHandler<hstring> const& handler)
+    {
+        return openURLEvent.add(handler);
+    }
+
+    void BrowserItemUserControl::OpenURL(event_token const& token) noexcept
+    {
+        openURLEvent.remove(token);
+    }
+
+    event_token BrowserItemUserControl::ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler)
+    {
+        return showSubsystemEvent.add(handler);
+    }
+
+    void BrowserItemUserControl::ShowSubsystem(event_token const& token) noexcept
+    {
+        showSubsystemEvent.remove(token);
+    }
+
+    void BrowserItemUserControl::ControlStrip_GetInfo(IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+    {
+        getInfoEvent(*this, args);
+    }
+
+    void BrowserItemUserControl::ControlStrip_ShowSubsystem(IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
+    {
+        showSubsystemEvent(*this, args);
+    }
 }

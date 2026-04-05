@@ -20,5 +20,7 @@ namespace CelestiaWinUI
         Microsoft.UI.Xaml.Interop.IBindableObservableVector RootItem{ get; };
 
         event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;
+        event Windows.Foundation.EventHandler<InfoShowSubsystemArgs> ShowSubsystem;
+        event Windows.Foundation.EventHandler<String> OpenURL;
     }
 }

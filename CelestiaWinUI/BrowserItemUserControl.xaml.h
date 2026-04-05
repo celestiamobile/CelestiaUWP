@@ -25,6 +25,13 @@ namespace winrt::CelestiaWinUI::implementation
 
         event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
         void GetInfo(event_token const& token) noexcept;
+        event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
+        void ShowSubsystem(event_token const& token) noexcept;
+        event_token OpenURL(Windows::Foundation::EventHandler<hstring> const& handler);
+        void OpenURL(event_token const& token) noexcept;
+
+        void ControlStrip_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const&);
+        void ControlStrip_ShowSubsystem(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const&);
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
@@ -32,6 +39,8 @@ namespace winrt::CelestiaWinUI::implementation
         bool preserveMargin;
         Microsoft::UI::Xaml::Interop::IBindableObservableVector rootItem{ nullptr };
         event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs>> getInfoEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs>> showSubsystemEvent;
+        event<Windows::Foundation::EventHandler<hstring>> openURLEvent;
     };
 }
 

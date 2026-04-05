@@ -20,10 +20,15 @@ namespace winrt::CelestiaWinUI::implementation
 
         event_token ShowSubsystem(Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs> const& handler);
         void ShowSubsystem(event_token const& token) noexcept;
+        event_token GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler);
+        void GetInfo(event_token const& token) noexcept;
+        event_token OpenURL(Windows::Foundation::EventHandler<hstring> const& handler);
+        void OpenURL(event_token const& token) noexcept;
 
         void CockpitCheckbox_Checked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
         void CockpitCheckbox_Unchecked(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
         void ControlStrip_ShowSubsystem(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const&);
+        void ControlStrip_GetInfo(Windows::Foundation::IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const&);
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
@@ -32,6 +37,8 @@ namespace winrt::CelestiaWinUI::implementation
         bool preserveMargin;
         Windows::Foundation::Collections::IObservableVector<CelestiaAppComponent::BrowserAction> actions;
         event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoShowSubsystemArgs>> showSubsystemEvent;
+        event<Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs>> getInfoEvent;
+        event<Windows::Foundation::EventHandler<hstring>> openURLEvent;
     };
 }
 

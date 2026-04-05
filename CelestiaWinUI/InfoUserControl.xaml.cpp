@@ -95,26 +95,7 @@ namespace winrt::CelestiaWinUI::implementation
                                     {
                                         auto strong_this{ weak_this.get() };
                                         if (strong_this == nullptr) return;
-                                        auto uri = Uri(linkURL);
-                                        strong_this->renderer.EnqueueTask([weak_this, uri]()
-                                            {
-                                                auto strong_this{ weak_this.get() };
-                                                if (strong_this == nullptr) return;
-                                                auto parsed = uri.QueryParsed();
-                                                if (parsed != nullptr)
-                                                {
-                                                    auto julianDayStr = parsed.GetFirstValueByName(L"julianDay");
-                                                    if (!julianDayStr.empty())
-                                                    {
-                                                        wchar_t* end = nullptr;
-                                                        double julianDay = std::wcstod(julianDayStr.c_str(), &end);
-                                                        if (end != julianDayStr.c_str())
-                                                        {
-                                                            strong_this->appCore.Simulation().JulianDay(julianDay);
-                                                        }
-                                                    }
-                                                }
-                                            });
+                                        strong_this->openURLEvent(*strong_this, linkURL);
                                     });
                                 Microsoft::UI::Xaml::Documents::Run linkRun;
                                 linkRun.Text(hstring(timeStr));
@@ -160,6 +141,26 @@ namespace winrt::CelestiaWinUI::implementation
         showSubsystemEvent.remove(token);
     }
 
+    event_token InfoUserControl::GetInfo(Windows::Foundation::EventHandler<CelestiaWinUI::InfoGetInfoArgs> const& handler)
+    {
+        return getInfoEvent.add(handler);
+    }
+
+    void InfoUserControl::GetInfo(event_token const& token) noexcept
+    {
+        getInfoEvent.remove(token);
+    }
+
+    event_token InfoUserControl::OpenURL(Windows::Foundation::EventHandler<hstring> const& handler)
+    {
+        return openURLEvent.add(handler);
+    }
+
+    void InfoUserControl::OpenURL(event_token const& token) noexcept
+    {
+        openURLEvent.remove(token);
+    }
+
     void InfoUserControl::CockpitCheckbox_Checked(IInspectable const&, RoutedEventArgs const&)
     {
         renderer.EnqueueTask([weak_this{ get_weak() }]()
@@ -183,5 +184,10 @@ namespace winrt::CelestiaWinUI::implementation
     void InfoUserControl::ControlStrip_ShowSubsystem(IInspectable const&, CelestiaWinUI::InfoShowSubsystemArgs const& args)
     {
         showSubsystemEvent(*this, args);
+    }
+
+    void InfoUserControl::ControlStrip_GetInfo(IInspectable const&, CelestiaWinUI::InfoGetInfoArgs const& args)
+    {
+        getInfoEvent(*this, args);
     }
 }

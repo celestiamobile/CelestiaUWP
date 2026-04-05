@@ -7,11 +7,17 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 
+import "InfoControlStrip.idl";
+
 namespace CelestiaWinUI
 {
     [default_interface]
     runtimeclass SearchUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         SearchUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+
+        event Windows.Foundation.EventHandler<String> OpenURL;
+        event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;
+        event Windows.Foundation.EventHandler<InfoShowSubsystemArgs> ShowSubsystem;
     }
 }
