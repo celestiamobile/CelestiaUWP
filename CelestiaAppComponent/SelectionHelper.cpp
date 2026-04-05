@@ -252,7 +252,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return LocalizationHelper::Localize(L"No overview available.", L"No overview for an object");
     }
 
-    com::array<CelestiaAppComponent::OverviewTimeLink> SelectionHelper::GetTimeLinks(CelestiaSelection const& selection, CelestiaAppCore const& appCore)
+    winrt::com_array<CelestiaAppComponent::OverviewTimeLink> SelectionHelper::GetTimeLinks(CelestiaSelection const& selection, CelestiaAppCore const& appCore)
     {
         auto obj = selection.Object();
         if (obj == nullptr) return {};
@@ -260,7 +260,7 @@ namespace winrt::CelestiaAppComponent::implementation
         if (body != nullptr)
         {
             auto links = GetBodyTimeLinks(body, appCore);
-            return com::array<CelestiaAppComponent::OverviewTimeLink>(links);
+            return winrt::com_array<CelestiaAppComponent::OverviewTimeLink>(links);
         }
         return {};
     }
