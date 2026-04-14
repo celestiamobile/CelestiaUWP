@@ -292,6 +292,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\render.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\rendercolors.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\renderglsl.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -944,6 +947,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\render.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\rendercolors.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\renderflags.h">
