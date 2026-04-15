@@ -18,9 +18,11 @@
     <Keyword _locID="App_keyword4">
       <!-- _locComment_text="{MaxLength=30} App keyword 4" -->universe</Keyword>
     <Keyword _locID="App_keyword5">
-      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->stellarium</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->solar system</Keyword>
     <Keyword _locID="App_keyword6">
       <!-- _locComment_text="{MaxLength=30} App keyword 6" -->astronomy</Keyword>
+    <Keyword _locID="App_keyword7">
+      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->simulation</Keyword>
   </Keywords>
   <Description _locID="App_Description">
     <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia — real-time 3D visualization of space
