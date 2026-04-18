@@ -1,7 +1,14 @@
 # Required secrets:
-#   SIGNING_CERT_BASE64   - Base64-encoded 3d.pfx signing certificate
-#   SENTRY_DSN            - Sentry DSN for Windows
-#   SENTRY_AUTH_TOKEN     - Sentry auth token
+#   SIGNING_CERT_BASE64        - Base64-encoded 3d.pfx (Store msixupload + msixbundle signing)
+#   SENTRY_DSN                 - Sentry DSN for Windows
+#   SENTRY_AUTH_TOKEN          - Sentry auth token
+#   AZURE_TENANT_ID            - Azure AD tenant ID (sideload signing via Trusted Signing)
+#   AZURE_CLIENT_ID            - Azure AD app registration client ID (OIDC federated)
+#   AZURE_SUBSCRIPTION_ID      - Azure subscription containing the Trusted Signing account
+#   TRUSTED_SIGNING_ENDPOINT   - e.g. https://eus.codesigning.azure.net/
+#   TRUSTED_SIGNING_ACCOUNT    - Trusted Signing account name
+#   TRUSTED_SIGNING_PROFILE    - Certificate profile name within the account
+#   TRUSTED_SIGNING_PUBLISHER  - Cert Subject string, must match Package.appxmanifest Publisher
 
 name: Build
 
@@ -219,6 +226,10 @@ jobs:
     name: 'Build sideload ${{ matrix.arch }}'
     runs-on: windows-2025
 
+    permissions:
+      id-token: write
+      contents: read
+
     strategy:
       fail-fast: false
       matrix:
@@ -338,9 +349,13 @@ jobs:
       - name: Restore Solution
         run: nuget restore CelestiaUWP/CelestiaUWP.sln -PackagesDirectory CelestiaUWP/packages
 
-      - name: Decode Signing Certificate
-        shell: bash
-        run: echo "${{ secrets.SIGNING_CERT_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/3d.pfx"
+      - name: Rewrite Publisher for Trusted Signing
+        shell: pwsh
+        working-directory: '${{ github.workspace }}\CelestiaUWP\CelestiaWinUI'
+        run: |
+          $xml = [xml](Get-Content Package.appxmanifest -Raw)
+          $xml.Package.Identity.Publisher = '${{ secrets.TRUSTED_SIGNING_PUBLISHER }}'
+          $xml.Save("$PWD\Package.appxmanifest")
 
       - name: Build Sideload
         shell: pwsh
@@ -348,15 +363,40 @@ jobs:
         run: |
           $CurrentDir = Get-Location
           New-Item -Name "AppPackages" -ItemType "directory"
-          msbuild /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="${{ matrix.arch }}" /p:AppxBundlePlatforms="${{ matrix.arch }}" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Never /p:UapAppxPackageBuildMode=SideLoadOnly /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="" /p:PackageCertificateKeyFile="$env:RUNNER_TEMP\3d.pfx" /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
+          msbuild /m /t:CelestiaWinUI /p:Configuration=Release /p:Platform="${{ matrix.arch }}" /p:AppxBundlePlatforms="${{ matrix.arch }}" /p:AppxPackageDir="${CurrentDir}\AppPackages\" /p:AppxBundle=Never /p:UapAppxPackageBuildMode=SideLoadOnly /p:AppxPackageSigningEnabled=false /p:GenerateAppxPackageOnBuild=true "CelestiaUWP.sln"
+
+      - name: Resolve Package Version
+        id: ver
+        shell: pwsh
+        working-directory: '${{ github.workspace }}\CelestiaUWP'
+        run: |
+          $xml = [xml](Get-Content CelestiaWinUI\Package.appxmanifest -Raw)
+          "version=$($xml.Package.Identity.Version)" | Out-File -Append $env:GITHUB_OUTPUT
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Sign MSIX with Azure Trusted Signing
+        uses: azure/trusted-signing-action@v0.5.1
+        with:
+          endpoint: ${{ secrets.TRUSTED_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ secrets.TRUSTED_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ secrets.TRUSTED_SIGNING_PROFILE }}
+          files-folder: '${{ github.workspace }}\CelestiaUWP\AppPackages\CelestiaWinUI_${{ steps.ver.outputs.version }}_${{ matrix.arch }}_Test'
+          files-folder-filter: msix
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
 
       - name: Move Symbols
         shell: pwsh
         working-directory: '${{ github.workspace }}\CelestiaUWP'
         run: |
-          $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
-          $packageManifestXML = [xml]$packageManifestContent
-          $version = $packageManifestXML.Package.Identity.Version
+          $version = '${{ steps.ver.outputs.version }}'
 
           New-Item -Name "Symbols" -ItemType "directory"
           Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -NewName "symbols.zip"
