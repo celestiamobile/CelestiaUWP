@@ -1007,7 +1007,7 @@ namespace winrt::CelestiaWinUI::implementation
         }
 
         HttpClient client;
-        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()} });
+        HttpFormUrlEncodedContent query({ {L"type", L"news"}, {L"lang", LocalizationHelper::Locale()}, {L"platform", isXbox ? L"xbox" : L"uwp"} });
         auto latestGuideURL = hstring(L"https://celestia.mobi/api/2") + L"/resource/latest" + L"?" + query.ToString();
         try
         {
