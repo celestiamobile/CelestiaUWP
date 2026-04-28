@@ -87,6 +87,10 @@ jobs:
           cd ../CelestiaLocalization
           git checkout origin/${{ github.event.pull_request.base.ref }}
 
+      - name: Sync Localization Strings
+        shell: pwsh
+        run: Copy-Item -Path "${{ github.workspace }}\CelestiaLocalization\windows\*" -Destination "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Strings" -Recurse -Force
+
       - name: Checkout Content
         run: |
           cd CelestiaContent
@@ -284,6 +288,10 @@ jobs:
           git checkout origin/${{ github.event.pull_request.base.ref }}
           cd ../CelestiaLocalization
           git checkout origin/${{ github.event.pull_request.base.ref }}
+
+      - name: Sync Localization Strings
+        shell: pwsh
+        run: Copy-Item -Path "${{ github.workspace }}\CelestiaLocalization\windows\*" -Destination "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Strings" -Recurse -Force
 
       - name: Checkout Content
         run: |

@@ -15,7 +15,7 @@
     Version="2.1.29.0" />
 
   <Properties>
-    <DisplayName>Celestia</DisplayName>
+    <DisplayName>ms-resource:AppName</DisplayName>
     <PublisherDisplayName>Linfeng Li</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -61,7 +61,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$" uap18:RuntimeBehavior="packagedClassicApp" uap18:TrustLevel="mediumIL">
       <uap:VisualElements
-        DisplayName="Celestia"
+        DisplayName="ms-resource:AppName"
         Description="CelestiaWinUI"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
