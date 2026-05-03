@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <celcompat/numbers.h>
 #include <celmath/geomutil.h>
 #include "CelestiaHelper.h"
 #include "CelestiaSimulation.h"
@@ -102,7 +103,7 @@ namespace winrt::CelestiaComponent::implementation
         Selection(loc->selection);
         sim->geosynchronousFollow();
         double radius = sel->Radius();
-        double distance = radius * 5;
+        double distance = radius * 5.0;
 
         if (loc->distance && loc->unit)
         {
@@ -111,17 +112,21 @@ namespace winrt::CelestiaComponent::implementation
             {
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::KM:
                 distance = distanceValue;
+                break;
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::AU:
                 distance = celestia::astro::AUtoKilometers(distanceValue);
+                break;
             case CelestiaComponent::CelestiaGotoLocationDistanceUnit::Radii:
+            default:
                 distance = radius * distanceValue;
+                break;
             }
         }
 
         Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
         if (loc->longitude && loc->latitude)
         {
-            sim->gotoSelectionLongLat(5, distance, loc->longitude.Value() * (float)M_PI / 180.0f, loc->latitude.Value() * (float)M_PI / 180.0f, up);
+            sim->gotoSelectionLongLat(5.0, distance, loc->longitude.Value() * static_cast<float>(celestia::numbers::pi) / 180.0f, loc->latitude.Value() * static_cast<float>(celestia::numbers::pi) / 180.0f, up);
         }
         else
         {
