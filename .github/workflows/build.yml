@@ -25,7 +25,7 @@ on:
 env:
   DEPENDENCY_VERSION: '1.0.25'
   ANGLE_VERSION: '1.1.15'
-  CONTENT_COMMIT_HASH: '67a542671ace4ed5c92e32519525716038498f11'
+  CONTENT_COMMIT_HASH: 'e51c77cdff51eb84919897fdfcd5965b9f66c8f3'
 
 jobs:
   build-msixupload:
@@ -188,7 +188,7 @@ jobs:
         with:
           name: 'msixupload-${{ matrix.arch }}-symbols'
           path: '${{ github.workspace }}\CelestiaUWP\Symbols'
-          retention-days: 90
+          retention-days: 30
 
       - name: Upload Symbols to Sentry
         shell: cmd
@@ -224,7 +224,7 @@ jobs:
         with:
           name: 'msixupload-${{ matrix.arch }}'
           path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
-          retention-days: 90
+          retention-days: 30
 
   build-sideload:
     name: 'Build sideload ${{ matrix.arch }}'
@@ -419,7 +419,7 @@ jobs:
         with:
           name: 'sideload-${{ matrix.arch }}-symbols'
           path: '${{ github.workspace }}\CelestiaUWP\Symbols'
-          retention-days: 90
+          retention-days: 30
 
       - name: Upload Symbols to Sentry
         shell: cmd
@@ -433,7 +433,7 @@ jobs:
         with:
           name: 'sideload-${{ matrix.arch }}'
           path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
-          retention-days: 90
+          retention-days: 30
 
   publish-sideload:
     name: 'Publish Sideload'
@@ -464,14 +464,14 @@ jobs:
         with:
           name: CelestiaSL-x64
           path: '${{ runner.temp }}\sideload-x64'
-          retention-days: 90
+          retention-days: 30
 
       - name: Upload Sideload arm64
         uses: actions/upload-artifact@v4
         with:
           name: CelestiaSL-arm64
           path: '${{ runner.temp }}\sideload-arm64'
-          retention-days: 90
+          retention-days: 30
 
   bundle-msix:
     name: 'Bundle MSIX'
@@ -567,4 +567,4 @@ jobs:
         with:
           name: msixupload
           path: '${{ github.workspace }}\MSIXUpload'
-          retention-days: 90
+          retention-days: 30
