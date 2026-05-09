@@ -989,6 +989,7 @@ namespace winrt::CelestiaWinUI::implementation
                         if (strong_this == nullptr) return;
                         strong_this->appCore.RunScript(scriptFile.Path());
                     });
+                SHAddToRecentDocs(SHARD_PATHW, scriptFile.Path().c_str());
             }
             co_return;
         }
