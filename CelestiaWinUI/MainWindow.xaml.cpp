@@ -16,6 +16,7 @@
 #include <fmt/format.h>
 #include <fmt/printf.h>
 #include <shlobj_core.h>
+#pragma comment(lib, "shell32.lib")
 
 #if defined(_M_IX86) || defined(_M_X64)
 #define SUPPORTS_SENTRY
@@ -1913,9 +1914,9 @@ namespace winrt::CelestiaWinUI::implementation
             auto stored = localSettings.Values().TryLookup(L"FeatureFlags");
             if (stored)
             {
-                auto featureFlags = unbox_value<hstring>(stored);
+                auto storedFeatureFlags = unbox_value<hstring>(stored);
                 auto featureFlagsFile = co_await sentryDatabaseFolder.CreateFileAsync(L"feature-flags.txt", CreationCollisionOption::ReplaceExisting);
-                co_await FileIO::WriteTextAsync(featureFlagsFile, featureFlags);
+                co_await FileIO::WriteTextAsync(featureFlagsFile, storedFeatureFlags);
             }
         }
         catch (hresult_error const&) {}
