@@ -24,6 +24,10 @@ FOR %%D in (data extras extras-standard models textures warp) DO (
 	XCOPY "%CELESTIA_CONTENT_REPO_ROOT%\%%D" "%CELESTIA_ROOT%\%%D" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
 )
 
+IF EXIST "%CELESTIA_CONTENT_REPO_ROOT%\models-extra" (
+	XCOPY "%CELESTIA_CONTENT_REPO_ROOT%\models-extra" "%CELESTIA_ROOT%\models" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
+)
+
 FOR %%D in (fonts) DO (
 	XCOPY "%SolutionDir%\%%D" "%CELESTIA_ROOT%\%%D" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
 )
