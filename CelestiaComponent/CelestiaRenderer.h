@@ -99,7 +99,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaComponent::CelestiaRendererTask preRenderTask;
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
-        bool enableMSAA;
         int32_t swapInterval;
 
         completion_source<bool> *startCompletionSource{ nullptr };

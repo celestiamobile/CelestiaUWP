@@ -133,9 +133,9 @@ namespace winrt::CelestiaComponent::implementation
         return core->initSimulation(config, extraPaths, &watcher);
     }
 
-    bool CelestiaAppCore::StartRenderer()
+    bool CelestiaAppCore::StartRenderer(bool srgbRendering)
     {
-        bool success = core->initRenderer(celestia::engine::TextureResolution::medres);
+        bool success = core->initRenderer(celestia::engine::TextureResolution::medres, srgbRendering);
 
         // start with default values
         constexpr auto DEFAULT_ORBIT_MASK = BodyClassification::Planet | BodyClassification::Moon | BodyClassification::Stellar;

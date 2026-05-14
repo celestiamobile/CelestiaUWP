@@ -241,7 +241,7 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
 
-        if (!appCore.StartRenderer())
+        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering()))
         {
             ShowLoadingFailure();
             return false;

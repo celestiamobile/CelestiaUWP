@@ -23,6 +23,9 @@ namespace winrt::CelestiaAppComponent::implementation
         bool EnableMSAA();
         void EnableMSAA(bool);
 
+        bool EnableSRGBRendering();
+        void EnableSRGBRendering(bool);
+
         bool IgnoreXboxWelcomeMessage();
         void IgnoreXboxWelcomeMessage(bool);
 
@@ -115,6 +118,7 @@ namespace winrt::CelestiaAppComponent::implementation
     private:
         bool useFullDPI{ true };
         bool enableMSAA{ false };
+        bool enableSRGBRendering{ false };
         bool ignoreXboxWelcomeMessage{ false };
         bool onboardMessageDisplayed{ false };
         bool hideCursorDuringDragging{ true };

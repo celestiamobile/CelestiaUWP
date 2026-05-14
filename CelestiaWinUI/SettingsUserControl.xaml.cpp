@@ -177,6 +177,7 @@ namespace winrt::CelestiaWinUI::implementation
             SettingHeaderItem(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
         };
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)

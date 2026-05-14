@@ -65,7 +65,7 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaAppCore();
 
         bool StartSimulation(hstring const& configFileName, array_view<hstring const> extraDirectories, CelestiaComponent::CelestiaLoadCallback const &callback);
-        bool StartRenderer();
+        bool StartRenderer(bool srgbRendering);
         void Tick();
         void Draw();
         void Resize(int32_t width, int32_t height);
