@@ -214,7 +214,7 @@ namespace winrt::CelestiaWinUI::implementation
                     {
                         auto strong_this{ weak_this.get() };
                         if (strong_this == nullptr) return;
-                        ContentDialogHelper::ShowAlert(strong_this->Content(), LocalizationHelper::Localize(L"Error loading data, fallback to original configuration.", L""));
+                        ContentDialogHelper::ShowAlert(strong_this->Content(), LocalizationHelper::Localize(L"Error Loading Data", L""), LocalizationHelper::Localize(L"Error loading data, fallback to original configuration.", L""));
                     });
                 SetCurrentDirectoryW(defaultResourcePath.c_str());
                 CelestiaAppCore::SetLocaleDirectory(PathHelper::Combine(defaultResourcePath, L"locale"), locale);
@@ -2072,7 +2072,7 @@ namespace winrt::CelestiaWinUI::implementation
                 auto strong_this{ weak_this.get() };
                 if (strong_this != nullptr)
                 {
-                    ContentDialogHelper::ShowAlert(strong_this->Content(), message);
+                    ContentDialogHelper::ShowAlert(strong_this->Content(), LocalizationHelper::Localize(L"Fatal Error", L"Error for fatal error alert title"), message);
                 }
             });
     }
