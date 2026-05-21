@@ -373,7 +373,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\opencluster.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\orbitsampler.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\overlay.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\imageoverlay.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\planetgrid.h" />
@@ -451,6 +451,7 @@
     <ClInclude Include="..\..\Celestia\src\celestia\loadstars.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\miniaudiosession.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h" />
+    <ClInclude Include="..\..\Celestia\src\celestia\overlaymanager.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\progressnotifier.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\scriptmenu.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\textinput.h" />
@@ -602,7 +603,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\observer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\opencluster.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\overlay.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\imageoverlay.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\perspectiveprojectionmode.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\planetgrid.cpp" />
@@ -667,6 +668,7 @@
     <ClCompile Include="..\..\Celestia\src\celestia\loadsso.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\loadstars.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\miniaudiosession.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\overlaymanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp" />

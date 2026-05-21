@@ -271,7 +271,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\overlay.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celengine\overlayimage.cpp">
+    <ClCompile Include="..\..\Celestia\src\celengine\imageoverlay.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\parseobject.cpp">
@@ -455,6 +455,9 @@
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\loadstars.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\overlaymanager.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp">
@@ -922,7 +925,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\overlay.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\overlayimage.h">
+    <ClInclude Include="..\..\Celestia\src\celengine\imageoverlay.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\parseobject.h">
@@ -1148,6 +1151,9 @@
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\moviecapture.h">
+      <Filter>Celestia\celestia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celestia\overlaymanager.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\progressnotifier.h">
