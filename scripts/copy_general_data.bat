@@ -16,7 +16,7 @@ IF NOT EXIST "%CELESTIA_ROOT%" MKDIR "%CELESTIA_ROOT%"
 
 SET CELESTIA_CONTENT_REPO_ROOT=%SolutionDir%\..\CelestiaContent
 
-FOR %%D in (images locale scripts shaders) DO (
+FOR %%D in (fonts images locale scripts shaders) DO (
 	XCOPY "%CELESTIA_REPO_ROOT%\%%D" "%CELESTIA_ROOT%\%%D" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
 )
 
@@ -26,10 +26,6 @@ FOR %%D in (data extras extras-standard models textures warp) DO (
 
 IF EXIST "%CELESTIA_CONTENT_REPO_ROOT%\models-extra" (
 	XCOPY "%CELESTIA_CONTENT_REPO_ROOT%\models-extra" "%CELESTIA_ROOT%\models" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
-)
-
-FOR %%D in (fonts) DO (
-	XCOPY "%SolutionDir%\%%D" "%CELESTIA_ROOT%\%%D" /E /I /Y /EXCLUDE:%EXCLUDE_FILE%
 )
 
 FOR %%D in (controls.txt demo.cel guide.cel start.cel COPYING AUTHORS TRANSLATORS) DO (
