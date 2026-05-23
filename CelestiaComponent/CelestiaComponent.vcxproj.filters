@@ -1048,9 +1048,9 @@
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <CIlInclude Include="..\..\Celestia\src\celengine\videooverlay.h">
+    <ClInclude Include="..\..\Celestia\src\celengine\videooverlay.h">
       <Filter>Celestia\celengine</Filter>
-    </CIlInclude>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -1144,7 +1144,7 @@
     <ClInclude Include="..\..\Celestia\src\celestia\favorites.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
-    <CClInclude Include="..\..\Celestia\src\celestia\ffmpegcapture.h">
+    <ClInclude Include="..\..\Celestia\src\celestia\ffmpegcapture.h">
       <Filter>Celestia\celestia</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celestia\helper.h">
