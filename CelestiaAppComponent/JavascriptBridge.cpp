@@ -100,10 +100,10 @@ namespace winrt::CelestiaAppComponent::implementation
             auto scriptLocation = object.GetNamedString(L"scriptLocation", L"");
             auto scriptType = object.GetNamedString(L"scriptType", L"");
             auto scriptName = object.GetNamedString(L"scriptName", L"");
-            if (scriptContent.empty()) return;
-            if (std::find(supportedScriptTypes.begin(), supportedScriptTypes.end(), scriptType) == supportedScriptTypes.end()) return;
-            if (!scriptLocation.empty() && std::find(supportedScriptLocation.begin(), supportedScriptLocation.end(), scriptLocation) == supportedScriptLocation.end()) return;
-            if (contextDirectory.empty() && scriptLocation == L"context") return;
+            if (scriptContent.empty()) co_return;
+            if (std::find(supportedScriptTypes.begin(), supportedScriptTypes.end(), scriptType) == supportedScriptTypes.end()) co_return;
+            if (!scriptLocation.empty() && std::find(supportedScriptLocation.begin(), supportedScriptLocation.end(), scriptLocation) == supportedScriptLocation.end()) co_return;
+            if (contextDirectory.empty() && scriptLocation == L"context") co_return;
 
             using namespace Windows::Storage;
             try

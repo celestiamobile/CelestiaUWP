@@ -118,7 +118,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (navigationArgs.Uri().empty())
         {
             navigationArgs.Cancel(true);
-            return;
+            co_return;
         }
         Uri uri{ navigationArgs.Uri() };
         if (!IsURIAllowed(uri))

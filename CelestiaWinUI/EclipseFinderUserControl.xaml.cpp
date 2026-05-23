@@ -121,24 +121,24 @@ namespace winrt::CelestiaWinUI::implementation
             aborted = true;
             finder.Abort();
             finder = nullptr;
-            return;
+            co_return;
         }
         if (endTime <= startTime || (!findLunar && !findSolar))
-            return;
-        
+            co_return;
+
         CelestiaEclipseKind kind = static_cast<CelestiaEclipseKind>(0);
         if (findSolar)
             kind = static_cast<CelestiaEclipseKind>(static_cast<uint32_t>(kind) | static_cast<uint32_t>(CelestiaEclipseKind::Solar));
         if (findLunar)
             kind = static_cast<CelestiaEclipseKind>(static_cast<uint32_t>(kind) | static_cast<uint32_t>(CelestiaEclipseKind::Lunar));
- 
+
         auto selection = appCore.Simulation().Find(objectPath);
         if (selection == nullptr || selection.IsEmpty())
-            return;
+            co_return;
 
         auto body = selection.Object().try_as<CelestiaBody>();
         if (body == nullptr)
-            return;
+            co_return;
 
         ComputeButton().Content(box_value(LocalizationHelper::Localize(L"Cancel", L"")));
         LoadingIndicator().Visibility(Visibility::Visible);
