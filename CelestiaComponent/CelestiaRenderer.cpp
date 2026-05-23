@@ -414,7 +414,7 @@ namespace winrt::CelestiaComponent::implementation
 	{
         threadHandle = CreateThread(nullptr, 0, CelestiaRenderer::Main, this, CREATE_SUSPENDED, &threadID);
         if (threadHandle == nullptr)
-            return;
+            co_return;
         SetThreadPriority(threadHandle, THREAD_PRIORITY_TIME_CRITICAL);
 
         winrt::apartment_context context;
@@ -424,7 +424,7 @@ namespace winrt::CelestiaComponent::implementation
         if (ResumeThread(threadHandle) == -1)
         {
             startCompletionSource = nullptr;
-            return;
+            co_return;
         }
 
         co_await completion;

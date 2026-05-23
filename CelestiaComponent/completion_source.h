@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <coroutine>
+
 #include <winrt/base.h>
 #include <windows.h>
 
@@ -31,7 +33,7 @@ struct completion_source
         return ::WaitForSingleObject(m_signal.get(), 0) == 0;
     }
 
-    void await_suspend(std::experimental::coroutine_handle<> resume)
+    void await_suspend(std::coroutine_handle<> resume)
     {
         m_wait.attach(winrt::check_pointer(::CreateThreadpoolWait(callback, resume.address(), nullptr)));
         ::SetThreadpoolWait(m_wait.get(), m_signal.get(), nullptr);
@@ -46,7 +48,7 @@ private:
 
     static void __stdcall callback(PTP_CALLBACK_INSTANCE, void* context, PTP_WAIT, TP_WAIT_RESULT) noexcept
     {
-        std::experimental::coroutine_handle<>::from_address(context)();
+        std::coroutine_handle<>::from_address(context)();
     }
 
     struct wait_traits
