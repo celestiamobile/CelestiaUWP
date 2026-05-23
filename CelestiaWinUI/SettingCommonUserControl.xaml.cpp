@@ -142,9 +142,9 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto button = sender.as<Controls::Button>();
         auto item = button.DataContext().as<SettingDataDirectoryItem>();
-        if (parameter == nullptr) return;
+        if (parameter == nullptr) co_return;
         auto window = parameter.WindowProvider()();
-        if (window == nullptr) return;
+        if (window == nullptr) co_return;
 
         FolderPicker picker{ window.AppWindow().Id() };
         picker.ViewMode(PickerViewMode::Thumbnail);
@@ -166,9 +166,9 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto button = sender.as<Controls::Button>();
         auto item = button.DataContext().as<SettingConfigFileItem>();
-        if (parameter == nullptr) return;
+        if (parameter == nullptr) co_return;
         auto window = parameter.WindowProvider()();
-        if (window == nullptr) return;
+        if (window == nullptr) co_return;
 
         FileOpenPicker picker{ window.AppWindow().Id() };
         picker.ViewMode(PickerViewMode::Thumbnail);

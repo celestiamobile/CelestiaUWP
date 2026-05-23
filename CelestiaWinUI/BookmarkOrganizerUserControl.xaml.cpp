@@ -123,7 +123,7 @@ namespace winrt::CelestiaWinUI::implementation
     fire_and_forget BookmarkOrganizerUserControl::RenameButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
         const auto& [bookmark, parentBookmark] = GetSelectionInfo();
-        if (bookmark == nullptr) return;
+        if (bookmark == nullptr) co_return;
         auto listToChangeIn = parentBookmark == nullptr ? bookmarks : parentBookmark.Children();
         auto bookmarkToChange = bookmark;
 

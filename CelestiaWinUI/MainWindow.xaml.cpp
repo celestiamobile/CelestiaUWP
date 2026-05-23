@@ -897,7 +897,7 @@ namespace winrt::CelestiaWinUI::implementation
     IAsyncAction MainWindow::PickScript()
     {
         auto hWnd = WindowHandle();
-        if (hWnd == 0) return;
+        if (hWnd == 0) co_return;
 
         FileOpenPicker picker{ AppWindow().Id() };
         picker.ViewMode(PickerViewMode::Thumbnail);
@@ -1038,7 +1038,7 @@ namespace winrt::CelestiaWinUI::implementation
                     if (auto addon = parsed.GetFirstValueByName(L"item"); !addon.empty())
                     {
                         if (auto uri = Uri(hstring(L"celestia://addon/") + Uri::EscapeComponent(addon)); uri != nullptr)
-                            return co_await OpenURL(uri);
+                            co_return co_await OpenURL(uri);
                     }
                 }
             }

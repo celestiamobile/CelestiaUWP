@@ -171,7 +171,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget ResourceItemUserControl::ResourceManager_DownloadFailure(IInspectable const&, ResourceManagerDownloadFailureArgs const& args)
     {
-        if (item.ID() != args.Item().ID()) return;
+        if (item.ID() != args.Item().ID()) co_return;
         UpdateState();
 
         hstring message = L"";
