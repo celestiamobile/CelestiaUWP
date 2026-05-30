@@ -427,6 +427,9 @@
     <ClCompile Include="..\..\Celestia\src\celscript\lua\luascript.cpp">
       <Filter>Celestia\celscript\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celestia\catalogloader.cpp">
+      <Filter>Celestia\celestia</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\celestiacore.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>

@@ -659,6 +659,7 @@
     <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\audiosession.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celestia\catalogloader.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\celestiacore.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\celestiastate.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\configfile.cpp" />
