@@ -219,6 +219,70 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFarrumLabels;
         else if (name == L"ShowEruptiveCenterLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels;
+        else if (name == L"ShowTholusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowTholusLabels;
+        else if (name == L"ShowInsulaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowInsulaLabels;
+        else if (name == L"ShowAlbedoLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAlbedoLabels;
+        else if (name == L"ShowArcusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowArcusLabels;
+        else if (name == L"ShowCavusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCavusLabels;
+        else if (name == L"ShowCollesLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollesLabels;
+        else if (name == L"ShowFaculaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFaculaLabels;
+        else if (name == L"ShowFlexusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlexusLabels;
+        else if (name == L"ShowFlumenLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlumenLabels;
+        else if (name == L"ShowFretumLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFretumLabels;
+        else if (name == L"ShowLabesLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabesLabels;
+        else if (name == L"ShowLabyrinthusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabyrinthusLabels;
+        else if (name == L"ShowLacunaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacunaLabels;
+        else if (name == L"ShowLacusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacusLabels;
+        else if (name == L"ShowLargeRingedLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLargeRingedLabels;
+        else if (name == L"ShowLobusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLobusLabels;
+        else if (name == L"ShowLingulaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLingulaLabels;
+        else if (name == L"ShowMaculaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMaculaLabels;
+        else if (name == L"ShowOceanusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOceanusLabels;
+        else if (name == L"ShowPalusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPalusLabels;
+        else if (name == L"ShowPlumeLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlumeLabels;
+        else if (name == L"ShowPromontoriumLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPromontoriumLabels;
+        else if (name == L"ShowSatelliteLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSatelliteLabels;
+        else if (name == L"ShowScopulusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowScopulusLabels;
+        else if (name == L"ShowSerpensLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSerpensLabels;
+        else if (name == L"ShowSinusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSinusLabels;
+        else if (name == L"ShowSulcusLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSulcusLabels;
+        else if (name == L"ShowVastitasLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowVastitasLabels;
+        else if (name == L"ShowVirgaLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowVirgaLabels;
+        else if (name == L"ShowSaxumLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSaxumLabels;
+        else if (name == L"ShowCosmodromeLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCosmodromeLabels;
+        else if (name == L"ShowRingLabels")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingLabels;
         else if (name == L"ShowOtherLabels")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels;
         else if (name == L"EnableReverseWheel")
@@ -448,6 +512,70 @@ namespace winrt::CelestiaComponent::implementation
             return L"ShowFarrumLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels:
             return L"ShowEruptiveCenterLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTholusLabels:
+            return L"ShowTholusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowInsulaLabels:
+            return L"ShowInsulaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowAlbedoLabels:
+            return L"ShowAlbedoLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowArcusLabels:
+            return L"ShowArcusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCavusLabels:
+            return L"ShowCavusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollesLabels:
+            return L"ShowCollesLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFaculaLabels:
+            return L"ShowFaculaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlexusLabels:
+            return L"ShowFlexusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlumenLabels:
+            return L"ShowFlumenLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFretumLabels:
+            return L"ShowFretumLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabesLabels:
+            return L"ShowLabesLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabyrinthusLabels:
+            return L"ShowLabyrinthusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacunaLabels:
+            return L"ShowLacunaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacusLabels:
+            return L"ShowLacusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLargeRingedLabels:
+            return L"ShowLargeRingedLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLobusLabels:
+            return L"ShowLobusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLingulaLabels:
+            return L"ShowLingulaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowMaculaLabels:
+            return L"ShowMaculaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOceanusLabels:
+            return L"ShowOceanusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPalusLabels:
+            return L"ShowPalusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlumeLabels:
+            return L"ShowPlumeLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPromontoriumLabels:
+            return L"ShowPromontoriumLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSatelliteLabels:
+            return L"ShowSatelliteLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowScopulusLabels:
+            return L"ShowScopulusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSerpensLabels:
+            return L"ShowSerpensLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSinusLabels:
+            return L"ShowSinusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSulcusLabels:
+            return L"ShowSulcusLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVastitasLabels:
+            return L"ShowVastitasLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVirgaLabels:
+            return L"ShowVirgaLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSaxumLabels:
+            return L"ShowSaxumLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCosmodromeLabels:
+            return L"ShowCosmodromeLabels";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingLabels:
+            return L"ShowRingLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             return L"ShowOtherLabels";
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel:
@@ -776,6 +904,102 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels:
             appCore.ShowEruptiveCenterLabels(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTholusLabels:
+            appCore.ShowTholusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowInsulaLabels:
+            appCore.ShowInsulaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowAlbedoLabels:
+            appCore.ShowAlbedoLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowArcusLabels:
+            appCore.ShowArcusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCavusLabels:
+            appCore.ShowCavusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollesLabels:
+            appCore.ShowCollesLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFaculaLabels:
+            appCore.ShowFaculaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlexusLabels:
+            appCore.ShowFlexusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlumenLabels:
+            appCore.ShowFlumenLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFretumLabels:
+            appCore.ShowFretumLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabesLabels:
+            appCore.ShowLabesLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabyrinthusLabels:
+            appCore.ShowLabyrinthusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacunaLabels:
+            appCore.ShowLacunaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacusLabels:
+            appCore.ShowLacusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLargeRingedLabels:
+            appCore.ShowLargeRingedLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLobusLabels:
+            appCore.ShowLobusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLingulaLabels:
+            appCore.ShowLingulaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowMaculaLabels:
+            appCore.ShowMaculaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOceanusLabels:
+            appCore.ShowOceanusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPalusLabels:
+            appCore.ShowPalusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlumeLabels:
+            appCore.ShowPlumeLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPromontoriumLabels:
+            appCore.ShowPromontoriumLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSatelliteLabels:
+            appCore.ShowSatelliteLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowScopulusLabels:
+            appCore.ShowScopulusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSerpensLabels:
+            appCore.ShowSerpensLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSinusLabels:
+            appCore.ShowSinusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSulcusLabels:
+            appCore.ShowSulcusLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVastitasLabels:
+            appCore.ShowVastitasLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVirgaLabels:
+            appCore.ShowVirgaLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSaxumLabels:
+            appCore.ShowSaxumLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCosmodromeLabels:
+            appCore.ShowCosmodromeLabels(value);
+            break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingLabels:
+            appCore.ShowRingLabels(value);
+            break;
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             appCore.ShowOtherLabels(value);
             break;
@@ -1035,6 +1259,70 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.ShowFarrumLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels:
             return appCore.ShowEruptiveCenterLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowTholusLabels:
+            return appCore.ShowTholusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowInsulaLabels:
+            return appCore.ShowInsulaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowAlbedoLabels:
+            return appCore.ShowAlbedoLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowArcusLabels:
+            return appCore.ShowArcusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCavusLabels:
+            return appCore.ShowCavusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollesLabels:
+            return appCore.ShowCollesLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFaculaLabels:
+            return appCore.ShowFaculaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlexusLabels:
+            return appCore.ShowFlexusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlumenLabels:
+            return appCore.ShowFlumenLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowFretumLabels:
+            return appCore.ShowFretumLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabesLabels:
+            return appCore.ShowLabesLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabyrinthusLabels:
+            return appCore.ShowLabyrinthusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacunaLabels:
+            return appCore.ShowLacunaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacusLabels:
+            return appCore.ShowLacusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLargeRingedLabels:
+            return appCore.ShowLargeRingedLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLobusLabels:
+            return appCore.ShowLobusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowLingulaLabels:
+            return appCore.ShowLingulaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowMaculaLabels:
+            return appCore.ShowMaculaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOceanusLabels:
+            return appCore.ShowOceanusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPalusLabels:
+            return appCore.ShowPalusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlumeLabels:
+            return appCore.ShowPlumeLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowPromontoriumLabels:
+            return appCore.ShowPromontoriumLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSatelliteLabels:
+            return appCore.ShowSatelliteLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowScopulusLabels:
+            return appCore.ShowScopulusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSerpensLabels:
+            return appCore.ShowSerpensLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSinusLabels:
+            return appCore.ShowSinusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSulcusLabels:
+            return appCore.ShowSulcusLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVastitasLabels:
+            return appCore.ShowVastitasLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowVirgaLabels:
+            return appCore.ShowVirgaLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowSaxumLabels:
+            return appCore.ShowSaxumLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowCosmodromeLabels:
+            return appCore.ShowCosmodromeLabels();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingLabels:
+            return appCore.ShowRingLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels:
             return appCore.ShowOtherLabels();
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel:
