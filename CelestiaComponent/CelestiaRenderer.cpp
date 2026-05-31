@@ -91,7 +91,7 @@ namespace winrt::CelestiaComponent::implementation
 
             const EGLint multisampleAttribs[] =
             {
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
                 EGL_BLUE_SIZE, 8,
                 EGL_GREEN_SIZE, 8,
                 EGL_RED_SIZE, 8,
@@ -102,7 +102,7 @@ namespace winrt::CelestiaComponent::implementation
             };
             const EGLint attribs[] =
             {
-                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
                 EGL_BLUE_SIZE, 8,
                 EGL_GREEN_SIZE, 8,
                 EGL_RED_SIZE, 8,
