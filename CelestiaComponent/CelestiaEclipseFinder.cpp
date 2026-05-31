@@ -26,8 +26,8 @@ namespace winrt::CelestiaComponent::implementation
         virtual Status eclipseFinderProgressUpdate(double t)
         {
             if (get_self<CelestiaEclipseFinder>(f)->aborted)
-                return AbortOperation;
-            return ContinueOperation;
+                return Status::AbortOperation;
+            return Status::ContinueOperation;
         };
     private:
         CelestiaComponent::CelestiaEclipseFinder f;
@@ -43,13 +43,11 @@ namespace winrt::CelestiaComponent::implementation
 	{
         aborted = false;
         std::vector<Eclipse> results;
-        f->findEclipses(CelestiaHelper::JulianDayFromDateTime(startTime), CelestiaHelper::JulianDayFromDateTime(endTime), (int)kind, results);
+        f->findEclipses(CelestiaHelper::JulianDayFromDateTime(startTime), CelestiaHelper::JulianDayFromDateTime(endTime), static_cast<Eclipse::Type>(kind), results);
 
         std::vector<CelestiaComponent::CelestiaEclipse> vec;
         for (Eclipse& result : results)
-        {
             vec.push_back(make<CelestiaEclipse>(&result));
-        }
         aborted = true;
 		return com_array<CelestiaComponent::CelestiaEclipse>(vec);
 	}
