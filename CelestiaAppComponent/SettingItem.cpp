@@ -560,13 +560,13 @@ namespace winrt::CelestiaAppComponent::implementation
 
     LogarithmicSliderValueConverter::LogarithmicSliderValueConverter(double minValue, double maxValue) : minValue(minValue), maxValue(maxValue), logMin(std::log(minValue)), logMax(std::log(maxValue))
     {
+        numberFormatter.IsGrouped(true);
     }
 
     Windows::Foundation::IInspectable LogarithmicSliderValueConverter::Convert(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const&, Windows::Foundation::IInspectable const&, hstring const&)
     {
         auto position = unbox_value<double>(value);
         double actual = std::exp(logMin + position * (logMax - logMin));
-        Windows::Globalization::NumberFormatting::DecimalFormatter numberFormatter;
         int fractionDigits;
         if (actual >= 100.0)
             fractionDigits = 0;
@@ -577,7 +577,6 @@ namespace winrt::CelestiaAppComponent::implementation
         else
             fractionDigits = 3;
         numberFormatter.FractionDigits(fractionDigits);
-        numberFormatter.IsGrouped(true);
         return box_value(numberFormatter.FormatDouble(actual));
     }
 

@@ -86,6 +86,7 @@ namespace winrt::CelestiaAppComponent::implementation
         double maxValue;
         double logMin;
         double logMax;
+        Windows::Globalization::NumberFormatting::DecimalFormatter numberFormatter;
     };
 
     struct SettingDataDirectoryItem : SettingDataDirectoryItemT<SettingDataDirectoryItem, SettingBaseItem>
