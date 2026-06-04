@@ -184,6 +184,10 @@ namespace CelestiaComponent
         MinimumFeatureSize,
         DistanceLimit,
         TintSaturation,
+        StarPointRadius,
+        StarOptimization,
+        StarMaxIrradiance,
+        StarExposure,
     };
 
     [default_interface]

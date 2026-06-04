@@ -372,6 +372,14 @@ namespace winrt::CelestiaComponent::implementation
         void DistanceLimit(float distanceLimit);
         float TintSaturation();
         void TintSaturation(float tintSaturation);
+        float StarPointRadius();
+        void StarPointRadius(float starPointRadius);
+        float StarOptimization();
+        void StarOptimization(float starOptimization);
+        float StarMaxIrradiance();
+        void StarMaxIrradiance(float starMaxIrradiance);
+        float StarExposure();
+        void StarExposure(float starExposure);
 
         bool ShowBodyAxes();
         void ShowBodyAxes(bool showBodyAxes);

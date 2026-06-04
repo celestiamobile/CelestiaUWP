@@ -73,7 +73,10 @@ namespace CelestiaAppComponent
     runtimeclass SettingHeaderItem : SettingBaseItem
     {
         SettingHeaderItem(String title);
+        SettingHeaderItem(String title, String description);
         String Title{ get; };
+        String Description{ get; };
+        Boolean DescriptionVisibility{ get; };
     }
 
     [default_interface]

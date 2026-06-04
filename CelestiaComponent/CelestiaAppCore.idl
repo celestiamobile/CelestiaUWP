@@ -319,6 +319,10 @@ namespace CelestiaComponent
         Single MinimumFeatureSize;
         Single DistanceLimit;
         Single TintSaturation;
+        Single StarPointRadius;
+        Single StarOptimization;
+        Single StarMaxIrradiance;
+        Single StarExposure;
 
         Boolean ShowBodyAxes;
         Boolean ShowFrameAxes;

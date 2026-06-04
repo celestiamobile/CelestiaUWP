@@ -869,6 +869,46 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setTintSaturation(tintSaturation);
     }
 
+    float CelestiaAppCore::StarPointRadius()
+    {
+        return core->getRenderer()->getStarPointRadius();
+    }
+
+    void CelestiaAppCore::StarPointRadius(float starPointRadius)
+    {
+        core->getRenderer()->setStarPointRadius(starPointRadius);
+    }
+
+    float CelestiaAppCore::StarOptimization()
+    {
+        return core->getRenderer()->getStarOptimization();
+    }
+
+    void CelestiaAppCore::StarOptimization(float starOptimization)
+    {
+        core->getRenderer()->setStarOptimization(starOptimization);
+    }
+
+    float CelestiaAppCore::StarMaxIrradiance()
+    {
+        return core->getRenderer()->getStarMaxIrradiance();
+    }
+
+    void CelestiaAppCore::StarMaxIrradiance(float starMaxIrradiance)
+    {
+        core->getRenderer()->setStarMaxIrradiance(starMaxIrradiance);
+    }
+
+    float CelestiaAppCore::StarExposure()
+    {
+        return core->getRenderer()->getStarExposure();
+    }
+
+    void CelestiaAppCore::StarExposure(float starExposure)
+    {
+        core->getRenderer()->setStarExposure(starExposure);
+    }
+
     bool CelestiaAppCore::ShowBodyAxes()
     {
         return core->referenceMarkEnabled("body axes");

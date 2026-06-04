@@ -91,7 +91,10 @@
         </DataTemplate>
 
         <DataTemplate x:Key="HeaderItemTemplate" x:DataType="app:SettingHeaderItem">
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}" Margin="{StaticResource ListItemMargin}"/>
+            <StackPanel Margin="{StaticResource ListItemMargin}" Spacing="{StaticResource InternalRowSpacing}">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Text="{x:Bind Description, Mode=OneTime}" Visibility="{x:Bind DescriptionVisibility, Mode=OneTime}"/>
+            </StackPanel>
         </DataTemplate>
 
         <local:SettingTemplateSelector

@@ -333,6 +333,14 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit;
         else if (name == L"TintSaturaton")
             return CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation;
+        else if (name == L"StarPointRadius")
+            return CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius;
+        else if (name == L"StarOptimization")
+            return CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization;
+        else if (name == L"StarMaxIrradiance")
+            return CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance;
+        else if (name == L"StarExposure")
+            return CelestiaComponent::CelestiaSettingSingleEntry::StarExposure;
         return CelestiaComponent::CelestiaSettingSingleEntry::None;
     }
 
@@ -636,6 +644,14 @@ namespace winrt::CelestiaComponent::implementation
             return L"DistanceLimit";
         case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
             return L"TintSaturation";
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius:
+            return L"StarPointRadius";
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization:
+            return L"StarOptimization";
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
+            return L"StarMaxIrradiance";
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
+            return L"StarExposure";
         default:
             break;
         }
@@ -1078,6 +1094,18 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
             appCore.TintSaturation(value);
             break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius:
+            appCore.StarPointRadius(value);
+            break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization:
+            appCore.StarOptimization(value);
+            break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
+            appCore.StarMaxIrradiance(value);
+            break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
+            appCore.StarExposure(value);
+            break;
         default:
             break;
         }
@@ -1383,6 +1411,14 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.DistanceLimit();
         case CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation:
             return appCore.TintSaturation();
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius:
+            return appCore.StarPointRadius();
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization:
+            return appCore.StarOptimization();
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
+            return appCore.StarMaxIrradiance();
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
+            return appCore.StarExposure();
         default:
             break;
         }

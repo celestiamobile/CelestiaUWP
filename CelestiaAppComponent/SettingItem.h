@@ -113,10 +113,14 @@ namespace winrt::CelestiaAppComponent::implementation
     struct SettingHeaderItem : SettingHeaderItemT<SettingHeaderItem, SettingBaseItem>
     {
         SettingHeaderItem(hstring const& title);
+        SettingHeaderItem(hstring const& title, hstring const& description);
         hstring Title();
+        hstring Description();
+        bool DescriptionVisibility();
 
     private:
         hstring title;
+        hstring description;
     };
 
     struct OptionPair : OptionPairT<OptionPair>

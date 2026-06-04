@@ -209,7 +209,8 @@ namespace winrt::CelestiaWinUI::implementation
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Fuzzy Points", L"Star style")),
                 OptionPair(1, LocalizationHelper::Localize(L"Points", L"Star style")),
-                OptionPair(2, LocalizationHelper::Localize(L"Scaled Discs", L"Star style"))
+                OptionPair(2, LocalizationHelper::Localize(L"Scaled Discs", L"Star style")),
+                OptionPair(3, LocalizationHelper::Localize(L"Point Spread Function", L"Star style"))
             }), localSettings),
             AppCoreInt32Item(LocalizationHelper::Localize(L"Star Colors", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarColors, single_threaded_vector<OptionPair>
             ({
@@ -219,6 +220,11 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(3, LocalizationHelper::Localize(L"Blackbody (Vega Whitepoint)", L"Star colors option")),
             }), localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation", L""), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illumination saturation setting is only effective with Blackbody star colors.", L"")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Point Spread Function", L"Star style"), LocalizationHelper::Localize(L"Point spread function settings are only effective with the Point Spread Function star style.", L"")),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Point Radius", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius, 1.0f, 10.0f, 0.5f, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Bloom Compactness", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization, 0.05f, 1.0f, 0.05f, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 0.0f, 1000.0f, 10.0f, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.1f, 100.0f, 1.0f, localSettings),
 
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 

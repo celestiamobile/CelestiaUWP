@@ -153,9 +153,21 @@ namespace winrt::CelestiaAppComponent::implementation
 
     SettingHeaderItem::SettingHeaderItem(hstring const& title) : title(title) {};
 
+    SettingHeaderItem::SettingHeaderItem(hstring const& title, hstring const& description) : title(title), description(description) {};
+
     hstring SettingHeaderItem::Title()
     {
         return title;
+    }
+
+    hstring SettingHeaderItem::Description()
+    {
+        return description;
+    }
+
+    bool SettingHeaderItem::DescriptionVisibility()
+    {
+        return !description.empty();
     }
 
     OptionPair::OptionPair(int32_t value, hstring const& name) : value(value), name(name) {};
