@@ -367,4 +367,8 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     struct FrameRateInt32Item : FrameRateInt32ItemT<FrameRateInt32Item, implementation::FrameRateInt32Item>
     {
     };
+
+    struct LogarithmicSliderValueConverter : LogarithmicSliderValueConverterT<LogarithmicSliderValueConverter, implementation::LogarithmicSliderValueConverter>
+    {
+    };
 }
