@@ -566,16 +566,19 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         auto position = unbox_value<double>(value);
         double actual = std::exp(logMin + position * (logMax - logMin));
-        wchar_t buffer[32];
+        Windows::Globalization::NumberFormatting::DecimalFormatter numberFormatter;
+        int fractionDigits;
         if (actual >= 100.0)
-            swprintf_s(buffer, L"%.0f", actual);
+            fractionDigits = 0;
         else if (actual >= 10.0)
-            swprintf_s(buffer, L"%.1f", actual);
+            fractionDigits = 1;
         else if (actual >= 1.0)
-            swprintf_s(buffer, L"%.2f", actual);
+            fractionDigits = 2;
         else
-            swprintf_s(buffer, L"%.3f", actual);
-        return box_value(hstring{ buffer });
+            fractionDigits = 3;
+        numberFormatter.FractionDigits(fractionDigits);
+        numberFormatter.IsGrouped(true);
+        return box_value(numberFormatter.FormatDouble(actual));
     }
 
     Windows::Foundation::IInspectable LogarithmicSliderValueConverter::ConvertBack(Windows::Foundation::IInspectable const&, Windows::UI::Xaml::Interop::TypeName const&, Windows::Foundation::IInspectable const&, hstring const&)
