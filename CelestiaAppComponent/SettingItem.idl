@@ -48,6 +48,7 @@ namespace CelestiaAppComponent
         Microsoft.UI.Xaml.Data.IValueConverter ThumbToolTipValueConverter{ get; };
     }
 
+    [default_interface]
     runtimeclass LogarithmicSliderValueConverter : Microsoft.UI.Xaml.Data.IValueConverter
     {
         LogarithmicSliderValueConverter(Double minValue, Double maxValue);
