@@ -47,6 +47,9 @@
 #if __has_include("FrameRateInt32Item.g.cpp")
 #include "FrameRateInt32Item.g.cpp"
 #endif
+#if __has_include("LogarithmicSliderValueConverter.g.cpp")
+#include "LogarithmicSliderValueConverter.g.cpp"
+#endif
 
 #include <fmt/printf.h>
 
@@ -404,6 +407,13 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
+    Microsoft::UI::Xaml::Data::IValueConverter AppCoreSingleItem::ThumbToolTipValueConverter()
+    {
+        if (!isLogarithmic)
+            return nullptr;
+        return make<LogarithmicSliderValueConverter>(static_cast<double>(minValue), static_cast<double>(maxValue));
+    }
+
     AppSettingsBooleanItem::AppSettingsBooleanItem(hstring const& title, AppSettings const& appSettings, AppSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : title(title), appSettings(appSettings), entry(entry), localSettings(localSettings), note(note)
     {
     }
@@ -541,6 +551,36 @@ namespace winrt::CelestiaAppComponent::implementation
     bool AppSettingsDoubleItem::NoteVisibility()
     {
         return !note.empty();
+    }
+
+    Microsoft::UI::Xaml::Data::IValueConverter AppSettingsDoubleItem::ThumbToolTipValueConverter()
+    {
+        return nullptr;
+    }
+
+    LogarithmicSliderValueConverter::LogarithmicSliderValueConverter(double minValue, double maxValue) : minValue(minValue), maxValue(maxValue), logMin(std::log(minValue)), logMax(std::log(maxValue))
+    {
+    }
+
+    Windows::Foundation::IInspectable LogarithmicSliderValueConverter::Convert(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const&, Windows::Foundation::IInspectable const&, hstring const&)
+    {
+        auto position = unbox_value<double>(value);
+        double actual = std::exp(logMin + position * (logMax - logMin));
+        wchar_t buffer[32];
+        if (actual >= 100.0)
+            swprintf_s(buffer, L"%.0f", actual);
+        else if (actual >= 10.0)
+            swprintf_s(buffer, L"%.1f", actual);
+        else if (actual >= 1.0)
+            swprintf_s(buffer, L"%.2f", actual);
+        else
+            swprintf_s(buffer, L"%.3f", actual);
+        return box_value(hstring{ buffer });
+    }
+
+    Windows::Foundation::IInspectable LogarithmicSliderValueConverter::ConvertBack(Windows::Foundation::IInspectable const&, Windows::UI::Xaml::Interop::TypeName const&, Windows::Foundation::IInspectable const&, hstring const&)
+    {
+        throw hresult_not_implemented();
     }
 
     LanguageInt32Item::LanguageInt32Item(hstring const& title, AppSettings const& appSettings, Collections::IVector<hstring> const& availableLanguages, Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), localSettings(localSettings), availableLanguages(availableLanguages)

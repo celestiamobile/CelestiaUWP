@@ -25,6 +25,7 @@
 #include "AppSettingsDoubleItem.g.h"
 #include "LanguageInt32Item.g.h"
 #include "FrameRateInt32Item.g.h"
+#include "LogarithmicSliderValueConverter.g.h"
 
 namespace winrt::CelestiaAppComponent::implementation
 {
@@ -67,9 +68,24 @@ namespace winrt::CelestiaAppComponent::implementation
         virtual double Step() = 0;
         virtual hstring Note() = 0;
         virtual bool NoteVisibility() = 0;
+        virtual Microsoft::UI::Xaml::Data::IValueConverter ThumbToolTipValueConverter() = 0;
 
     protected:
         bool hasCorrectValue{ false };
+    };
+
+    struct LogarithmicSliderValueConverter : LogarithmicSliderValueConverterT<LogarithmicSliderValueConverter>
+    {
+        LogarithmicSliderValueConverter(double minValue, double maxValue);
+
+        Windows::Foundation::IInspectable Convert(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const& targetType, Windows::Foundation::IInspectable const& parameter, hstring const& language);
+        Windows::Foundation::IInspectable ConvertBack(Windows::Foundation::IInspectable const& value, Windows::UI::Xaml::Interop::TypeName const& targetType, Windows::Foundation::IInspectable const& parameter, hstring const& language);
+
+    private:
+        double minValue;
+        double maxValue;
+        double logMin;
+        double logMax;
     };
 
     struct SettingDataDirectoryItem : SettingDataDirectoryItemT<SettingDataDirectoryItem, SettingBaseItem>
@@ -185,6 +201,7 @@ namespace winrt::CelestiaAppComponent::implementation
         double Step();
         hstring Note();
         bool NoteVisibility();
+        Microsoft::UI::Xaml::Data::IValueConverter ThumbToolTipValueConverter();
 
     private:
         CelestiaComponent::CelestiaAppCore appCore;
@@ -248,6 +265,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring Title();
         hstring Note();
         bool NoteVisibility();
+        Microsoft::UI::Xaml::Data::IValueConverter ThumbToolTipValueConverter();
 
     private:
         CelestiaAppComponent::AppSettings appSettings;

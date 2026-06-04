@@ -36,7 +36,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}"/>
-                <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}"/>
+                <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}" ThumbToolTipValueConverter="{x:Bind ThumbToolTipValueConverter, Mode=OneTime}"/>
                 <TextBlock Grid.Row="2" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
             </Grid>
         </DataTemplate>

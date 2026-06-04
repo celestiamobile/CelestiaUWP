@@ -45,6 +45,12 @@ namespace CelestiaAppComponent
         String Title{ get; };
         String Note{ get; };
         Boolean NoteVisibility{ get; };
+        Microsoft.UI.Xaml.Data.IValueConverter ThumbToolTipValueConverter{ get; };
+    }
+
+    runtimeclass LogarithmicSliderValueConverter : Microsoft.UI.Xaml.Data.IValueConverter
+    {
+        LogarithmicSliderValueConverter(Double minValue, Double maxValue);
     }
 
     [default_interface]
