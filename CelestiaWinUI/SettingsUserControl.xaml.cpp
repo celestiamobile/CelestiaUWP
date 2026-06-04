@@ -223,8 +223,8 @@ namespace winrt::CelestiaWinUI::implementation
             SettingHeaderItem(LocalizationHelper::Localize(L"Point Spread Function", L"Star style"), LocalizationHelper::Localize(L"Point spread function settings are only effective with the Point Spread Function star style.", L"")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Point Radius", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius, 1.0f, 10.0f, 0.5f, localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Bloom Compactness", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization, 0.05f, 1.0f, 0.05f, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 0.0f, 1000.0f, 10.0f, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.1f, 100.0f, 1.0f, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 1.0f, 1000000.0f, 10.0f, localSettings, L"", true),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.01f, 1000000.0f, 1.0f, localSettings, L"", true),
 
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 

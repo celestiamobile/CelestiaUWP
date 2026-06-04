@@ -139,5 +139,6 @@ namespace CelestiaAppComponent
     {
         AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings);
         AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings, String note);
+        AppCoreSingleItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingSingleEntry entry, Single minValue, Single maxValue, Single step, Windows.Storage.ApplicationDataContainer localSettings, String note, Boolean isLogarithmic);
     }
 }

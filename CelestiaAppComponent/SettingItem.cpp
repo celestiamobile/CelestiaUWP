@@ -9,6 +9,8 @@
 
 #include "pch.h"
 #include "SettingItem.h"
+#include <algorithm>
+#include <cmath>
 #if __has_include("SettingDataDirectoryItem.g.cpp")
 #include "SettingDataDirectoryItem.g.cpp"
 #endif
@@ -313,7 +315,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
+    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note, bool isLogarithmic) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), isLogarithmic(isLogarithmic), localSettings(localSettings), note(note)
     {
         if (!appCoreCritSectionInitialized)
         {
@@ -331,30 +333,45 @@ namespace winrt::CelestiaAppComponent::implementation
         EnterCriticalSection(&appCoreCritSection);
         savedValue = cachedValue;
         LeaveCriticalSection(&appCoreCritSection);
-        return static_cast<double>(savedValue.value_or(CelestiaExtension::GetCelestiaSingleValue(appCore, entry)));
+        double actual = static_cast<double>(savedValue.value_or(CelestiaExtension::GetCelestiaSingleValue(appCore, entry)));
+        if (isLogarithmic)
+        {
+            double clamped = std::clamp(actual, static_cast<double>(minValue), static_cast<double>(maxValue));
+            double logMin = std::log(static_cast<double>(minValue));
+            double logMax = std::log(static_cast<double>(maxValue));
+            return (std::log(clamped) - logMin) / (logMax - logMin);
+        }
+        return actual;
     }
 
     void AppCoreSingleItem::Value(double value)
     {
         if (!hasCorrectValue)
             return;
+        double actual = value;
+        if (isLogarithmic)
+        {
+            double logMin = std::log(static_cast<double>(minValue));
+            double logMax = std::log(static_cast<double>(maxValue));
+            actual = std::exp(logMin + value * (logMax - logMin));
+        }
         EnterCriticalSection(&appCoreCritSection);
-        cachedValue = static_cast<float>(value);
+        cachedValue = static_cast<float>(actual);
         LeaveCriticalSection(&appCoreCritSection);
-        renderer.EnqueueTask([weak_this{ get_weak() }, value]
+        renderer.EnqueueTask([weak_this{ get_weak() }, actual]
             {
                 auto strong_this = weak_this.get();
                 if (!strong_this)
                     return;
 
-                CelestiaExtension::SetCelestiaSingleValue(strong_this->appCore, strong_this->entry, static_cast<float>(value));
+                CelestiaExtension::SetCelestiaSingleValue(strong_this->appCore, strong_this->entry, static_cast<float>(actual));
                 EnterCriticalSection(&appCoreCritSection);
                 strong_this->cachedValue = std::nullopt;
                 LeaveCriticalSection(&appCoreCritSection);
             });
         auto key = CelestiaExtension::GetNameBySingleEntry(entry);
         if (!key.empty())
-            localSettings.Values().Insert(key, box_value(static_cast<float>(value)));
+            localSettings.Values().Insert(key, box_value(static_cast<float>(actual)));
     }
 
     hstring AppCoreSingleItem::Title()
@@ -364,17 +381,17 @@ namespace winrt::CelestiaAppComponent::implementation
 
     double AppCoreSingleItem::MinValue()
     {
-        return (double)minValue;
+        return isLogarithmic ? 0.0 : static_cast<double>(minValue);
     }
 
     double AppCoreSingleItem::MaxValue()
     {
-        return (double)maxValue;
+        return isLogarithmic ? 1.0 : static_cast<double>(maxValue);
     }
 
     double AppCoreSingleItem::Step()
     {
-        return (double)step;
+        return isLogarithmic ? 0.001 : static_cast<double>(step);
     }
 
     hstring AppCoreSingleItem::Note()

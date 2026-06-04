@@ -176,7 +176,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct AppCoreSingleItem : AppCoreSingleItemT<AppCoreSingleItem, SettingDoubleItem>
     {
-        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"", bool isLogarithmic = false);
         double Value();
         void Value(double);
         hstring Title();
@@ -194,6 +194,7 @@ namespace winrt::CelestiaAppComponent::implementation
         float minValue;
         float maxValue;
         float step;
+        bool isLogarithmic;
         Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
         std::optional<float> cachedValue{ std::nullopt };
