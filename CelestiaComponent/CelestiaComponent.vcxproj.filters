@@ -286,6 +286,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\psfstarvertexbuffer.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -611,6 +614,9 @@
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\psfglowlargerenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\referencemarkrenderer.cpp">
@@ -947,6 +953,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\psfstarvertexbuffer.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\rectangle.h">
@@ -1295,6 +1304,9 @@
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\psfglowlargerenderer.h">
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\referencemarkrenderer.h">

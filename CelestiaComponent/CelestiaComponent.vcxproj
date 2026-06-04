@@ -380,6 +380,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\projectionmode.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\psfstarvertexbuffer.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rectangle.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\referencemark.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rendcontext.h" />
@@ -496,6 +497,7 @@
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\nebularenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\psfglowlargerenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\referencemarkrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\rendererfwd.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\ringrenderer.h" />
@@ -612,6 +614,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\pointstarvertexbuffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\projectionmode.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\psfstarvertexbuffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\render.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rendercolors.cpp" />
@@ -707,6 +710,7 @@
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\psfglowlargerenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\referencemarkrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\ringrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\skygridrenderer.cpp" />
