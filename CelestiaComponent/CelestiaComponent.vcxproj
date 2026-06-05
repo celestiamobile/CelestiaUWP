@@ -494,6 +494,7 @@
     <ClInclude Include="..\..\Celestia\src\celrender\gl\buffer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\gl\vertexobject.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\largestarrenderer.h" />
+    <ClInclude Include="..\..\Celestia\src\celrender\legacylargestarrenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\linerenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\nebularenderer.h" />
     <ClInclude Include="..\..\Celestia\src\celrender\openclusterrenderer.h" />
@@ -707,6 +708,7 @@
     <ClCompile Include="..\..\Celestia\src\celrender\gl\buffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\gl\vertexobject.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\largestarrenderer.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celrender\legacylargestarrenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\linerenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celrender\openclusterrenderer.cpp" />

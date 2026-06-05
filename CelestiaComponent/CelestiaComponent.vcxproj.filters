@@ -610,6 +610,9 @@
     <ClCompile Include="..\..\Celestia\src\celrender\largestarrenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celrender\legacylargestarrenderer.cpp">
+      <Filter>Celestia\celrender</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celrender\nebularenderer.cpp">
       <Filter>Celestia\celrender</Filter>
     </ClCompile>
@@ -1298,6 +1301,9 @@
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\largestarrenderer.h">
+      <Filter>Celestia\celrender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celrender\legacylargestarrenderer.h">
       <Filter>Celestia\celrender</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celrender\nebularenderer.h">
