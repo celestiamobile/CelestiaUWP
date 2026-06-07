@@ -26,12 +26,63 @@ static void CelestiaLog(fmt::format_string<Args...> fmt, Args&&... args)
     winrt::CelestiaComponent::CelestiaLogger::Log(winrt::to_hstring(msg));
 }
 
+#if defined(_DEBUG)
+static void GL_APIENTRY CelestiaKHRDebugCallback(GLenum source,
+                                                 GLenum type,
+                                                 GLuint id,
+                                                 GLenum severity,
+                                                 GLsizei length,
+                                                 const GLchar *message,
+                                                 const void *userParam)
+{
+    const char *sourceStr;
+    switch (source)
+    {
+        case GL_DEBUG_SOURCE_API_KHR:             sourceStr = "API"; break;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM_KHR:   sourceStr = "WINDOW_SYSTEM"; break;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER_KHR: sourceStr = "SHADER_COMPILER"; break;
+        case GL_DEBUG_SOURCE_THIRD_PARTY_KHR:     sourceStr = "THIRD_PARTY"; break;
+        case GL_DEBUG_SOURCE_APPLICATION_KHR:     sourceStr = "APPLICATION"; break;
+        case GL_DEBUG_SOURCE_OTHER_KHR:           sourceStr = "OTHER"; break;
+        default:                                  sourceStr = "UNKNOWN"; break;
+    }
+    const char *typeStr;
+    switch (type)
+    {
+        case GL_DEBUG_TYPE_ERROR_KHR:               typeStr = "ERROR"; break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_KHR: typeStr = "DEPRECATED"; break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_KHR:  typeStr = "UNDEFINED"; break;
+        case GL_DEBUG_TYPE_PORTABILITY_KHR:         typeStr = "PORTABILITY"; break;
+        case GL_DEBUG_TYPE_PERFORMANCE_KHR:         typeStr = "PERFORMANCE"; break;
+        case GL_DEBUG_TYPE_MARKER_KHR:              typeStr = "MARKER"; break;
+        case GL_DEBUG_TYPE_PUSH_GROUP_KHR:          typeStr = "PUSH_GROUP"; break;
+        case GL_DEBUG_TYPE_POP_GROUP_KHR:           typeStr = "POP_GROUP"; break;
+        case GL_DEBUG_TYPE_OTHER_KHR:               typeStr = "OTHER"; break;
+        default:                                    typeStr = "UNKNOWN"; break;
+    }
+    const char *severityStr;
+    switch (severity)
+    {
+        case GL_DEBUG_SEVERITY_HIGH_KHR:         severityStr = "HIGH"; break;
+        case GL_DEBUG_SEVERITY_MEDIUM_KHR:       severityStr = "MEDIUM"; break;
+        case GL_DEBUG_SEVERITY_LOW_KHR:          severityStr = "LOW"; break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION_KHR: severityStr = "NOTIFICATION"; break;
+        default:                                 severityStr = "UNKNOWN"; break;
+    }
+    fmt::print("[GL_KHR_debug] source={} type={} id={} severity={}: {}\n",
+               sourceStr, typeStr, id, severityStr,
+               std::string_view(message, static_cast<size_t>(length)));
+}
+#endif
+
 #ifndef EGL_EGLEXT_PROTOTYPES
 #define EGL_EGLEXT_PROTOTYPES
 #endif
 
 #include <EGL/eglext.h>
 #include <EGL/eglplatform.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
 
 static const wchar_t EGLNativeWindowTypeProperty[] = L"EGLNativeWindowTypeProperty";
 static const wchar_t EGLRenderResolutionScaleProperty[] = L"EGLRenderResolutionScaleProperty";
@@ -254,6 +305,9 @@ namespace winrt::CelestiaComponent::implementation
             const EGLint contextAttributes[] =
             {
                     EGL_CONTEXT_CLIENT_VERSION, 3,
+#if defined(_DEBUG)
+                    EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR,
+#endif
                     EGL_NONE
             };
 
@@ -297,6 +351,25 @@ namespace winrt::CelestiaComponent::implementation
                 Destroy();
                 return false;
             }
+
+#if defined(_DEBUG)
+            {
+                const char *extensions = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
+                if (extensions != nullptr && strstr(extensions, "GL_KHR_debug") != nullptr)
+                {
+                    auto debugMessageCallback = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress("glDebugMessageCallbackKHR"));
+                    auto debugMessageControl = reinterpret_cast<PFNGLDEBUGMESSAGECONTROLKHRPROC>(eglGetProcAddress("glDebugMessageControlKHR"));
+                    if (debugMessageCallback != nullptr)
+                    {
+                        glEnable(GL_DEBUG_OUTPUT_KHR);
+                        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
+                        debugMessageCallback(CelestiaKHRDebugCallback, nullptr);
+                        if (debugMessageControl != nullptr)
+                            debugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+                    }
+                }
+            }
+#endif
 
             if (!eglSwapInterval(display, static_cast<EGLint>(swapInterval)))
             {
