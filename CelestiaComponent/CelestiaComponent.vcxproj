@@ -393,7 +393,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\rotationmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\selection.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\shadermanager.h" />
-    <ClInclude Include="..\..\Celestia\src\celengine\shadowmap.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\shared.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\simulation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\skygrid.h" />

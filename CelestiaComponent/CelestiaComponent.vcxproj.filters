@@ -997,9 +997,6 @@
     <ClInclude Include="..\..\Celestia\src\celengine\shadermanager.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celengine\shadowmap.h">
-      <Filter>Celestia\celengine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\shared.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
