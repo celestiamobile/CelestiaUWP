@@ -68,7 +68,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 auto strong_this { weak_this.get() };
                 if (strong_this)
-                    strong_this->MainWindow_Loaded();
+                    strong_this->GLView_Loaded();
             });
 
         Closed([weak_this{ get_weak() }](auto&&, auto&&)
@@ -98,51 +98,42 @@ namespace winrt::CelestiaWinUI::implementation
         }
     }
 
-    fire_and_forget MainWindow::MainWindow_Loaded()
+    void MainWindow::GLView_Loaded()
     {
         featureFlags = FeatureFlags::Get(ApplicationData::Current().LocalSettings());
-
         UpdateScale(false);
 
+        DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr || strong_this->isClosed) return;
+                strong_this->SetUpWindow();
+            });
+    }
+
+    fire_and_forget MainWindow::SetUpWindow()
+    {
         StorageFolder customDataFolder{ nullptr };
         StorageFile customConfigFile{ nullptr };
 
-        auto customDataFolderPathFromSettings = appSettings.DataDirectoryPath();
-        auto customConfigFilePathFromSettings = appSettings.ConfigFilePath();
+        auto customDataFolderPath = appSettings.DataDirectoryPath();
+        auto customConfigFilePath = appSettings.ConfigFilePath();
 
-        if (!customDataFolderPathFromSettings.empty() || !customConfigFilePathFromSettings.empty())
-        {
-            // Try to use paths from settings
-            if (!customDataFolderPathFromSettings.empty())
-            {
-                try
-                {
-                    customDataFolder = co_await StorageFolder::GetFolderFromPathAsync(customDataFolderPathFromSettings);
-                }
-                catch (hresult_error const&) {}
-            }
-            if (!customConfigFilePathFromSettings.empty())
-            {
-                try
-                {
-                    customConfigFile = co_await StorageFile::GetFileFromPathAsync(customConfigFilePathFromSettings);
-                }
-                catch (hresult_error const&) {}
-            }
-        }
-        else
+        if (customDataFolderPath.empty() && customConfigFilePath.empty())
         {
             // Read the Override path
             try
             {
-                customDataFolder = co_await ApplicationData::Current().LocalFolder().GetFolderAsync(L"Override");
-                customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
+                auto customDataFolder = co_await ApplicationData::Current().LocalFolder().GetFolderAsync(L"Override");
+                auto customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
+                customDataFolderPath = customDataFolder.Path();
+                customConfigFilePath = customConfigFile.Path();
             }
             catch (hresult_error const&) {}
         }
 
-        auto resourcePath = customDataFolder != nullptr ? customDataFolder.Path() : defaultResourcePath;
-        auto configPath = customConfigFile != nullptr ? customConfigFile.Path() : defaultConfigFilePath;
+        auto resourcePath = !customDataFolderPath.empty() ? customDataFolderPath : defaultResourcePath;
+        auto configPath = !customConfigFilePath.empty() ? customConfigFilePath : defaultConfigFilePath;
 
         auto localePath = PathHelper::Combine(defaultResourcePath, L"locale");
 

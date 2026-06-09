@@ -96,7 +96,8 @@ namespace winrt::CelestiaWinUI::implementation
         HWND WindowHandle();
         Windows::Foundation::IAsyncOperation<hstring> GetLocale(hstring const& localePath);
 
-        winrt::fire_and_forget MainWindow_Loaded();
+        void GLView_Loaded();
+        winrt::fire_and_forget SetUpWindow();
         void AppCore_ShowContextMenu(Windows::Foundation::IInspectable const&, CelestiaComponent::ShowContextMenuArgs const& args);
         void AppCore_FatalError(Windows::Foundation::IInspectable const&, CelestiaComponent::FatalErrorArgs const& args);
         void AppCore_SystemAccessRequest(Windows::Foundation::IInspectable const&, CelestiaComponent::SystemAccessRequestArgs const& args);
