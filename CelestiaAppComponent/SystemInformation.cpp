@@ -24,9 +24,8 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     SystemInformation::SystemInformation()
     {
-        auto packageId = Windows::ApplicationModel::Package::Current().Id();
-        applicationVersion = packageId.Version();
-        operatingSystemArchitecture = packageId.Architecture();
+        applicationVersion = PackageHelper::ApplicationVersion();
+        operatingSystemArchitecture = PackageHelper::ProcessorArchitecture();
         Windows::Security::ExchangeActiveSyncProvisioning::EasClientDeviceInformation deviceInfo;
         operatingSystem = deviceInfo.OperatingSystem();
         deviceModel = deviceInfo.SystemProductName();

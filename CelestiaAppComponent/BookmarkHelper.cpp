@@ -24,7 +24,7 @@ namespace winrt::CelestiaAppComponent::implementation
     IAsyncOperation<Collections::IObservableVector<CelestiaAppComponent::BookmarkNode>> BookmarkHelper::ReadBookmarks()
     {
         auto results = single_threaded_observable_vector<CelestiaAppComponent::BookmarkNode>();
-        Windows::Storage::StorageFolder localFolder = Windows::Storage::ApplicationData::Current().LocalFolder();
+        Windows::Storage::StorageFolder localFolder = AppDataHelper::LocalFolder();
         try
         {
             auto bookmarkFile{ co_await localFolder.GetFileAsync(L"bookmarks.json") };
@@ -49,7 +49,7 @@ namespace winrt::CelestiaAppComponent::implementation
         {
             jsonArray.Append(value.JsonRepresentation());
         }
-        Windows::Storage::StorageFolder localFolder = Windows::Storage::ApplicationData::Current().LocalFolder();
+        Windows::Storage::StorageFolder localFolder = AppDataHelper::LocalFolder();
         try
         {
             auto bookmarkFile{ co_await localFolder.CreateFileAsync(L"bookmarks.json", Windows::Storage::CreationCollisionOption::ReplaceExisting) };

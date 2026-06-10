@@ -47,11 +47,11 @@ namespace winrt::CelestiaWinUI::implementation
     {
         CelestiaAppCore::SetUpLocale();
         appCore = CelestiaAppCore();
-        appSettings = CelestiaAppComponent::AppSettings(ApplicationData::Current().LocalSettings());
+        appSettings = CelestiaAppComponent::AppSettings(AppDataHelper::LocalSettings());
 
         isXbox = Windows::System::Profile::AnalyticsInfo::VersionInfo().DeviceFamily() == L"Windows.Xbox";
 
-        defaultParentPath = Windows::ApplicationModel::Package::Current().InstalledLocation().Path();
+        defaultParentPath = PackageHelper::InstalledLocationPath();
         defaultResourcePath = PathHelper::Combine(defaultParentPath, L"CelestiaResources");
         defaultConfigFilePath = PathHelper::Combine(defaultResourcePath, L"celestia.cfg");
     }
@@ -106,7 +106,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::GLView_Loaded()
     {
-        featureFlags = FeatureFlags::Get(ApplicationData::Current().LocalSettings());
+        featureFlags = FeatureFlags::Get(AppDataHelper::LocalSettings());
         UpdateScale(false);
 
         DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [weak_this{ get_weak() }]()
@@ -130,7 +130,7 @@ namespace winrt::CelestiaWinUI::implementation
             // Read the Override path
             try
             {
-                auto customDataFolder = co_await ApplicationData::Current().LocalFolder().GetFolderAsync(L"Override");
+                auto customDataFolder = co_await AppDataHelper::LocalFolder().GetFolderAsync(L"Override");
                 auto customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
                 customDataFolderPath = customDataFolder.Path();
                 customConfigFilePath = customConfigFile.Path();
@@ -151,7 +151,7 @@ namespace winrt::CelestiaWinUI::implementation
         {
             Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
             appSettings.LanguageOverride(L"");
-            appSettings.Save(ApplicationData::Current().LocalSettings());
+            appSettings.Save(AppDataHelper::LocalSettings());
 
             // We cannot change language during runtime, so still prefer this override value instead
             locale = overrideLocaleLegacy;
@@ -285,7 +285,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     IAsyncAction MainWindow::CreateExtraFolders()
     {
-        auto folder{ ApplicationData::Current().LocalFolder() };
+        auto folder{ AppDataHelper::LocalFolder() };
         try
         {
             auto mainFolder = co_await folder.CreateFolderAsync(L"CelestiaResources", CreationCollisionOption::OpenIfExists);
@@ -301,7 +301,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         try
         {
-            auto installedFolder{ Windows::ApplicationModel::Package::Current().InstalledLocation() };
+            auto installedFolder = co_await StorageFolder::GetFolderFromPathAsync(PackageHelper::InstalledLocationPath());
             auto file = co_await installedFolder.GetFileAsync(L"defaults.json");
             auto text = co_await FileIO::ReadTextAsync(file);
             co_return JsonObject::Parse(text);
@@ -315,7 +315,7 @@ namespace winrt::CelestiaWinUI::implementation
     void MainWindow::ApplySettings(JsonObject const& defaultSettings)
     {
         if (defaultSettings == nullptr) return;
-        auto localSettings = ApplicationData::Current().LocalSettings();
+        auto localSettings = AppDataHelper::LocalSettings();
         for (const auto& [key, value] : defaultSettings)
         {
             auto customSetting = localSettings.Values().TryLookup(key);
@@ -544,7 +544,7 @@ namespace winrt::CelestiaWinUI::implementation
         {
             AppendItem(fileItem, LocalizationHelper::Localize(L"Open Custom Folder", L"Open folder for customization"), [](IInspectable const&, RoutedEventArgs const&)
                 {
-                    Launcher::LaunchFolderAsync(ApplicationData::Current().LocalFolder());
+                    Launcher::LaunchFolderAsync(AppDataHelper::LocalFolder());
                 });
             fileItem.Items().Append(MenuFlyoutSeparator());
         }
@@ -952,7 +952,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (!appSettings.OnboardMessageDisplayed())
         {
             appSettings.OnboardMessageDisplayed(true);
-            appSettings.Save(ApplicationData::Current().LocalSettings());
+            appSettings.Save(AppDataHelper::LocalSettings());
             ShowHelp();
             co_return;
         }
@@ -1256,7 +1256,7 @@ namespace winrt::CelestiaWinUI::implementation
                     if (strong_this)
                     {
                         strong_this->appSettings.LastNewsID(id);
-                        strong_this->appSettings.Save(ApplicationData::Current().LocalSettings());
+                        strong_this->appSettings.Save(AppDataHelper::LocalSettings());
                     }
                 }
             }, [weak_window{ make_weak(window)}]()
@@ -1345,7 +1345,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::CaptureImage()
     {
-        auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
+        auto tempFolder{ AppDataHelper::TemporaryFolder() };
         auto path = PathHelper::Combine(tempFolder.Path(), to_hstring(GuidHelper::CreateNewGuid()) + L".png");
         renderer.EnqueueTask([weak_this{ get_weak() }, path]()
             {
@@ -1634,7 +1634,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto languages = single_threaded_vector<hstring>();
         languages.ReplaceAll(availableLanguages);
         Window window;
-        SettingsUserControl userControl{ appCore, renderer, appSettings, ApplicationData::Current().LocalSettings(), languages, MaximumDisplayFrequency(), displayInformation, SettingParameter([weak_window{make_weak(window)}]()
+        SettingsUserControl userControl{ appCore, renderer, appSettings, AppDataHelper::LocalSettings(), languages, MaximumDisplayFrequency(), displayInformation, SettingParameter([weak_window{make_weak(window)}]()
             {
                 return weak_window.get();
             }) };
@@ -1730,7 +1730,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::ReportBug()
     {
-        auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
+        auto tempFolder{ AppDataHelper::TemporaryFolder() };
         try
         {
              // Create all the files that might be needed in a folder to avoid collision
@@ -1843,12 +1843,12 @@ namespace winrt::CelestiaWinUI::implementation
     {
         try
         {
-            co_await FeatureFlags::UpdateAsync(isXbox, Windows::Storage::ApplicationData::Current().LocalSettings());
+            co_await FeatureFlags::UpdateAsync(isXbox, AppDataHelper::LocalSettings());
         }
         catch (hresult_error const&) {}
 
 #ifdef SUPPORTS_SENTRY
-        auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder();
+        auto localFolder = AppDataHelper::LocalFolder();
         try
         {
             auto sentryDatabaseFolder = co_await localFolder.GetFolderAsync(L"sentry");
@@ -1859,7 +1859,7 @@ namespace winrt::CelestiaWinUI::implementation
                 installedAddonList = installedAddonList + to_hstring(fmt::format("{}/{}\n", to_string(addon.Name()), to_string(addon.ID())));
             co_await FileIO::WriteTextAsync(addonInfoFile, hstring(installedAddonList));
 
-            auto localSettings = ApplicationData::Current().LocalSettings();
+            auto localSettings = AppDataHelper::LocalSettings();
             auto stored = localSettings.Values().TryLookup(L"FeatureFlags");
             if (stored)
             {

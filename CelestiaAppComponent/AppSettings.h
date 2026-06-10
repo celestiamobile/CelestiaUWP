@@ -15,7 +15,7 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     struct AppSettings : AppSettingsT<AppSettings>
     {
-        AppSettings(Windows::Storage::ApplicationDataContainer const& settings);
+        AppSettings(Microsoft::Windows::Storage::ApplicationDataContainer const& settings);
 
         bool UseFullDPI();
         void UseFullDPI(bool);
@@ -113,7 +113,7 @@ namespace winrt::CelestiaAppComponent::implementation
         void SetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry, double value);
         double GetDouble(CelestiaAppComponent::AppSettingDoubleEntry entry);
 
-        void Save(Windows::Storage::ApplicationDataContainer const& settings);
+        void Save(Microsoft::Windows::Storage::ApplicationDataContainer const& settings);
 
     private:
         bool useFullDPI{ true };

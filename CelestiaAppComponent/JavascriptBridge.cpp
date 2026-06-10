@@ -118,7 +118,7 @@ namespace winrt::CelestiaAppComponent::implementation
                 }
                 else
                 {
-                    auto folder = ApplicationData::Current().TemporaryFolder();
+                    auto folder = AppDataHelper::TemporaryFolder();
                     if (folder != nullptr)
                         file = co_await folder.CreateFileAsync(scriptFileName, CreationCollisionOption::ReplaceExisting);
                 }

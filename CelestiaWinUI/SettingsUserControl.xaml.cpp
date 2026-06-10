@@ -42,7 +42,7 @@ namespace winrt::CelestiaWinUI::implementation
         return showRestartHint;
     }
 
-    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, IReference<int32_t> maximumDisplayFrequency, DisplayInformation const& displayInformation, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
+    SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, IReference<int32_t> maximumDisplayFrequency, DisplayInformation const& displayInformation, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
     {
         itemGroups = single_threaded_observable_vector<CelestiaWinUI::SettingsNavigationItemGroup>();
         std::vector<IInspectable> displaySettingItems =

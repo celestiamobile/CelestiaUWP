@@ -31,11 +31,11 @@ using namespace CelestiaWinUI::implementation;
 
 App::App()
 {
-    auto localFolder = Windows::Storage::ApplicationData::Current().LocalFolder().Path();
+    auto localFolder = AppDataHelper::LocalFolder().Path();
     CelestiaComponent::CelestiaLogger::SetLogFilePath(PathHelper::Combine(localFolder, L"celestia.log"));
 
 #ifdef SUPPORTS_SENTRY
-    auto installedLocation = Windows::ApplicationModel::Package::Current().InstalledLocation().Path();
+    auto installedLocation = PackageHelper::InstalledLocationPath();
     auto crashpadHandlerPath = PathHelper::Combine(installedLocation, L"crashpad_handler.exe");
     auto sentryDatabasePath = PathHelper::Combine(localFolder, L"sentry");
 
@@ -57,12 +57,12 @@ App::App()
             sentry_options_add_attachmentw(options, featureFlagsFilePath.c_str());
     }
     catch (const std::exception&) {}
-    auto packageVersion = Windows::ApplicationModel::Package::Current().Id().Version();
+    auto packageVersion = PackageHelper::ApplicationVersion();
     auto sentryRelease = fmt::format("celestia-windows@{}.{}.{}.{}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
     sentry_options_set_release(options, sentryRelease.c_str());
     sentry_init(options);
 
-    auto localSettings = Windows::Storage::ApplicationData::Current().LocalSettings();
+    auto localSettings = AppDataHelper::LocalSettings();
     auto userIdResult = localSettings.Values().TryLookup(L"UserId");
     hstring userId;
     if (userIdResult)

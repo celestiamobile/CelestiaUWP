@@ -57,7 +57,7 @@ namespace CelestiaAppComponent
     [default_interface]
     runtimeclass AppSettings
     {
-        AppSettings(Windows.Storage.ApplicationDataContainer settings);
+        AppSettings(Microsoft.Windows.Storage.ApplicationDataContainer settings);
         Boolean UseFullDPI;
         Boolean EnableMSAA;
         Boolean EnableSRGBRendering;
@@ -98,6 +98,6 @@ namespace CelestiaAppComponent
         Boolean GamepadEnableLeftThumbstick;
         Boolean GamepadEnableRightThumbstick;
 
-        void Save(Windows.Storage.ApplicationDataContainer settings);
+        void Save(Microsoft.Windows.Storage.ApplicationDataContainer settings);
     }
 }

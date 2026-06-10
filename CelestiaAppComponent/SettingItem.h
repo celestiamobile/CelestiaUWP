@@ -91,7 +91,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct SettingDataDirectoryItem : SettingDataDirectoryItemT<SettingDataDirectoryItem, SettingBaseItem>
     {
-        SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings);
+        SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings);
         hstring Title();
         hstring DisplayValue();
         hstring ChangeButtonTitle();
@@ -104,13 +104,13 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         CelestiaAppComponent::AppSettings appSettings;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
     struct SettingConfigFileItem : SettingConfigFileItemT<SettingConfigFileItem, SettingBaseItem>
     {
-        SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings);
+        SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings);
         hstring Title();
         hstring DisplayValue();
         hstring ChangeButtonTitle();
@@ -123,7 +123,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     private:
         CelestiaAppComponent::AppSettings appSettings;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
@@ -152,7 +152,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     struct AppCoreBooleanItem : AppCoreBooleanItemT<AppCoreBooleanItem, SettingBooleanItem>
     {
-        AppCoreBooleanItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreBooleanItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingBooleanEntry entry, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         bool IsEnabled();
         void IsEnabled(bool);
         hstring Title();
@@ -164,14 +164,14 @@ namespace winrt::CelestiaAppComponent::implementation
         CelestiaComponent::CelestiaRenderer renderer;
         hstring title;
         CelestiaComponent::CelestiaSettingBooleanEntry entry;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
         std::optional<bool> cachedValue{ std::nullopt };
     };
 
     struct AppCoreInt32Item : AppCoreInt32ItemT<AppCoreInt32Item, SettingInt32Item>
     {
-        AppCoreInt32Item(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppCoreInt32Item(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         int32_t Value();
         void Value(int32_t);
         hstring Title();
@@ -186,14 +186,14 @@ namespace winrt::CelestiaAppComponent::implementation
         CelestiaComponent::CelestiaSettingInt32Entry entry;
         Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> options;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
         std::optional<int32_t> cachedValue{ std::nullopt };
     };
 
     struct AppCoreSingleItem : AppCoreSingleItemT<AppCoreSingleItem, SettingDoubleItem>
     {
-        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"", bool isLogarithmic = false);
+        AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"", bool isLogarithmic = false);
         double Value();
         void Value(double);
         hstring Title();
@@ -213,14 +213,14 @@ namespace winrt::CelestiaAppComponent::implementation
         float maxValue;
         float step;
         bool isLogarithmic;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
         std::optional<float> cachedValue{ std::nullopt };
     };
 
     struct AppSettingsBooleanItem : AppSettingsBooleanItemT<AppSettingsBooleanItem, SettingBooleanItem>
     {
-        AppSettingsBooleanItem(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppSettingsBooleanItem(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingBooleanEntry entry, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         bool IsEnabled();
         void IsEnabled(bool);
         hstring Title();
@@ -231,13 +231,13 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring title;
         CelestiaAppComponent::AppSettings appSettings;
         CelestiaAppComponent::AppSettingBooleanEntry entry;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
     };
 
     struct AppSettingsInt32Item : AppSettingsInt32ItemT<AppSettingsInt32Item, SettingInt32Item>
     {
-        AppSettingsInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppSettingsInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingInt32Entry entry, Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         int32_t Value();
         void Value(int32_t);
         hstring Title();
@@ -251,13 +251,13 @@ namespace winrt::CelestiaAppComponent::implementation
         CelestiaAppComponent::AppSettingInt32Entry entry;
         Windows::Foundation::Collections::IVector<CelestiaAppComponent::OptionPair> options;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
     };
 
     struct AppSettingsDoubleItem : AppSettingsDoubleItemT<AppSettingsDoubleItem, SettingDoubleItem>
     {
-        AppSettingsDoubleItem(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        AppSettingsDoubleItem(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaAppComponent::AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
         double Value();
         void Value(double);
         double MinValue();
@@ -275,13 +275,13 @@ namespace winrt::CelestiaAppComponent::implementation
         double maxValue;
         double step;
         CelestiaAppComponent::AppSettingDoubleEntry entry;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         hstring note;
     };
 
     struct LanguageInt32Item : LanguageInt32ItemT<LanguageInt32Item, SettingInt32Item>
     {
-        LanguageInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, Windows::Storage::ApplicationDataContainer const& localSettings);
+        LanguageInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, Windows::Foundation::Collections::IVector<hstring> const& availableLanguages, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings);
         int32_t Value();
         void Value(int32_t);
         hstring Title();
@@ -292,14 +292,14 @@ namespace winrt::CelestiaAppComponent::implementation
     private:
         hstring title;
         CelestiaAppComponent::AppSettings appSettings;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         Windows::Foundation::Collections::IVector<hstring> availableLanguages;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
     };
 
     struct FrameRateInt32Item : FrameRateInt32ItemT<FrameRateInt32Item, SettingInt32Item>
     {
-        FrameRateInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaComponent::CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, CelestiaComponent::DisplayInformation const& displayInformation, Windows::Storage::ApplicationDataContainer const& localSettings);
+        FrameRateInt32Item(hstring const& title, CelestiaAppComponent::AppSettings const& appSettings, CelestiaComponent::CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, CelestiaComponent::DisplayInformation const& displayInformation, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings);
         int32_t Value();
         void Value(int32_t);
         hstring Title();
@@ -313,7 +313,7 @@ namespace winrt::CelestiaAppComponent::implementation
         CelestiaComponent::CelestiaRenderer renderer;
         int32_t maximumDisplayFrequency;
         CelestiaComponent::DisplayInformation displayInformation;
-        Windows::Storage::ApplicationDataContainer localSettings;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
         Windows::Foundation::Collections::IObservableVector<hstring> itemTitles;
     };
 }

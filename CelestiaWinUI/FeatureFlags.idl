@@ -14,7 +14,7 @@ namespace CelestiaWinUI
     {
         FeatureFlags();
         Boolean Dummy{ get; };
-        static Windows.Foundation.IAsyncAction UpdateAsync(Boolean isXbox, Windows.Storage.ApplicationDataContainer settings);
-        static FeatureFlags Get(Windows.Storage.ApplicationDataContainer settings);
+        static Windows.Foundation.IAsyncAction UpdateAsync(Boolean isXbox, Microsoft.Windows.Storage.ApplicationDataContainer settings);
+        static FeatureFlags Get(Microsoft.Windows.Storage.ApplicationDataContainer settings);
     }
 }

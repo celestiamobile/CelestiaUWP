@@ -19,7 +19,7 @@ using namespace CelestiaComponent;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
-    AppSettings::AppSettings(Windows::Storage::ApplicationDataContainer const& settings)
+    AppSettings::AppSettings(Microsoft::Windows::Storage::ApplicationDataContainer const& settings)
     {
         const auto& propertySet{ settings.Values() };
         auto fullDPIResult = propertySet.TryLookup(L"FullDPI");
@@ -618,7 +618,7 @@ namespace winrt::CelestiaAppComponent::implementation
         }
     }
 
-    void AppSettings::Save(Windows::Storage::ApplicationDataContainer const& settings)
+    void AppSettings::Save(Microsoft::Windows::Storage::ApplicationDataContainer const& settings)
     {
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
         settings.Values().Insert(L"EnableMSAA", box_value(enableMSAA));

@@ -21,8 +21,8 @@ namespace winrt::CelestiaWinUI::implementation
 
         bool Dummy();
 
-        static Windows::Foundation::IAsyncAction UpdateAsync(bool isXbox, Windows::Storage::ApplicationDataContainer const& settings);
-        static CelestiaWinUI::FeatureFlags Get(Windows::Storage::ApplicationDataContainer const& settings);
+        static Windows::Foundation::IAsyncAction UpdateAsync(bool isXbox, Microsoft::Windows::Storage::ApplicationDataContainer const& settings);
+        static CelestiaWinUI::FeatureFlags Get(Microsoft::Windows::Storage::ApplicationDataContainer const& settings);
 
     private:
         std::unordered_map<hstring, bool> flags;

@@ -43,7 +43,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     bool FeatureFlags::Dummy() { return Lookup(L"dummy"); }
 
-    CelestiaWinUI::FeatureFlags FeatureFlags::Get(Windows::Storage::ApplicationDataContainer const& settings)
+    CelestiaWinUI::FeatureFlags FeatureFlags::Get(Microsoft::Windows::Storage::ApplicationDataContainer const& settings)
     {
         unordered_map<hstring, bool> evaluated;
         auto stored = settings.Values().TryLookup(L"FeatureFlags");
@@ -64,7 +64,7 @@ namespace winrt::CelestiaWinUI::implementation
         return make<FeatureFlags>(evaluated);
     }
 
-    IAsyncAction FeatureFlags::UpdateAsync(bool isXbox, Windows::Storage::ApplicationDataContainer const& settings)
+    IAsyncAction FeatureFlags::UpdateAsync(bool isXbox, Microsoft::Windows::Storage::ApplicationDataContainer const& settings)
     {
         auto version = SystemInformation::Instance().ApplicationVersion();
         auto versionText = to_hstring(fmt::format("{0}.{1}.{2}", version.Major, version.Minor, version.Build));

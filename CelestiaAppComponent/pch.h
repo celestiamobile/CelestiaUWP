@@ -29,4 +29,5 @@
 #include <winrt/Windows.System.Profile.h>
 #include <winrt/Windows.Web.Http.h>
 #include <winrt/Windows.Web.Http.Headers.h>
+#include <winrt/Microsoft.Windows.Storage.h>
 #include <winrt/CelestiaComponent.h>

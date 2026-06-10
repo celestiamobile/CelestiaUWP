@@ -64,7 +64,7 @@ namespace winrt::CelestiaAppComponent::implementation
     CRITICAL_SECTION appCoreCritSection;
     bool appCoreCritSectionInitialized = false;
 
-    SettingDataDirectoryItem::SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
+    SettingDataDirectoryItem::SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
 
     hstring SettingDataDirectoryItem::Title()
     {
@@ -110,7 +110,7 @@ namespace winrt::CelestiaAppComponent::implementation
         propertyChangedEvent.remove(token);
     }
 
-    SettingConfigFileItem::SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
+    SettingConfigFileItem::SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
 
     hstring SettingConfigFileItem::Title()
     {
@@ -187,7 +187,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return name;
     }
 
-    AppCoreBooleanItem::AppCoreBooleanItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), localSettings(localSettings), note(note)
+    AppCoreBooleanItem::AppCoreBooleanItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingBooleanEntry entry, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), localSettings(localSettings), note(note)
     {
         if (!appCoreCritSectionInitialized)
         {
@@ -246,7 +246,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppCoreInt32Item::AppCoreInt32Item(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
+    AppCoreInt32Item::AppCoreInt32Item(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
     {
         if (!appCoreCritSectionInitialized)
         {
@@ -318,7 +318,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note, bool isLogarithmic) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), isLogarithmic(isLogarithmic), localSettings(localSettings), note(note)
+    AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note, bool isLogarithmic) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), isLogarithmic(isLogarithmic), localSettings(localSettings), note(note)
     {
         if (!appCoreCritSectionInitialized)
         {
@@ -414,7 +414,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return make<LogarithmicSliderValueConverter>(static_cast<double>(minValue), static_cast<double>(maxValue));
     }
 
-    AppSettingsBooleanItem::AppSettingsBooleanItem(hstring const& title, AppSettings const& appSettings, AppSettingBooleanEntry entry, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : title(title), appSettings(appSettings), entry(entry), localSettings(localSettings), note(note)
+    AppSettingsBooleanItem::AppSettingsBooleanItem(hstring const& title, AppSettings const& appSettings, AppSettingBooleanEntry entry, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : title(title), appSettings(appSettings), entry(entry), localSettings(localSettings), note(note)
     {
     }
 
@@ -449,7 +449,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppSettingsInt32Item::AppSettingsInt32Item(hstring const& title, AppSettings const& appSettings, AppSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appSettings(appSettings), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
+    AppSettingsInt32Item::AppSettingsInt32Item(hstring const& title, AppSettings const& appSettings, AppSettingInt32Entry entry, Collections::IVector<CelestiaAppComponent::OptionPair> const& options, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appSettings(appSettings), title(title), entry(entry), options(options), localSettings(localSettings), note(note)
     {
         itemTitles = single_threaded_observable_vector<hstring>();
         for (auto&& option : options)
@@ -500,7 +500,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return !note.empty();
     }
 
-    AppSettingsDoubleItem::AppSettingsDoubleItem(hstring const& title, AppSettings const& appSettings, AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appSettings(appSettings), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
+    AppSettingsDoubleItem::AppSettingsDoubleItem(hstring const& title, AppSettings const& appSettings, AppSettingDoubleEntry entry, double minValue, double maxValue, double step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appSettings(appSettings), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
     {
     }
 
@@ -585,7 +585,7 @@ namespace winrt::CelestiaAppComponent::implementation
         throw hresult_not_implemented();
     }
 
-    LanguageInt32Item::LanguageInt32Item(hstring const& title, AppSettings const& appSettings, Collections::IVector<hstring> const& availableLanguages, Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), localSettings(localSettings), availableLanguages(availableLanguages)
+    LanguageInt32Item::LanguageInt32Item(hstring const& title, AppSettings const& appSettings, Collections::IVector<hstring> const& availableLanguages, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), localSettings(localSettings), availableLanguages(availableLanguages)
     {
         itemTitles = single_threaded_observable_vector<hstring>();
         itemTitles.Append(L"System");
@@ -653,7 +653,7 @@ namespace winrt::CelestiaAppComponent::implementation
         return false;
     }
 
-    FrameRateInt32Item::FrameRateInt32Item(hstring const& title, AppSettings const& appSettings, CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, DisplayInformation const& displayInformation, Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), renderer(renderer), localSettings(localSettings), maximumDisplayFrequency(maximumDisplayFrequency), displayInformation(displayInformation)
+    FrameRateInt32Item::FrameRateInt32Item(hstring const& title, AppSettings const& appSettings, CelestiaRenderer const& renderer, int32_t maximumDisplayFrequency, DisplayInformation const& displayInformation, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : title(title), appSettings(appSettings), renderer(renderer), localSettings(localSettings), maximumDisplayFrequency(maximumDisplayFrequency), displayInformation(displayInformation)
     {
         itemTitles = single_threaded_observable_vector<hstring>();
         Windows::Globalization::NumberFormatting::DecimalFormatter numberFormatter;

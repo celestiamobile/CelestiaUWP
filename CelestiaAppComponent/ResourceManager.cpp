@@ -217,7 +217,7 @@ namespace winrt::CelestiaAppComponent::implementation
         try
         {
             HttpClient client;
-            auto tempFolder{ ApplicationData::Current().TemporaryFolder() };
+            auto tempFolder{ AppDataHelper::TemporaryFolder() };
             tempFile = co_await tempFolder.CreateFileAsync(to_hstring(GuidHelper::CreateNewGuid()) + L".zip");
 
             auto response = co_await client.GetAsync(Uri(item.URL()), HttpCompletionOption::ResponseHeadersRead);
