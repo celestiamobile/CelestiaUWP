@@ -83,7 +83,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto appWindow{ window.AppWindow() };
         if (appWindow)
-            appWindow.SetIcon(L"AppIcon.ico");
+            appWindow.SetIcon(CelestiaAppComponent::PathHelper::Combine(CelestiaAppComponent::PackageHelper::InstalledLocationPath(), L"AppIcon.ico"));
     }
 
     void WindowHelper::SetWindowTheme(Window const& window)
