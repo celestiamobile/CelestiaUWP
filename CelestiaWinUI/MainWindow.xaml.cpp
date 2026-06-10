@@ -156,7 +156,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         WindowHelper::SetWindowFlowDirection(*this);
 
-        auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
+        auto resourceLoader{ Microsoft::Windows::ApplicationModel::Resources::ResourceLoader() };
         CelestiaLayoutDirection layoutDirection = resourceLoader.GetString(L"ApplicationFlowDirection") == L"RightToLeft" ? CelestiaLayoutDirection::RTL : CelestiaLayoutDirection::LTR;
 
         co_await CreateExtraFolders();
@@ -399,7 +399,7 @@ namespace winrt::CelestiaWinUI::implementation
                 std::sort(availableLocales.begin(), availableLocales.end());
                 availableLanguages = availableLocales;
             }
-            auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
+            auto resourceLoader{ Microsoft::Windows::ApplicationModel::Resources::ResourceLoader() };
             co_return resourceLoader.GetString(L"CelestiaLanguage");
         }
         catch (hresult_error const&)

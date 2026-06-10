@@ -95,7 +95,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     void WindowHelper::SetWindowFlowDirection(Window const& window)
     {
-        auto resourceLoader{ Windows::ApplicationModel::Resources::ResourceLoader::GetForViewIndependentUse() };
+        auto resourceLoader{ Microsoft::Windows::ApplicationModel::Resources::ResourceLoader() };
         auto flowDirection = resourceLoader.GetString(L"ApplicationFlowDirection");
 
         auto windowNative{ window.try_as<IWindowNative>() };
