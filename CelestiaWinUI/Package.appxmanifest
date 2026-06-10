@@ -183,6 +183,8 @@
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.SendACKHandler" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.JavascriptBridge" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.LocalizationHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.AppDataHelper" ThreadingModel="both" />
+            <ActivatableClass ActivatableClassId="CelestiaAppComponent.PackageHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.PathHelper" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResultInfo" ThreadingModel="both" />
             <ActivatableClass ActivatableClassId="CelestiaAppComponent.RequestResult" ThreadingModel="both" />
