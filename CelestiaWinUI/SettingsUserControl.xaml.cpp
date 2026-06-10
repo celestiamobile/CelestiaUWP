@@ -49,7 +49,6 @@ namespace winrt::CelestiaWinUI::implementation
         {
             SettingHeaderItem(LocalizationHelper::Localize(L"Objects", L"")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Stars", L"Tab for stars in Star Browser"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowStars, localSettings),
-            AppCoreBooleanItem(LocalizationHelper::Localize(L"Stars", L"Tab for stars in Star Browser"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowStars, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Planets", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanets, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Dwarf Planets", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowDwarfPlanets, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Moons", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowMoons, localSettings),
