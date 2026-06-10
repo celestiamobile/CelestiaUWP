@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
-  <assemblyIdentity version="1.0.0.0" name="CelestiaWinUI.app"/>
+  <assemblyIdentity version="2.1.32.0" name="CelestiaWinUI.app"/>
 
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
@@ -22,4 +22,103 @@
       <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, PerMonitor</dpiAwareness>
     </windowsSettings>
   </application>
+
+  <!--
+    Reg-Free WinRT activatable-class declarations for unpackaged runs.
+    Mirrors the windows.activatableClass.inProcessServer entries in
+    Package.appxmanifest. Keep both in sync when adding/removing runtimeclasses.
+    Microsoft.UI.Xaml factories are registered by the WindowsAppRuntime bootstrap
+    at process start and must not be listed here.
+  -->
+  <file name="CelestiaComponent.dll">
+    <activatableClass name="CelestiaComponent.CelestiaAppCore"          threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaAstroObject"      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaBody"             threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaBrowserItem"      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaCompletion"       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaDestination"      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaDMS"              threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaDSO"              threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaDSOCatalog"       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaEclipse"          threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaEclipseFinder"    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaExtension"        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaLogger"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaGalaxy"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaGotoLocation"     threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaHelper"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaLocation"         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaObserver"         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaOrbit"            threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaPlanetarySystem"  threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaRenderer"         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaRotationModel"    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaScript"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaSelection"        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaSimulation"       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaStar"             threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaStarCatalog"      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaTimeline"         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaTimelinePhase"    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaUniversalCoord"   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaUniverse"         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.CelestiaVector"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaComponent.DisplayInformation"       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+  </file>
+
+  <file name="CelestiaAppComponent.dll">
+    <activatableClass name="CelestiaAppComponent.AppSettings"                          threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BookmarkHelper"                       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BookmarkNode"                         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserAction"                        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserGetInfoAction"                 threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserInputAction"                   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserItem"                          threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserItemTab"                       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserMarkAction"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserMarkMenuItem"                  threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserSelectAction"                  threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.BrowserShowSubsystemAction"           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ContentDialogHelper"                  threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.GamepadManager"                       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.GuideItem"                            threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.JavascriptMessagePayload"             threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.JavascriptMessageHandlerContext"      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.JavascriptMessageHandler"             threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.DummyHandler"                         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.RunDemoHandler"                       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.RunScriptHandler"                     threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ShareURLHandler"                      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SendACKHandler"                       threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.JavascriptBridge"                     threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.LocalizationHelper"                   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppDataHelper"                        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.PackageHelper"                        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.PathHelper"                           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.RequestResultInfo"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.RequestResult"                        threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ResourceItem"                         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SearchObjectEntry"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SelectionHelper"                      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SettingBaseItem"                      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SettingBooleanItem"                   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SettingInt32Item"                     threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SettingDoubleItem"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.SettingHeaderItem"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.OptionPair"                           threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppCoreBooleanItem"                   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppSettingsBooleanItem"               threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppCoreInt32Item"                     threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppSettingsInt32Item"                 threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppSettingsDoubleItem"                threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.FrameRateInt32Item"                   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.LanguageInt32Item"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.AppCoreSingleItem"                    threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ResourceManagerDownloadProgressArgs"  threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ResourceManagerDownloadSuccessArgs"   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ResourceManagerDownloadFailureArgs"   threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.ResourceManager"                      threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.StringHelper"                         threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+    <activatableClass name="CelestiaAppComponent.UriHelper"                            threadingModel="both" xmlns="urn:schemas-microsoft-com:winrt.v1"/>
+  </file>
 </assembly>
