@@ -146,7 +146,11 @@ namespace winrt::CelestiaWinUI::implementation
         auto overrideLocaleLegacy = appSettings.LanguageOverride();
         if (!overrideLocaleLegacy.empty())
         {
-            Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+            try
+            {
+                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+            }
+            catch (hresult_error const&) {}
             appSettings.LanguageOverride(L"");
             appSettings.Save(AppDataHelper::LocalSettings());
 

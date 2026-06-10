@@ -627,10 +627,15 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             return;
-        if (value == 0)
-            Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(L"");
-        else
-            Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
+        try
+        {
+            if (value == 0)
+                // Note: Microsoft::Globalization::ApplicationLanguages::PrimaryLanguageOverride does not accept L"" to reset, so we use the Windows::Globalization variant here.
+                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(L"");
+            else
+                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
+        }
+        catch (hresult_error const&) {}
     }
 
     hstring LanguageInt32Item::Title()
