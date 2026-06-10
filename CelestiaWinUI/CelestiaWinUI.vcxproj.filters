@@ -396,4 +396,7 @@
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CelestiaWinUI.rc" />
+  </ItemGroup>
 </Project>

@@ -419,6 +419,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="CelestiaWinUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
     <PRIResource Include="Strings\ar\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
