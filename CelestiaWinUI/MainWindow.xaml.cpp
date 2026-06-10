@@ -140,8 +140,6 @@ namespace winrt::CelestiaWinUI::implementation
 
         auto localePath = PathHelper::Combine(defaultResourcePath, L"locale");
 
-        auto locale = co_await GetLocale(localePath);
-
         // Migrate override language to system
         auto overrideLocaleLegacy = appSettings.LanguageOverride();
         if (!overrideLocaleLegacy.empty())
@@ -159,18 +157,16 @@ namespace winrt::CelestiaWinUI::implementation
             else
             {
                 // For unpackaged apps, appSettings.LanguageOverride() is the source of truth.
-                // Apply it to PrimaryLanguageOverride using the Microsoft variant (the Windows variant does not persist for unpackaged apps).
+                // Apply it via the Microsoft variant; the Windows variant crashes for unpackaged apps.
                 try
                 {
                     Microsoft::Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
                 }
                 catch (hresult_error const&) {}
             }
-
-            // We cannot change language during runtime, so still prefer this override value instead
-            locale = overrideLocaleLegacy;
         }
 
+        auto locale = co_await GetLocale(localePath);
         WindowHelper::SetWindowFlowDirection(*this);
 
         auto resourceLoader{ Microsoft::Windows::ApplicationModel::Resources::ResourceLoader() };
