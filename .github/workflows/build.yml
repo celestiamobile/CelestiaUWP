@@ -542,8 +542,8 @@ jobs:
           $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
           $packageManifestXML = [xml]$packageManifestContent
           $version = $packageManifestXML.Package.Identity.Version
-          packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\bin\10.0.26100.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
-          packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\bin\10.0.26100.0\x64\signtool.exe sign /f "$env:RUNNER_TEMP\3d.pfx" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
+          packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.8249\bin\10.0.26100.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
+          packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.8249\bin\10.0.26100.0\x64\signtool.exe sign /f "$env:RUNNER_TEMP\3d.pfx" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
 
       - name: Prepare Upload Package
         shell: pwsh
