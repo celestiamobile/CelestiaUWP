@@ -53,6 +53,8 @@
 
 #include <fmt/printf.h>
 
+#include "AppDataHelper.h"
+
 using namespace winrt;
 using namespace CelestiaComponent;
 using namespace Microsoft::UI::Xaml;
@@ -614,10 +616,20 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             hasCorrectValue = true;
-        auto selectedLang = Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride();
-        if (selectedLang.empty()) return 0;
+        hstring selectedLang;
+        if (AppDataHelper::IsPackaged())
+        {
+            auto windowsTag = Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride();
+            if (windowsTag.empty()) return 0;
+            selectedLang = LocalizationHelper::FromWindowsTag(windowsTag);
+        }
+        else
+        {
+            selectedLang = appSettings.LanguageOverride();
+            if (selectedLang.empty()) return 0;
+        }
         uint32_t index;
-        if (availableLanguages.IndexOf(LocalizationHelper::FromWindowsTag(selectedLang), index))
+        if (availableLanguages.IndexOf(selectedLang, index))
             return index + 1;
         return 0;
     }
@@ -627,15 +639,24 @@ namespace winrt::CelestiaAppComponent::implementation
         // Must be queried before setting
         if (!hasCorrectValue)
             return;
-        try
+        hstring newOverride = value == 0 ? L"" : availableLanguages.GetAt(value - 1);
+        if (AppDataHelper::IsPackaged())
         {
-            if (value == 0)
-                // Note: Microsoft::Globalization::ApplicationLanguages::PrimaryLanguageOverride does not accept L"" to reset, so we use the Windows::Globalization variant here.
-                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(L"");
-            else
-                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(availableLanguages.GetAt(value - 1)));
+            try
+            {
+                if (newOverride.empty())
+                    // Note: Microsoft::Globalization::ApplicationLanguages::PrimaryLanguageOverride does not accept L"" to reset, so we use the Windows::Globalization variant here.
+                    Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(L"");
+                else
+                    Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(newOverride));
+            }
+            catch (hresult_error const&) {}
         }
-        catch (hresult_error const&) {}
+        else
+        {
+            appSettings.LanguageOverride(newOverride);
+            appSettings.Save(localSettings);
+        }
     }
 
     hstring LanguageInt32Item::Title()

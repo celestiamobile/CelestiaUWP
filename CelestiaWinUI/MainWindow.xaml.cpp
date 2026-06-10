@@ -146,13 +146,26 @@ namespace winrt::CelestiaWinUI::implementation
         auto overrideLocaleLegacy = appSettings.LanguageOverride();
         if (!overrideLocaleLegacy.empty())
         {
-            try
+            if (AppDataHelper::IsPackaged())
             {
-                Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+                try
+                {
+                    Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+                }
+                catch (hresult_error const&) {}
+                appSettings.LanguageOverride(L"");
+                appSettings.Save(AppDataHelper::LocalSettings());
             }
-            catch (hresult_error const&) {}
-            appSettings.LanguageOverride(L"");
-            appSettings.Save(AppDataHelper::LocalSettings());
+            else
+            {
+                // For unpackaged apps, appSettings.LanguageOverride() is the source of truth.
+                // Apply it to PrimaryLanguageOverride using the Microsoft variant (the Windows variant does not persist for unpackaged apps).
+                try
+                {
+                    Microsoft::Windows::Globalization::ApplicationLanguages::PrimaryLanguageOverride(LocalizationHelper::ToWindowsTag(overrideLocaleLegacy));
+                }
+                catch (hresult_error const&) {}
+            }
 
             // We cannot change language during runtime, so still prefer this override value instead
             locale = overrideLocaleLegacy;

@@ -54,6 +54,7 @@
 #include <winrt/Microsoft.Web.WebView2.Core.h>
 #include <winrt/Microsoft.Windows.AppLifecycle.h>
 #include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
+#include <winrt/Microsoft.Windows.Globalization.h>
 #include <winrt/Microsoft.Windows.Storage.h>
 #include <winrt/Microsoft.Windows.Storage.Pickers.h>
 #include <microsoft.ui.xaml.window.h>
