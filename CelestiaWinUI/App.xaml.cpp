@@ -12,10 +12,12 @@
 #include "App.xaml.h"
 #include "MainWindow.xaml.h"
 
+#include <array>
+#include <filesystem>
+
 #if defined(_M_IX86) || defined(_M_X64)
 #define SUPPORTS_SENTRY
 #include <sentry.h>
-#include <filesystem>
 #include <fmt/format.h>
 #endif
 
@@ -33,6 +35,9 @@ App::App()
 {
     auto localFolder = AppDataHelper::LocalFolder().Path();
     CelestiaComponent::CelestiaLogger::SetLogFilePath(PathHelper::Combine(localFolder, L"celestia.log"));
+
+    if (!AppDataHelper::IsPackaged())
+        RegisterUnpackagedActivations();
 
 #ifdef SUPPORTS_SENTRY
     auto installedLocation = PackageHelper::InstalledLocationPath();
@@ -125,4 +130,27 @@ void App::Launch(Microsoft::Windows::AppLifecycle::AppActivationArguments const&
     if (window == nullptr) return;
     window.WillActivate(args);
     window.Activate();
+}
+
+void App::RegisterUnpackagedActivations()
+{
+    hstring exePath = PackageHelper::ExecutablePath();
+    if (exePath.empty()) return;
+
+    auto iconPath = std::filesystem::path(PathHelper::Combine(PackageHelper::InstalledLocationPath(), L"AppIcon.ico").c_str());
+    std::error_code ec;
+    hstring logo = std::filesystem::exists(iconPath, ec) ? hstring{ iconPath.c_str() } : hstring{};
+
+    try
+    {
+        std::array<hstring, 2> fileTypes{ L".cel", L".celx" };
+        std::array<hstring, 1> openVerb{ L"open" };
+        ActivationRegistrationManager::RegisterForFileTypeActivation(fileTypes, logo, L"Celestia Script", openVerb, exePath);
+
+        ActivationRegistrationManager::RegisterForProtocolActivation(L"cel", logo, L"Celestia URL", exePath);
+        ActivationRegistrationManager::RegisterForProtocolActivation(L"celaddon", logo, L"Celestia Add-on URL", exePath);
+        ActivationRegistrationManager::RegisterForProtocolActivation(L"celguide", logo, L"Celestia Guide URL", exePath);
+        ActivationRegistrationManager::RegisterForProtocolActivation(L"celestia", logo, L"Celestia Launcher", exePath);
+    }
+    catch (hresult_error const&) {}
 }

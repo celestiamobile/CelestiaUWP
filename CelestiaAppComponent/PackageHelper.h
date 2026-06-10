@@ -16,6 +16,7 @@ namespace winrt::CelestiaAppComponent::implementation
     struct PackageHelper : PackageHelperT<PackageHelper>
     {
         static hstring InstalledLocationPath();
+        static hstring ExecutablePath();
         static Windows::ApplicationModel::PackageVersion ApplicationVersion();
         static Windows::System::ProcessorArchitecture ProcessorArchitecture();
     };

@@ -119,9 +119,6 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::SetUpWindow()
     {
-        StorageFolder customDataFolder{ nullptr };
-        StorageFile customConfigFile{ nullptr };
-
         auto customDataFolderPath = appSettings.DataDirectoryPath();
         auto customConfigFilePath = appSettings.ConfigFilePath();
 

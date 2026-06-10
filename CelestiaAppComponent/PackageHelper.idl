@@ -13,6 +13,7 @@ namespace CelestiaAppComponent
     runtimeclass PackageHelper
     {
         static String InstalledLocationPath();
+        static String ExecutablePath();
         static Windows.ApplicationModel.PackageVersion ApplicationVersion();
         static Windows.System.ProcessorArchitecture ProcessorArchitecture();
     }

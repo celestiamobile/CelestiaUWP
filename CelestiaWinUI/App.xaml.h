@@ -23,5 +23,6 @@ namespace winrt::CelestiaWinUI::implementation
     private:
         CelestiaWinUI::MainWindow window{ nullptr };
         void Launch(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args);
+        static void RegisterUnpackagedActivations();
     };
 }

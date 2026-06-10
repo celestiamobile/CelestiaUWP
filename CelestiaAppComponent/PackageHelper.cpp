@@ -45,6 +45,11 @@ namespace winrt::CelestiaAppComponent::implementation
         return hstring{ exePath.parent_path().c_str() };
     }
 
+    hstring PackageHelper::ExecutablePath()
+    {
+        return hstring{ GetExecutablePath() };
+    }
+
     Windows::ApplicationModel::PackageVersion PackageHelper::ApplicationVersion()
     {
         if (AppDataHelper::IsPackaged())
