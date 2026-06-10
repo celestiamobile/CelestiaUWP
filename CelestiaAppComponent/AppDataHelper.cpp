@@ -14,6 +14,7 @@
 #endif
 
 #include <appmodel.h>
+#include <filesystem>
 
 namespace winrt::CelestiaAppComponent::implementation
 {
@@ -42,11 +43,33 @@ namespace winrt::CelestiaAppComponent::implementation
 
     Windows::Storage::StorageFolder AppDataHelper::LocalFolder()
     {
-        return Current().LocalFolder();
+        auto current = Current();
+        try
+        {
+            return current.LocalFolder();
+        }
+        catch (hresult_error const& e)
+        {
+            if (e.code() != HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+                throw;
+            std::filesystem::create_directories(std::filesystem::path(current.LocalPath().c_str()));
+            return current.LocalFolder();
+        }
     }
 
     Windows::Storage::StorageFolder AppDataHelper::TemporaryFolder()
     {
-        return Current().TemporaryFolder();
+        auto current = Current();
+        try
+        {
+            return current.TemporaryFolder();
+        }
+        catch (hresult_error const& e)
+        {
+            if (e.code() != HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+                throw;
+            std::filesystem::create_directories(std::filesystem::path(current.TemporaryPath().c_str()));
+            return current.TemporaryFolder();
+        }
     }
 }
