@@ -26,6 +26,15 @@ static void CelestiaLog(fmt::format_string<Args...> fmt, Args&&... args)
     winrt::CelestiaComponent::CelestiaLogger::Log(winrt::to_hstring(msg));
 }
 
+#ifndef EGL_EGLEXT_PROTOTYPES
+#define EGL_EGLEXT_PROTOTYPES
+#endif
+
+#include <EGL/eglext.h>
+#include <EGL/eglplatform.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+
 #if defined(_DEBUG)
 static void GL_APIENTRY CelestiaKHRDebugCallback(GLenum source,
                                                  GLenum type,
@@ -74,15 +83,6 @@ static void GL_APIENTRY CelestiaKHRDebugCallback(GLenum source,
                std::string_view(message, static_cast<size_t>(length)));
 }
 #endif
-
-#ifndef EGL_EGLEXT_PROTOTYPES
-#define EGL_EGLEXT_PROTOTYPES
-#endif
-
-#include <EGL/eglext.h>
-#include <EGL/eglplatform.h>
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
 
 static const wchar_t EGLNativeWindowTypeProperty[] = L"EGLNativeWindowTypeProperty";
 static const wchar_t EGLRenderResolutionScaleProperty[] = L"EGLRenderResolutionScaleProperty";
