@@ -79,22 +79,28 @@ namespace winrt::CelestiaWinUI::implementation
             });
     }
 
-    void MainWindow::WillActivate(Windows::ApplicationModel::Activation::IActivatedEventArgs const& args)
+    void MainWindow::WillActivate(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args)
     {
         using namespace Windows::ApplicationModel::Activation;
+        using Microsoft::Windows::AppLifecycle::ExtendedActivationKind;
 
         if (args == nullptr) return;
 
-        if (args.Kind() == ActivationKind::File)
+        auto kind = args.Kind();
+        if (kind == ExtendedActivationKind::File)
         {
-            auto fileArgs = args.as<FileActivatedEventArgs>();
-            auto file = fileArgs.Files().GetAt(0).as<Windows::Storage::StorageFile>();
-            OpenFileIfReady(file);
+            if (auto fileArgs = args.Data().try_as<FileActivatedEventArgs>())
+            {
+                auto file = fileArgs.Files().GetAt(0).as<Windows::Storage::StorageFile>();
+                OpenFileIfReady(file);
+            }
         }
-        else if (args.Kind() == ActivationKind::Protocol)
+        else if (kind == ExtendedActivationKind::Protocol)
         {
-            auto protocolArgs = args.as<ProtocolActivatedEventArgs>();
-            OpenURLIfReady(protocolArgs.Uri());
+            if (auto protocolArgs = args.Data().try_as<ProtocolActivatedEventArgs>())
+            {
+                OpenURLIfReady(protocolArgs.Uri());
+            }
         }
     }
 

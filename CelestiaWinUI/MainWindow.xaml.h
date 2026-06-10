@@ -20,7 +20,7 @@ namespace winrt::CelestiaWinUI::implementation
         MainWindow();
         void InitializeComponent();
 
-        void WillActivate(Windows::ApplicationModel::Activation::IActivatedEventArgs const& args);
+        void WillActivate(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args);
 
     private:
         CelestiaComponent::CelestiaAppCore appCore{ nullptr };

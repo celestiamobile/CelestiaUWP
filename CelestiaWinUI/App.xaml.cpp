@@ -89,7 +89,7 @@ App::App()
 #endif
 }
 
-fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const args)
+fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const)
 {
     auto mainInstance = AppInstance::FindOrRegisterForKey(L"Main");
     if (!mainInstance.IsCurrent())
@@ -112,37 +112,17 @@ fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const args)
             CelestiaComponent::CelestiaLogger::Close();
             Application::Current().Exit();
         });
-    Launch(args, nullptr);
-}
-
-void App::OnFileActivated(Windows::ApplicationModel::Activation::FileActivatedEventArgs const& args)
-{
-    Launch(nullptr, args);
-}
-
-void App::OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs const& args)
-{
-    Launch(nullptr, args);
+    Launch(AppInstance::GetCurrent().GetActivatedEventArgs());
 }
 
 void App::MainInstance_Activated(IInspectable const&, Microsoft::Windows::AppLifecycle::AppActivationArguments const& args)
 {
-    if (auto event = args.Data().try_as<Windows::ApplicationModel::Activation::IActivatedEventArgs>(); event != nullptr)
-        Launch(nullptr, event);
+    Launch(args);
 }
 
-void App::Launch(LaunchActivatedEventArgs const&, Windows::ApplicationModel::Activation::IActivatedEventArgs const& event)
+void App::Launch(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args)
 {
     if (window == nullptr) return;
-    auto args = event;
-    if (args == nullptr)
-    {
-        auto launchArgs = AppInstance::GetCurrent().GetActivatedEventArgs();
-        if (launchArgs != nullptr)
-        {
-            args = launchArgs.Data().try_as<Windows::ApplicationModel::Activation::IActivatedEventArgs>();
-        }
-    }
     window.WillActivate(args);
     window.Activate();
 }
