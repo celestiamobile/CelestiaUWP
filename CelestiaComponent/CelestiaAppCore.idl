@@ -322,6 +322,7 @@ namespace CelestiaComponent
         Single StarPointRadius;
         Single StarOptimization;
         Single StarMaxIrradiance;
+        Single StarDimClipFactor;
         Single StarExposure;
 
         Boolean ShowBodyAxes;
