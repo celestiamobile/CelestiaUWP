@@ -339,6 +339,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization;
         else if (name == L"StarMaxIrradiance")
             return CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance;
+        else if (name == L"StarDimClipFactor")
+            return CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor;
         else if (name == L"StarExposure")
             return CelestiaComponent::CelestiaSettingSingleEntry::StarExposure;
         return CelestiaComponent::CelestiaSettingSingleEntry::None;
@@ -650,6 +652,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"StarOptimization";
         case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
             return L"StarMaxIrradiance";
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor:
+            return L"StarDimClipFactor";
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             return L"StarExposure";
         default:
@@ -1103,6 +1107,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
             appCore.StarMaxIrradiance(value);
             break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor:
+            appCore.StarDimClipFactor(value);
+            break;
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             appCore.StarExposure(value);
             break;
@@ -1417,6 +1424,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.StarOptimization();
         case CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance:
             return appCore.StarMaxIrradiance();
+        case CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor:
+            return appCore.StarDimClipFactor();
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             return appCore.StarExposure();
         default:

@@ -899,6 +899,16 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setStarMaxIrradiance(starMaxIrradiance);
     }
 
+    float CelestiaAppCore::StarDimClipFactor()
+    {
+        return core->getRenderer()->getStarDimClipFactor();
+    }
+
+    void CelestiaAppCore::StarDimClipFactor(float starDimClipFactor)
+    {
+        core->getRenderer()->setStarDimClipFactor(starDimClipFactor);
+    }
+
     float CelestiaAppCore::StarExposure()
     {
         return core->getRenderer()->getStarExposure();

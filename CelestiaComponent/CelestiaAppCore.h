@@ -378,6 +378,8 @@ namespace winrt::CelestiaComponent::implementation
         void StarOptimization(float starOptimization);
         float StarMaxIrradiance();
         void StarMaxIrradiance(float starMaxIrradiance);
+        float StarDimClipFactor();
+        void StarDimClipFactor(float starDimClipFactor);
         float StarExposure();
         void StarExposure(float starExposure);
 

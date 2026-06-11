@@ -187,6 +187,7 @@ namespace CelestiaComponent
         StarPointRadius,
         StarOptimization,
         StarMaxIrradiance,
+        StarDimClipFactor,
         StarExposure,
     };
 
