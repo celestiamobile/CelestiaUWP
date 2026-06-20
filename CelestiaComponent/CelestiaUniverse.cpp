@@ -266,4 +266,12 @@ namespace winrt::CelestiaComponent::implementation
         b->setTime(o->getTime());
         return make<CelestiaStarBrowser>(b);
     }
+
+    hstring CelestiaUniverse::InfoURLForSelection(CelestiaComponent::CelestiaSelection const& selection)
+    {
+        auto url = u->getInfoURL(get_self<CelestiaSelection>(selection)->AsSelection());
+        if (url.empty())
+            return L"";
+        return to_hstring(url);
+    }
 }

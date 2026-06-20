@@ -51,5 +51,7 @@ namespace CelestiaComponent
         CelestiaStarCatalog StarCatalog{ get; };
         CelestiaDSOCatalog DSOCatalog{ get; };
         CelestiaStarBrowser StarBrowser(CelestiaStarBrowserType type, CelestiaObserver observer);
+
+        String InfoURLForSelection(CelestiaSelection selection);
     }
 }

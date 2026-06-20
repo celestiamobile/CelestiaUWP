@@ -23,7 +23,6 @@ namespace winrt::CelestiaComponent::implementation
     struct CelestiaStar : CelestiaStarT<CelestiaStar, CelestiaAstroObject>
     {
         CelestiaStar(Star* star);
-        hstring InfoURL();
         CelestiaComponent::CelestiaUniversalCoord PositionAtTime(double julianDay);
         hstring SpectralType();
     };

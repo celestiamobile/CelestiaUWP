@@ -61,7 +61,7 @@ namespace winrt::CelestiaWinUI::implementation
                 auto name = strong_this->appCore.Simulation().Universe().NameForSelection(strong_this->selection);
                 auto detail = SelectionHelper::GetOverview(strong_this->selection, strong_this->appCore);
                 auto timeLinks = SelectionHelper::GetTimeLinks(strong_this->selection, strong_this->appCore);
-                auto url = strong_this->selection.InfoURL();
+                auto url = strong_this->appCore.Simulation().Universe().InfoURLForSelection(strong_this->selection);
                 strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [strong_this, name, detail, timeLinks, url]()
                     {
                         strong_this->NameLabel().Text(name);

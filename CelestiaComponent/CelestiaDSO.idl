@@ -25,7 +25,6 @@ namespace CelestiaComponent
     {
         String Type{ get; };
         CelestiaDSOType ObjectType{ get; };
-        String InfoURL{ get; };
         CelestiaVector Position{ get; };
         String Description{ get; };
     }

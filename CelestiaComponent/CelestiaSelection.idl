@@ -19,7 +19,6 @@ namespace CelestiaComponent
         CelestiaAstroObject Object{ get; };
         Boolean IsEmpty{ get; };
         Double Radius{ get; };
-        String InfoURL{ get; };
         Boolean Equals(CelestiaSelection other);
     }
 }

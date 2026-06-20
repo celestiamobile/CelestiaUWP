@@ -415,6 +415,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\univcoord.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\universe.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\urlmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\videooverlay.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\viewporteffect.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\virtualtex.h" />
@@ -640,6 +641,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\universe.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\urlmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\videooverlay.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\viewporteffect.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\virtualtex.cpp" />

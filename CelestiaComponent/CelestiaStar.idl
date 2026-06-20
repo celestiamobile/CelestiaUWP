@@ -15,7 +15,6 @@ namespace CelestiaComponent
     [default_interface]
     runtimeclass CelestiaStar : CelestiaAstroObject
     {
-        String InfoURL{ get; };
         CelestiaUniversalCoord PositionAtTime(Double julianDay);
         String SpectralType{ get; };
     }

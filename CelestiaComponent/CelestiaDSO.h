@@ -25,7 +25,6 @@ namespace winrt::CelestiaComponent::implementation
         CelestiaDSO(DeepSkyObject* dso);
         CelestiaComponent::CelestiaDSOType ObjectType() const;
         hstring Type();
-        hstring InfoURL();
         CelestiaComponent::CelestiaVector Position();
         hstring Description();
     };

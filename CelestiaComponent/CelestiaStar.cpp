@@ -22,11 +22,6 @@ namespace winrt::CelestiaComponent::implementation
 	{
 	}
 
-	hstring CelestiaStar::InfoURL()
-	{
-		return to_hstring(static_cast<Star*>(obj)->getInfoURL());
-	}
-
     CelestiaComponent::CelestiaUniversalCoord CelestiaStar::PositionAtTime(double julianDay)
     {
         return make<CelestiaUniversalCoord>(static_cast<Star*>(obj)->getPosition(julianDay));

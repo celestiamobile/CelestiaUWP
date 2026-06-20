@@ -107,27 +107,6 @@ namespace winrt::CelestiaComponent::implementation
         return AsSelection().radius();
     }
 
-    hstring CelestiaSelection::InfoURL()
-    {
-        if (object == nullptr) return L"";
-        auto body = object.try_as<CelestiaComponent::CelestiaBody>();
-        if (body != nullptr)
-        {
-            return body.InfoURL();
-        }
-        auto star = object.try_as<CelestiaComponent::CelestiaStar>();
-        if (star != nullptr)
-        {
-            return star.InfoURL();
-        }
-        auto dso = object.try_as<CelestiaComponent::CelestiaDSO>();
-        if (dso != nullptr)
-        {
-            return dso.InfoURL();
-        }
-        return L"";
-    }
-
     bool CelestiaSelection::Equals(CelestiaComponent::CelestiaSelection const& other)
     {
         if (other == nullptr)

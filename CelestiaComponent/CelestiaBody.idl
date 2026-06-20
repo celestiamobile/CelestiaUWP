@@ -41,7 +41,6 @@ namespace CelestiaComponent
         String Name{ get; };
         CelestiaBodyType Type{ get; };
         String[] AlternateSurfaceNames{ get; };
-        String InfoURL{ get; };
         CelestiaPlanetarySystem System{ get; };
         Boolean HasRings{ get; };
         Boolean HasAtmosphere{ get; };

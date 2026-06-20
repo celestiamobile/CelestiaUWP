@@ -41,6 +41,8 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaComponent::CelestiaStarBrowser StarBrowser(CelestiaComponent::CelestiaStarBrowserType type, CelestiaComponent::CelestiaObserver const& observer);
 
+        hstring InfoURLForSelection(CelestiaComponent::CelestiaSelection const& selection);
+
         Universe* u;
 
     private:

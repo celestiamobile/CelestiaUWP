@@ -31,7 +31,6 @@ namespace winrt::CelestiaComponent::implementation
         hstring Name();
         CelestiaComponent::CelestiaBodyType Type();
         com_array<hstring> AlternateSurfaceNames();
-        hstring InfoURL();
 
         bool HasRings();
         bool HasAtmosphere();

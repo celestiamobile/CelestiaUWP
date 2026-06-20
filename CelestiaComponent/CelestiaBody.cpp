@@ -47,11 +47,6 @@ namespace winrt::CelestiaComponent::implementation
 		return com_array<hstring>(results);
 	}
 
-	hstring CelestiaBody::InfoURL()
-	{
-		return to_hstring(static_cast<Body*>(obj)->getInfoURL());
-	}
-
     CelestiaComponent::CelestiaPlanetarySystem CelestiaBody::System()
     {
         if (p == nullptr)
