@@ -295,6 +295,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\render.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\resourcesystem.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\rendercolors.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -347,6 +350,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\texturetraits.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp">
@@ -829,6 +835,9 @@
     <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\asyncresourcecache.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\atmosphere.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -887,6 +896,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\geometry.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\geometrytraits.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\globular.h">
@@ -991,6 +1003,9 @@
     <ClInclude Include="..\..\Celestia\src\celengine\renderlistentry.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\resourcesystem.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\rotationmanager.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
@@ -1046,6 +1061,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\texture.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\texturetraits.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\timeline.h">

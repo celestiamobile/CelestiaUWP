@@ -333,6 +333,7 @@
     <ClInclude Include="..\..\Celestia\src\celcompat\numbers_impl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\asterism.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\astroobj.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\asyncresourcecache.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\atmosphere.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\axisarrow.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\body.h" />
@@ -354,6 +355,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\galaxy.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\galaxyform.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\geometry.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\geometrytraits.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\globular.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glshader.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\glsupport.h" />
@@ -390,6 +392,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\renderglsl.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\renderinfo.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\renderlistentry.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\resourcesystem.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\rotationmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\selection.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\shadermanager.h" />
@@ -410,6 +413,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\texmanager.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\textlayout.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\texture.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\texturetraits.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timeline.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\timelinephase.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\trajmanager.h" />
@@ -618,6 +622,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\psfstarvertexbuffer.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rendcontext.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\render.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\resourcesystem.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rendercolors.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\renderglsl.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\rotationmanager.cpp" />
@@ -637,6 +642,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\texmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\textlayout.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\texture.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\texturetraits.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timeline.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\timelinephase.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\trajmanager.cpp" />
