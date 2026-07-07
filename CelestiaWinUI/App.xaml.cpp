@@ -15,7 +15,7 @@
 #include <array>
 #include <filesystem>
 
-#if defined(_M_IX86) || defined(_M_X64)
+#ifndef _DEBUG
 #define SUPPORTS_SENTRY
 #include <sentry.h>
 #include <fmt/format.h>

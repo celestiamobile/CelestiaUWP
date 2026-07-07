@@ -18,7 +18,7 @@
 #include <shlobj_core.h>
 #pragma comment(lib, "shell32.lib")
 
-#if defined(_M_IX86) || defined(_M_X64)
+#ifndef _DEBUG
 #define SUPPORTS_SENTRY
 #include <sentry.h>
 #endif
@@ -1879,8 +1879,6 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
         catch (hresult_error const&) {}
-#else
-        co_return;
 #endif
     }
 
