@@ -146,7 +146,7 @@ namespace CelestiaComponent
         CelestiaAppCore();
 
         Boolean StartSimulation(String configFileName, String[] extraDirectories, CelestiaLoadCallback callback);
-        Boolean StartRenderer(Boolean srgbRendering);
+        Boolean StartRenderer(Boolean srgbRendering, Int32 shadowMapSize);
         void Tick();
         void Draw();
         void Resize(Int32 width, Int32 height);

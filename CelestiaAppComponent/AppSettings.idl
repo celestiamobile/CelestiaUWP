@@ -39,6 +39,7 @@ namespace CelestiaAppComponent
         GamepadRemapDpadLeft,
         GamepadRemapDpadRight,
         SwapInterval,
+        ShadowMapSize,
     };
 
     enum AppSettingStringEntry
@@ -83,6 +84,7 @@ namespace CelestiaAppComponent
         CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadLeft;
         CelestiaComponent.CelestiaGamepadAction GamepadRemapDpadRight;
         Int32 SwapInterval;
+        Int32 ShadowMapSize;
 
         void SetBoolean(AppSettingBooleanEntry entry, Boolean value);
         Boolean GetBoolean(AppSettingBooleanEntry entry);

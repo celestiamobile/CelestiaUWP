@@ -133,7 +133,7 @@ namespace winrt::CelestiaComponent::implementation
         return core->initSimulation(config, extraPaths, &watcher);
     }
 
-    bool CelestiaAppCore::StartRenderer(bool srgbRendering)
+    bool CelestiaAppCore::StartRenderer(bool srgbRendering, int32_t shadowMapSize)
     {
         bool success = core->initRenderer(celestia::engine::TextureResolution::medres, srgbRendering);
 
@@ -157,7 +157,7 @@ namespace winrt::CelestiaComponent::implementation
         core->getSimulation()->setFaintestVisible(DEFAULT_VISUAL_MAGNITUDE);
 
         core->getRenderer()->setSolarSystemMaxDistance((core->getConfig()->renderDetails.SolarSystemMaxDistance));
-        core->getRenderer()->setShadowMapSize(core->getConfig()->renderDetails.ShadowMapSize);
+        core->getRenderer()->setShadowMapSize(static_cast<unsigned>(shadowMapSize));
 
         return success;
     }

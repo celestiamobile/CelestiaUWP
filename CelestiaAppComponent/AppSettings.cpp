@@ -109,6 +109,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto swapIntervalResult = propertySet.TryLookup(L"SwapInterval");
         if (swapIntervalResult)
             swapInterval = unbox_value_or(swapIntervalResult, swapInterval);
+        auto shadowMapSizeResult = propertySet.TryLookup(L"ShadowMapSize");
+        if (shadowMapSizeResult)
+            shadowMapSize = unbox_value_or(shadowMapSizeResult, shadowMapSize);
     }
 
     bool AppSettings::UseFullDPI()
@@ -401,6 +404,16 @@ namespace winrt::CelestiaAppComponent::implementation
         swapInterval = value;
     }
 
+    int32_t AppSettings::ShadowMapSize()
+    {
+        return shadowMapSize;
+    }
+
+    void AppSettings::ShadowMapSize(int32_t value)
+    {
+        shadowMapSize = value;
+    }
+
     void AppSettings::SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value)
     {
         switch (entry)
@@ -517,6 +530,9 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingInt32Entry::SwapInterval:
             SwapInterval(value);
             break;
+        case CelestiaAppComponent::AppSettingInt32Entry::ShadowMapSize:
+            ShadowMapSize(value);
+            break;
         default:
             break;
         }
@@ -552,6 +568,8 @@ namespace winrt::CelestiaAppComponent::implementation
             return static_cast<int32_t>(GamepadRemapDpadRight());
         case CelestiaAppComponent::AppSettingInt32Entry::SwapInterval:
             return SwapInterval();
+        case CelestiaAppComponent::AppSettingInt32Entry::ShadowMapSize:
+            return ShadowMapSize();
         default:
             return 0;
         }
@@ -649,5 +667,6 @@ namespace winrt::CelestiaAppComponent::implementation
         settings.Values().Insert(L"GamepadEnableLeftThumbstick", box_value(gamepadEnableLeftThumbstick));
         settings.Values().Insert(L"GamepadEnableRightThumbstick", box_value(gamepadEnableRightThumbstick));
         settings.Values().Insert(L"SwapInterval", box_value(swapInterval));
+        settings.Values().Insert(L"ShadowMapSize", box_value(shadowMapSize));
     }
 }

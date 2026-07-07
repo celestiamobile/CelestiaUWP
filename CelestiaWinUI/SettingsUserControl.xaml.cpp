@@ -196,6 +196,13 @@ namespace winrt::CelestiaWinUI::implementation
         labelsSettingItemGroupItems.ReplaceAll(labelsSettingItems);
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Labels", L"Labels to display"), labelsSettingItemGroupItems, false));
 
+        Windows::Globalization::NumberFormatting::DecimalFormatter shadowMapSizeFormatter;
+        shadowMapSizeFormatter.IsGrouped(true);
+        shadowMapSizeFormatter.FractionDigits(0);
+        auto shadowMapSizeOptions = single_threaded_vector<OptionPair>();
+        for (int32_t size : { 0, 1024, 2048, 4096, 8192 })
+            shadowMapSizeOptions.Append(OptionPair(size, shadowMapSizeFormatter.FormatInt(size)));
+
         std::vector<IInspectable> rendererSettingItems =
         {
             AppCoreInt32Item(LocalizationHelper::Localize(L"Texture Resolution", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::Resolution, single_threaded_vector<OptionPair>
@@ -237,6 +244,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
+            AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
         };
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)

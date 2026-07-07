@@ -104,6 +104,9 @@ namespace winrt::CelestiaAppComponent::implementation
         int32_t SwapInterval();
         void SwapInterval(int32_t);
 
+        int32_t ShadowMapSize();
+        void ShadowMapSize(int32_t);
+
         void SetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry, bool value);
         bool GetBoolean(CelestiaAppComponent::AppSettingBooleanEntry entry);
         void SetInt32(CelestiaAppComponent::AppSettingInt32Entry entry, int32_t value);
@@ -129,6 +132,7 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring configFilePath{ L"" };
         double pickSensitivity{ 4.0 };
         int32_t swapInterval{ 1 };
+        int32_t shadowMapSize{ 0 };
 
         CelestiaComponent::CelestiaGamepadAction gamepadRemapA{ CelestiaComponent::CelestiaGamepadAction::MoveSlower };
         CelestiaComponent::CelestiaGamepadAction gamepadRemapB{ CelestiaComponent::CelestiaGamepadAction::None };

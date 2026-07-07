@@ -248,7 +248,7 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
 
-        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering()))
+        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering(), appSettings.ShadowMapSize()))
         {
             ShowLoadingFailure();
             return false;
