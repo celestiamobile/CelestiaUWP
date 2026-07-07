@@ -400,7 +400,7 @@
       <Link>CelestiaResources\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
     <Content Include="$(VcpkgRoot)\installed\$(VcpkgTriplet)\tools\sentry-native\crashpad_handler.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>crashpad_handler.exe</Link>
