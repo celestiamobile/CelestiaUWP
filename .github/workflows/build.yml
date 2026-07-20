@@ -174,14 +174,24 @@ jobs:
           $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
           $packageManifestXML = [xml]$packageManifestContent
           $version = $packageManifestXML.Package.Identity.Version
+          $packageDirectory = "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test"
+
+          if (!(Test-Path $packageDirectory)) {
+            $uploadPackage = "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}.msixupload"
+            $uploadArchive = "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}.zip"
+            Copy-Item -Path $uploadPackage -Destination $uploadArchive
+            New-Item -Path $packageDirectory -ItemType "directory"
+            Expand-Archive $uploadArchive -DestinationPath $packageDirectory
+            Remove-Item $uploadArchive
+          }
 
           New-Item -Name "Symbols" -ItemType "directory"
-          Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -NewName "symbols.zip"
-          Expand-Archive "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\symbols.zip" -Destination Symbols
-          Rename-Item -Path "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\symbols.zip" -NewName "CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym"
+          Rename-Item -Path "${packageDirectory}\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -NewName "symbols.zip"
+          Expand-Archive "${packageDirectory}\symbols.zip" -Destination Symbols
+          Rename-Item -Path "${packageDirectory}\symbols.zip" -NewName "CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym"
 
           New-Item -Name "AppBinaries" -ItemType "directory"
-          Expand-Archive "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination AppBinaries
+          Expand-Archive "${packageDirectory}\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination AppBinaries
 
       - name: Upload Symbols Artifacts
         uses: actions/upload-artifact@v4
