@@ -9,5 +9,7 @@ Update NuGet dependencies to latest stable versions.
    - All 3 `.vcxproj` files (versioned package paths in Import and Error elements)
    - Both patch files under `patches/nuget/` (context lines referencing versioned package paths)
    - `.github/workflows/build.yml` if it references any versioned package paths
-4. After all edits, run a final grep to confirm no old version strings remain in the repo.
-5. Report which packages were updated and which were already at the latest version.
+   - Make package-specific edits rather than global version-string replacements. Package IDs can end in digits (for example, `Microsoft.Web.WebView2.1.0.x`), so replacing another package's version such as `2.1.0` globally can corrupt unrelated paths.
+4. Verify every versioned package path matches the exact package ID and version in the corresponding `packages.config`.
+5. Run a final grep to confirm no old version strings or malformed package paths remain in the repo.
+6. Report which packages were updated and which were already at the latest version.
