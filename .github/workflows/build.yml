@@ -39,34 +39,34 @@ jobs:
 
     steps:
       - name: Checkout CelestiaUWP
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: CelestiaUWP
           fetch-depth: 0
 
       - name: Checkout Celestia
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: celestiamobile/Celestia
           path: Celestia
           fetch-depth: 0
 
       - name: Checkout CelestiaContent
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: CelestiaProject/CelestiaContent
           path: CelestiaContent
           fetch-depth: 0
 
       - name: Checkout CelestiaLocalization
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: celestiamobile/CelestiaLocalization
           path: CelestiaLocalization
           fetch-depth: 0
 
       - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
 
       - name: Install Build Dependencies
         run: choco install sentry-cli imagemagick
@@ -123,7 +123,7 @@ jobs:
         run: call "${{ github.workspace }}\CelestiaUWP\scripts\convert_po.bat" "${{ github.workspace }}\CelestiaUWP" "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Resources"
 
       - name: Install NuGet
-        uses: nuget/setup-nuget@v2
+        uses: nuget/setup-nuget@v4.0
 
       - name: Download Dependencies from GitHub
         shell: pwsh
@@ -194,7 +194,7 @@ jobs:
           Expand-Archive "${packageDirectory}\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination AppBinaries
 
       - name: Upload Symbols Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: 'msixupload-${{ matrix.arch }}-symbols'
           path: '${{ github.workspace }}\CelestiaUWP\Symbols'
@@ -230,7 +230,7 @@ jobs:
           Move-Item -Path "Output\CelestiaWinUI_${version}_${{ matrix.arch }}.appxsym" -Destination "AppPackages"
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: 'msixupload-${{ matrix.arch }}'
           path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
@@ -251,34 +251,34 @@ jobs:
 
     steps:
       - name: Checkout CelestiaUWP
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: CelestiaUWP
           fetch-depth: 0
 
       - name: Checkout Celestia
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: celestiamobile/Celestia
           path: Celestia
           fetch-depth: 0
 
       - name: Checkout CelestiaContent
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: CelestiaProject/CelestiaContent
           path: CelestiaContent
           fetch-depth: 0
 
       - name: Checkout CelestiaLocalization
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: celestiamobile/CelestiaLocalization
           path: CelestiaLocalization
           fetch-depth: 0
 
       - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
 
       - name: Install Build Dependencies
         run: choco install sentry-cli imagemagick
@@ -335,7 +335,7 @@ jobs:
         run: call "${{ github.workspace }}\CelestiaUWP\scripts\convert_po.bat" "${{ github.workspace }}\CelestiaUWP" "${{ github.workspace }}\CelestiaUWP\CelestiaWinUI\Resources"
 
       - name: Install NuGet
-        uses: nuget/setup-nuget@v2
+        uses: nuget/setup-nuget@v4.0
 
       - name: Download Dependencies from GitHub
         shell: pwsh
@@ -392,14 +392,14 @@ jobs:
           "version=$($xml.Package.Identity.Version)" | Out-File -Append $env:GITHUB_OUTPUT
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Sign MSIX with Azure Trusted Signing
-        uses: azure/trusted-signing-action@v0.5.1
+        uses: azure/trusted-signing-action@v2
         with:
           endpoint: ${{ secrets.TRUSTED_SIGNING_ENDPOINT }}
           trusted-signing-account-name: ${{ secrets.TRUSTED_SIGNING_ACCOUNT }}
@@ -425,7 +425,7 @@ jobs:
           Expand-Archive "AppPackages\CelestiaWinUI_${version}_${{ matrix.arch }}_Test\CelestiaWinUI_${version}_${{ matrix.arch }}.msix" -Destination AppBinaries
 
       - name: Upload Symbols Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: 'sideload-${{ matrix.arch }}-symbols'
           path: '${{ github.workspace }}\CelestiaUWP\Symbols'
@@ -439,7 +439,7 @@ jobs:
         run: sentry-cli debug-files upload -o celestia-vs -p windows --include-sources Symbols AppBinaries
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: 'sideload-${{ matrix.arch }}'
           path: '${{ github.workspace }}\CelestiaUWP\AppPackages'
@@ -452,13 +452,13 @@ jobs:
 
     steps:
       - name: Download Sideload Artifacts (x64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sideload-x64
           path: '${{ runner.temp }}\sideload-x64'
 
       - name: Download Sideload Artifacts (arm64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sideload-arm64
           path: '${{ runner.temp }}\sideload-arm64'
@@ -470,14 +470,14 @@ jobs:
           DEL "${{ runner.temp }}\sideload-arm64\*.appxsym" /S /Q
 
       - name: Upload Sideload x64
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: CelestiaSL-x64
           path: '${{ runner.temp }}\sideload-x64'
           retention-days: 30
 
       - name: Upload Sideload arm64
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: CelestiaSL-arm64
           path: '${{ runner.temp }}\sideload-arm64'
@@ -490,7 +490,7 @@ jobs:
 
     steps:
       - name: Checkout CelestiaUWP
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -498,7 +498,7 @@ jobs:
         run: git apply patches/nuget/nuget-x64.patch --ignore-whitespace --whitespace=nowarn
 
       - name: Install NuGet
-        uses: nuget/setup-nuget@v2
+        uses: nuget/setup-nuget@v4.0
 
       - name: Download Dependencies from GitHub
         shell: pwsh
@@ -524,13 +524,13 @@ jobs:
         run: nuget restore CelestiaUWP.sln -PackagesDirectory packages
 
       - name: Download MSIX Artifacts (x64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: msixupload-x64
           path: '${{ runner.temp }}\msixupload-x64'
 
       - name: Download MSIX Artifacts (arm64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: msixupload-arm64
           path: '${{ runner.temp }}\msixupload-arm64'
@@ -573,7 +573,7 @@ jobs:
           Move-Item -Path "CelestiaWinUI_${version}_x64_arm64.msixupload" -Destination "MSIXUpload"
 
       - name: Upload MSIX Upload Package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: msixupload
           path: '${{ github.workspace }}\MSIXUpload'
