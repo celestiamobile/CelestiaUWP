@@ -9,6 +9,8 @@
 
 #include "pch.h"
 #include "CelestiaExtension.h"
+
+#include <unordered_map>
 #if __has_include("CelestiaExtension.g.cpp")
 #include "CelestiaExtension.g.cpp"
 #endif
@@ -47,309 +49,62 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaSettingBooleanEntry CelestiaExtension::GetBooleanEntryByName(hstring const& name)
     {
-        if (name == L"ToneMapping")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping;
+        using Entry = CelestiaComponent::CelestiaSettingBooleanEntry;
+        static const std::unordered_map<winrt::hstring, Entry> entries = []
+            {
+                std::unordered_map<winrt::hstring, Entry> result;
+                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::ToneMapping); ++value)
+                {
+                    auto entry = static_cast<Entry>(value);
+                    auto entryName = GetNameByBooleanEntry(entry);
+                    if (!entryName.empty())
+                        result.emplace(entryName, entry);
+                }
+                return result;
+            }();
 
-        if (name == L"ShowStars")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowStars;
-        else if (name == L"ShowPlanets")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanets;
-        else if (name == L"ShowDwarfPlanets")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowDwarfPlanets;
-        else if (name == L"ShowMoons")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMoons;
-        else if (name == L"ShowMinorMoons")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMinorMoons;
-        else if (name == L"ShowAsteroids")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAsteroids;
-        else if (name == L"ShowComets")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowComets;
-        else if (name == L"ShowSpacecrafts")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSpacecrafts;
-        else if (name == L"ShowGalaxies")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalaxies;
-        else if (name == L"ShowGlobulars")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGlobulars;
-        else if (name == L"ShowNebulae")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowNebulae;
-        else if (name == L"ShowOpenClusters")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOpenClusters;
-        else if (name == L"ShowDiagrams")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowDiagrams;
-        else if (name == L"ShowBoundaries")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowBoundaries;
-        else if (name == L"ShowCloudMaps")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCloudMaps;
-        else if (name == L"ShowNightMaps")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowNightMaps;
-        else if (name == L"ShowAtmospheres")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAtmospheres;
-        else if (name == L"ShowCometTails")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCometTails;
-        else if (name == L"ShowPlanetRings")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetRings;
-        else if (name == L"ShowMarkers")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMarkers;
-        else if (name == L"ShowOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOrbits;
-        else if (name == L"ShowFadingOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFadingOrbits;
-        else if (name == L"ShowEcliptic")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEcliptic;
-        else if (name == L"ShowPartialTrajectories")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPartialTrajectories;
-        else if (name == L"ShowSmoothLines")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines;
-        else if (name == L"ShowEclipseShadows")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEclipseShadows;
-        else if (name == L"ShowRingShadows")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingShadows;
-        else if (name == L"ShowCloudShadows")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCloudShadows;
-        else if (name == L"ShowAutoMag")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag;
-        else if (name == L"ShowCelestialSphere")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCelestialSphere;
-        else if (name == L"ShowEclipticGrid")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEclipticGrid;
-        else if (name == L"ShowHorizonGrid")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowHorizonGrid;
-        else if (name == L"ShowGalacticGrid")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalacticGrid;
-        else if (name == L"ShowStarLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowStarLabels;
-        else if (name == L"ShowPlanetLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetLabels;
-        else if (name == L"ShowMoonLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMoonLabels;
-        else if (name == L"ShowConstellationLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowConstellationLabels;
-        else if (name == L"ShowGalaxyLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGalaxyLabels;
-        else if (name == L"ShowGlobularLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowGlobularLabels;
-        else if (name == L"ShowNebulaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowNebulaLabels;
-        else if (name == L"ShowOpenClusterLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOpenClusterLabels;
-        else if (name == L"ShowAsteroidLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAsteroidLabels;
-        else if (name == L"ShowSpacecraftLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSpacecraftLabels;
-        else if (name == L"ShowLocationLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLocationLabels;
-        else if (name == L"ShowCometLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCometLabels;
-        else if (name == L"ShowDwarfPlanetLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowDwarfPlanetLabels;
-        else if (name == L"ShowMinorMoonLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMinorMoonLabels;
-        else if (name == L"ShowLatinConstellationLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLatinConstellationLabels;
-        else if (name == L"ShowPlanetOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetOrbits;
-        else if (name == L"ShowMoonOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMoonOrbits;
-        else if (name == L"ShowAsteroidOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAsteroidOrbits;
-        else if (name == L"ShowSpacecraftOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSpacecraftOrbits;
-        else if (name == L"ShowCometOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCometOrbits;
-        else if (name == L"ShowStellarOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowStellarOrbits;
-        else if (name == L"ShowDwarfPlanetOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowDwarfPlanetOrbits;
-        else if (name == L"ShowMinorMoonOrbits")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMinorMoonOrbits;
-        else if (name == L"ShowCityLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCityLabels;
-        else if (name == L"ShowObservatoryLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowObservatoryLabels;
-        else if (name == L"ShowLandingSiteLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLandingSiteLabels;
-        else if (name == L"ShowCraterLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCraterLabels;
-        else if (name == L"ShowVallisLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowVallisLabels;
-        else if (name == L"ShowMonsLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMonsLabels;
-        else if (name == L"ShowPlanumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanumLabels;
-        else if (name == L"ShowChasmaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowChasmaLabels;
-        else if (name == L"ShowCollumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollumLabels;
-        else if (name == L"ShowPateraLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPateraLabels;
-        else if (name == L"ShowMareLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMareLabels;
-        else if (name == L"ShowRupesLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRupesLabels;
-        else if (name == L"ShowTesseraLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowTesseraLabels;
-        else if (name == L"ShowRegioLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRegioLabels;
-        else if (name == L"ShowChaosLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowChaosLabels;
-        else if (name == L"ShowTerraLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowTerraLabels;
-        else if (name == L"ShowAstrumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAstrumLabels;
-        else if (name == L"ShowCoronaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCoronaLabels;
-        else if (name == L"ShowDorsumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowDorsumLabels;
-        else if (name == L"ShowFossaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFossaLabels;
-        else if (name == L"ShowCatenaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCatenaLabels;
-        else if (name == L"ShowMensaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMensaLabels;
-        else if (name == L"ShowRimaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRimaLabels;
-        else if (name == L"ShowUndaeLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowUndaeLabels;
-        else if (name == L"ShowReticulumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowReticulumLabels;
-        else if (name == L"ShowPlanitiaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanitiaLabels;
-        else if (name == L"ShowLineaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLineaLabels;
-        else if (name == L"ShowFluctusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFluctusLabels;
-        else if (name == L"ShowFarrumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFarrumLabels;
-        else if (name == L"ShowEruptiveCenterLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowEruptiveCenterLabels;
-        else if (name == L"ShowTholusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowTholusLabels;
-        else if (name == L"ShowInsulaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowInsulaLabels;
-        else if (name == L"ShowAlbedoLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowAlbedoLabels;
-        else if (name == L"ShowArcusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowArcusLabels;
-        else if (name == L"ShowCavusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCavusLabels;
-        else if (name == L"ShowCollesLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCollesLabels;
-        else if (name == L"ShowFaculaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFaculaLabels;
-        else if (name == L"ShowFlexusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlexusLabels;
-        else if (name == L"ShowFlumenLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFlumenLabels;
-        else if (name == L"ShowFretumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowFretumLabels;
-        else if (name == L"ShowLabesLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabesLabels;
-        else if (name == L"ShowLabyrinthusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLabyrinthusLabels;
-        else if (name == L"ShowLacunaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacunaLabels;
-        else if (name == L"ShowLacusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLacusLabels;
-        else if (name == L"ShowLargeRingedLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLargeRingedLabels;
-        else if (name == L"ShowLobusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLobusLabels;
-        else if (name == L"ShowLingulaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowLingulaLabels;
-        else if (name == L"ShowMaculaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowMaculaLabels;
-        else if (name == L"ShowOceanusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOceanusLabels;
-        else if (name == L"ShowPalusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPalusLabels;
-        else if (name == L"ShowPlumeLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlumeLabels;
-        else if (name == L"ShowPromontoriumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowPromontoriumLabels;
-        else if (name == L"ShowSatelliteLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSatelliteLabels;
-        else if (name == L"ShowScopulusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowScopulusLabels;
-        else if (name == L"ShowSerpensLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSerpensLabels;
-        else if (name == L"ShowSinusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSinusLabels;
-        else if (name == L"ShowSulcusLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSulcusLabels;
-        else if (name == L"ShowVastitasLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowVastitasLabels;
-        else if (name == L"ShowVirgaLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowVirgaLabels;
-        else if (name == L"ShowSaxumLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowSaxumLabels;
-        else if (name == L"ShowCosmodromeLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowCosmodromeLabels;
-        else if (name == L"ShowRingLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowRingLabels;
-        else if (name == L"ShowOtherLabels")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ShowOtherLabels;
-        else if (name == L"EnableReverseWheel")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel;
-        else if (name == L"EnableRayBasedDragging")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging;
-        else if (name == L"EnableFocusZooming")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming;
-        else if (name == L"EnableAlignCameraToSurfaceOnLand")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand;
-        return CelestiaComponent::CelestiaSettingBooleanEntry::None;
+        auto iterator = entries.find(name);
+        return iterator == entries.end() ? Entry::None : iterator->second;
     }
 
     CelestiaComponent::CelestiaSettingInt32Entry CelestiaExtension::GetInt32EntryByName(hstring const& name)
     {
-        if (name == L"Resolution")
-            return CelestiaComponent::CelestiaSettingInt32Entry::Resolution;
-        else if (name == L"StarStyle")
-            return CelestiaComponent::CelestiaSettingInt32Entry::StarStyle;
-        else if (name == L"HudDetail")
-            return CelestiaComponent::CelestiaSettingInt32Entry::HudDetail;
-        else if (name == L"DateFormat")
-            return CelestiaComponent::CelestiaSettingInt32Entry::DateFormat;
-        else if (name == L"TimeZone")
-            return CelestiaComponent::CelestiaSettingInt32Entry::TimeZone;
-        else if (name == L"MeasurementSystem")
-            return CelestiaComponent::CelestiaSettingInt32Entry::MeasurementSystem;
-        else if (name == L"TemperatureScale")
-            return CelestiaComponent::CelestiaSettingInt32Entry::TemperatureScale;
-        else if (name == L"ScriptSystemAccessPolicy")
-            return CelestiaComponent::CelestiaSettingInt32Entry::ScriptSystemAccessPolicy;
-        else if (name == L"StarColors")
-            return CelestiaComponent::CelestiaSettingInt32Entry::StarColors;
-        return CelestiaComponent::CelestiaSettingInt32Entry::None;
+        using Entry = CelestiaComponent::CelestiaSettingInt32Entry;
+        static const std::unordered_map<winrt::hstring, Entry> entries = []
+            {
+                std::unordered_map<winrt::hstring, Entry> result;
+                for (auto value = static_cast<int>(Entry::Resolution); value <= static_cast<int>(Entry::StarColors); ++value)
+                {
+                    auto entry = static_cast<Entry>(value);
+                    auto entryName = GetNameByInt32Entry(entry);
+                    if (!entryName.empty())
+                        result.emplace(entryName, entry);
+                }
+                return result;
+            }();
+
+        auto iterator = entries.find(name);
+        return iterator == entries.end() ? Entry::None : iterator->second;
     }
 
     CelestiaComponent::CelestiaSettingSingleEntry CelestiaExtension::GetSingleEntryByName(hstring const& name)
     {
-        if (name == L"Exposure")
-            return CelestiaComponent::CelestiaSettingSingleEntry::Exposure;
+        using Entry = CelestiaComponent::CelestiaSettingSingleEntry;
+        static const std::unordered_map<winrt::hstring, Entry> entries = []
+            {
+                std::unordered_map<winrt::hstring, Entry> result;
+                for (auto value = static_cast<int>(Entry::AmbientLightLevel); value <= static_cast<int>(Entry::Exposure); ++value)
+                {
+                    auto entry = static_cast<Entry>(value);
+                    auto entryName = GetNameBySingleEntry(entry);
+                    if (!entryName.empty())
+                        result.emplace(entryName, entry);
+                }
+                return result;
+            }();
 
-        if (name == L"AmbientLightLevel")
-            return CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel;
-        else if (name == L"FaintestVisible")
-            return CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible;
-        else if (name == L"GalaxyBrightness")
-            return CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness;
-        else if (name == L"MinimumFeatureSize")
-            return CelestiaComponent::CelestiaSettingSingleEntry::MinimumFeatureSize;
-        else if (name == L"DistanceLimit")
-            return CelestiaComponent::CelestiaSettingSingleEntry::DistanceLimit;
-        else if (name == L"TintSaturaton")
-            return CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation;
-        else if (name == L"StarPointRadius")
-            return CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius;
-        else if (name == L"StarOptimization")
-            return CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization;
-        else if (name == L"StarMaxIrradiance")
-            return CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance;
-        else if (name == L"StarDimClipFactor")
-            return CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor;
-        else if (name == L"StarExposure")
-            return CelestiaComponent::CelestiaSettingSingleEntry::StarExposure;
-        return CelestiaComponent::CelestiaSettingSingleEntry::None;
+        auto iterator = entries.find(name);
+        return iterator == entries.end() ? Entry::None : iterator->second;
     }
 
     hstring CelestiaExtension::GetNameByBooleanEntry(CelestiaComponent::CelestiaSettingBooleanEntry entry)
