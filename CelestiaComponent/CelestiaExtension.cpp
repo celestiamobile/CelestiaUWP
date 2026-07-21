@@ -47,6 +47,9 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaSettingBooleanEntry CelestiaExtension::GetBooleanEntryByName(hstring const& name)
     {
+        if (name == L"ToneMapping")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping;
+
         if (name == L"ShowStars")
             return CelestiaComponent::CelestiaSettingBooleanEntry::ShowStars;
         else if (name == L"ShowPlanets")
@@ -293,8 +296,6 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming;
         else if (name == L"EnableAlignCameraToSurfaceOnLand")
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand;
-        else if (name == L"ToneMapping")
-            return CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping;
         return CelestiaComponent::CelestiaSettingBooleanEntry::None;
     }
 
@@ -323,6 +324,9 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaSettingSingleEntry CelestiaExtension::GetSingleEntryByName(hstring const& name)
     {
+        if (name == L"Exposure")
+            return CelestiaComponent::CelestiaSettingSingleEntry::Exposure;
+
         if (name == L"AmbientLightLevel")
             return CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel;
         else if (name == L"FaintestVisible")
@@ -345,8 +349,6 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor;
         else if (name == L"StarExposure")
             return CelestiaComponent::CelestiaSettingSingleEntry::StarExposure;
-        else if (name == L"Exposure")
-            return CelestiaComponent::CelestiaSettingSingleEntry::Exposure;
         return CelestiaComponent::CelestiaSettingSingleEntry::None;
     }
 
