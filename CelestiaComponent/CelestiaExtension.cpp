@@ -293,6 +293,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming;
         else if (name == L"EnableAlignCameraToSurfaceOnLand")
             return CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand;
+        else if (name == L"ToneMapping")
+            return CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping;
         return CelestiaComponent::CelestiaSettingBooleanEntry::None;
     }
 
@@ -343,6 +345,8 @@ namespace winrt::CelestiaComponent::implementation
             return CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor;
         else if (name == L"StarExposure")
             return CelestiaComponent::CelestiaSettingSingleEntry::StarExposure;
+        else if (name == L"Exposure")
+            return CelestiaComponent::CelestiaSettingSingleEntry::Exposure;
         return CelestiaComponent::CelestiaSettingSingleEntry::None;
     }
 
@@ -596,6 +600,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"EnableFocusZooming";
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return L"EnableAlignCameraToSurfaceOnLand";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
+            return L"ToneMapping";
         default:
             break;
         }
@@ -656,6 +662,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"StarDimClipFactor";
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             return L"StarExposure";
+        case CelestiaComponent::CelestiaSettingSingleEntry::Exposure:
+            return L"Exposure";
         default:
             break;
         }
@@ -1035,6 +1043,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             appCore.EnableAlignCameraToSurfaceOnLand(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
+            appCore.ToneMapping(value);
+            break;
         default:
             break;
         }
@@ -1112,6 +1123,9 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             appCore.StarExposure(value);
+            break;
+        case CelestiaComponent::CelestiaSettingSingleEntry::Exposure:
+            appCore.Exposure(value);
             break;
         default:
             break;
@@ -1368,6 +1382,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.EnableFocusZooming();
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return appCore.EnableAlignCameraToSurfaceOnLand();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
+            return appCore.ToneMapping();
         default:
             break;
         }
@@ -1428,6 +1444,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.StarDimClipFactor();
         case CelestiaComponent::CelestiaSettingSingleEntry::StarExposure:
             return appCore.StarExposure();
+        case CelestiaComponent::CelestiaSettingSingleEntry::Exposure:
+            return appCore.Exposure();
         default:
             break;
         }

@@ -160,6 +160,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowPartialTrajectories(bool showPartialTrajectories);
         bool ShowSmoothLines();
         void ShowSmoothLines(bool showSmoothLines);
+        bool ToneMapping();
+        void ToneMapping(bool toneMapping);
         bool ShowEclipseShadows();
         void ShowEclipseShadows(bool showEclipseShadows);
         bool ShowRingShadows();
@@ -382,6 +384,8 @@ namespace winrt::CelestiaComponent::implementation
         void StarDimClipFactor(float starDimClipFactor);
         float StarExposure();
         void StarExposure(float starExposure);
+        float Exposure();
+        void Exposure(float exposure);
 
         bool ShowBodyAxes();
         void ShowBodyAxes(bool showBodyAxes);

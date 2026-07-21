@@ -214,6 +214,7 @@ namespace CelestiaComponent
         Boolean ShowEcliptic;
         Boolean ShowPartialTrajectories;
         Boolean ShowSmoothLines;
+        Boolean ToneMapping;
         Boolean ShowEclipseShadows;
         Boolean ShowRingShadows;
         Boolean ShowCloudShadows;
@@ -324,6 +325,7 @@ namespace CelestiaComponent
         Single StarMaxIrradiance;
         Single StarDimClipFactor;
         Single StarExposure;
+        Single Exposure;
 
         Boolean ShowBodyAxes;
         Boolean ShowFrameAxes;

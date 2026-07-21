@@ -159,6 +159,7 @@ namespace CelestiaComponent
         EnableRayBasedDragging,
         EnableFocusZooming,
         EnableAlignCameraToSurfaceOnLand,
+        ToneMapping,
     };
 
     enum CelestiaSettingInt32Entry
@@ -189,6 +190,7 @@ namespace CelestiaComponent
         StarMaxIrradiance,
         StarDimClipFactor,
         StarExposure,
+        Exposure,
     };
 
     [default_interface]

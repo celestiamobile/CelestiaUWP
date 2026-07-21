@@ -240,10 +240,14 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
 
+            SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Tone mapping and exposure only affect sRGB rendering. Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"Output rendering setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::Exposure, 0.01f, 100.0f, 0.01f, localSettings, L"", true),
+
             SettingHeaderItem(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
-            AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
             AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
         };
 

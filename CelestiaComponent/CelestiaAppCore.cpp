@@ -919,6 +919,26 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setStarExposure(starExposure);
     }
 
+    bool CelestiaAppCore::ToneMapping()
+    {
+        return core->getRenderer()->getToneMapping();
+    }
+
+    void CelestiaAppCore::ToneMapping(bool toneMapping)
+    {
+        core->getRenderer()->setToneMapping(toneMapping);
+    }
+
+    float CelestiaAppCore::Exposure()
+    {
+        return core->getRenderer()->getExposure();
+    }
+
+    void CelestiaAppCore::Exposure(float exposure)
+    {
+        core->getRenderer()->setExposure(exposure);
+    }
+
     bool CelestiaAppCore::ShowBodyAxes()
     {
         return core->referenceMarkEnabled("body axes");
