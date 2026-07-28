@@ -160,8 +160,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowPartialTrajectories(bool showPartialTrajectories);
         bool ShowSmoothLines();
         void ShowSmoothLines(bool showSmoothLines);
-        bool ToneMapping();
-        void ToneMapping(bool toneMapping);
+        int32_t ToneMapping();
+        void ToneMapping(int32_t toneMapping);
         bool ShowEclipseShadows();
         void ShowEclipseShadows(bool showEclipseShadows);
         bool ShowRingShadows();

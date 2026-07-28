@@ -919,24 +919,24 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setStarExposure(starExposure);
     }
 
-    bool CelestiaAppCore::ToneMapping()
+    int32_t CelestiaAppCore::ToneMapping()
     {
-        return core->getRenderer()->getToneMapping();
+        return static_cast<int32_t>(core->getRenderer()->getToneMappingMode());
     }
 
-    void CelestiaAppCore::ToneMapping(bool toneMapping)
+    void CelestiaAppCore::ToneMapping(int32_t toneMapping)
     {
-        core->getRenderer()->setToneMapping(toneMapping);
+        core->getRenderer()->setToneMappingMode(static_cast<ToneMappingMode>(toneMapping));
     }
 
     float CelestiaAppCore::Exposure()
     {
-        return core->getRenderer()->getExposure();
+        return core->getRenderer()->getToneMappingExposure();
     }
 
     void CelestiaAppCore::Exposure(float exposure)
     {
-        core->getRenderer()->setExposure(exposure);
+        core->getRenderer()->setToneMappingExposure(exposure);
     }
 
     bool CelestiaAppCore::ShowBodyAxes()

@@ -53,7 +53,7 @@ namespace winrt::CelestiaComponent::implementation
         static const std::unordered_map<winrt::hstring, Entry> entries = []
             {
                 std::unordered_map<winrt::hstring, Entry> result;
-                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::ToneMapping); ++value)
+                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::EnableAlignCameraToSurfaceOnLand); ++value)
                 {
                     auto entry = static_cast<Entry>(value);
                     auto entryName = GetNameByBooleanEntry(entry);
@@ -73,7 +73,7 @@ namespace winrt::CelestiaComponent::implementation
         static const std::unordered_map<winrt::hstring, Entry> entries = []
             {
                 std::unordered_map<winrt::hstring, Entry> result;
-                for (auto value = static_cast<int>(Entry::Resolution); value <= static_cast<int>(Entry::StarColors); ++value)
+                for (auto value = static_cast<int>(Entry::Resolution); value <= static_cast<int>(Entry::ToneMapping); ++value)
                 {
                     auto entry = static_cast<Entry>(value);
                     auto entryName = GetNameByInt32Entry(entry);
@@ -357,8 +357,6 @@ namespace winrt::CelestiaComponent::implementation
             return L"EnableFocusZooming";
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return L"EnableAlignCameraToSurfaceOnLand";
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
-            return L"ToneMapping";
         default:
             break;
         }
@@ -387,6 +385,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"ScriptSystemAccessPolicy";
         case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
             return L"StarColors";
+        case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
+            return L"ToneMapping";
         default:
             break;
         }
@@ -800,9 +800,6 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             appCore.EnableAlignCameraToSurfaceOnLand(value);
             break;
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
-            appCore.ToneMapping(value);
-            break;
         default:
             break;
         }
@@ -838,6 +835,9 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
             appCore.StarColors(value);
+            break;
+        case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
+            appCore.ToneMapping(value);
             break;
         default:
             break;
@@ -1139,8 +1139,6 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.EnableFocusZooming();
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return appCore.EnableAlignCameraToSurfaceOnLand();
-        case CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping:
-            return appCore.ToneMapping();
         default:
             break;
         }
@@ -1169,6 +1167,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.ScriptSystemAccessPolicy();
         case CelestiaComponent::CelestiaSettingInt32Entry::StarColors:
             return appCore.StarColors();
+        case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
+            return appCore.ToneMapping();
         default:
             break;
         }

@@ -242,7 +242,11 @@ namespace winrt::CelestiaWinUI::implementation
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Tone mapping and exposure only affect sRGB rendering. Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
-            AppCoreBooleanItem(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ToneMapping, localSettings),
+            AppCoreInt32Item(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping, single_threaded_vector<OptionPair>
+            ({
+                OptionPair(0, LocalizationHelper::Localize(L"Off", L"Tone mapping mode")),
+                OptionPair(1, LocalizationHelper::Localize(L"Manual", L"Tone mapping mode")),
+            }), localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"Output rendering setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::Exposure, 0.01f, 100.0f, 0.01f, localSettings, L"", true),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items")),

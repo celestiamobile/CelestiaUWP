@@ -214,7 +214,7 @@ namespace CelestiaComponent
         Boolean ShowEcliptic;
         Boolean ShowPartialTrajectories;
         Boolean ShowSmoothLines;
-        Boolean ToneMapping;
+        Int32 ToneMapping;
         Boolean ShowEclipseShadows;
         Boolean ShowRingShadows;
         Boolean ShowCloudShadows;
