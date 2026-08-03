@@ -538,6 +538,9 @@
     <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp">
       <Filter>Celestia\celephem</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celephem\tass17.cpp">
+      <Filter>Celestia\celephem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celimage\bmp.cpp">
       <Filter>Celestia\celimage</Filter>
     </ClCompile>
@@ -1232,6 +1235,9 @@
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celephem\spicerotation.h">
+      <Filter>Celestia\celephem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celephem\tass17.h">
       <Filter>Celestia\celephem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celimage\dds_decompress.h">

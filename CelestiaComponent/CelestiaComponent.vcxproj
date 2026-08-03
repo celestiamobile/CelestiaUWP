@@ -443,6 +443,7 @@
     <ClInclude Include="..\..\Celestia\src\celephem\spiceinterface.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\spiceorbit.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\spicerotation.h" />
+    <ClInclude Include="..\..\Celestia\src\celephem\tass17.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\vsop87.h" />
     <ClInclude Include="..\..\Celestia\src\celephem\xyzvbinary.h" />
     <ClInclude Include="..\..\Celestia\src\celestia\audiosession.h" />
@@ -670,6 +671,7 @@
     <ClCompile Include="..\..\Celestia\src\celephem\spiceinterface.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\spiceorbit.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\spicerotation.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celephem\tass17.cpp" />
     <ClCompile Include="..\..\Celestia\src\celephem\vsop87.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\audiosession.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\catalogloader.cpp" />
