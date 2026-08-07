@@ -20,11 +20,11 @@
             <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" SelectionChanged="ResultList_SelectionChanged" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:EclipseResult">
-                        <RelativePanel>
+                        <RelativePanel Margin="{StaticResource ListItemMargin}">
                             <TextBlock Text="{x:Bind DisplayName, Mode=OneTime}" RelativePanel.AlignLeftWithPanel="True"
-                                    Grid.Column="0" VerticalAlignment="Center"/>
+                                    RelativePanel.AlignVerticalCenterWithPanel="True"/>
                             <TextBlock Text="{x:Bind Eclipse.StartTime, Converter={StaticResource DateTimeStringConverter}, Mode=OneTime}" RelativePanel.AlignRightWithPanel="True"
-                                    Grid.Column="2" VerticalAlignment="Center"/>
+                                    RelativePanel.AlignVerticalCenterWithPanel="True"/>
                         </RelativePanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
