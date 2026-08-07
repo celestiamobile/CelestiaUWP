@@ -17,6 +17,15 @@ import "CelestiaUniverse.idl";
 
 namespace CelestiaComponent
 {
+    enum CelestiaEclipseAction
+    {
+        SetTime = 0,
+        NearEclipsedBody = 1,
+        FromEclipsedBodySurface = 2,
+        FromOcculterSurface = 3,
+        BehindOcculter = 4
+    };
+
     [default_interface]
     runtimeclass CelestiaSimulation
     {
@@ -29,7 +38,7 @@ namespace CelestiaComponent
         CelestiaSelection Find(String name);
         void GoToDestination(CelestiaDestination destination);
         void GoToLocation(CelestiaGotoLocation location);
-        void GoToEclipse(CelestiaEclipse eclipse);
+        void PerformEclipseAction(CelestiaEclipse eclipse, CelestiaEclipseAction action);
         void ReverseOrientation();
 
         CelestiaCompletion[] GetCompletion(String name);

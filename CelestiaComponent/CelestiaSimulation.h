@@ -40,7 +40,7 @@ namespace winrt::CelestiaComponent::implementation
 
         void GoToDestination(CelestiaComponent::CelestiaDestination const& destination);
         void GoToLocation(CelestiaComponent::CelestiaGotoLocation const& location);
-        void GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse);
+        void PerformEclipseAction(CelestiaComponent::CelestiaEclipse const& eclipse, CelestiaComponent::CelestiaEclipseAction action);
         void ReverseOrientation();
 
         com_array<CelestiaComponent::CelestiaCompletion> GetCompletion(hstring const& name);

@@ -51,7 +51,9 @@ namespace winrt::CelestiaWinUI::implementation
         void InitializeComponent();
 
         winrt::fire_and_forget ComputeButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
-        void GoButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        void EclipseActionMenu_Opening(Windows::Foundation::IInspectable const&, Windows::Foundation::IInspectable const&);
+        void EclipseActionMenuItem_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
+        void ResultList_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const&);
 
         event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
         void PropertyChanged(event_token const& token) noexcept;

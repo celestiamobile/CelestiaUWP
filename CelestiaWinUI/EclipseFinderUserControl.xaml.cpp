@@ -33,6 +33,14 @@ using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 using namespace Windows::Foundation;
 
+namespace
+{
+    hstring FormatObjectName(hstring const& format, hstring const& name)
+    {
+        return to_hstring(fmt::format(to_string(format), to_string(name)));
+    }
+}
+
 namespace winrt::CelestiaWinUI::implementation
 {
     EclipseResult::EclipseResult(CelestiaEclipse const& eclipse, hstring const& displayName) : eclipse(eclipse), displayName(displayName) {}
@@ -51,7 +59,7 @@ namespace winrt::CelestiaWinUI::implementation
     {
         EclipseFinderUserControlT::InitializeComponent();
 
-        GoButton().Content(box_value(LocalizationHelper::Localize(L"Set Date and Go to Planet", L"Set date to eclipse date and view eclipse")));
+        GoButton().Content(box_value(LocalizationHelper::Localize(L"View Eclipse", L"")));
         ComputeButton().Content(box_value(LocalizationHelper::Localize(L"Compute", L"Compute for eclipses")));
         StartTimeHint().Text(LocalizationHelper::Localize(L"Start time:", L"In eclipse finder, range of time to find eclipse in"));
         EndTimeHint().Text(LocalizationHelper::Localize(L"End time:", L"In eclipse finder, range of time to find eclipse in"));
@@ -179,7 +187,10 @@ namespace winrt::CelestiaWinUI::implementation
         auto computedEclipses = eclipseFinder.Search(kind, computeStartTime, computeEndTime);
         for (const auto& eclipse : computedEclipses)
         {
-            hstring displayName = to_hstring(fmt::format("{} - {}", to_string(eclipse.Occulter().Name()), to_string(eclipse.Receiver().Name())));
+            hstring displayName = to_hstring(fmt::format(
+                "{}\n{}",
+                fmt::format(to_string(LocalizationHelper::Localize(L"Occulter: {}", L"Eclipse finder result")), to_string(eclipse.Occulter().Name())),
+                fmt::format(to_string(LocalizationHelper::Localize(L"Eclipsed body: {}", L"Eclipse finder result")), to_string(eclipse.Receiver().Name()))));
             vectorResults.Append(CelestiaWinUI::EclipseResult(eclipse, displayName));
         }
         co_await ui_thread;
@@ -187,18 +198,47 @@ namespace winrt::CelestiaWinUI::implementation
         co_return vectorResults;
     }
 
-    void EclipseFinderUserControl::GoButton_Click(IInspectable const&, RoutedEventArgs const &)
+    void EclipseFinderUserControl::EclipseActionMenu_Opening(IInspectable const&, IInspectable const&)
     {
         auto selectedEclipse = ResultList().SelectedItem();
         if (selectedEclipse == nullptr)
             return;
-        
+
         auto eclipse = selectedEclipse.as<CelestiaWinUI::EclipseResult>();
-        renderer.EnqueueTask([weak_this{ get_weak() }, eclipse]()
+        SetTimeMenuItem().Text(LocalizationHelper::Localize(L"Set time to mid-eclipse", L""));
+        NearEclipsedBodyMenuItem().Text(FormatObjectName(LocalizationHelper::Localize(L"Near {}", L""), eclipse.Eclipse().Receiver().Name()));
+        EclipsedBodySurfaceMenuItem().Text(FormatObjectName(LocalizationHelper::Localize(L"From surface of {}", L""), eclipse.Eclipse().Receiver().Name()));
+        OcculterSurfaceMenuItem().Text(FormatObjectName(LocalizationHelper::Localize(L"From surface of {}", L""), eclipse.Eclipse().Occulter().Name()));
+        BehindOcculterMenuItem().Text(FormatObjectName(LocalizationHelper::Localize(L"Behind {}", L""), eclipse.Eclipse().Occulter().Name()));
+    }
+
+    void EclipseFinderUserControl::ResultList_SelectionChanged(IInspectable const&, SelectionChangedEventArgs const&)
+    {
+        GoButton().IsEnabled(ResultList().SelectedItem() != nullptr);
+    }
+
+    void EclipseFinderUserControl::EclipseActionMenuItem_Click(IInspectable const& sender, RoutedEventArgs const&)
+    {
+        auto selectedEclipse = ResultList().SelectedItem();
+        if (selectedEclipse == nullptr)
+            return;
+
+        auto action = CelestiaEclipseAction::SetTime;
+        if (sender == NearEclipsedBodyMenuItem())
+            action = CelestiaEclipseAction::NearEclipsedBody;
+        else if (sender == EclipsedBodySurfaceMenuItem())
+            action = CelestiaEclipseAction::FromEclipsedBodySurface;
+        else if (sender == OcculterSurfaceMenuItem())
+            action = CelestiaEclipseAction::FromOcculterSurface;
+        else if (sender == BehindOcculterMenuItem())
+            action = CelestiaEclipseAction::BehindOcculter;
+
+        auto eclipse = selectedEclipse.as<CelestiaWinUI::EclipseResult>();
+        renderer.EnqueueTask([weak_this{ get_weak() }, eclipse, action]()
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
-                strong_this->appCore.Simulation().GoToEclipse(eclipse.Eclipse());
+                strong_this->appCore.Simulation().PerformEclipseAction(eclipse.Eclipse(), action);
             });
     }
 

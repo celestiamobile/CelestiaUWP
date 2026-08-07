@@ -17,7 +17,7 @@
     </UserControl.Resources>
     <RelativePanel Margin="{StaticResource Margin}">
         <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="ControlContainer">
-            <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+            <ListView IsFocusEngagementEnabled="True" x:Name="ResultList" Visibility="Collapsed" CanDragItems="False" AllowDrop="False" CanReorderItems="False" ItemsSource="{x:Bind Eclipses, Mode=OneWay}" ItemContainerStyle="{StaticResource ListViewItemStretchStyle}" SelectionChanged="ResultList_SelectionChanged" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:EclipseResult">
                         <RelativePanel>
@@ -60,7 +60,17 @@
             </Grid>
             <RelativePanel>
                 <Button Content="Compute" x:Name="ComputeButton" Click="ComputeButton_Click" RelativePanel.AlignLeftWithPanel="True"/>
-                <Button Content="Set Date and Go to Planet" x:Name="GoButton" Click="GoButton_Click" RelativePanel.AlignRightWithPanel="True"/>
+                <DropDownButton Content="View Eclipse" x:Name="GoButton" IsEnabled="False" RelativePanel.AlignRightWithPanel="True">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Opening="EclipseActionMenu_Opening">
+                            <MenuFlyoutItem x:Name="SetTimeMenuItem" Click="EclipseActionMenuItem_Click"/>
+                            <MenuFlyoutItem x:Name="NearEclipsedBodyMenuItem" Click="EclipseActionMenuItem_Click"/>
+                            <MenuFlyoutItem x:Name="EclipsedBodySurfaceMenuItem" Click="EclipseActionMenuItem_Click"/>
+                            <MenuFlyoutItem x:Name="OcculterSurfaceMenuItem" Click="EclipseActionMenuItem_Click"/>
+                            <MenuFlyoutItem x:Name="BehindOcculterMenuItem" Click="EclipseActionMenuItem_Click"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </RelativePanel>
         </StackPanel>
     </RelativePanel>

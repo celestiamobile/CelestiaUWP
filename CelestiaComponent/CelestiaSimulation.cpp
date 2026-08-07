@@ -10,6 +10,8 @@
 #include "pch.h"
 #include <celcompat/numbers.h>
 #include <celmath/geomutil.h>
+#include <celmath/intersect.h>
+#include <celmath/sphere.h>
 #include "CelestiaHelper.h"
 #include "CelestiaSimulation.h"
 #if __has_include("CelestiaSimulation.g.cpp")
@@ -17,6 +19,29 @@
 #endif
 
 using namespace std;
+
+namespace
+{
+
+Eigen::Vector3d findMaxEclipsePoint(const Eigen::Vector3d& toOcculter,
+                                    const Eigen::Vector3d& toReceiver,
+                                    double receiverRadius)
+{
+    double distance = 0.0;
+    if (celestia::math::testIntersection(
+            Eigen::ParametrizedLine<double, 3>(Eigen::Vector3d::Zero(), toOcculter),
+            celestia::math::Sphered(toReceiver, receiverRadius),
+            distance))
+    {
+        return toOcculter * distance - toReceiver;
+    }
+
+    const double t = toReceiver.dot(toOcculter) / toOcculter.squaredNorm();
+    Eigen::Vector3d point = t * toOcculter - toReceiver;
+    return point * (receiverRadius / point.norm());
+}
+
+}
 
 namespace winrt::CelestiaComponent::implementation
 {
@@ -134,28 +159,66 @@ namespace winrt::CelestiaComponent::implementation
         }
     }
 
-    void CelestiaSimulation::GoToEclipse(CelestiaComponent::CelestiaEclipse const& eclipse)
+    void CelestiaSimulation::PerformEclipseAction(CelestiaComponent::CelestiaEclipse const& eclipse, CelestiaComponent::CelestiaEclipseAction action)
     {
         auto e = get_self<CelestiaEclipse>(eclipse);
         auto o = get_self<CelestiaBody>(e->Occulter());
         auto r = get_self<CelestiaBody>(e->Receiver());
-        Star* star = reinterpret_cast<Body*>(r->obj)->getSystem()->getStar();
-        if (!star)
+        auto occulter = reinterpret_cast<Body*>(o->obj);
+        auto receiver = reinterpret_cast<Body*>(r->obj);
+        Star* sun = receiver->getSystem()->getStar();
+        if (!sun)
             return;
 
-        auto target = ::Selection(reinterpret_cast<Body*>(r->obj));
-        auto ref = ::Selection(star);
-
-        if (target.empty() || ref.empty())
+        const double midEclipseTime = (e->startTime + e->endTime) / 2.0;
+        if (action == CelestiaComponent::CelestiaEclipseAction::SetTime)
+        {
+            sim->setTime(midEclipseTime);
             return;
+        }
 
-        sim->setTime(e->startTime);
-        sim->setFrame(ObserverFrame::CoordinateSystem::PhaseLock, target, ref);
-        sim->update(0);
-        double distance = target.radius() * 4.0;
-        sim->gotoLocation(UniversalCoord::Zero().offsetKm(Eigen::Vector3d::UnitX() * distance),
-            celestia::math::YRotation(-0.5 * celestia::numbers::pi) * celestia::math::XRotation(-0.5 * celestia::numbers::pi),
-            2.5);
+        double now = sim->getTime();
+        if (now < e->startTime || now > e->endTime)
+            sim->setTime(midEclipseTime);
+        now = sim->getTime();
+
+        const Eigen::Vector3d toOcculter = occulter->getPosition(now).offsetFromKm(sun->getPosition(now));
+        const Eigen::Vector3d toReceiver = receiver->getPosition(now).offsetFromKm(sun->getPosition(now));
+        const Eigen::Vector3d receiverUp = receiver->getEclipticToBodyFixed(now).conjugate() * Eigen::Vector3d::UnitY();
+
+        Body* frameBody = receiver;
+        Eigen::Vector3d position;
+        Eigen::Quaterniond orientation;
+
+        switch (action)
+        {
+        case CelestiaComponent::CelestiaEclipseAction::NearEclipsedBody:
+        {
+            const Eigen::Vector3d eclipsePoint = findMaxEclipsePoint(toOcculter, toReceiver, receiver->getRadius());
+            position = eclipsePoint * 4.0;
+            orientation = celestia::math::LookAt<double>(position, eclipsePoint, receiverUp);
+            break;
+        }
+        case CelestiaComponent::CelestiaEclipseAction::FromEclipsedBodySurface:
+        {
+            const Eigen::Vector3d eclipsePoint = findMaxEclipsePoint(toOcculter, toReceiver, receiver->getRadius());
+            position = eclipsePoint * 1.0001;
+            orientation = celestia::math::LookAt<double>(eclipsePoint, -toReceiver, eclipsePoint.normalized());
+            break;
+        }
+        case CelestiaComponent::CelestiaEclipseAction::FromOcculterSurface:
+        case CelestiaComponent::CelestiaEclipseAction::BehindOcculter:
+            frameBody = occulter;
+            position = toOcculter.normalized() * occulter->getRadius()
+                * (action == CelestiaComponent::CelestiaEclipseAction::FromOcculterSurface ? 1.0001 : 20.0);
+            orientation = celestia::math::LookAt<double>(position, toReceiver, receiverUp);
+            break;
+        case CelestiaComponent::CelestiaEclipseAction::SetTime:
+            return;
+        }
+
+        sim->setFrame(ObserverFrame::CoordinateSystem::Ecliptical, frameBody);
+        sim->gotoLocation(UniversalCoord::Zero().offsetKm(position), orientation, 5.0);
     }
 
     void CelestiaSimulation::ReverseOrientation()
