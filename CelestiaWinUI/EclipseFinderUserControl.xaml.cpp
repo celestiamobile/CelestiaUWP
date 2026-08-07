@@ -51,8 +51,9 @@ namespace winrt::CelestiaWinUI::implementation
     {
         availableObjects = single_threaded_observable_vector<SearchObjectEntry>({ SearchObjectEntry(CelestiaAppCore::LocalizedString(L"Earth", L"celestia-data"), L"Sol/Earth"), SearchObjectEntry(CelestiaAppCore::LocalizedString(L"Jupiter", L"celestia-data"), L"Sol/Jupiter")});
         eclipses = single_threaded_observable_vector<CelestiaWinUI::EclipseResult>();
-        startTime = clock::now() - std::chrono::hours(24 * 365);
-        endTime = clock::now();
+        const auto now = clock::now();
+        startTime = now - std::chrono::hours(24 * 365);
+        endTime = now + std::chrono::hours(24 * 365);
     }
 
     void EclipseFinderUserControl::InitializeComponent()
