@@ -31,6 +31,18 @@ namespace winrt::CelestiaAppComponent::implementation
 {
     struct SettingBaseItem : SettingBaseItemT<SettingBaseItem>
     {
+        bool IsVisible();
+        void IsVisible(bool);
+
+        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
+        void PropertyChanged(event_token const& token) noexcept;
+
+    protected:
+        void RaisePropertyChanged(hstring const& propertyName);
+
+    private:
+        bool isVisible{ true };
+        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
     struct SettingBooleanItem : SettingBooleanItemT<SettingBooleanItem, SettingBaseItem>
@@ -99,13 +111,9 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring Path();
         void Path(hstring const&);
 
-        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
-        void PropertyChanged(event_token const& token) noexcept;
-
     private:
         CelestiaAppComponent::AppSettings appSettings;
         Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
-        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
     struct SettingConfigFileItem : SettingConfigFileItemT<SettingConfigFileItem, SettingBaseItem>
@@ -118,13 +126,9 @@ namespace winrt::CelestiaAppComponent::implementation
         hstring Path();
         void Path(hstring const&);
 
-        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
-        void PropertyChanged(event_token const& token) noexcept;
-
     private:
         CelestiaAppComponent::AppSettings appSettings;
         Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
-        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
     };
 
     struct SettingHeaderItem : SettingHeaderItemT<SettingHeaderItem, SettingBaseItem>

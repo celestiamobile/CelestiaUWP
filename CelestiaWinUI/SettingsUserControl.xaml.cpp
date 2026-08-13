@@ -23,6 +23,25 @@ using namespace Windows::Foundation;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 
+namespace
+{
+    template<typename Predicate, typename... SourceItems>
+    void BindVisibility(SettingBaseItem const& target, Predicate predicate, SourceItems const&... sourceItems)
+    {
+        auto weakTarget = make_weak(target);
+        auto update = [weakTarget, predicate]
+            {
+                if (auto strongTarget = weakTarget.get())
+                    strongTarget.IsVisible(predicate());
+            };
+        (sourceItems.PropertyChanged([update](IInspectable const&, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs const&)
+            {
+                update();
+            }), ...);
+        update();
+    }
+}
+
 namespace winrt::CelestiaWinUI::implementation
 {
     SettingsNavigationItemGroup::SettingsNavigationItemGroup(hstring const& title, Collections::IObservableVector<IInspectable> const& items, bool showRestartHint) : title(title), items(items), showRestartHint(showRestartHint) {};
@@ -203,6 +222,25 @@ namespace winrt::CelestiaWinUI::implementation
         for (int32_t size : { 0, 1024, 2048, 4096, 8192 })
             shadowMapSizeOptions.Append(OptionPair(size, shadowMapSizeFormatter.FormatInt(size)));
 
+        AppSettingsBooleanItem srgbRenderingItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings);
+        AppCoreInt32Item toneMappingItem(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping, single_threaded_vector<OptionPair>
+        ({
+            OptionPair(0, LocalizationHelper::Localize(L"Off", L"Tone mapping mode")),
+            OptionPair(1, LocalizationHelper::Localize(L"Manual", L"Tone mapping mode")),
+        }), localSettings);
+        AppCoreSingleItem exposureItem(LocalizationHelper::Localize(L"Exposure", L"Output rendering setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::Exposure, 0.01f, 100.0f, 0.01f, localSettings, L"", true);
+
+        BindVisibility(toneMappingItem, [appSettings]
+            {
+                return appSettings.EnableSRGBRendering();
+            }, srgbRenderingItem);
+        auto weakToneMappingItem = make_weak(toneMappingItem);
+        BindVisibility(exposureItem, [appSettings, weakToneMappingItem]
+            {
+                auto strongToneMappingItem = weakToneMappingItem.get();
+                return appSettings.EnableSRGBRendering() && strongToneMappingItem && strongToneMappingItem.Value() == 1;
+            }, srgbRenderingItem, toneMappingItem);
+
         std::vector<IInspectable> rendererSettingItems =
         {
             AppCoreInt32Item(LocalizationHelper::Localize(L"Texture Resolution", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::Resolution, single_threaded_vector<OptionPair>
@@ -241,13 +279,9 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Tone mapping and exposure only affect sRGB rendering. Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
-            AppSettingsBooleanItem(LocalizationHelper::Localize(L"sRGB Rendering (Experimental)", L""), appSettings, AppSettingBooleanEntry::EnableSRGBRendering, localSettings),
-            AppCoreInt32Item(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping, single_threaded_vector<OptionPair>
-            ({
-                OptionPair(0, LocalizationHelper::Localize(L"Off", L"Tone mapping mode")),
-                OptionPair(1, LocalizationHelper::Localize(L"Manual", L"Tone mapping mode")),
-            }), localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"Output rendering setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::Exposure, 0.01f, 100.0f, 0.01f, localSettings, L"", true),
+            srgbRenderingItem,
+            toneMappingItem,
+            exposureItem,
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),

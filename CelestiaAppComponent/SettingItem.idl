@@ -12,8 +12,9 @@ import "AppSettings.idl";
 namespace CelestiaAppComponent
 {
     [default_interface]
-    unsealed runtimeclass SettingBaseItem
+    unsealed runtimeclass SettingBaseItem : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
+        Boolean IsVisible;
     }
 
     [default_interface]
@@ -55,7 +56,7 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
-    runtimeclass SettingDataDirectoryItem : SettingBaseItem, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    runtimeclass SettingDataDirectoryItem : SettingBaseItem
     {
         SettingDataDirectoryItem(CelestiaAppComponent.AppSettings appSettings, Microsoft.Windows.Storage.ApplicationDataContainer localSettings);
         String Title{ get; };
@@ -66,7 +67,7 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
-    runtimeclass SettingConfigFileItem : SettingBaseItem, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    runtimeclass SettingConfigFileItem : SettingBaseItem
     {
         SettingConfigFileItem(CelestiaAppComponent.AppSettings appSettings, Microsoft.Windows.Storage.ApplicationDataContainer localSettings);
         String Title{ get; };

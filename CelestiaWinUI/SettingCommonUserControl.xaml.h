@@ -55,6 +55,7 @@ namespace winrt::CelestiaWinUI::implementation
     struct SettingCommonUserControl : SettingCommonUserControlT<SettingCommonUserControl>
     {
         SettingCommonUserControl(Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter);
+        ~SettingCommonUserControl();
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> Items();
@@ -66,9 +67,13 @@ namespace winrt::CelestiaWinUI::implementation
         void ConfigFileResetButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const&);
 
     private:
+        Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> allItems;
         Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> items;
+        std::vector<std::pair<CelestiaAppComponent::SettingBaseItem, event_token>> visibilitySubscriptions;
         bool showRestartHint;
         CelestiaWinUI::SettingParameter parameter;
+
+        void RefreshVisibleItems();
     };
 }
 

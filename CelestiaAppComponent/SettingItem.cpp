@@ -66,6 +66,34 @@ namespace winrt::CelestiaAppComponent::implementation
     CRITICAL_SECTION appCoreCritSection;
     bool appCoreCritSectionInitialized = false;
 
+    bool SettingBaseItem::IsVisible()
+    {
+        return isVisible;
+    }
+
+    void SettingBaseItem::IsVisible(bool value)
+    {
+        if (isVisible == value)
+            return;
+        isVisible = value;
+        RaisePropertyChanged(L"IsVisible");
+    }
+
+    event_token SettingBaseItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
+    {
+        return propertyChangedEvent.add(handler);
+    }
+
+    void SettingBaseItem::PropertyChanged(event_token const& token) noexcept
+    {
+        propertyChangedEvent.remove(token);
+    }
+
+    void SettingBaseItem::RaisePropertyChanged(hstring const& propertyName)
+    {
+        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(propertyName));
+    }
+
     SettingDataDirectoryItem::SettingDataDirectoryItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
 
     hstring SettingDataDirectoryItem::Title()
@@ -99,17 +127,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         appSettings.DataDirectoryPath(value);
         appSettings.Save(localSettings);
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"DisplayValue"));
-    }
-
-    event_token SettingDataDirectoryItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
-    {
-        return propertyChangedEvent.add(handler);
-    }
-
-    void SettingDataDirectoryItem::PropertyChanged(event_token const& token) noexcept
-    {
-        propertyChangedEvent.remove(token);
+        RaisePropertyChanged(L"DisplayValue");
     }
 
     SettingConfigFileItem::SettingConfigFileItem(CelestiaAppComponent::AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings) : appSettings(appSettings), localSettings(localSettings) {}
@@ -145,17 +163,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         appSettings.ConfigFilePath(value);
         appSettings.Save(localSettings);
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"DisplayValue"));
-    }
-
-    event_token SettingConfigFileItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
-    {
-        return propertyChangedEvent.add(handler);
-    }
-
-    void SettingConfigFileItem::PropertyChanged(event_token const& token) noexcept
-    {
-        propertyChangedEvent.remove(token);
+        RaisePropertyChanged(L"DisplayValue");
     }
 
     SettingHeaderItem::SettingHeaderItem(hstring const& title) : title(title) {};
@@ -231,6 +239,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto key = CelestiaExtension::GetNameByBooleanEntry(entry);
         if (!key.empty())
             localSettings.Values().Insert(key, box_value(value));
+        RaisePropertyChanged(L"IsEnabled");
     }
 
     hstring AppCoreBooleanItem::Title()
@@ -298,6 +307,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto key = CelestiaExtension::GetNameByInt32Entry(entry);
         if (!key.empty())
             localSettings.Values().Insert(key, box_value(actualValue));
+        RaisePropertyChanged(L"Value");
     }
 
     hstring AppCoreInt32Item::Title()
@@ -377,6 +387,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto key = CelestiaExtension::GetNameBySingleEntry(entry);
         if (!key.empty())
             localSettings.Values().Insert(key, box_value(static_cast<float>(actual)));
+        RaisePropertyChanged(L"Value");
     }
 
     hstring AppCoreSingleItem::Title()
@@ -434,6 +445,7 @@ namespace winrt::CelestiaAppComponent::implementation
             return;
         appSettings.SetBoolean(entry, value);
         appSettings.Save(localSettings);
+        RaisePropertyChanged(L"IsEnabled");
     }
 
     hstring AppSettingsBooleanItem::Title()
@@ -480,6 +492,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto actualValue = options.GetAt(value).Value();
         appSettings.SetInt32(entry, actualValue);
         appSettings.Save(localSettings);
+        RaisePropertyChanged(L"Value");
     }
 
     hstring AppSettingsInt32Item::Title()
@@ -523,6 +536,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
         appSettings.SetDouble(entry, value);
         appSettings.Save(localSettings);
+        RaisePropertyChanged(L"Value");
     }
 
     double AppSettingsDoubleItem::MinValue()
@@ -657,6 +671,7 @@ namespace winrt::CelestiaAppComponent::implementation
             appSettings.LanguageOverride(newOverride);
             appSettings.Save(localSettings);
         }
+        RaisePropertyChanged(L"Value");
     }
 
     hstring LanguageInt32Item::Title()
@@ -713,6 +728,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
         appSettings.SwapInterval(value + 1);
         appSettings.Save(localSettings);
+        RaisePropertyChanged(L"Value");
     }
 
     hstring FrameRateInt32Item::Title()

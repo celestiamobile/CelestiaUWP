@@ -118,8 +118,59 @@ namespace winrt::CelestiaWinUI::implementation
         return nullptr;
     }
 
-    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : items(settingItems), showRestartHint(showRestartHint), parameter(parameter)
+    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), items(single_threaded_observable_vector<IInspectable>()), showRestartHint(showRestartHint), parameter(parameter)
     {
+        for (auto const& item : allItems)
+        {
+            auto settingItem = item.try_as<SettingBaseItem>();
+            if (!settingItem)
+                continue;
+            auto token = settingItem.PropertyChanged([weak_this{ get_weak() }](IInspectable const&, Data::PropertyChangedEventArgs const& args)
+                {
+                    if (args.PropertyName() != L"IsVisible")
+                        return;
+                    if (auto strong_this = weak_this.get())
+                        strong_this->RefreshVisibleItems();
+                });
+            visibilitySubscriptions.emplace_back(settingItem, token);
+        }
+        RefreshVisibleItems();
+    }
+
+    SettingCommonUserControl::~SettingCommonUserControl()
+    {
+        for (auto const& [item, token] : visibilitySubscriptions)
+            item.PropertyChanged(token);
+    }
+
+    void SettingCommonUserControl::RefreshVisibleItems()
+    {
+        uint32_t visibleIndex = 0;
+        for (auto const& item : allItems)
+        {
+            auto settingItem = item.try_as<SettingBaseItem>();
+            auto isVisible = !settingItem || settingItem.IsVisible();
+            uint32_t currentIndex;
+            auto isDisplayed = items.IndexOf(item, currentIndex);
+
+            if (!isVisible)
+            {
+                if (isDisplayed)
+                    items.RemoveAt(currentIndex);
+                continue;
+            }
+
+            if (!isDisplayed)
+            {
+                items.InsertAt(visibleIndex, item);
+            }
+            else if (currentIndex != visibleIndex)
+            {
+                items.RemoveAt(currentIndex);
+                items.InsertAt(visibleIndex, item);
+            }
+            ++visibleIndex;
+        }
     }
 
     void SettingCommonUserControl::InitializeComponent()
