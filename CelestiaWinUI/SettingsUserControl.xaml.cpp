@@ -278,7 +278,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
 
-            SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Tone mapping and exposure only affect sRGB rendering. Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             srgbRenderingItem,
             toneMappingItem,
             exposureItem,
