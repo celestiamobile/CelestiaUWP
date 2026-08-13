@@ -281,7 +281,8 @@ namespace winrt::CelestiaWinUI::implementation
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Default", L"")),
                 OptionPair(1, LocalizationHelper::Localize(L"YYYY MMM DD HH:MM:SS TZ", L"")),
-                OptionPair(2, LocalizationHelper::Localize(L"UTC Offset", L""))
+                OptionPair(2, LocalizationHelper::Localize(L"UTC Offset", L"")),
+                OptionPair(3, LocalizationHelper::Localize(L"ISO 8601", L""))
             }), localSettings),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Region", L"Regions settings")),
