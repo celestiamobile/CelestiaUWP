@@ -27,8 +27,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'push' }}
 
 env:
-  DEPENDENCY_VERSION: '1.0.38'
-  ANGLE_VERSION: '1.1.33'
+  DEPENDENCY_VERSION: '1.0.40'
+  ANGLE_VERSION: '1.1.37'
   CONTENT_COMMIT_HASH: 'e4d5d2754b6224f04e440e53b189f9ee96b6d1fe'
 
 jobs:
