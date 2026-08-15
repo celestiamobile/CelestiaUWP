@@ -55,18 +55,20 @@
 
         <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
             <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid RowSpacing="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Spacing="2">
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
                         <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
                         <TextBlock Style="{StaticResource SettingDescriptionStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
                     </StackPanel>
                     <Slider
-                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="240"
                         Margin="-8,0"
+                        VerticalAlignment="Center"
                         Minimum="{x:Bind MinValue}"
                         Maximum="{x:Bind MaxValue}"
                         StepFrequency="{x:Bind Step}"
