@@ -1651,10 +1651,12 @@ namespace winrt::CelestiaWinUI::implementation
         window.SystemBackdrop(Media::MicaBackdrop());
         window.Title(LocalizationHelper::Localize(L"Settings", L""));
         window.Content(userControl);
+        window.ExtendsContentIntoTitleBar(true);
+        window.SetTitleBar(userControl.TitleBarElement());
         WindowHelper::SetWindowIcon(window);
         WindowHelper::SetWindowTheme(window);
         WindowHelper::SetWindowFlowDirection(window);
-        WindowHelper::ResizeWindow(window, 400, 600);
+        WindowHelper::ResizeWindow(window, 900, 700);
         WindowHelper::TrackWindow(window, id);
         window.Activate();
     }

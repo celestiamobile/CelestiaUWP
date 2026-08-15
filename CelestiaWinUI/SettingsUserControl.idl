@@ -14,8 +14,9 @@ namespace CelestiaWinUI
     [default_interface]
     runtimeclass SettingsNavigationItemGroup
     {
-        SettingsNavigationItemGroup(String title, Windows.Foundation.Collections.IObservableVector<Object> items, Boolean showRestartHint);
+        SettingsNavigationItemGroup(String title, Microsoft.UI.Xaml.Controls.Symbol icon, Windows.Foundation.Collections.IObservableVector<Object> items, Boolean showRestartHint);
         String Title{ get; };
+        Microsoft.UI.Xaml.Controls.Symbol Icon{ get; };
         Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
         Boolean ShowRestartHint{ get; };
     }
@@ -25,5 +26,6 @@ namespace CelestiaWinUI
     {
         SettingsUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaAppComponent.AppSettings appSettings, Microsoft.Windows.Storage.ApplicationDataContainer localSettings, Windows.Foundation.Collections.IVector<String> availableLanguages, Windows.Foundation.IReference<Int32> maximumDisplayFrequency, CelestiaComponent.DisplayInformation displayInformation, SettingParameter parameter);
         Windows.Foundation.Collections.IObservableVector<SettingsNavigationItemGroup> ItemGroups{ get; };
+        Microsoft.UI.Xaml.UIElement TitleBarElement{ get; };
     }
 }

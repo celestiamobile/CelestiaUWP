@@ -26,15 +26,34 @@ namespace CelestiaWinUI
         Microsoft.UI.Xaml.DataTemplate Selection;
         Microsoft.UI.Xaml.DataTemplate Slider;
         Microsoft.UI.Xaml.DataTemplate Header;
+        Microsoft.UI.Xaml.DataTemplate Separator;
         Microsoft.UI.Xaml.DataTemplate DataDirectory;
         Microsoft.UI.Xaml.DataTemplate ConfigFile;
+    }
+
+    [default_interface]
+    runtimeclass SettingListItem : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        SettingListItem(Object item, Boolean isSetting);
+        Object Item{ get; };
+        Microsoft.UI.Xaml.Visibility SettingVisibility{ get; };
+        Microsoft.UI.Xaml.Thickness BorderThickness{ get; };
+        Microsoft.UI.Xaml.CornerRadius CornerRadius{ get; };
+        Microsoft.UI.Xaml.Thickness Margin{ get; };
+        Microsoft.UI.Xaml.Thickness ContentMargin{ get; };
+    }
+
+    [default_interface]
+    runtimeclass SettingGroupSeparator
+    {
+        SettingGroupSeparator();
     }
 
     [default_interface]
     runtimeclass SettingCommonUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint, SettingParameter parameter);
-        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+        Windows.Foundation.Collections.IObservableVector<SettingListItem> Rows{ get; };
         Boolean ShowRestartHint{ get; };
     }
 }

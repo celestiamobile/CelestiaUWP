@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <winrt/Microsoft.UI.Xaml.Automation.h>
 #include "SettingsUserControl.xaml.h"
 #if __has_include("SettingsUserControl.g.cpp")
 #include "SettingsUserControl.g.cpp"
@@ -44,11 +45,16 @@ namespace
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    SettingsNavigationItemGroup::SettingsNavigationItemGroup(hstring const& title, Collections::IObservableVector<IInspectable> const& items, bool showRestartHint) : title(title), items(items), showRestartHint(showRestartHint) {};
+    SettingsNavigationItemGroup::SettingsNavigationItemGroup(hstring const& title, Symbol icon, Collections::IObservableVector<IInspectable> const& items, bool showRestartHint) : title(title), icon(icon), items(items), showRestartHint(showRestartHint) {};
 
     hstring SettingsNavigationItemGroup::Title()
     {
         return title;
+    }
+
+    Symbol SettingsNavigationItemGroup::Icon()
+    {
+        return icon;
     }
 
     Collections::IObservableVector<IInspectable> SettingsNavigationItemGroup::Items()
@@ -91,14 +97,16 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto displaySettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         displaySettingItemGroupItems.ReplaceAll(displaySettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Display", L"Display settings"), displaySettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Display", L"Display settings"), Symbol::View, displaySettingItemGroupItems, false));
 
         std::vector<IInspectable> guidesSettingItems =
         {
              SettingHeaderItem(LocalizationHelper::Localize(L"Orbits", L"")),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Orbits", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowOrbits, localSettings),
+             CelestiaWinUI::SettingGroupSeparator(),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Fading Orbits", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowFadingOrbits, localSettings),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Partial Trajectories", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowPartialTrajectories, localSettings),
+             CelestiaWinUI::SettingGroupSeparator(),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Stars", L"Tab for stars in Star Browser"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowStellarOrbits, localSettings),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Planets", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowPlanetOrbits, localSettings),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Dwarf Planets", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowDwarfPlanetOrbits, localSettings),
@@ -110,8 +118,10 @@ namespace winrt::CelestiaWinUI::implementation
 
              SettingHeaderItem(LocalizationHelper::Localize(L"Constellations", L"")),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Diagrams", L"Show constellation diagrams"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowDiagrams, localSettings),
+             CelestiaWinUI::SettingGroupSeparator(),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Labels", L"Constellation labels"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowConstellationLabels, localSettings),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Labels in Latin", L"Constellation labels in Latin"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowLatinConstellationLabels, localSettings),
+             CelestiaWinUI::SettingGroupSeparator(),
              AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Boundaries", L"Show constellation boundaries"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowBoundaries, localSettings),
 
              SettingHeaderItem(LocalizationHelper::Localize(L"Grids", L"")),
@@ -126,7 +136,7 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto guidesSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         guidesSettingItemGroupItems.ReplaceAll(guidesSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Guides", L"Grids, labels, orbits, markers"), guidesSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Guides", L"Grids, labels, orbits, markers"), Symbol::Map, guidesSettingItemGroupItems, false));
 
         std::vector<IInspectable> labelsSettingItems =
         {
@@ -146,7 +156,9 @@ namespace winrt::CelestiaWinUI::implementation
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Locations", L"Location labels to display")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Show Locations", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowLocationLabels, localSettings),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Minimum Labeled Feature Size", L"Minimum feature size that we should display a label for"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::MinimumFeatureSize, 0.0f, 99.0f, 1.0f, localSettings),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Cities", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowCityLabels, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Observatories", L"Location labels"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowObservatoryLabels, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Landing Sites", L"Location labels"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowLandingSiteLabels, localSettings),
@@ -213,7 +225,7 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto labelsSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         labelsSettingItemGroupItems.ReplaceAll(labelsSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Labels", L"Labels to display"), labelsSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Labels", L"Labels to display"), Symbol::Font, labelsSettingItemGroupItems, false));
 
         Windows::Globalization::NumberFormatting::DecimalFormatter shadowMapSizeFormatter;
         shadowMapSizeFormatter.IsGrouped(true);
@@ -249,6 +261,7 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(1, LocalizationHelper::Localize(L"Medium", L"Medium resolution")),
                 OptionPair(2, LocalizationHelper::Localize(L"High", L"High resolution"))
             }), localSettings),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreInt32Item(LocalizationHelper::Localize(L"Star Style", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarStyle, single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Fuzzy Points", L"Star style")),
@@ -264,19 +277,24 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(3, LocalizationHelper::Localize(L"Blackbody (Vega Whitepoint)", L"Star colors option")),
             }), localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation", L""), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illumination saturation setting is only effective with Blackbody star colors.", L"")),
+
+            CelestiaWinUI::SettingGroupSeparator(),
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Auto Mag", L"Auto mag for star display"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
+
+            CelestiaWinUI::SettingGroupSeparator(),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Ambient Light", L"In setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel, 0.0f, 0.99f, 0.01f, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
+
+            CelestiaWinUI::SettingGroupSeparator(),
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
+
             SettingHeaderItem(LocalizationHelper::Localize(L"Point Spread Function", L"Star style"), LocalizationHelper::Localize(L"Point spread function settings are only effective with the Point Spread Function star style.", L"")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Point Radius", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius, 1.0f, 10.0f, 0.5f, localSettings, LocalizationHelper::Localize(L"Pixel radius of a unit-irradiance star sprite.", L"PSF star setting footnote")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Bloom Compactness", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization, 0.05f, 1.0f, 0.05f, localSettings, LocalizationHelper::Localize(L"Extent of the eye PSF glow around bright stars. Lower values widen the glow at higher GPU cost.", L"PSF star setting footnote")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 1.0f, 1000000.0f, 10.0f, localSettings, LocalizationHelper::Localize(L"Soft upper limit on per-star peak irradiance to prevent bloom saturation.", L"PSF star setting footnote"), true),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Dim Clip Factor", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor, 1.0f, 100.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Soft-clips dim stars below this multiple of the perceptual visibility floor.", L"PSF star setting footnote")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.01f, 1000000.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Brightness multiplier applied to every star, extending the visible magnitude limit.", L"PSF star setting footnote"), true),
-
-            AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
-
-            AppCoreBooleanItem(LocalizationHelper::Localize(L"Auto Mag", L"Auto mag for star display"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Ambient Light", L"In setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel, 0.0f, 0.99f, 0.01f, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             srgbRenderingItem,
@@ -294,7 +312,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         auto rendererSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         rendererSettingItemGroupItems.ReplaceAll(rendererSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Renderer", L"In settings"), rendererSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Renderer", L"In settings"), Symbol::Pictures, rendererSettingItemGroupItems, true));
 
         std::vector<IInspectable> regionSettingItems =
         {
@@ -331,31 +349,35 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(1, LocalizationHelper::Localize(L"Celsius", L"Temperature scale")),
                 OptionPair(2, LocalizationHelper::Localize(L"Fahrenheit", L"Temperature scale"))
             }), localSettings),
+            CelestiaWinUI::SettingGroupSeparator(),
             LanguageInt32Item(LocalizationHelper::Localize(L"Language", L"Display language setting"), appSettings, availableLanguages, localSettings),
         };
 
         auto regionSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         regionSettingItemGroupItems.ReplaceAll(regionSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Time & Region", L"time and region related settings"), regionSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Time & Region", L"time and region related settings"), Symbol::Clock, regionSettingItemGroupItems, true));
 
         auto interactionSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         interactionSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Reverse Mouse Wheel", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableReverseWheel, localSettings),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Ray-Based Dragging", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging, localSettings, LocalizationHelper::Localize(L"Dragging behavior based on change of pick rays instead of screen coordinates", L"")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Focus Zooming", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming, localSettings, LocalizationHelper::Localize(L"Zooming behavior keeping the original focus location on screen", L"")),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppSettingsDoubleItem(LocalizationHelper::Localize(L"Sensitivity", L"Setting for sensitivity for selecting an object"), appSettings, AppSettingDoubleEntry::PickSensitivity, 1.0, 20.0, 1.0, localSettings, LocalizationHelper::Localize(L"Sensitivity for object selection", L"Notes for the sensitivity setting")),
+            CelestiaWinUI::SettingGroupSeparator(),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Hide Cursor During Dragging", L""), appSettings, AppSettingBooleanEntry::HideCursorDuringDragging, localSettings, LocalizationHelper::Localize(L"Hide the mouse cursor during dragging", L"")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Infinite Dragging", L""), appSettings, AppSettingBooleanEntry::InfiniteDragging, localSettings, LocalizationHelper::Localize(L"Mouse cursor is warped to the location when the dragging starts. Only effective when the cursor is hidden during dragging", L"")),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), interactionSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), Symbol::TouchPointer, interactionSettingItemGroupItems, true));
 
         auto cameraSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         cameraSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Align to Surface on Landing", L"Option to align camera to surface when landing"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), cameraSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), Symbol::Camera, cameraSettingItemGroupItems, true));
 
         auto allActions = single_threaded_vector<OptionPair>
             ({
@@ -394,10 +416,11 @@ namespace winrt::CelestiaWinUI::implementation
                 SettingHeaderItem(LocalizationHelper::Localize(L"Thumbsticks", L"Settings for game controller thumbsticks")),
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Enable Left Thumbstick", L"Setting item to control whether left thumbstick should be enabled"), appSettings, AppSettingBooleanEntry::GamepadEnableLeftThumbstick, localSettings),
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Enable Right Thumbstick", L"Setting item to control whether right thumbstick should be enabled"), appSettings, AppSettingBooleanEntry::GamepadEnableRightThumbstick, localSettings),
+                CelestiaWinUI::SettingGroupSeparator(),
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Invert Horizontally", L"Invert game controller thumbstick axis horizontally"), appSettings, AppSettingBooleanEntry::GamepadInvertX, localSettings),
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Invert Vertically", L"Invert game controller thumbstick axis vertically"), appSettings, AppSettingBooleanEntry::GamepadInvertY, localSettings),
             });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Game Controller", L"Settings for game controller"), gamepadSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Game Controller", L"Settings for game controller"), Symbol::XboxOneConsole, gamepadSettingItemGroupItems, false));
 
         auto dataLocationSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         dataLocationSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -405,7 +428,7 @@ namespace winrt::CelestiaWinUI::implementation
             SettingDataDirectoryItem(appSettings, localSettings),
             SettingConfigFileItem(appSettings, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Data Location", L"Title for celestia.cfg, data location setting"), dataLocationSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Data Location", L"Title for celestia.cfg, data location setting"), Symbol::Folder, dataLocationSettingItemGroupItems, true));
 
         auto advancedSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         advancedSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -418,18 +441,28 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(2, LocalizationHelper::Localize(L"Deny", L"Script system access policy option"))
             }), localSettings, LocalizationHelper::Localize(L"Lua scripts' access to the file system", L"Note for Script System Access Policy")),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items"), advancedSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items"), Symbol::Admin, advancedSettingItemGroupItems, false));
     }
 
     void SettingsUserControl::InitializeComponent()
     {
         SettingsUserControlT::InitializeComponent();
+        WindowTitle().Text(LocalizationHelper::Localize(L"Settings", L""));
+        auto navigationTitle = LocalizationHelper::Localize(L"Navigation", L"Navigation menu");
+        Automation::AutomationProperties::SetName(PaneToggleButton(), navigationTitle);
+        ToolTipService::SetToolTip(PaneToggleButton(), box_value(navigationTitle));
+        PaneToggleButton().Visibility(Nav().DisplayMode() == NavigationViewDisplayMode::Expanded ? Visibility::Collapsed : Visibility::Visible);
         Nav().SelectedItem(itemGroups.GetAt(0));
     }
 
     Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> SettingsUserControl::ItemGroups()
     {
         return itemGroups;
+    }
+
+    UIElement SettingsUserControl::TitleBarElement()
+    {
+        return TitleBarDragRegion();
     }
 
     void SettingsUserControl::NavigationView_SelectionChanged(IInspectable const&, NavigationViewSelectionChangedEventArgs const& args)
@@ -441,8 +474,19 @@ namespace winrt::CelestiaWinUI::implementation
         ItemGroupSelected(itemGroup);
     }
 
+    void SettingsUserControl::NavigationView_DisplayModeChanged(NavigationView const&, NavigationViewDisplayModeChangedEventArgs const& args)
+    {
+        PaneToggleButton().Visibility(args.DisplayMode() == NavigationViewDisplayMode::Expanded ? Visibility::Collapsed : Visibility::Visible);
+    }
+
+    void SettingsUserControl::PaneToggleButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        Nav().IsPaneOpen(!Nav().IsPaneOpen());
+    }
+
     void SettingsUserControl::ItemGroupSelected(CelestiaWinUI::SettingsNavigationItemGroup const& itemGroup)
     {
+        PageTitle().Text(itemGroup.Title());
         SettingCommonUserControl userControl{ itemGroup.Items(), itemGroup.ShowRestartHint(), parameter };
         Container().Children().Clear();
         Container().Children().Append(userControl);

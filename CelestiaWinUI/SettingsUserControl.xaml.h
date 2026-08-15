@@ -16,13 +16,15 @@ namespace winrt::CelestiaWinUI::implementation
 {
     struct SettingsNavigationItemGroup : SettingsNavigationItemGroupT<SettingsNavigationItemGroup>
     {
-        SettingsNavigationItemGroup(hstring const& title, Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> const& items, bool showRestartHint);
+        SettingsNavigationItemGroup(hstring const& title, Microsoft::UI::Xaml::Controls::Symbol icon, Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> const& items, bool showRestartHint);
 
         hstring Title();
+        Microsoft::UI::Xaml::Controls::Symbol Icon();
         Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> Items();
         bool ShowRestartHint();
     private:
         hstring title;
+        Microsoft::UI::Xaml::Controls::Symbol icon;
         Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> items;
         bool showRestartHint;
     };
@@ -33,8 +35,11 @@ namespace winrt::CelestiaWinUI::implementation
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> ItemGroups();
+        Microsoft::UI::Xaml::UIElement TitleBarElement();
 
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
+        void NavigationView_DisplayModeChanged(Microsoft::UI::Xaml::Controls::NavigationView const&, Microsoft::UI::Xaml::Controls::NavigationViewDisplayModeChangedEventArgs const& args);
+        void PaneToggleButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
     private:
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> itemGroups;
         CelestiaWinUI::SettingParameter parameter;
