@@ -12,8 +12,8 @@
 #if __has_include("SettingParameter.g.cpp")
 #include "SettingParameter.g.cpp"
 #endif
-#if __has_include("SettingItemGroup.g.cpp")
-#include "SettingItemGroup.g.cpp"
+#if __has_include("SettingListItem.g.cpp")
+#include "SettingListItem.g.cpp"
 #endif
 #if __has_include("SettingGroupSeparator.g.cpp")
 #include "SettingGroupSeparator.g.cpp"
@@ -78,6 +78,26 @@ namespace winrt::CelestiaWinUI::implementation
         slider = value;
     }
 
+    DataTemplate SettingTemplateSelector::Header()
+    {
+        return header;
+    }
+
+    void SettingTemplateSelector::Header(DataTemplate const& value)
+    {
+        header = value;
+    }
+
+    DataTemplate SettingTemplateSelector::Separator()
+    {
+        return separator;
+    }
+
+    void SettingTemplateSelector::Separator(DataTemplate const& value)
+    {
+        separator = value;
+    }
+
     DataTemplate SettingTemplateSelector::DataDirectory()
     {
         return dataDirectory;
@@ -108,88 +128,101 @@ namespace winrt::CelestiaWinUI::implementation
         if (item.try_as<SettingBooleanItem>() != nullptr) return toggle;
         if (item.try_as<SettingInt32Item>() != nullptr) return selection;
         if (item.try_as<SettingDoubleItem>() != nullptr) return slider;
+        if (item.try_as<SettingHeaderItem>() != nullptr) return header;
+        if (item.try_as<CelestiaWinUI::SettingGroupSeparator>() != nullptr) return separator;
         if (item.try_as<SettingDataDirectoryItem>() != nullptr) return dataDirectory;
         if (item.try_as<SettingConfigFileItem>() != nullptr) return configFile;
         return nullptr;
     }
 
-    SettingItemGroup::SettingItemGroup(hstring const& title, hstring const& description, bool headerVisible, bool descriptionVisible) :
-        title(title),
-        description(description),
-        headerVisible(headerVisible),
-        descriptionVisible(descriptionVisible),
-        items(single_threaded_observable_vector<IInspectable>())
+    SettingListItem::SettingListItem(IInspectable const& item, bool isSetting) :
+        item(item),
+        isSetting(isSetting),
+        borderThickness{},
+        cornerRadius{},
+        margin{},
+        contentMargin(isSetting ? Thickness{ 16, 16, 16, 16 } : Thickness{})
     {
     }
 
-    hstring SettingItemGroup::Title()
+    IInspectable SettingListItem::Item()
     {
-        return title;
+        return item;
     }
 
-    hstring SettingItemGroup::Description()
+    Visibility SettingListItem::SettingVisibility()
     {
-        return description;
+        return isSetting ? Visibility::Visible : Visibility::Collapsed;
     }
 
-    bool SettingItemGroup::HeaderVisible()
+    Thickness SettingListItem::BorderThickness()
     {
-        return headerVisible;
+        return borderThickness;
     }
 
-    void SettingItemGroup::HeaderVisible(bool value)
+    Microsoft::UI::Xaml::CornerRadius SettingListItem::CornerRadius()
     {
-        if (headerVisible == value)
-            return;
-        headerVisible = value;
-        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"HeaderVisible"));
+        return cornerRadius;
     }
 
-    bool SettingItemGroup::DescriptionVisible()
+    Thickness SettingListItem::Margin()
     {
-        return descriptionVisible;
+        return margin;
     }
 
-    Collections::IObservableVector<IInspectable> SettingItemGroup::Items()
+    Thickness SettingListItem::ContentMargin()
     {
-        return items;
+        return contentMargin;
     }
 
-    event_token SettingItemGroup::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
+    event_token SettingListItem::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
     {
         return propertyChangedEvent.add(handler);
     }
 
-    void SettingItemGroup::PropertyChanged(event_token const& token) noexcept
+    void SettingListItem::PropertyChanged(event_token const& token) noexcept
     {
         propertyChangedEvent.remove(token);
     }
 
-    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), groups(single_threaded_observable_vector<CelestiaWinUI::SettingItemGroup>()), showRestartHint(showRestartHint), parameter(parameter)
+    void SettingListItem::UpdateAppearance(Thickness const& valueBorderThickness, Microsoft::UI::Xaml::CornerRadius const& valueCornerRadius, Thickness const& valueMargin)
+    {
+        if (borderThickness.Left != valueBorderThickness.Left ||
+            borderThickness.Top != valueBorderThickness.Top ||
+            borderThickness.Right != valueBorderThickness.Right ||
+            borderThickness.Bottom != valueBorderThickness.Bottom)
+        {
+            borderThickness = valueBorderThickness;
+            propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"BorderThickness"));
+        }
+        if (cornerRadius.TopLeft != valueCornerRadius.TopLeft ||
+            cornerRadius.TopRight != valueCornerRadius.TopRight ||
+            cornerRadius.BottomRight != valueCornerRadius.BottomRight ||
+            cornerRadius.BottomLeft != valueCornerRadius.BottomLeft)
+        {
+            cornerRadius = valueCornerRadius;
+            propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"CornerRadius"));
+        }
+        if (margin.Left != valueMargin.Left ||
+            margin.Top != valueMargin.Top ||
+            margin.Right != valueMargin.Right ||
+            margin.Bottom != valueMargin.Bottom)
+        {
+            margin = valueMargin;
+            propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"Margin"));
+        }
+    }
+
+    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), rows(single_threaded_observable_vector<CelestiaWinUI::SettingListItem>()), showRestartHint(showRestartHint), parameter(parameter)
     {
         for (auto const& item : allItems)
         {
-            if (item.try_as<CelestiaWinUI::SettingGroupSeparator>())
-            {
-                auto group = CelestiaWinUI::SettingItemGroup(L"", L"", false, false);
-                allGroups.push_back({ nullptr, {}, group });
-                continue;
-            }
-            else if (auto header = item.try_as<SettingHeaderItem>())
-            {
-                auto group = CelestiaWinUI::SettingItemGroup(header.Title(), header.Description(), true, header.DescriptionVisibility());
-                allGroups.push_back({ header, {}, group });
-            }
-            else
-            {
-                if (allGroups.empty())
-                {
-                    auto group = CelestiaWinUI::SettingItemGroup(L"", L"", false, false);
-                    allGroups.push_back({ nullptr, {}, group });
-                }
-                allGroups.back().allItems.push_back(item);
-            }
-
+            auto isSetting = item.try_as<SettingBooleanItem>() ||
+                item.try_as<SettingInt32Item>() ||
+                item.try_as<SettingDoubleItem>() ||
+                item.try_as<SettingDataDirectoryItem>() ||
+                item.try_as<SettingConfigFileItem>();
+            allRows.emplace_back(item, isSetting);
             auto settingItem = item.try_as<SettingBaseItem>();
             if (!settingItem)
                 continue;
@@ -213,58 +246,53 @@ namespace winrt::CelestiaWinUI::implementation
 
     void SettingCommonUserControl::RefreshVisibleItems()
     {
-        uint32_t visibleGroupIndex = 0;
-        for (auto const& state : allGroups)
+        uint32_t visibleIndex = 0;
+        for (auto const& row : allRows)
         {
-            auto visibleItems = state.group.Items();
-            uint32_t visibleItemIndex = 0;
-            for (auto const& item : state.allItems)
-            {
-                auto settingItem = item.try_as<SettingBaseItem>();
-                auto isVisible = !settingItem || settingItem.IsVisible();
-                uint32_t currentIndex;
-                auto isDisplayed = visibleItems.IndexOf(item, currentIndex);
-
-                if (!isVisible)
-                {
-                    if (isDisplayed)
-                        visibleItems.RemoveAt(currentIndex);
-                    continue;
-                }
-
-                if (!isDisplayed)
-                {
-                    visibleItems.InsertAt(visibleItemIndex, item);
-                }
-                else if (currentIndex != visibleItemIndex)
-                {
-                    visibleItems.RemoveAt(currentIndex);
-                    visibleItems.InsertAt(visibleItemIndex, item);
-                }
-                ++visibleItemIndex;
-            }
-
-            state.group.HeaderVisible(state.header && state.header.IsVisible());
-            auto isVisible = visibleItems.Size() > 0;
+            auto item = row.Item();
+            auto settingItem = item.try_as<SettingBaseItem>();
+            auto isVisible = !settingItem || settingItem.IsVisible();
             uint32_t currentIndex;
-            auto isDisplayed = groups.IndexOf(state.group, currentIndex);
+            auto isDisplayed = rows.IndexOf(row, currentIndex);
+
             if (!isVisible)
             {
                 if (isDisplayed)
-                    groups.RemoveAt(currentIndex);
+                    rows.RemoveAt(currentIndex);
                 continue;
             }
 
             if (!isDisplayed)
             {
-                groups.InsertAt(visibleGroupIndex, state.group);
+                rows.InsertAt(visibleIndex, row);
             }
-            else if (currentIndex != visibleGroupIndex)
+            else if (currentIndex != visibleIndex)
             {
-                groups.RemoveAt(currentIndex);
-                groups.InsertAt(visibleGroupIndex, state.group);
+                rows.RemoveAt(currentIndex);
+                rows.InsertAt(visibleIndex, row);
             }
-            ++visibleGroupIndex;
+            ++visibleIndex;
+        }
+
+        for (uint32_t index = 0; index < rows.Size(); ++index)
+        {
+            auto row = rows.GetAt(index);
+            if (row.SettingVisibility() != Visibility::Visible)
+                continue;
+
+            auto previousIsSetting = index > 0 && rows.GetAt(index - 1).SettingVisibility() == Visibility::Visible;
+            auto nextIsSetting = index + 1 < rows.Size() && rows.GetAt(index + 1).SettingVisibility() == Visibility::Visible;
+            Thickness borderThickness = previousIsSetting ? Thickness{ 1, 0, 1, 1 } : Thickness{ 1, 1, 1, 1 };
+            Microsoft::UI::Xaml::CornerRadius rowCornerRadius{};
+            if (!previousIsSetting && !nextIsSetting)
+                rowCornerRadius = { 4, 4, 4, 4 };
+            else if (!previousIsSetting)
+                rowCornerRadius = { 4, 4, 0, 0 };
+            else if (!nextIsSetting)
+                rowCornerRadius = { 0, 0, 4, 4 };
+
+            auto topMargin = index == 0 ? 30.0 : 0.0;
+            get_self<implementation::SettingListItem>(row)->UpdateAppearance(borderThickness, rowCornerRadius, { 0, topMargin, 0, 0 });
         }
     }
 
@@ -274,9 +302,9 @@ namespace winrt::CelestiaWinUI::implementation
         RestartHint().Title(LocalizationHelper::Localize(L"Some configurations will take effect after a restart.", L""));
     }
 
-    Collections::IObservableVector<CelestiaWinUI::SettingItemGroup> SettingCommonUserControl::Groups()
+    Collections::IObservableVector<CelestiaWinUI::SettingListItem> SettingCommonUserControl::Rows()
     {
-        return groups;
+        return rows;
     }
 
     bool SettingCommonUserControl::ShowRestartHint()

@@ -10,9 +10,8 @@
 
     <UserControl.Resources>
         <Style x:Key="SettingsCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="Padding" Value="16"/>
         </Style>
 
         <Style x:Key="SettingTitleStyle" TargetType="TextBlock">
@@ -31,8 +30,7 @@
         </Style>
 
         <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
-            <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid ColumnSpacing="24">
+            <Grid ColumnSpacing="24">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -49,13 +47,11 @@
                         OnContent=""
                         AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
                         IsOn="{x:Bind IsEnabled, Mode=TwoWay}"/>
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
-            <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid ColumnSpacing="24">
+            <Grid ColumnSpacing="24">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -75,13 +71,11 @@
                         Value="{x:Bind Value, Mode=TwoWay}"
                         AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
                         ThumbToolTipValueConverter="{x:Bind ThumbToolTipValueConverter, Mode=OneTime}"/>
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
-            <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid ColumnSpacing="24">
+            <Grid ColumnSpacing="24">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -99,13 +93,11 @@
                         AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
                         ItemsSource="{x:Bind Options}"
                         SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="DataDirectoryItemTemplate" x:DataType="app:SettingDataDirectoryItem">
-            <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid ColumnSpacing="8">
+            <Grid ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -117,13 +109,11 @@
                     </StackPanel>
                     <Button Grid.Column="1" VerticalAlignment="Center" Click="DataDirectoryChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
                     <Button Grid.Column="2" VerticalAlignment="Center" Click="DataDirectoryResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="ConfigFileItemTemplate" x:DataType="app:SettingConfigFileItem">
-            <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid ColumnSpacing="8">
+            <Grid ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -135,8 +125,22 @@
                     </StackPanel>
                     <Button Grid.Column="1" VerticalAlignment="Center" Click="ConfigFileChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
                     <Button Grid.Column="2" VerticalAlignment="Center" Click="ConfigFileResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-                </Grid>
-            </Border>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HeaderItemTemplate" x:DataType="app:SettingHeaderItem">
+            <StackPanel>
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                <TextBlock
+                    Margin="1,-2,0,6"
+                    Style="{StaticResource SettingDescriptionStyle}"
+                    Text="{x:Bind Description, Mode=OneTime}"
+                    Visibility="{x:Bind DescriptionVisibility, Mode=OneTime}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SeparatorItemTemplate" x:DataType="local:SettingGroupSeparator">
+            <Grid Height="4"/>
         </DataTemplate>
 
         <local:SettingTemplateSelector
@@ -144,36 +148,24 @@
             Toggle="{StaticResource ToggleItemTemplate}"
             Slider="{StaticResource SliderItemTemplate}"
             Selection="{StaticResource SelectionItemTemplate}"
+            Header="{StaticResource HeaderItemTemplate}"
+            Separator="{StaticResource SeparatorItemTemplate}"
             DataDirectory="{StaticResource DataDirectoryItemTemplate}"
             ConfigFile="{StaticResource ConfigFileItemTemplate}"/>
 
-        <DataTemplate x:Key="SettingGroupTemplate" x:DataType="local:SettingItemGroup">
-            <StackPanel Margin="0,0,0,4">
-                <StackPanel Visibility="{x:Bind HeaderVisible, Mode=OneWay}">
-                    <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
-                    <TextBlock
-                        Margin="1,-2,0,6"
-                        Style="{StaticResource SettingDescriptionStyle}"
-                        Text="{x:Bind Description, Mode=OneTime}"
-                        Visibility="{x:Bind DescriptionVisible, Mode=OneTime}"/>
-                </StackPanel>
+        <DataTemplate x:Key="SettingListItemTemplate" x:DataType="local:SettingListItem">
+            <Grid Margin="{x:Bind Margin, Mode=OneWay}">
                 <Border
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <ItemsControl
-                        Margin="0,0,0,-1"
-                        ItemsSource="{x:Bind Items}"
-                        ItemTemplateSelector="{StaticResource SettingsTemplateSelector}">
-                        <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="ContentPresenter">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ItemsControl.ItemContainerStyle>
-                    </ItemsControl>
-                </Border>
-            </StackPanel>
+                    Style="{StaticResource SettingsCardStyle}"
+                    BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
+                    CornerRadius="{x:Bind CornerRadius, Mode=OneWay}"
+                    Visibility="{x:Bind SettingVisibility, Mode=OneTime}"/>
+                <ContentControl
+                    Margin="{x:Bind ContentMargin, Mode=OneTime}"
+                    HorizontalContentAlignment="Stretch"
+                    Content="{x:Bind Item, Mode=OneTime}"
+                    ContentTemplateSelector="{StaticResource SettingsTemplateSelector}"/>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
     <RelativePanel>
@@ -194,19 +186,17 @@
             RelativePanel.Below="RestartHint"
             VerticalScrollBarVisibility="Auto"
             VerticalScrollMode="Auto">
-            <ItemsControl
+            <ItemsRepeater
                 x:Name="SettingsItems"
                 Margin="36,0,36,36"
                 MaxWidth="1064"
                 HorizontalAlignment="Stretch"
-                ItemsSource="{x:Bind Groups}"
-                ItemTemplate="{StaticResource SettingGroupTemplate}">
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
+                ItemsSource="{x:Bind Rows}"
+                ItemTemplate="{StaticResource SettingListItemTemplate}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Orientation="Vertical"/>
+                </ItemsRepeater.Layout>
+            </ItemsRepeater>
         </ScrollView>
 
         <VisualStateManager.VisualStateGroups>
