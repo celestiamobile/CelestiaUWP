@@ -9,7 +9,11 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="ItemGroupTemplate" x:DataType="local:SettingsNavigationItemGroup">
-            <NavigationViewItem Content="{x:Bind Title}"/>
+            <NavigationViewItem Content="{x:Bind Title}">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="{x:Bind Icon}"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
