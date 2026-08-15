@@ -253,6 +253,31 @@ namespace winrt::CelestiaWinUI::implementation
                 return appSettings.EnableSRGBRendering() && strongToneMappingItem && strongToneMappingItem.Value() == 1;
             }, srgbRenderingItem, toneMappingItem);
 
+        AppCoreInt32Item starStyleItem(LocalizationHelper::Localize(L"Star Style", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarStyle, single_threaded_vector<OptionPair>
+        ({
+            OptionPair(0, LocalizationHelper::Localize(L"Fuzzy Points", L"Star style")),
+            OptionPair(1, LocalizationHelper::Localize(L"Points", L"Star style")),
+            OptionPair(2, LocalizationHelper::Localize(L"Scaled Discs", L"Star style")),
+            OptionPair(3, LocalizationHelper::Localize(L"Point Spread Function", L"Star style"))
+        }), localSettings);
+        AppCoreSingleItem starPointRadiusItem(LocalizationHelper::Localize(L"Point Radius", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius, 1.0f, 10.0f, 0.5f, localSettings, LocalizationHelper::Localize(L"Pixel radius of a unit-irradiance star sprite.", L"PSF star setting footnote"));
+        AppCoreSingleItem starOptimizationItem(LocalizationHelper::Localize(L"Bloom Compactness", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization, 0.05f, 1.0f, 0.05f, localSettings, LocalizationHelper::Localize(L"Extent of the eye PSF glow around bright stars. Lower values widen the glow at higher GPU cost.", L"PSF star setting footnote"));
+        AppCoreSingleItem starMaxIrradianceItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 1.0f, 1000000.0f, 10.0f, localSettings, LocalizationHelper::Localize(L"Soft upper limit on per-star peak irradiance to prevent bloom saturation.", L"PSF star setting footnote"), true);
+        AppCoreSingleItem starDimClipFactorItem(LocalizationHelper::Localize(L"Dim Clip Factor", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor, 1.0f, 100.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Soft-clips dim stars below this multiple of the perceptual visibility floor.", L"PSF star setting footnote"));
+        AppCoreSingleItem starExposureItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.01f, 1000000.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Brightness multiplier applied to every star, extending the visible magnitude limit.", L"PSF star setting footnote"), true);
+
+        auto weakStarStyleItem = make_weak(starStyleItem);
+        auto isPointSpreadFunction = [weakStarStyleItem]
+            {
+                auto strongStarStyleItem = weakStarStyleItem.get();
+                return strongStarStyleItem && strongStarStyleItem.Value() == 3;
+            };
+        BindVisibility(starPointRadiusItem, isPointSpreadFunction, starStyleItem);
+        BindVisibility(starOptimizationItem, isPointSpreadFunction, starStyleItem);
+        BindVisibility(starMaxIrradianceItem, isPointSpreadFunction, starStyleItem);
+        BindVisibility(starDimClipFactorItem, isPointSpreadFunction, starStyleItem);
+        BindVisibility(starExposureItem, isPointSpreadFunction, starStyleItem);
+
         std::vector<IInspectable> rendererSettingItems =
         {
             AppCoreInt32Item(LocalizationHelper::Localize(L"Texture Resolution", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::Resolution, single_threaded_vector<OptionPair>
@@ -262,13 +287,14 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(2, LocalizationHelper::Localize(L"High", L"High resolution"))
             }), localSettings),
             CelestiaWinUI::SettingGroupSeparator(),
-            AppCoreInt32Item(LocalizationHelper::Localize(L"Star Style", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarStyle, single_threaded_vector<OptionPair>
-            ({
-                OptionPair(0, LocalizationHelper::Localize(L"Fuzzy Points", L"Star style")),
-                OptionPair(1, LocalizationHelper::Localize(L"Points", L"Star style")),
-                OptionPair(2, LocalizationHelper::Localize(L"Scaled Discs", L"Star style")),
-                OptionPair(3, LocalizationHelper::Localize(L"Point Spread Function", L"Star style"))
-            }), localSettings),
+            starStyleItem,
+            starPointRadiusItem,
+            starOptimizationItem,
+            starMaxIrradianceItem,
+            starDimClipFactorItem,
+            starExposureItem,
+
+            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreInt32Item(LocalizationHelper::Localize(L"Star Colors", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarColors, single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Classic Colors", L"Star colors option")),
@@ -288,13 +314,6 @@ namespace winrt::CelestiaWinUI::implementation
 
             CelestiaWinUI::SettingGroupSeparator(),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
-
-            SettingHeaderItem(LocalizationHelper::Localize(L"Point Spread Function", L"Star style"), LocalizationHelper::Localize(L"Point spread function settings are only effective with the Point Spread Function star style.", L"")),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Point Radius", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarPointRadius, 1.0f, 10.0f, 0.5f, localSettings, LocalizationHelper::Localize(L"Pixel radius of a unit-irradiance star sprite.", L"PSF star setting footnote")),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Bloom Compactness", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarOptimization, 0.05f, 1.0f, 0.05f, localSettings, LocalizationHelper::Localize(L"Extent of the eye PSF glow around bright stars. Lower values widen the glow at higher GPU cost.", L"PSF star setting footnote")),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Max Irradiance", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarMaxIrradiance, 1.0f, 1000000.0f, 10.0f, localSettings, LocalizationHelper::Localize(L"Soft upper limit on per-star peak irradiance to prevent bloom saturation.", L"PSF star setting footnote"), true),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Dim Clip Factor", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarDimClipFactor, 1.0f, 100.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Soft-clips dim stars below this multiple of the perceptual visibility floor.", L"PSF star setting footnote")),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Exposure", L"PSF star setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::StarExposure, 0.01f, 1000000.0f, 1.0f, localSettings, LocalizationHelper::Localize(L"Brightness multiplier applied to every star, extending the visible magnitude limit.", L"PSF star setting footnote"), true),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             srgbRenderingItem,
