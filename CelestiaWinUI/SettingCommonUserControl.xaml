@@ -103,90 +103,36 @@
 
         <DataTemplate x:Key="DataDirectoryItemTemplate" x:DataType="app:SettingDataDirectoryItem">
             <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid x:Name="DirectoryLayout" ColumnSpacing="8" RowSpacing="12">
+                <Grid ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="DirectoryDescription" Grid.ColumnSpan="3" Spacing="2">
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
                         <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
                         <TextBlock Style="{StaticResource SettingDescriptionStyle}" TextTrimming="CharacterEllipsis" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
                     </StackPanel>
-                    <Button x:Name="DirectoryChangeButton" Grid.Row="2" Click="DataDirectoryChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
-                    <Button x:Name="DirectoryResetButton" Grid.Row="2" Grid.Column="1" Click="DataDirectoryResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="NarrowDirectoryLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="0"/>
-                                </VisualState.StateTriggers>
-                            </VisualState>
-                            <VisualState x:Name="WideDirectoryLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="700"/>
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Target="DirectoryChangeButton.(Grid.Row)" Value="0"/>
-                                    <Setter Target="DirectoryChangeButton.(Grid.Column)" Value="1"/>
-                                    <Setter Target="DirectoryResetButton.(Grid.Row)" Value="0"/>
-                                    <Setter Target="DirectoryResetButton.(Grid.Column)" Value="2"/>
-                                    <Setter Target="DirectoryDescription.(Grid.ColumnSpan)" Value="1"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    <Button Grid.Column="1" VerticalAlignment="Center" Click="DataDirectoryChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
+                    <Button Grid.Column="2" VerticalAlignment="Center" Click="DataDirectoryResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
                 </Grid>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="ConfigFileItemTemplate" x:DataType="app:SettingConfigFileItem">
             <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid x:Name="ConfigLayout" ColumnSpacing="8" RowSpacing="12">
+                <Grid ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="ConfigDescription" Grid.ColumnSpan="3" Spacing="2">
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
                         <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
                         <TextBlock Style="{StaticResource SettingDescriptionStyle}" TextTrimming="CharacterEllipsis" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
                     </StackPanel>
-                    <Button x:Name="ConfigChangeButton" Grid.Row="2" Click="ConfigFileChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
-                    <Button x:Name="ConfigResetButton" Grid.Row="2" Grid.Column="1" Click="ConfigFileResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="NarrowConfigLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="0"/>
-                                </VisualState.StateTriggers>
-                            </VisualState>
-                            <VisualState x:Name="WideConfigLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="700"/>
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Target="ConfigChangeButton.(Grid.Row)" Value="0"/>
-                                    <Setter Target="ConfigChangeButton.(Grid.Column)" Value="1"/>
-                                    <Setter Target="ConfigResetButton.(Grid.Row)" Value="0"/>
-                                    <Setter Target="ConfigResetButton.(Grid.Column)" Value="2"/>
-                                    <Setter Target="ConfigDescription.(Grid.ColumnSpan)" Value="1"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    <Button Grid.Column="1" VerticalAlignment="Center" Click="ConfigFileChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
+                    <Button Grid.Column="2" VerticalAlignment="Center" Click="ConfigFileResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
                 </Grid>
             </Border>
         </DataTemplate>
