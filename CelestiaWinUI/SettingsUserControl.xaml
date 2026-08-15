@@ -64,21 +64,12 @@
                 </Grid.RowDefinitions>
 
                 <Grid x:Name="HeaderLayout" Margin="36,24,36,0" MaxWidth="1064" HorizontalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
                     <TextBlock
                         x:Name="PageTitle"
                         Style="{StaticResource TitleTextBlockStyle}"
                         FontSize="28"
                         FontWeight="SemiBold"
                         AutomationProperties.HeadingLevel="Level1"/>
-                    <Rectangle
-                        Grid.Row="1"
-                        Height="1"
-                        Margin="0,12,0,0"
-                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
                 </Grid>
                 <RelativePanel Grid.Row="1" x:Name="Container"/>
 
