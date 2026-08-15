@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <winrt/Microsoft.UI.Xaml.Automation.h>
 #include "SettingsUserControl.xaml.h"
 #if __has_include("SettingsUserControl.g.cpp")
 #include "SettingsUserControl.g.cpp"
