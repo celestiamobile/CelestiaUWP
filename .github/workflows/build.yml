@@ -73,7 +73,9 @@ jobs:
         uses: microsoft/setup-msbuild@v3
 
       - name: Install Build Dependencies
-        run: choco install sentry-cli imagemagick
+        run: |
+          choco install imagemagick --yes --no-progress
+          npm install --global @sentry/cli --no-audit --no-fund
 
       - name: Checkout Branch
         if: github.event_name != 'pull_request'
@@ -285,7 +287,9 @@ jobs:
         uses: microsoft/setup-msbuild@v3
 
       - name: Install Build Dependencies
-        run: choco install sentry-cli imagemagick
+        run: |
+          choco install imagemagick --yes --no-progress
+          npm install --global @sentry/cli --no-audit --no-fund
 
       - name: Checkout Branch
         if: github.event_name != 'pull_request'
