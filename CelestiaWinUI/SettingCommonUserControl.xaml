@@ -254,7 +254,8 @@
     <RelativePanel>
         <InfoBar
             x:Name="RestartHint"
-            Margin="0,0,0,8"
+            Margin="36,0,36,8"
+            MaxWidth="1064"
             IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}"
             IsClosable="False"
             Severity="Informational"
@@ -269,6 +270,10 @@
             VerticalScrollBarVisibility="Auto"
             VerticalScrollMode="Auto">
             <ItemsControl
+                x:Name="SettingsItems"
+                Margin="36,0"
+                MaxWidth="1064"
+                HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind Groups}"
                 ItemTemplate="{StaticResource SettingGroupTemplate}">
                 <ItemsControl.ItemContainerStyle>
@@ -278,5 +283,28 @@
                 </ItemsControl.ItemContainerStyle>
             </ItemsControl>
         </ScrollViewer>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RestartHint.Margin" Value="20,0,20,8"/>
+                        <Setter Target="SettingsItems.Margin" Value="20,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="700"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RestartHint.Margin" Value="36,0,36,8"/>
+                        <Setter Target="SettingsItems.Margin" Value="36,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </RelativePanel>
 </UserControl>

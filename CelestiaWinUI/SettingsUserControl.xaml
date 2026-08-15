@@ -57,25 +57,30 @@
             MenuItemTemplate="{StaticResource ItemGroupTemplate}"
             DisplayModeChanged="NavigationView_DisplayModeChanged"
             SelectionChanged="NavigationView_SelectionChanged">
-            <Grid x:Name="PageLayout" Margin="36,24,36,0" MaxWidth="1064" HorizontalAlignment="Stretch">
+            <Grid x:Name="PageLayout">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    x:Name="PageTitle"
-                    Style="{StaticResource TitleTextBlockStyle}"
-                    FontSize="28"
-                    FontWeight="SemiBold"
-                    AutomationProperties.HeadingLevel="Level1"/>
-                <Rectangle
-                    Grid.Row="1"
-                    Height="1"
-                    Margin="0,12,0,0"
-                    Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
-                <RelativePanel Grid.Row="2" x:Name="Container"/>
+                <Grid x:Name="HeaderLayout" Margin="36,24,36,0" MaxWidth="1064" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        x:Name="PageTitle"
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        FontSize="28"
+                        FontWeight="SemiBold"
+                        AutomationProperties.HeadingLevel="Level1"/>
+                    <Rectangle
+                        Grid.Row="1"
+                        Height="1"
+                        Margin="0,12,0,0"
+                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+                </Grid>
+                <RelativePanel Grid.Row="1" x:Name="Container"/>
 
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup>
@@ -84,7 +89,7 @@
                                 <AdaptiveTrigger MinWindowWidth="0"/>
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <Setter Target="PageLayout.Margin" Value="20,16,20,0"/>
+                                <Setter Target="HeaderLayout.Margin" Value="20,16,20,0"/>
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="WideLayout">
@@ -92,7 +97,7 @@
                                 <AdaptiveTrigger MinWindowWidth="700"/>
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
-                                <Setter Target="PageLayout.Margin" Value="36,24,36,0"/>
+                                <Setter Target="HeaderLayout.Margin" Value="36,24,36,0"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
