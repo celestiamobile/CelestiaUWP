@@ -79,47 +79,24 @@
 
         <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
             <Border Style="{StaticResource SettingsCardStyle}">
-                <Grid x:Name="SelectionLayout" ColumnSpacing="24" RowSpacing="12">
+                <Grid ColumnSpacing="24">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
                     <StackPanel VerticalAlignment="Center" Spacing="2">
                         <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
                         <TextBlock Style="{StaticResource SettingDescriptionStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
                     </StackPanel>
                     <ComboBox
-                        x:Name="SelectionControl"
-                        Grid.Row="1"
+                        Grid.Column="1"
                         MinWidth="180"
-                        HorizontalAlignment="Stretch"
+                        MaxWidth="240"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
                         ItemsSource="{x:Bind Options}"
                         SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="NarrowSelectionLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="0"/>
-                                </VisualState.StateTriggers>
-                            </VisualState>
-                            <VisualState x:Name="WideSelectionLayout">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="560"/>
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Target="SelectionControl.(Grid.Row)" Value="0"/>
-                                    <Setter Target="SelectionControl.(Grid.Column)" Value="1"/>
-                                    <Setter Target="SelectionControl.HorizontalAlignment" Value="Right"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
                 </Grid>
             </Border>
         </DataTemplate>
