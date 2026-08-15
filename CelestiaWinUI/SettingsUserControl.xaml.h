@@ -33,8 +33,11 @@ namespace winrt::CelestiaWinUI::implementation
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> ItemGroups();
+        Microsoft::UI::Xaml::UIElement TitleBarElement();
 
         void NavigationView_SelectionChanged(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
+        void NavigationView_DisplayModeChanged(Microsoft::UI::Xaml::Controls::NavigationView const&, Microsoft::UI::Xaml::Controls::NavigationViewDisplayModeChangedEventArgs const& args);
+        void PaneToggleButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
     private:
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> itemGroups;
         CelestiaWinUI::SettingParameter parameter;

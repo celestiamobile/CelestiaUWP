@@ -441,12 +441,22 @@ namespace winrt::CelestiaWinUI::implementation
     void SettingsUserControl::InitializeComponent()
     {
         SettingsUserControlT::InitializeComponent();
+        WindowTitle().Text(LocalizationHelper::Localize(L"Settings", L""));
+        auto navigationTitle = LocalizationHelper::Localize(L"Navigation", L"Navigation menu");
+        Automation::AutomationProperties::SetName(PaneToggleButton(), navigationTitle);
+        ToolTipService::SetToolTip(PaneToggleButton(), box_value(navigationTitle));
+        PaneToggleButton().Visibility(Nav().DisplayMode() == NavigationViewDisplayMode::Expanded ? Visibility::Collapsed : Visibility::Visible);
         Nav().SelectedItem(itemGroups.GetAt(0));
     }
 
     Collections::IObservableVector<CelestiaWinUI::SettingsNavigationItemGroup> SettingsUserControl::ItemGroups()
     {
         return itemGroups;
+    }
+
+    UIElement SettingsUserControl::TitleBarElement()
+    {
+        return TitleBarDragRegion();
     }
 
     void SettingsUserControl::NavigationView_SelectionChanged(IInspectable const&, NavigationViewSelectionChangedEventArgs const& args)
@@ -456,6 +466,16 @@ namespace winrt::CelestiaWinUI::implementation
         auto itemGroup = selectedItem.try_as<CelestiaWinUI::SettingsNavigationItemGroup>();
         if (itemGroup == nullptr) return;
         ItemGroupSelected(itemGroup);
+    }
+
+    void SettingsUserControl::NavigationView_DisplayModeChanged(NavigationView const&, NavigationViewDisplayModeChangedEventArgs const& args)
+    {
+        PaneToggleButton().Visibility(args.DisplayMode() == NavigationViewDisplayMode::Expanded ? Visibility::Collapsed : Visibility::Visible);
+    }
+
+    void SettingsUserControl::PaneToggleButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        Nav().IsPaneOpen(!Nav().IsPaneOpen());
     }
 
     void SettingsUserControl::ItemGroupSelected(CelestiaWinUI::SettingsNavigationItemGroup const& itemGroup)
