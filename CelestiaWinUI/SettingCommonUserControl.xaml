@@ -196,7 +196,7 @@
             VerticalScrollMode="Auto">
             <ItemsControl
                 x:Name="SettingsItems"
-                Margin="36,0"
+                Margin="36,0,36,36"
                 MaxWidth="1064"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind Groups}"
@@ -217,7 +217,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RestartHint.Margin" Value="20,0,20,8"/>
-                        <Setter Target="SettingsItems.Margin" Value="20,0"/>
+                        <Setter Target="SettingsItems.Margin" Value="20,0,20,24"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="WideLayout">
@@ -226,7 +226,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RestartHint.Margin" Value="36,0,36,8"/>
-                        <Setter Target="SettingsItems.Margin" Value="36,0"/>
+                        <Setter Target="SettingsItems.Margin" Value="36,0,36,36"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
