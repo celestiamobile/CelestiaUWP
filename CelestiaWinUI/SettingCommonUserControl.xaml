@@ -9,92 +9,209 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <x:Double x:Key="InternalColumnSpacing">8</x:Double>
-        <x:Double x:Key="InternalRowSpacing">4</x:Double>
+        <Style x:Key="SettingsCardStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+
+        <Style x:Key="SettingTitleStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="SettingDescriptionStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="SettingsSectionHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyStrongTextBlockStyle}">
+            <Setter Property="Margin" Value="1,30,0,6"/>
+            <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
+        </Style>
+
         <DataTemplate x:Key="ToggleItemTemplate" x:DataType="app:SettingBooleanItem">
-            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalRowSpacing}" Margin="{StaticResource ListItemMargin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
-                <CheckBox MinWidth="0" Grid.Column="2" VerticalAlignment="Center" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
-            </Grid>
+            <Border Style="{StaticResource SettingsCardStyle}">
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                        <TextBlock Style="{StaticResource SettingDescriptionStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                    </StackPanel>
+                    <ToggleSwitch
+                        Grid.Column="1"
+                        MinWidth="0"
+                        VerticalAlignment="Center"
+                        OffContent=""
+                        OnContent=""
+                        AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
+                        IsOn="{x:Bind IsEnabled, Mode=TwoWay}"/>
+                </Grid>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="SliderItemTemplate" x:DataType="app:SettingDoubleItem">
-            <Grid RowSpacing="{StaticResource InternalRowSpacing}" Margin="{StaticResource ListItemMargin}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" FontWeight="Bold" Text="{x:Bind Title}"/>
-                <Slider Grid.Row="1" Minimum="{x:Bind MinValue}" Maximum="{x:Bind MaxValue}" StepFrequency="{x:Bind Step}" Value="{x:Bind Value, Mode=TwoWay}" ThumbToolTipValueConverter="{x:Bind ThumbToolTipValueConverter, Mode=OneTime}"/>
-                <TextBlock Grid.Row="2" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
-            </Grid>
+            <Border Style="{StaticResource SettingsCardStyle}">
+                <Grid RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Spacing="2">
+                        <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                        <TextBlock Style="{StaticResource SettingDescriptionStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                    </StackPanel>
+                    <Slider
+                        Grid.Row="1"
+                        Margin="-8,0"
+                        Minimum="{x:Bind MinValue}"
+                        Maximum="{x:Bind MaxValue}"
+                        StepFrequency="{x:Bind Step}"
+                        Value="{x:Bind Value, Mode=TwoWay}"
+                        AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
+                        ThumbToolTipValueConverter="{x:Bind ThumbToolTipValueConverter, Mode=OneTime}"/>
+                </Grid>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="SelectionItemTemplate" x:DataType="app:SettingInt32Item">
-            <Grid VerticalAlignment="Center" RowSpacing="{StaticResource InternalRowSpacing}" Margin="{StaticResource ListItemMargin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
-                <ComboBox Grid.Column="2" VerticalAlignment="Center" ItemsSource="{x:Bind Options}" SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
-            </Grid>
+            <Border Style="{StaticResource SettingsCardStyle}">
+                <Grid x:Name="SelectionLayout" ColumnSpacing="24" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                        <TextBlock Style="{StaticResource SettingDescriptionStyle}" Text="{x:Bind Note, Mode=OneTime}" Visibility="{x:Bind NoteVisibility, Mode=OneTime}"/>
+                    </StackPanel>
+                    <ComboBox
+                        x:Name="SelectionControl"
+                        Grid.Row="1"
+                        MinWidth="180"
+                        HorizontalAlignment="Stretch"
+                        AutomationProperties.Name="{x:Bind Title, Mode=OneTime}"
+                        ItemsSource="{x:Bind Options}"
+                        SelectedIndex="{x:Bind Value, Mode=TwoWay}"/>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="NarrowSelectionLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="0"/>
+                                </VisualState.StateTriggers>
+                            </VisualState>
+                            <VisualState x:Name="WideSelectionLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="560"/>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="SelectionControl.(Grid.Row)" Value="0"/>
+                                    <Setter Target="SelectionControl.(Grid.Column)" Value="1"/>
+                                    <Setter Target="SelectionControl.HorizontalAlignment" Value="Right"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="DataDirectoryItemTemplate" x:DataType="app:SettingDataDirectoryItem">
-            <Grid VerticalAlignment="Center" ColumnSpacing="{StaticResource InternalColumnSpacing}" Margin="{StaticResource ListItemMargin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
-                <TextBlock MinWidth="0" Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
-                <Button Grid.Column="3" Click="DataDirectoryChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
-                <Button Grid.Column="4" Click="DataDirectoryResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-            </Grid>
+            <Border Style="{StaticResource SettingsCardStyle}">
+                <Grid x:Name="DirectoryLayout" ColumnSpacing="8" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="DirectoryDescription" Grid.ColumnSpan="3" Spacing="2">
+                        <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                        <TextBlock Style="{StaticResource SettingDescriptionStyle}" TextTrimming="CharacterEllipsis" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
+                    </StackPanel>
+                    <Button x:Name="DirectoryChangeButton" Grid.Row="2" Click="DataDirectoryChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
+                    <Button x:Name="DirectoryResetButton" Grid.Row="2" Grid.Column="1" Click="DataDirectoryResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="NarrowDirectoryLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="0"/>
+                                </VisualState.StateTriggers>
+                            </VisualState>
+                            <VisualState x:Name="WideDirectoryLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="700"/>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="DirectoryChangeButton.(Grid.Row)" Value="0"/>
+                                    <Setter Target="DirectoryChangeButton.(Grid.Column)" Value="1"/>
+                                    <Setter Target="DirectoryResetButton.(Grid.Row)" Value="0"/>
+                                    <Setter Target="DirectoryResetButton.(Grid.Column)" Value="2"/>
+                                    <Setter Target="DirectoryDescription.(Grid.ColumnSpan)" Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="ConfigFileItemTemplate" x:DataType="app:SettingConfigFileItem">
-            <Grid VerticalAlignment="Center" ColumnSpacing="{StaticResource InternalColumnSpacing}" Margin="{StaticResource ListItemMargin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
-                <TextBlock MinWidth="0" Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
-                <Button Grid.Column="3" Click="ConfigFileChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
-                <Button Grid.Column="4" Click="ConfigFileResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
-            </Grid>
-        </DataTemplate>
+            <Border Style="{StaticResource SettingsCardStyle}">
+                <Grid x:Name="ConfigLayout" ColumnSpacing="8" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="ConfigDescription" Grid.ColumnSpan="3" Spacing="2">
+                        <TextBlock Style="{StaticResource SettingTitleStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                        <TextBlock Style="{StaticResource SettingDescriptionStyle}" TextTrimming="CharacterEllipsis" Text="{x:Bind DisplayValue, Mode=OneWay}"/>
+                    </StackPanel>
+                    <Button x:Name="ConfigChangeButton" Grid.Row="2" Click="ConfigFileChangeButton_Click" Content="{x:Bind ChangeButtonTitle, Mode=OneTime}"/>
+                    <Button x:Name="ConfigResetButton" Grid.Row="2" Grid.Column="1" Click="ConfigFileResetButton_Click" Content="{x:Bind ResetButtonTitle, Mode=OneTime}"/>
 
-        <DataTemplate x:Key="HeaderItemTemplate" x:DataType="app:SettingHeaderItem">
-            <StackPanel Margin="{StaticResource ListItemMargin}" Spacing="{StaticResource InternalRowSpacing}">
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneTime}"/>
-                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Text="{x:Bind Description, Mode=OneTime}" Visibility="{x:Bind DescriptionVisibility, Mode=OneTime}"/>
-            </StackPanel>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="NarrowConfigLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="0"/>
+                                </VisualState.StateTriggers>
+                            </VisualState>
+                            <VisualState x:Name="WideConfigLayout">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="700"/>
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="ConfigChangeButton.(Grid.Row)" Value="0"/>
+                                    <Setter Target="ConfigChangeButton.(Grid.Column)" Value="1"/>
+                                    <Setter Target="ConfigResetButton.(Grid.Row)" Value="0"/>
+                                    <Setter Target="ConfigResetButton.(Grid.Column)" Value="2"/>
+                                    <Setter Target="ConfigDescription.(Grid.ColumnSpan)" Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </Border>
         </DataTemplate>
 
         <local:SettingTemplateSelector
@@ -102,26 +219,64 @@
             Toggle="{StaticResource ToggleItemTemplate}"
             Slider="{StaticResource SliderItemTemplate}"
             Selection="{StaticResource SelectionItemTemplate}"
-            Header="{StaticResource HeaderItemTemplate}"
             DataDirectory="{StaticResource DataDirectoryItemTemplate}"
             ConfigFile="{StaticResource ConfigFileItemTemplate}"/>
+
+        <DataTemplate x:Key="SettingGroupTemplate" x:DataType="local:SettingItemGroup">
+            <StackPanel Margin="0,0,0,4">
+                <StackPanel Visibility="{x:Bind HeaderVisible, Mode=OneWay}">
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="{x:Bind Title, Mode=OneTime}"/>
+                    <TextBlock
+                        Margin="1,-2,0,6"
+                        Style="{StaticResource SettingDescriptionStyle}"
+                        Text="{x:Bind Description, Mode=OneTime}"
+                        Visibility="{x:Bind DescriptionVisible, Mode=OneTime}"/>
+                </StackPanel>
+                <Border
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <ItemsControl
+                        Margin="0,0,0,-1"
+                        ItemsSource="{x:Bind Items}"
+                        ItemTemplateSelector="{StaticResource SettingsTemplateSelector}">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
     <RelativePanel>
-        <InfoBar x:Name="RestartHint" IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}" IsClosable="False" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"/>
-        <ListView
+        <InfoBar
+            x:Name="RestartHint"
+            Margin="0,0,0,8"
+            IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}"
+            IsClosable="False"
+            Severity="Informational"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignTopWithPanel="True"/>
+        <ScrollViewer
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.Below="RestartHint"
-            SelectionMode="None"
-            ItemsSource = "{x:Bind Items}"
-            ItemTemplateSelector = "{StaticResource SettingsTemplateSelector}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="IsTabStop" Value="False"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
+            <ItemsControl
+                ItemsSource="{x:Bind Groups}"
+                ItemTemplate="{StaticResource SettingGroupTemplate}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ScrollViewer>
     </RelativePanel>
 </UserControl>

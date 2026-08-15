@@ -12,6 +12,12 @@
 #if __has_include("SettingParameter.g.cpp")
 #include "SettingParameter.g.cpp"
 #endif
+#if __has_include("SettingItemGroup.g.cpp")
+#include "SettingItemGroup.g.cpp"
+#endif
+#if __has_include("SettingGroupSeparator.g.cpp")
+#include "SettingGroupSeparator.g.cpp"
+#endif
 #if __has_include("SettingCommonUserControl.g.cpp")
 #include "SettingCommonUserControl.g.cpp"
 #endif
@@ -72,16 +78,6 @@ namespace winrt::CelestiaWinUI::implementation
         slider = value;
     }
 
-    DataTemplate SettingTemplateSelector::Header()
-    {
-        return header;
-    }
-
-    void SettingTemplateSelector::Header(DataTemplate const& value)
-    {
-        header = value;
-    }
-
     DataTemplate SettingTemplateSelector::DataDirectory()
     {
         return dataDirectory;
@@ -112,16 +108,88 @@ namespace winrt::CelestiaWinUI::implementation
         if (item.try_as<SettingBooleanItem>() != nullptr) return toggle;
         if (item.try_as<SettingInt32Item>() != nullptr) return selection;
         if (item.try_as<SettingDoubleItem>() != nullptr) return slider;
-        if (item.try_as<SettingHeaderItem>() != nullptr) return header;
         if (item.try_as<SettingDataDirectoryItem>() != nullptr) return dataDirectory;
         if (item.try_as<SettingConfigFileItem>() != nullptr) return configFile;
         return nullptr;
     }
 
-    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), items(single_threaded_observable_vector<IInspectable>()), showRestartHint(showRestartHint), parameter(parameter)
+    SettingItemGroup::SettingItemGroup(hstring const& title, hstring const& description, bool headerVisible, bool descriptionVisible) :
+        title(title),
+        description(description),
+        headerVisible(headerVisible),
+        descriptionVisible(descriptionVisible),
+        items(single_threaded_observable_vector<IInspectable>())
+    {
+    }
+
+    hstring SettingItemGroup::Title()
+    {
+        return title;
+    }
+
+    hstring SettingItemGroup::Description()
+    {
+        return description;
+    }
+
+    bool SettingItemGroup::HeaderVisible()
+    {
+        return headerVisible;
+    }
+
+    void SettingItemGroup::HeaderVisible(bool value)
+    {
+        if (headerVisible == value)
+            return;
+        headerVisible = value;
+        propertyChangedEvent(*this, Data::PropertyChangedEventArgs(L"HeaderVisible"));
+    }
+
+    bool SettingItemGroup::DescriptionVisible()
+    {
+        return descriptionVisible;
+    }
+
+    Collections::IObservableVector<IInspectable> SettingItemGroup::Items()
+    {
+        return items;
+    }
+
+    event_token SettingItemGroup::PropertyChanged(Data::PropertyChangedEventHandler const& handler)
+    {
+        return propertyChangedEvent.add(handler);
+    }
+
+    void SettingItemGroup::PropertyChanged(event_token const& token) noexcept
+    {
+        propertyChangedEvent.remove(token);
+    }
+
+    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), groups(single_threaded_observable_vector<CelestiaWinUI::SettingItemGroup>()), showRestartHint(showRestartHint), parameter(parameter)
     {
         for (auto const& item : allItems)
         {
+            if (item.try_as<CelestiaWinUI::SettingGroupSeparator>())
+            {
+                auto group = CelestiaWinUI::SettingItemGroup(L"", L"", false, false);
+                allGroups.push_back({ nullptr, {}, group });
+                continue;
+            }
+            else if (auto header = item.try_as<SettingHeaderItem>())
+            {
+                auto group = CelestiaWinUI::SettingItemGroup(header.Title(), header.Description(), true, header.DescriptionVisibility());
+                allGroups.push_back({ header, {}, group });
+            }
+            else
+            {
+                if (allGroups.empty())
+                {
+                    auto group = CelestiaWinUI::SettingItemGroup(L"", L"", false, false);
+                    allGroups.push_back({ nullptr, {}, group });
+                }
+                allGroups.back().allItems.push_back(item);
+            }
+
             auto settingItem = item.try_as<SettingBaseItem>();
             if (!settingItem)
                 continue;
@@ -145,31 +213,58 @@ namespace winrt::CelestiaWinUI::implementation
 
     void SettingCommonUserControl::RefreshVisibleItems()
     {
-        uint32_t visibleIndex = 0;
-        for (auto const& item : allItems)
+        uint32_t visibleGroupIndex = 0;
+        for (auto const& state : allGroups)
         {
-            auto settingItem = item.try_as<SettingBaseItem>();
-            auto isVisible = !settingItem || settingItem.IsVisible();
-            uint32_t currentIndex;
-            auto isDisplayed = items.IndexOf(item, currentIndex);
+            auto visibleItems = state.group.Items();
+            uint32_t visibleItemIndex = 0;
+            for (auto const& item : state.allItems)
+            {
+                auto settingItem = item.try_as<SettingBaseItem>();
+                auto isVisible = !settingItem || settingItem.IsVisible();
+                uint32_t currentIndex;
+                auto isDisplayed = visibleItems.IndexOf(item, currentIndex);
 
+                if (!isVisible)
+                {
+                    if (isDisplayed)
+                        visibleItems.RemoveAt(currentIndex);
+                    continue;
+                }
+
+                if (!isDisplayed)
+                {
+                    visibleItems.InsertAt(visibleItemIndex, item);
+                }
+                else if (currentIndex != visibleItemIndex)
+                {
+                    visibleItems.RemoveAt(currentIndex);
+                    visibleItems.InsertAt(visibleItemIndex, item);
+                }
+                ++visibleItemIndex;
+            }
+
+            state.group.HeaderVisible(state.header && state.header.IsVisible());
+            auto isVisible = visibleItems.Size() > 0;
+            uint32_t currentIndex;
+            auto isDisplayed = groups.IndexOf(state.group, currentIndex);
             if (!isVisible)
             {
                 if (isDisplayed)
-                    items.RemoveAt(currentIndex);
+                    groups.RemoveAt(currentIndex);
                 continue;
             }
 
             if (!isDisplayed)
             {
-                items.InsertAt(visibleIndex, item);
+                groups.InsertAt(visibleGroupIndex, state.group);
             }
-            else if (currentIndex != visibleIndex)
+            else if (currentIndex != visibleGroupIndex)
             {
-                items.RemoveAt(currentIndex);
-                items.InsertAt(visibleIndex, item);
+                groups.RemoveAt(currentIndex);
+                groups.InsertAt(visibleGroupIndex, state.group);
             }
-            ++visibleIndex;
+            ++visibleGroupIndex;
         }
     }
 
@@ -179,9 +274,9 @@ namespace winrt::CelestiaWinUI::implementation
         RestartHint().Title(LocalizationHelper::Localize(L"Some configurations will take effect after a restart.", L""));
     }
 
-    Collections::IObservableVector<IInspectable> SettingCommonUserControl::Items()
+    Collections::IObservableVector<CelestiaWinUI::SettingItemGroup> SettingCommonUserControl::Groups()
     {
-        return items;
+        return groups;
     }
 
     bool SettingCommonUserControl::ShowRestartHint()

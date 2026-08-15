@@ -9,10 +9,65 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="ItemGroupTemplate" x:DataType="local:SettingsNavigationItemGroup">
-            <NavigationViewItem Content="{x:Bind Title}"/>
+            <NavigationViewItem Content="{x:Bind Title}">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Setting"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </DataTemplate>
     </UserControl.Resources>
-    <NavigationView MenuItemsSource="{x:Bind ItemGroups, Mode=OneWay}" MenuItemTemplate="{StaticResource ItemGroupTemplate}" SelectionChanged="NavigationView_SelectionChanged" x:Name="Nav" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Top">
-        <RelativePanel x:Name="Container"/>
+    <NavigationView
+        x:Name="Nav"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="False"
+        IsTitleBarAutoPaddingEnabled="False"
+        CompactModeThresholdWidth="900"
+        ExpandedModeThresholdWidth="900"
+        OpenPaneLength="240"
+        PaneDisplayMode="Auto"
+        MenuItemsSource="{x:Bind ItemGroups, Mode=OneWay}"
+        MenuItemTemplate="{StaticResource ItemGroupTemplate}"
+        SelectionChanged="NavigationView_SelectionChanged">
+        <Grid x:Name="PageLayout" Margin="36,24,36,0" MaxWidth="1064" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                x:Name="PageTitle"
+                Style="{StaticResource TitleTextBlockStyle}"
+                FontSize="28"
+                FontWeight="SemiBold"
+                AutomationProperties.HeadingLevel="Level1"/>
+            <Rectangle
+                Grid.Row="1"
+                Height="1"
+                Margin="0,12,0,20"
+                Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+            <RelativePanel Grid.Row="2" x:Name="Container"/>
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="NarrowLayout">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0"/>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="PageLayout.Margin" Value="20,16,20,0"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="WideLayout">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="700"/>
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="PageLayout.Margin" Value="36,24,36,0"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
     </NavigationView>
 </UserControl>

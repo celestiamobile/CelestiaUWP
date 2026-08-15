@@ -25,16 +25,32 @@ namespace CelestiaWinUI
         Microsoft.UI.Xaml.DataTemplate Toggle;
         Microsoft.UI.Xaml.DataTemplate Selection;
         Microsoft.UI.Xaml.DataTemplate Slider;
-        Microsoft.UI.Xaml.DataTemplate Header;
         Microsoft.UI.Xaml.DataTemplate DataDirectory;
         Microsoft.UI.Xaml.DataTemplate ConfigFile;
+    }
+
+    [default_interface]
+    runtimeclass SettingItemGroup : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        SettingItemGroup(String title, String description, Boolean headerVisible, Boolean descriptionVisible);
+        String Title{ get; };
+        String Description{ get; };
+        Boolean HeaderVisible;
+        Boolean DescriptionVisible{ get; };
+        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+    }
+
+    [default_interface]
+    runtimeclass SettingGroupSeparator
+    {
+        SettingGroupSeparator();
     }
 
     [default_interface]
     runtimeclass SettingCommonUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint, SettingParameter parameter);
-        Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
+        Windows.Foundation.Collections.IObservableVector<SettingItemGroup> Groups{ get; };
         Boolean ShowRestartHint{ get; };
     }
 }

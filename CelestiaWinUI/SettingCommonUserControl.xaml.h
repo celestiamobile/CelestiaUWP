@@ -11,6 +11,8 @@
 
 #include "SettingParameter.g.h"
 #include "SettingTemplateSelector.g.h"
+#include "SettingItemGroup.g.h"
+#include "SettingGroupSeparator.g.h"
 #include "SettingCommonUserControl.g.h"
 
 namespace winrt::CelestiaWinUI::implementation
@@ -33,8 +35,6 @@ namespace winrt::CelestiaWinUI::implementation
         void Selection(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate Slider();
         void Slider(Microsoft::UI::Xaml::DataTemplate const&);
-        Microsoft::UI::Xaml::DataTemplate Header();
-        void Header(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate DataDirectory();
         void DataDirectory(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate ConfigFile();
@@ -47,9 +47,36 @@ namespace winrt::CelestiaWinUI::implementation
         Microsoft::UI::Xaml::DataTemplate toggle{ nullptr };
         Microsoft::UI::Xaml::DataTemplate selection{ nullptr };
         Microsoft::UI::Xaml::DataTemplate slider{ nullptr };
-        Microsoft::UI::Xaml::DataTemplate header{ nullptr };
         Microsoft::UI::Xaml::DataTemplate dataDirectory{ nullptr };
         Microsoft::UI::Xaml::DataTemplate configFile{ nullptr };
+    };
+
+    struct SettingItemGroup : SettingItemGroupT<SettingItemGroup>
+    {
+        SettingItemGroup(hstring const& title, hstring const& description, bool headerVisible, bool descriptionVisible);
+
+        hstring Title();
+        hstring Description();
+        bool HeaderVisible();
+        void HeaderVisible(bool);
+        bool DescriptionVisible();
+        Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> Items();
+
+        event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
+        void PropertyChanged(event_token const& token) noexcept;
+
+    private:
+        hstring title;
+        hstring description;
+        bool headerVisible;
+        bool descriptionVisible;
+        Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> items;
+        event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
+    };
+
+    struct SettingGroupSeparator : SettingGroupSeparatorT<SettingGroupSeparator>
+    {
+        SettingGroupSeparator() = default;
     };
 
     struct SettingCommonUserControl : SettingCommonUserControlT<SettingCommonUserControl>
@@ -58,7 +85,7 @@ namespace winrt::CelestiaWinUI::implementation
         ~SettingCommonUserControl();
         void InitializeComponent();
 
-        Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> Items();
+        Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingItemGroup> Groups();
         bool ShowRestartHint();
 
         fire_and_forget DataDirectoryChangeButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const&);
@@ -67,8 +94,16 @@ namespace winrt::CelestiaWinUI::implementation
         void ConfigFileResetButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const&);
 
     private:
+        struct GroupState
+        {
+            CelestiaAppComponent::SettingHeaderItem header;
+            std::vector<Windows::Foundation::IInspectable> allItems;
+            CelestiaWinUI::SettingItemGroup group;
+        };
+
         Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> allItems;
-        Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> items;
+        std::vector<GroupState> allGroups;
+        Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingItemGroup> groups;
         std::vector<std::pair<CelestiaAppComponent::SettingBaseItem, event_token>> visibilitySubscriptions;
         bool showRestartHint;
         CelestiaWinUI::SettingParameter parameter;
@@ -84,6 +119,14 @@ namespace winrt::CelestiaWinUI::factory_implementation
     };
 
     struct SettingTemplateSelector : SettingTemplateSelectorT<SettingTemplateSelector, implementation::SettingTemplateSelector>
+    {
+    };
+
+    struct SettingItemGroup : SettingItemGroupT<SettingItemGroup, implementation::SettingItemGroup>
+    {
+    };
+
+    struct SettingGroupSeparator : SettingGroupSeparatorT<SettingGroupSeparator, implementation::SettingGroupSeparator>
     {
     };
 
