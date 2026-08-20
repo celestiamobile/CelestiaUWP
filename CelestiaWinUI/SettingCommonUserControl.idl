@@ -26,6 +26,7 @@ namespace CelestiaWinUI
         Microsoft.UI.Xaml.DataTemplate Selection;
         Microsoft.UI.Xaml.DataTemplate Slider;
         Microsoft.UI.Xaml.DataTemplate Header;
+        Microsoft.UI.Xaml.DataTemplate Info;
         Microsoft.UI.Xaml.DataTemplate Separator;
         Microsoft.UI.Xaml.DataTemplate DataDirectory;
         Microsoft.UI.Xaml.DataTemplate ConfigFile;
@@ -47,6 +48,13 @@ namespace CelestiaWinUI
     runtimeclass SettingGroupSeparator
     {
         SettingGroupSeparator();
+    }
+
+    [default_interface]
+    runtimeclass SettingInfoItem
+    {
+        SettingInfoItem(String title);
+        String Title{ get; };
     }
 
     [default_interface]

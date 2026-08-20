@@ -13,6 +13,7 @@
 #include "SettingTemplateSelector.g.h"
 #include "SettingListItem.g.h"
 #include "SettingGroupSeparator.g.h"
+#include "SettingInfoItem.g.h"
 #include "SettingCommonUserControl.g.h"
 
 namespace winrt::CelestiaWinUI::implementation
@@ -37,6 +38,8 @@ namespace winrt::CelestiaWinUI::implementation
         void Slider(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate Header();
         void Header(Microsoft::UI::Xaml::DataTemplate const&);
+        Microsoft::UI::Xaml::DataTemplate Info();
+        void Info(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate Separator();
         void Separator(Microsoft::UI::Xaml::DataTemplate const&);
         Microsoft::UI::Xaml::DataTemplate DataDirectory();
@@ -52,6 +55,7 @@ namespace winrt::CelestiaWinUI::implementation
         Microsoft::UI::Xaml::DataTemplate selection{ nullptr };
         Microsoft::UI::Xaml::DataTemplate slider{ nullptr };
         Microsoft::UI::Xaml::DataTemplate header{ nullptr };
+        Microsoft::UI::Xaml::DataTemplate info{ nullptr };
         Microsoft::UI::Xaml::DataTemplate separator{ nullptr };
         Microsoft::UI::Xaml::DataTemplate dataDirectory{ nullptr };
         Microsoft::UI::Xaml::DataTemplate configFile{ nullptr };
@@ -85,6 +89,15 @@ namespace winrt::CelestiaWinUI::implementation
     struct SettingGroupSeparator : SettingGroupSeparatorT<SettingGroupSeparator>
     {
         SettingGroupSeparator() = default;
+    };
+
+    struct SettingInfoItem : SettingInfoItemT<SettingInfoItem>
+    {
+        SettingInfoItem(hstring const& title);
+        hstring Title();
+
+    private:
+        hstring title;
     };
 
     struct SettingCommonUserControl : SettingCommonUserControlT<SettingCommonUserControl>
@@ -128,6 +141,10 @@ namespace winrt::CelestiaWinUI::factory_implementation
     };
 
     struct SettingGroupSeparator : SettingGroupSeparatorT<SettingGroupSeparator, implementation::SettingGroupSeparator>
+    {
+    };
+
+    struct SettingInfoItem : SettingInfoItemT<SettingInfoItem, implementation::SettingInfoItem>
     {
     };
 

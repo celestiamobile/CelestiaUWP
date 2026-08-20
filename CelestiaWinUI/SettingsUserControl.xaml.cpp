@@ -291,6 +291,7 @@ namespace winrt::CelestiaWinUI::implementation
             SettingHeaderItem(LocalizationHelper::Localize(L"Shadows", L"Shadow rendering quality settings")),
             AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
             SettingHeaderItem(LocalizationHelper::Localize(L"Display", L"Display quality settings")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to display quality settings take effect after a restart.", L"Display quality settings restart notice")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
             SettingHeaderItem(LocalizationHelper::Localize(L"Atmosphere", L"Atmosphere rendering quality settings")),
@@ -298,7 +299,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Separate Rayleigh and Mie Scale Heights", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems, false));
 
         auto starSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         starSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>

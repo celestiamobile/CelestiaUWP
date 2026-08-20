@@ -18,6 +18,9 @@
 #if __has_include("SettingGroupSeparator.g.cpp")
 #include "SettingGroupSeparator.g.cpp"
 #endif
+#if __has_include("SettingInfoItem.g.cpp")
+#include "SettingInfoItem.g.cpp"
+#endif
 #if __has_include("SettingCommonUserControl.g.cpp")
 #include "SettingCommonUserControl.g.cpp"
 #endif
@@ -88,6 +91,16 @@ namespace winrt::CelestiaWinUI::implementation
         header = value;
     }
 
+    DataTemplate SettingTemplateSelector::Info()
+    {
+        return info;
+    }
+
+    void SettingTemplateSelector::Info(DataTemplate const& value)
+    {
+        info = value;
+    }
+
     DataTemplate SettingTemplateSelector::Separator()
     {
         return separator;
@@ -129,10 +142,20 @@ namespace winrt::CelestiaWinUI::implementation
         if (item.try_as<SettingInt32Item>() != nullptr) return selection;
         if (item.try_as<SettingDoubleItem>() != nullptr) return slider;
         if (item.try_as<SettingHeaderItem>() != nullptr) return header;
+        if (item.try_as<CelestiaWinUI::SettingInfoItem>() != nullptr) return info;
         if (item.try_as<CelestiaWinUI::SettingGroupSeparator>() != nullptr) return separator;
         if (item.try_as<SettingDataDirectoryItem>() != nullptr) return dataDirectory;
         if (item.try_as<SettingConfigFileItem>() != nullptr) return configFile;
         return nullptr;
+    }
+
+    SettingInfoItem::SettingInfoItem(hstring const& title) : title(title)
+    {
+    }
+
+    hstring SettingInfoItem::Title()
+    {
+        return title;
     }
 
     SettingListItem::SettingListItem(IInspectable const& item, bool isSetting) :

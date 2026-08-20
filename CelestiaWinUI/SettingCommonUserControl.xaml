@@ -143,12 +143,22 @@
             <Grid Height="4"/>
         </DataTemplate>
 
+        <DataTemplate x:Key="InfoItemTemplate" x:DataType="local:SettingInfoItem">
+            <InfoBar
+                Margin="0,0,0,8"
+                IsOpen="True"
+                IsClosable="False"
+                Severity="Informational"
+                Title="{x:Bind Title, Mode=OneTime}"/>
+        </DataTemplate>
+
         <local:SettingTemplateSelector
             x:Key="SettingsTemplateSelector"
             Toggle="{StaticResource ToggleItemTemplate}"
             Slider="{StaticResource SliderItemTemplate}"
             Selection="{StaticResource SelectionItemTemplate}"
             Header="{StaticResource HeaderItemTemplate}"
+            Info="{StaticResource InfoItemTemplate}"
             Separator="{StaticResource SeparatorItemTemplate}"
             DataDirectory="{StaticResource DataDirectoryItemTemplate}"
             ConfigFile="{StaticResource ConfigFileItemTemplate}"/>
