@@ -145,7 +145,7 @@
 
         <DataTemplate x:Key="InfoItemTemplate" x:DataType="local:SettingInfoItem">
             <InfoBar
-                Margin="0,0,0,8"
+                Margin="0,8,0,0"
                 IsOpen="True"
                 IsClosable="False"
                 Severity="Informational"

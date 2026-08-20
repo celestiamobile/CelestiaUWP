@@ -284,15 +284,15 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(2, LocalizationHelper::Localize(L"High", L"High resolution"))
             }), localSettings),
             SettingHeaderItem(LocalizationHelper::Localize(L"Shadows", L"Shadow rendering quality settings")),
-            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to shadow resolution take effect after a restart.", L"Shadow resolution setting restart notice")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Shadow resolution changes take effect after a restart.", L"Change requires a restart")),
             AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
             SettingHeaderItem(LocalizationHelper::Localize(L"Display", L"Display quality settings")),
-            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to display quality settings take effect after a restart.", L"Display quality settings restart notice")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Configuration will take effect after a restart.", L"Change requires a restart")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
             SettingHeaderItem(LocalizationHelper::Localize(L"Atmosphere", L"Atmosphere rendering quality settings")),
-            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Atmosphere Segment Count", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount, 1, 16, 1, localSettings),
-            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings),
+            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Atmosphere Segment Count", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount, 1, 16, 1, localSettings, LocalizationHelper::Localize(L"Number of segments used to integrate atmospheric scattering. Higher values improve quality at a greater performance cost.", L"Atmosphere segment count setting description")),
+            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings, LocalizationHelper::Localize(L"Number of segments used to render clouds. Higher values improve quality at a greater performance cost.", L"Cloud segment count setting description")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Separate Rayleigh and Mie Scale Heights", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights, localSettings),
         });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems));
@@ -331,7 +331,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 
             SettingHeaderItem(LocalizationHelper::Localize(L"Output", L"Output rendering settings")),
-            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings restart notice")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             srgbRenderingItem,
             toneMappingItem,
             exposureItem,
@@ -339,7 +339,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)
         {
-            rendererSettingItems.push_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate settings")));
+            rendererSettingItems.push_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation")));
             rendererSettingItems.push_back(CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to frame rate take effect after a restart.", L"Frame rate setting restart notice")));
             rendererSettingItems.push_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
         }
@@ -383,7 +383,7 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(1, LocalizationHelper::Localize(L"Celsius", L"Temperature scale")),
                 OptionPair(2, LocalizationHelper::Localize(L"Fahrenheit", L"Temperature scale"))
             }), localSettings),
-            SettingHeaderItem(LocalizationHelper::Localize(L"Language", L"Language settings")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Language", L"Display language setting")),
             CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to language take effect after a restart.", L"Language setting restart notice")),
             LanguageInt32Item(LocalizationHelper::Localize(L"Language", L"Display language setting"), appSettings, availableLanguages, localSettings),
         };

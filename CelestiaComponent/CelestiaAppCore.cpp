@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <algorithm>
 #include <celengine/location.h>
 #include <celestia/celestiastate.h>
 #include <celestia/configfile.h>
@@ -761,7 +762,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::AtmosphereSegmentCount(int32_t count)
     {
-        core->getRenderer()->setAtmosphereSegmentCount(static_cast<unsigned int>(count));
+        core->getRenderer()->setAtmosphereSegmentCount(static_cast<unsigned int>(std::clamp(count, 1, 16)));
     }
 
     int32_t CelestiaAppCore::CloudSegmentCount()
@@ -771,7 +772,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     void CelestiaAppCore::CloudSegmentCount(int32_t count)
     {
-        core->getRenderer()->setCloudSegmentCount(static_cast<unsigned int>(count));
+        core->getRenderer()->setCloudSegmentCount(static_cast<unsigned int>(std::clamp(count, 1, 16)));
     }
 
     bool CelestiaAppCore::SeparateRayleighMieScaleHeights()
