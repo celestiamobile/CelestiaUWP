@@ -328,21 +328,22 @@ namespace winrt::CelestiaWinUI::implementation
 
         std::vector<IInspectable> rendererSettingItems =
         {
+            SettingHeaderItem(LocalizationHelper::Localize(L"Rendering", L"Rendering settings")),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Ambient Light", L"In setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel, 0.0f, 0.99f, 0.01f, localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
-
-            CelestiaWinUI::SettingGroupSeparator(),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 
-            SettingHeaderItem(LocalizationHelper::Localize(L"Output Rendering", L""), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Output", L"Output rendering settings"), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
             srgbRenderingItem,
             toneMappingItem,
             exposureItem,
-
         };
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)
+        {
+            rendererSettingItems.push_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate settings")));
             rendererSettingItems.push_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
+        }
 
         auto rendererSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         rendererSettingItemGroupItems.ReplaceAll(rendererSettingItems);
