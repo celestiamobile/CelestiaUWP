@@ -284,6 +284,7 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(2, LocalizationHelper::Localize(L"High", L"High resolution"))
             }), localSettings),
             SettingHeaderItem(LocalizationHelper::Localize(L"Shadows", L"Shadow rendering quality settings")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to shadow resolution take effect after a restart.", L"Shadow resolution setting restart notice")),
             AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
             SettingHeaderItem(LocalizationHelper::Localize(L"Display", L"Display quality settings")),
             CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to display quality settings take effect after a restart.", L"Display quality settings restart notice")),
@@ -339,6 +340,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)
         {
             rendererSettingItems.push_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate settings")));
+            rendererSettingItems.push_back(CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to frame rate take effect after a restart.", L"Frame rate setting restart notice")));
             rendererSettingItems.push_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
         }
 
@@ -398,6 +400,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Ray-Based Dragging", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableRayBasedDragging, localSettings, LocalizationHelper::Localize(L"Dragging behavior based on change of pick rays instead of screen coordinates", L"")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Focus Zooming", L""), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableFocusZooming, localSettings, LocalizationHelper::Localize(L"Zooming behavior keeping the original focus location on screen", L"")),
             CelestiaWinUI::SettingGroupSeparator(),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to sensitivity take effect after a restart.", L"Selection sensitivity setting restart notice")),
             AppSettingsDoubleItem(LocalizationHelper::Localize(L"Sensitivity", L"Setting for sensitivity for selecting an object"), appSettings, AppSettingDoubleEntry::PickSensitivity, 1.0, 20.0, 1.0, localSettings, LocalizationHelper::Localize(L"Sensitivity for object selection", L"Notes for the sensitivity setting")),
             CelestiaWinUI::SettingGroupSeparator(),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Hide Cursor During Dragging", L""), appSettings, AppSettingBooleanEntry::HideCursorDuringDragging, localSettings, LocalizationHelper::Localize(L"Hide the mouse cursor during dragging", L"")),
@@ -408,7 +411,6 @@ namespace winrt::CelestiaWinUI::implementation
         auto cameraSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         cameraSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
-            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to camera settings take effect after a restart.", L"Camera settings restart notice")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Align to Surface on Landing", L"Option to align camera to surface when landing"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand, localSettings),
         });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), Symbol::Camera, cameraSettingItemGroupItems));
