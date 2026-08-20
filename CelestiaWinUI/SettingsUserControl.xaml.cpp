@@ -278,9 +278,9 @@ namespace winrt::CelestiaWinUI::implementation
         BindVisibility(starDimClipFactorItem, isPointSpreadFunction, starStyleItem);
         BindVisibility(starExposureItem, isPointSpreadFunction, starStyleItem);
 
-        std::vector<IInspectable> rendererSettingItems =
+        auto qualitySettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
+        qualitySettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
-            SettingHeaderItem(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings")),
             SettingHeaderItem(LocalizationHelper::Localize(L"Textures", L"Texture rendering quality settings")),
             AppCoreInt32Item(LocalizationHelper::Localize(L"Texture Resolution", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::Resolution, single_threaded_vector<OptionPair>
             ({
@@ -297,8 +297,12 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Atmosphere Segment Count", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount, 1, 16, 1, localSettings),
             AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Separate Rayleigh and Mie Scale Heights", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights, localSettings),
+        });
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems, true));
 
-            CelestiaWinUI::SettingGroupSeparator(),
+        auto starSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
+        starSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
+        {
             starStyleItem,
             starPointRadiusItem,
             starOptimizationItem,
@@ -307,6 +311,13 @@ namespace winrt::CelestiaWinUI::implementation
             starExposureItem,
 
             CelestiaWinUI::SettingGroupSeparator(),
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Auto Mag", L"Auto mag for star display"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag, localSettings),
+            AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
+        });
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Star", L"Star rendering settings"), Symbol::Favorite, starSettingItemGroupItems, false));
+
+        std::vector<IInspectable> rendererSettingItems =
+        {
             AppCoreInt32Item(LocalizationHelper::Localize(L"Star Colors", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarColors, single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Classic Colors", L"Star colors option")),
@@ -315,10 +326,6 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(3, LocalizationHelper::Localize(L"Blackbody (Vega Whitepoint)", L"Star colors option")),
             }), localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation", L""), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illumination saturation setting is only effective with Blackbody star colors.", L"")),
-
-            CelestiaWinUI::SettingGroupSeparator(),
-            AppCoreBooleanItem(LocalizationHelper::Localize(L"Auto Mag", L"Auto mag for star display"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag, localSettings),
-            AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
 
             CelestiaWinUI::SettingGroupSeparator(),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Ambient Light", L"In setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::AmbientLightLevel, 0.0f, 0.99f, 0.01f, localSettings),
