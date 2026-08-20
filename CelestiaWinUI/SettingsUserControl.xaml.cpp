@@ -280,12 +280,24 @@ namespace winrt::CelestiaWinUI::implementation
 
         std::vector<IInspectable> rendererSettingItems =
         {
+            SettingHeaderItem(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Textures", L"Texture rendering quality settings")),
             AppCoreInt32Item(LocalizationHelper::Localize(L"Texture Resolution", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::Resolution, single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Low", L"Low resolution")),
                 OptionPair(1, LocalizationHelper::Localize(L"Medium", L"Medium resolution")),
                 OptionPair(2, LocalizationHelper::Localize(L"High", L"High resolution"))
             }), localSettings),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Shadows", L"Shadow rendering quality settings")),
+            AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Display", L"Display quality settings")),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
+            AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Atmosphere", L"Atmosphere rendering quality settings")),
+            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Atmosphere Segment Count", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount, 1, 16, 1, localSettings),
+            AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings),
+            AppCoreBooleanItem(LocalizationHelper::Localize(L"Separate Rayleigh and Mie Scale Heights", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights, localSettings),
+
             CelestiaWinUI::SettingGroupSeparator(),
             starStyleItem,
             starPointRadiusItem,
@@ -320,10 +332,6 @@ namespace winrt::CelestiaWinUI::implementation
             toneMappingItem,
             exposureItem,
 
-            SettingHeaderItem(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items")),
-            AppSettingsBooleanItem(LocalizationHelper::Localize(L"HiDPI", L"HiDPI support in display"), appSettings, AppSettingBooleanEntry::UseFullDPI, localSettings),
-            AppSettingsBooleanItem(LocalizationHelper::Localize(L"Anti-aliasing", L""), appSettings, AppSettingBooleanEntry::EnableMSAA, localSettings),
-            AppSettingsInt32Item(LocalizationHelper::Localize(L"Shadow Resolution", L"Resolution of shadow maps"), appSettings, AppSettingInt32Entry::ShadowMapSize, shadowMapSizeOptions, localSettings, LocalizationHelper::Localize(L"A value of 0 disables self-shadowing. Higher values produce sharper shadows at a greater performance cost.", L"Shadow resolution setting footnote")),
         };
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)

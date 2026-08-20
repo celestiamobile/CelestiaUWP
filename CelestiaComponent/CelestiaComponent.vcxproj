@@ -580,6 +580,7 @@
     <ClCompile Include="..\..\Celestia\src\celastro\date.cpp" />
     <ClCompile Include="..\..\Celestia\src\celastro\units.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\atmosphere.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\body.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\boundaries.cpp" />

@@ -53,7 +53,7 @@ namespace winrt::CelestiaComponent::implementation
         static const std::unordered_map<winrt::hstring, Entry> entries = []
             {
                 std::unordered_map<winrt::hstring, Entry> result;
-                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::EnableAlignCameraToSurfaceOnLand); ++value)
+                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::SeparateRayleighMieScaleHeights); ++value)
                 {
                     auto entry = static_cast<Entry>(value);
                     auto entryName = GetNameByBooleanEntry(entry);
@@ -73,7 +73,7 @@ namespace winrt::CelestiaComponent::implementation
         static const std::unordered_map<winrt::hstring, Entry> entries = []
             {
                 std::unordered_map<winrt::hstring, Entry> result;
-                for (auto value = static_cast<int>(Entry::Resolution); value <= static_cast<int>(Entry::ToneMapping); ++value)
+                for (auto value = static_cast<int>(Entry::Resolution); value <= static_cast<int>(Entry::CloudSegmentCount); ++value)
                 {
                     auto entry = static_cast<Entry>(value);
                     auto entryName = GetNameByInt32Entry(entry);
@@ -357,6 +357,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"EnableFocusZooming";
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return L"EnableAlignCameraToSurfaceOnLand";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
+            return L"SeparateRayleighMieScaleHeights";
         default:
             break;
         }
@@ -387,6 +389,10 @@ namespace winrt::CelestiaComponent::implementation
             return L"StarColors";
         case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
             return L"ToneMapping";
+        case CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount:
+            return L"AtmosphereSegmentCount";
+        case CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount:
+            return L"CloudSegmentCount";
         default:
             break;
         }
@@ -800,6 +806,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             appCore.EnableAlignCameraToSurfaceOnLand(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
+            appCore.SeparateRayleighMieScaleHeights(value);
+            break;
         default:
             break;
         }
@@ -838,6 +847,12 @@ namespace winrt::CelestiaComponent::implementation
             break;
         case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
             appCore.ToneMapping(value);
+            break;
+        case CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount:
+            appCore.AtmosphereSegmentCount(value);
+            break;
+        case CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount:
+            appCore.CloudSegmentCount(value);
             break;
         default:
             break;
@@ -1139,6 +1154,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.EnableFocusZooming();
         case CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand:
             return appCore.EnableAlignCameraToSurfaceOnLand();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
+            return appCore.SeparateRayleighMieScaleHeights();
         default:
             break;
         }
@@ -1169,6 +1186,10 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.StarColors();
         case CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping:
             return appCore.ToneMapping();
+        case CelestiaComponent::CelestiaSettingInt32Entry::AtmosphereSegmentCount:
+            return appCore.AtmosphereSegmentCount();
+        case CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount:
+            return appCore.CloudSegmentCount();
         default:
             break;
         }

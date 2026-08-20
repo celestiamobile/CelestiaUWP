@@ -166,6 +166,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\asterism.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\atmosphere.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\axisarrow.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>

@@ -117,6 +117,13 @@ namespace CelestiaAppComponent
     }
 
     [default_interface]
+    runtimeclass AppCoreInt32SliderItem : SettingDoubleItem
+    {
+        AppCoreInt32SliderItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingInt32Entry entry, Int32 minValue, Int32 maxValue, Int32 step, Microsoft.Windows.Storage.ApplicationDataContainer localSettings);
+        AppCoreInt32SliderItem(String title, CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer, CelestiaComponent.CelestiaSettingInt32Entry entry, Int32 minValue, Int32 maxValue, Int32 step, Microsoft.Windows.Storage.ApplicationDataContainer localSettings, String note);
+    }
+
+    [default_interface]
     runtimeclass AppSettingsInt32Item : SettingInt32Item
     {
         AppSettingsInt32Item(String title, CelestiaAppComponent.AppSettings appSettings, CelestiaAppComponent.AppSettingInt32Entry entry, Windows.Foundation.Collections.IVector<OptionPair> options, Microsoft.Windows.Storage.ApplicationDataContainer localSettings);

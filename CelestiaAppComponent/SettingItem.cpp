@@ -29,6 +29,9 @@
 #if __has_include("AppCoreInt32Item.g.cpp")
 #include "AppCoreInt32Item.g.cpp"
 #endif
+#if __has_include("AppCoreInt32SliderItem.g.cpp")
+#include "AppCoreInt32SliderItem.g.cpp"
+#endif
 #if __has_include("AppCoreSingleItem.g.cpp")
 #include "AppCoreSingleItem.g.cpp"
 #endif
@@ -328,6 +331,86 @@ namespace winrt::CelestiaAppComponent::implementation
     bool AppCoreInt32Item::NoteVisibility()
     {
         return !note.empty();
+    }
+
+    AppCoreInt32SliderItem::AppCoreInt32SliderItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingInt32Entry entry, int32_t minValue, int32_t maxValue, int32_t step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), localSettings(localSettings), note(note)
+    {
+        if (!appCoreCritSectionInitialized)
+        {
+            InitializeCriticalSection(&appCoreCritSection);
+            appCoreCritSectionInitialized = true;
+        }
+    }
+
+    double AppCoreInt32SliderItem::Value()
+    {
+        if (!hasCorrectValue)
+            hasCorrectValue = true;
+        std::optional<int32_t> savedValue;
+        EnterCriticalSection(&appCoreCritSection);
+        savedValue = cachedValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        return static_cast<double>(savedValue.value_or(CelestiaExtension::GetCelestiaInt32Value(appCore, entry)));
+    }
+
+    void AppCoreInt32SliderItem::Value(double value)
+    {
+        if (!hasCorrectValue)
+            return;
+        auto actualValue = std::clamp(static_cast<int32_t>(std::round(value)), minValue, maxValue);
+        EnterCriticalSection(&appCoreCritSection);
+        cachedValue = actualValue;
+        LeaveCriticalSection(&appCoreCritSection);
+        renderer.EnqueueTask([weak_this{ get_weak() }, actualValue]
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this)
+                    return;
+
+                CelestiaExtension::SetCelestiaInt32Value(strong_this->appCore, strong_this->entry, actualValue);
+                EnterCriticalSection(&appCoreCritSection);
+                strong_this->cachedValue = std::nullopt;
+                LeaveCriticalSection(&appCoreCritSection);
+            });
+        auto key = CelestiaExtension::GetNameByInt32Entry(entry);
+        if (!key.empty())
+            localSettings.Values().Insert(key, box_value(actualValue));
+        RaisePropertyChanged(L"Value");
+    }
+
+    hstring AppCoreInt32SliderItem::Title()
+    {
+        return title;
+    }
+
+    double AppCoreInt32SliderItem::MinValue()
+    {
+        return static_cast<double>(minValue);
+    }
+
+    double AppCoreInt32SliderItem::MaxValue()
+    {
+        return static_cast<double>(maxValue);
+    }
+
+    double AppCoreInt32SliderItem::Step()
+    {
+        return static_cast<double>(step);
+    }
+
+    hstring AppCoreInt32SliderItem::Note()
+    {
+        return note;
+    }
+
+    bool AppCoreInt32SliderItem::NoteVisibility()
+    {
+        return !note.empty();
+    }
+
+    Microsoft::UI::Xaml::Data::IValueConverter AppCoreInt32SliderItem::ThumbToolTipValueConverter()
+    {
+        return nullptr;
     }
 
     AppCoreSingleItem::AppCoreSingleItem(hstring const& title, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note, bool isLogarithmic) : appCore(appCore), renderer(renderer), title(title), entry(entry), minValue(minValue), maxValue(maxValue), step(step), isLogarithmic(isLogarithmic), localSettings(localSettings), note(note)

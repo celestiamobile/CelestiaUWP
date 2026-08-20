@@ -159,6 +159,7 @@ namespace CelestiaComponent
         EnableRayBasedDragging,
         EnableFocusZooming,
         EnableAlignCameraToSurfaceOnLand,
+        SeparateRayleighMieScaleHeights,
     };
 
     enum CelestiaSettingInt32Entry
@@ -174,6 +175,8 @@ namespace CelestiaComponent
         ScriptSystemAccessPolicy,
         StarColors,
         ToneMapping,
+        AtmosphereSegmentCount,
+        CloudSegmentCount,
     };
 
     enum CelestiaSettingSingleEntry

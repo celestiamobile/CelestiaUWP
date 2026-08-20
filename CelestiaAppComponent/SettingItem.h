@@ -19,6 +19,7 @@
 #include "OptionPair.g.h"
 #include "AppCoreBooleanItem.g.h"
 #include "AppCoreInt32Item.g.h"
+#include "AppCoreInt32SliderItem.g.h"
 #include "AppCoreSingleItem.g.h"
 #include "AppSettingsBooleanItem.g.h"
 #include "AppSettingsInt32Item.g.h"
@@ -195,6 +196,32 @@ namespace winrt::CelestiaAppComponent::implementation
         std::optional<int32_t> cachedValue{ std::nullopt };
     };
 
+    struct AppCoreInt32SliderItem : AppCoreInt32SliderItemT<AppCoreInt32SliderItem, SettingDoubleItem>
+    {
+        AppCoreInt32SliderItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const& renderer, CelestiaComponent::CelestiaSettingInt32Entry entry, int32_t minValue, int32_t maxValue, int32_t step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"");
+        double Value();
+        void Value(double);
+        hstring Title();
+        double MinValue();
+        double MaxValue();
+        double Step();
+        hstring Note();
+        bool NoteVisibility();
+        Microsoft::UI::Xaml::Data::IValueConverter ThumbToolTipValueConverter();
+
+    private:
+        CelestiaComponent::CelestiaAppCore appCore;
+        CelestiaComponent::CelestiaRenderer renderer;
+        hstring title;
+        CelestiaComponent::CelestiaSettingInt32Entry entry;
+        int32_t minValue;
+        int32_t maxValue;
+        int32_t step;
+        Microsoft::Windows::Storage::ApplicationDataContainer localSettings;
+        hstring note;
+        std::optional<int32_t> cachedValue{ std::nullopt };
+    };
+
     struct AppCoreSingleItem : AppCoreSingleItemT<AppCoreSingleItem, SettingDoubleItem>
     {
         AppCoreSingleItem(hstring const& title, CelestiaComponent::CelestiaAppCore const& appCore, CelestiaComponent::CelestiaRenderer const &renderer, CelestiaComponent::CelestiaSettingSingleEntry entry, float minValue, float maxValue, float step, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, hstring const& note = L"", bool isLogarithmic = false);
@@ -345,6 +372,10 @@ namespace winrt::CelestiaAppComponent::factory_implementation
     };
 
     struct AppCoreInt32Item : AppCoreInt32ItemT<AppCoreInt32Item, implementation::AppCoreInt32Item>
+    {
+    };
+
+    struct AppCoreInt32SliderItem : AppCoreInt32SliderItemT<AppCoreInt32SliderItem, implementation::AppCoreInt32SliderItem>
     {
     };
 

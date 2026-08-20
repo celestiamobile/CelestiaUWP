@@ -310,6 +310,9 @@ namespace CelestiaComponent
         Boolean ShowRingLabels;
         Boolean ShowOtherLabels;
         Int32 Resolution;
+        Int32 AtmosphereSegmentCount;
+        Int32 CloudSegmentCount;
+        Boolean SeparateRayleighMieScaleHeights;
         Int32 StarStyle;
         Int32 HudDetail;
         Int32 DateFormat;

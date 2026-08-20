@@ -754,6 +754,36 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setResolution(static_cast<celestia::engine::TextureResolution>(resolution));
     }
 
+    int32_t CelestiaAppCore::AtmosphereSegmentCount()
+    {
+        return static_cast<int32_t>(core->getRenderer()->getAtmosphereSegmentCount());
+    }
+
+    void CelestiaAppCore::AtmosphereSegmentCount(int32_t count)
+    {
+        core->getRenderer()->setAtmosphereSegmentCount(static_cast<unsigned int>(count));
+    }
+
+    int32_t CelestiaAppCore::CloudSegmentCount()
+    {
+        return static_cast<int32_t>(core->getRenderer()->getCloudSegmentCount());
+    }
+
+    void CelestiaAppCore::CloudSegmentCount(int32_t count)
+    {
+        core->getRenderer()->setCloudSegmentCount(static_cast<unsigned int>(count));
+    }
+
+    bool CelestiaAppCore::SeparateRayleighMieScaleHeights()
+    {
+        return core->getRenderer()->getSeparateRayleighMieScaleHeights();
+    }
+
+    void CelestiaAppCore::SeparateRayleighMieScaleHeights(bool enabled)
+    {
+        core->getRenderer()->setSeparateRayleighMieScaleHeights(enabled);
+    }
+
     int32_t CelestiaAppCore::StarStyle()
     {
         return static_cast<int32_t>(core->getRenderer()->getStarStyle());

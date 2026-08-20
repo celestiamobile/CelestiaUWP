@@ -354,6 +354,12 @@ namespace winrt::CelestiaComponent::implementation
         void ShowI18nConstellationLabels(bool showI18nConstellationLabels);
         int32_t Resolution();
         void Resolution(int32_t resolution);
+        int32_t AtmosphereSegmentCount();
+        void AtmosphereSegmentCount(int32_t count);
+        int32_t CloudSegmentCount();
+        void CloudSegmentCount(int32_t count);
+        bool SeparateRayleighMieScaleHeights();
+        void SeparateRayleighMieScaleHeights(bool enabled);
         int32_t StarStyle();
         void StarStyle(int32_t starStyle);
         int32_t HudDetail();
