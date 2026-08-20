@@ -329,7 +329,8 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreSingleItem(LocalizationHelper::Localize(L"Galaxy Brightness", L"Render parameter"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::GalaxyBrightness, 0.0f, 1.0f, 0.01f, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Smooth Lines", L"Smooth lines for rendering"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowSmoothLines, localSettings),
 
-            SettingHeaderItem(LocalizationHelper::Localize(L"Output", L"Output rendering settings"), LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings footnote")),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Output", L"Output rendering settings")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to sRGB rendering take effect after a restart.", L"Output rendering settings restart notice")),
             srgbRenderingItem,
             toneMappingItem,
             exposureItem,
