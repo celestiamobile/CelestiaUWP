@@ -381,7 +381,8 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(1, LocalizationHelper::Localize(L"Celsius", L"Temperature scale")),
                 OptionPair(2, LocalizationHelper::Localize(L"Fahrenheit", L"Temperature scale"))
             }), localSettings),
-            CelestiaWinUI::SettingGroupSeparator(),
+            SettingHeaderItem(LocalizationHelper::Localize(L"Language", L"Language settings")),
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to language take effect after a restart.", L"Language setting restart notice")),
             LanguageInt32Item(LocalizationHelper::Localize(L"Language", L"Display language setting"), appSettings, availableLanguages, localSettings),
         };
 
@@ -407,6 +408,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto cameraSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         cameraSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to camera settings take effect after a restart.", L"Camera settings restart notice")),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Align to Surface on Landing", L"Option to align camera to surface when landing"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand, localSettings),
         });
         itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), Symbol::Camera, cameraSettingItemGroupItems));
@@ -457,6 +459,7 @@ namespace winrt::CelestiaWinUI::implementation
         auto dataLocationSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         dataLocationSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
+            CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to data location settings take effect after a restart.", L"Data location settings restart notice")),
             SettingDataDirectoryItem(appSettings, localSettings),
             SettingConfigFileItem(appSettings, localSettings),
         });
