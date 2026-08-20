@@ -102,12 +102,11 @@ namespace winrt::CelestiaWinUI::implementation
 
     struct SettingCommonUserControl : SettingCommonUserControlT<SettingCommonUserControl>
     {
-        SettingCommonUserControl(Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter);
+        SettingCommonUserControl(Windows::Foundation::Collections::IObservableVector<Windows::Foundation::IInspectable> const& settingItems, CelestiaWinUI::SettingParameter const& parameter);
         ~SettingCommonUserControl();
         void InitializeComponent();
 
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingListItem> Rows();
-        bool ShowRestartHint();
 
         fire_and_forget DataDirectoryChangeButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const&);
         void DataDirectoryResetButton_Click(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const&);
@@ -119,7 +118,6 @@ namespace winrt::CelestiaWinUI::implementation
         std::vector<CelestiaWinUI::SettingListItem> allRows;
         Windows::Foundation::Collections::IObservableVector<CelestiaWinUI::SettingListItem> rows;
         std::vector<std::pair<CelestiaAppComponent::SettingBaseItem, event_token>> visibilitySubscriptions;
-        bool showRestartHint;
         CelestiaWinUI::SettingParameter parameter;
 
         void RefreshVisibleItems();

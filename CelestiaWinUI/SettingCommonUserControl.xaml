@@ -179,21 +179,11 @@
         </DataTemplate>
     </UserControl.Resources>
     <RelativePanel>
-        <InfoBar
-            x:Name="RestartHint"
-            Margin="36,0,36,8"
-            MaxWidth="1064"
-            IsOpen="{x:Bind ShowRestartHint, Mode=OneTime}"
-            IsClosable="False"
-            Severity="Informational"
-            RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True"
-            RelativePanel.AlignTopWithPanel="True"/>
         <ScrollView
+            RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
-            RelativePanel.Below="RestartHint"
             VerticalScrollBarVisibility="Auto"
             VerticalScrollMode="Auto">
             <ItemsRepeater
@@ -216,7 +206,6 @@
                         <AdaptiveTrigger MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RestartHint.Margin" Value="20,0,20,8"/>
                         <Setter Target="SettingsItems.Margin" Value="20,0,20,24"/>
                     </VisualState.Setters>
                 </VisualState>
@@ -225,7 +214,6 @@
                         <AdaptiveTrigger MinWindowWidth="700"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RestartHint.Margin" Value="36,0,36,8"/>
                         <Setter Target="SettingsItems.Margin" Value="36,0,36,36"/>
                     </VisualState.Setters>
                 </VisualState>

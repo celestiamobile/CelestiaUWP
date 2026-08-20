@@ -14,11 +14,10 @@ namespace CelestiaWinUI
     [default_interface]
     runtimeclass SettingsNavigationItemGroup
     {
-        SettingsNavigationItemGroup(String title, Microsoft.UI.Xaml.Controls.Symbol icon, Windows.Foundation.Collections.IObservableVector<Object> items, Boolean showRestartHint);
+        SettingsNavigationItemGroup(String title, Microsoft.UI.Xaml.Controls.Symbol icon, Windows.Foundation.Collections.IObservableVector<Object> items);
         String Title{ get; };
         Microsoft.UI.Xaml.Controls.Symbol Icon{ get; };
         Windows.Foundation.Collections.IObservableVector<Object> Items{ get; };
-        Boolean ShowRestartHint{ get; };
     }
 
     [default_interface]

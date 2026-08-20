@@ -236,7 +236,7 @@ namespace winrt::CelestiaWinUI::implementation
         }
     }
 
-    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, bool showRestartHint, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), rows(single_threaded_observable_vector<CelestiaWinUI::SettingListItem>()), showRestartHint(showRestartHint), parameter(parameter)
+    SettingCommonUserControl::SettingCommonUserControl(Collections::IObservableVector<IInspectable> const& settingItems, CelestiaWinUI::SettingParameter const& parameter) : allItems(settingItems), rows(single_threaded_observable_vector<CelestiaWinUI::SettingListItem>()), parameter(parameter)
     {
         for (auto const& item : allItems)
         {
@@ -322,17 +322,11 @@ namespace winrt::CelestiaWinUI::implementation
     void SettingCommonUserControl::InitializeComponent()
     {
         SettingCommonUserControlT::InitializeComponent();
-        RestartHint().Title(LocalizationHelper::Localize(L"Some configurations will take effect after a restart.", L""));
     }
 
     Collections::IObservableVector<CelestiaWinUI::SettingListItem> SettingCommonUserControl::Rows()
     {
         return rows;
-    }
-
-    bool SettingCommonUserControl::ShowRestartHint()
-    {
-        return showRestartHint;
     }
 
     fire_and_forget SettingCommonUserControl::DataDirectoryChangeButton_Click(IInspectable const& sender, RoutedEventArgs const&)

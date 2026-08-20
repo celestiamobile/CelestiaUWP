@@ -45,7 +45,7 @@ namespace
 
 namespace winrt::CelestiaWinUI::implementation
 {
-    SettingsNavigationItemGroup::SettingsNavigationItemGroup(hstring const& title, Symbol icon, Collections::IObservableVector<IInspectable> const& items, bool showRestartHint) : title(title), icon(icon), items(items), showRestartHint(showRestartHint) {};
+    SettingsNavigationItemGroup::SettingsNavigationItemGroup(hstring const& title, Symbol icon, Collections::IObservableVector<IInspectable> const& items) : title(title), icon(icon), items(items) {};
 
     hstring SettingsNavigationItemGroup::Title()
     {
@@ -60,11 +60,6 @@ namespace winrt::CelestiaWinUI::implementation
     Collections::IObservableVector<IInspectable> SettingsNavigationItemGroup::Items()
     {
         return items;
-    }
-
-    bool SettingsNavigationItemGroup::ShowRestartHint()
-    {
-        return showRestartHint;
     }
 
     SettingsUserControl::SettingsUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer, AppSettings const& appSettings, Microsoft::Windows::Storage::ApplicationDataContainer const& localSettings, Collections::IVector<hstring> const& availableLanguages, IReference<int32_t> maximumDisplayFrequency, DisplayInformation const& displayInformation, CelestiaWinUI::SettingParameter const& parameter) : parameter(parameter)
@@ -97,7 +92,7 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto displaySettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         displaySettingItemGroupItems.ReplaceAll(displaySettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Display", L"Display settings"), Symbol::View, displaySettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Display", L"Display settings"), Symbol::View, displaySettingItemGroupItems));
 
         std::vector<IInspectable> guidesSettingItems =
         {
@@ -136,7 +131,7 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto guidesSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         guidesSettingItemGroupItems.ReplaceAll(guidesSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Guides", L"Grids, labels, orbits, markers"), Symbol::Map, guidesSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Guides", L"Grids, labels, orbits, markers"), Symbol::Map, guidesSettingItemGroupItems));
 
         std::vector<IInspectable> labelsSettingItems =
         {
@@ -225,7 +220,7 @@ namespace winrt::CelestiaWinUI::implementation
         };
         auto labelsSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         labelsSettingItemGroupItems.ReplaceAll(labelsSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Labels", L"Labels to display"), Symbol::Font, labelsSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Labels", L"Labels to display"), Symbol::Font, labelsSettingItemGroupItems));
 
         Windows::Globalization::NumberFormatting::DecimalFormatter shadowMapSizeFormatter;
         shadowMapSizeFormatter.IsGrouped(true);
@@ -299,7 +294,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreInt32SliderItem(LocalizationHelper::Localize(L"Cloud Segment Count", L"Cloud rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::CloudSegmentCount, 1, 16, 1, localSettings),
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Separate Rayleigh and Mie Scale Heights", L"Atmosphere rendering quality setting"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Quality", L"Rendering quality settings"), Symbol::Setting, qualitySettingItemGroupItems));
 
         auto starSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         starSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -325,7 +320,7 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Auto Mag", L"Auto mag for star display"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::ShowAutoMag, localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Faintest Stars", L"Control the faintest star that Celestia should display"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::FaintestVisible, 3.0f, 12.0f, 1.0f, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Stars", L"Star rendering settings"), Symbol::Favorite, starSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Stars", L"Star rendering settings"), Symbol::Favorite, starSettingItemGroupItems));
 
         std::vector<IInspectable> rendererSettingItems =
         {
@@ -348,7 +343,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         auto rendererSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         rendererSettingItemGroupItems.ReplaceAll(rendererSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Renderer", L"In settings"), Symbol::Pictures, rendererSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Renderer", L"In settings"), Symbol::Pictures, rendererSettingItemGroupItems));
 
         std::vector<IInspectable> regionSettingItems =
         {
@@ -391,7 +386,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         auto regionSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         regionSettingItemGroupItems.ReplaceAll(regionSettingItems);
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Time & Region", L"time and region related settings"), Symbol::Clock, regionSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Time & Region", L"time and region related settings"), Symbol::Clock, regionSettingItemGroupItems));
 
         auto interactionSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         interactionSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -406,14 +401,14 @@ namespace winrt::CelestiaWinUI::implementation
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Hide Cursor During Dragging", L""), appSettings, AppSettingBooleanEntry::HideCursorDuringDragging, localSettings, LocalizationHelper::Localize(L"Hide the mouse cursor during dragging", L"")),
             AppSettingsBooleanItem(LocalizationHelper::Localize(L"Infinite Dragging", L""), appSettings, AppSettingBooleanEntry::InfiniteDragging, localSettings, LocalizationHelper::Localize(L"Mouse cursor is warped to the location when the dragging starts. Only effective when the cursor is hidden during dragging", L"")),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), Symbol::TouchPointer, interactionSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Interaction", L"Settings for interaction"), Symbol::TouchPointer, interactionSettingItemGroupItems));
 
         auto cameraSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         cameraSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
         {
             AppCoreBooleanItem(LocalizationHelper::Localize(L"Align to Surface on Landing", L"Option to align camera to surface when landing"), appCore, renderer, CelestiaComponent::CelestiaSettingBooleanEntry::EnableAlignCameraToSurfaceOnLand, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), Symbol::Camera, cameraSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Camera", L"Settings for camera control"), Symbol::Camera, cameraSettingItemGroupItems));
 
         auto allActions = single_threaded_vector<OptionPair>
             ({
@@ -456,7 +451,7 @@ namespace winrt::CelestiaWinUI::implementation
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Invert Horizontally", L"Invert game controller thumbstick axis horizontally"), appSettings, AppSettingBooleanEntry::GamepadInvertX, localSettings),
                 AppSettingsBooleanItem(LocalizationHelper::Localize(L"Invert Vertically", L"Invert game controller thumbstick axis vertically"), appSettings, AppSettingBooleanEntry::GamepadInvertY, localSettings),
             });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Game Controller", L"Settings for game controller"), Symbol::XboxOneConsole, gamepadSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Game Controller", L"Settings for game controller"), Symbol::XboxOneConsole, gamepadSettingItemGroupItems));
 
         auto dataLocationSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         dataLocationSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -464,7 +459,7 @@ namespace winrt::CelestiaWinUI::implementation
             SettingDataDirectoryItem(appSettings, localSettings),
             SettingConfigFileItem(appSettings, localSettings),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Data Location", L"Title for celestia.cfg, data location setting"), Symbol::Folder, dataLocationSettingItemGroupItems, true));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Data Location", L"Title for celestia.cfg, data location setting"), Symbol::Folder, dataLocationSettingItemGroupItems));
 
         auto advancedSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();
         advancedSettingItemGroupItems.ReplaceAll(std::vector<IInspectable>
@@ -477,7 +472,7 @@ namespace winrt::CelestiaWinUI::implementation
                 OptionPair(2, LocalizationHelper::Localize(L"Deny", L"Script system access policy option"))
             }), localSettings, LocalizationHelper::Localize(L"Lua scripts' access to the file system", L"Note for Script System Access Policy")),
         });
-        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items"), Symbol::Admin, advancedSettingItemGroupItems, false));
+        itemGroups.Append(CelestiaWinUI::SettingsNavigationItemGroup(LocalizationHelper::Localize(L"Advanced", L"Advanced setting items"), Symbol::Admin, advancedSettingItemGroupItems));
     }
 
     void SettingsUserControl::InitializeComponent()
@@ -523,7 +518,7 @@ namespace winrt::CelestiaWinUI::implementation
     void SettingsUserControl::ItemGroupSelected(CelestiaWinUI::SettingsNavigationItemGroup const& itemGroup)
     {
         PageTitle().Text(itemGroup.Title());
-        SettingCommonUserControl userControl{ itemGroup.Items(), itemGroup.ShowRestartHint(), parameter };
+        SettingCommonUserControl userControl{ itemGroup.Items(), parameter };
         Container().Children().Clear();
         Container().Children().Append(userControl);
         Container().SetAlignTopWithPanel(userControl, true);

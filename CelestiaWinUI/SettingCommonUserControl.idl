@@ -60,8 +60,7 @@ namespace CelestiaWinUI
     [default_interface]
     runtimeclass SettingCommonUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
-        SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, Boolean showRestartHint, SettingParameter parameter);
+        SettingCommonUserControl(Windows.Foundation.Collections.IObservableVector<Object> settingItems, SettingParameter parameter);
         Windows.Foundation.Collections.IObservableVector<SettingListItem> Rows{ get; };
-        Boolean ShowRestartHint{ get; };
     }
 }
