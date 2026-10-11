@@ -41,7 +41,7 @@ namespace winrt::CelestiaComponent::implementation
 		{
 			for (const auto &surface : *altSurfaces)
 			{
-				results.push_back(to_hstring(surface));
+				results.emplace_back(to_hstring(surface));
 			}
 		}
 		return com_array<hstring>(results);
@@ -56,12 +56,12 @@ namespace winrt::CelestiaComponent::implementation
 
     CelestiaComponent::CelestiaOrbit CelestiaBody::OrbitAtTime(double julianDay)
     {
-        return make<CelestiaOrbit>((celestia::ephem::Orbit*)static_cast<Body*>(obj)->getOrbit(julianDay));
+        return make<CelestiaOrbit>(const_cast<celestia::ephem::Orbit*>(static_cast<Body*>(obj)->getOrbit(julianDay)));
     }
 
     CelestiaComponent::CelestiaRotationModel CelestiaBody::RotationModelAtTime(double julianDay)
     {
-        return make<CelestiaRotationModel>((celestia::ephem::RotationModel*)static_cast<Body*>(obj)->getRotationModel(julianDay));
+        return make<CelestiaRotationModel>(const_cast<celestia::ephem::RotationModel*>(static_cast<Body*>(obj)->getRotationModel(julianDay)));
     }
 
     bool CelestiaBody::HasRings()

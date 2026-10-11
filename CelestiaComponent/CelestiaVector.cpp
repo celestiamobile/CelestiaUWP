@@ -19,17 +19,17 @@ namespace winrt::CelestiaComponent::implementation
 {
     CelestiaVector::CelestiaVector(double x, double y, double z, double w) : CelestiaVectorT<CelestiaVector>()
     {
-        array.push_back(x);
-        array.push_back(y);
-        array.push_back(z);
-        array.push_back(w);
+        array.emplace_back(x);
+        array.emplace_back(y);
+        array.emplace_back(z);
+        array.emplace_back(w);
     }
 
     CelestiaVector::CelestiaVector(double x, double y, double z) : CelestiaVectorT<CelestiaVector>()
     {
-        array.push_back(x);
-        array.push_back(y);
-        array.push_back(z);
+        array.emplace_back(x);
+        array.emplace_back(y);
+        array.emplace_back(z);
     }
 
     double CelestiaVector::X()

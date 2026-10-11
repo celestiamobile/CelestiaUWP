@@ -66,7 +66,7 @@ namespace winrt::CelestiaWinUI::implementation
 
     CelestiaComponent::CelestiaGotoLocationDistanceUnit GotoObjectDialog::UnitType()
     {
-        return (CelestiaComponent::CelestiaGotoLocationDistanceUnit)unit;
+        return static_cast<CelestiaComponent::CelestiaGotoLocationDistanceUnit>(unit);
     }
 
     CelestiaComponent::CelestiaSelection GotoObjectDialog::Object()

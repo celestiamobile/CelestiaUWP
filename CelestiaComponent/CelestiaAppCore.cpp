@@ -9,6 +9,7 @@
 
 #include "pch.h"
 #include <algorithm>
+#include <string_view>
 #include <celengine/location.h>
 #include <celestia/celestiastate.h>
 #include <celestia/configfile.h>
@@ -127,10 +128,8 @@ namespace winrt::CelestiaComponent::implementation
         string config = to_string(configFileName);
         vector<std::filesystem::path> extraPaths;
 
-        for (unsigned int i = 0; i < extraDirectories.size(); i++)
-        {
-            extraPaths.emplace_back(to_string(extraDirectories[i]));
-        }
+        for (auto const& directory : extraDirectories)
+            extraPaths.emplace_back(to_string(directory));
         return core->initSimulation(config, extraPaths, &watcher);
     }
 
@@ -222,17 +221,17 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseMove(x, y, (int)button);
+        core->mouseMove(x, y, static_cast<int>(button));
     }
 
     void CelestiaAppCore::MouseButtonUp(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseButtonUp(x, y, (int)button);
+        core->mouseButtonUp(x, y, static_cast<int>(button));
     }
 
     void CelestiaAppCore::MouseButtonDown(float x, float y, CelestiaComponent::CelestiaMouseButton button)
     {
-        core->mouseButtonDown(x, y, (int)button);
+        core->mouseButtonDown(x, y, static_cast<int>(button));
     }
 
     void CelestiaAppCore::MouseWheel(float motion, int32_t modifiers)
@@ -242,57 +241,57 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::CharEnter(int16_t input)
     {
-        core->charEntered((char)input);
+        core->charEntered(static_cast<char>(input));
     }
 
     void CelestiaAppCore::CharEnter(int16_t input, int32_t modifiers)
     {
-        core->charEntered((char)input, modifiers);
+        core->charEntered(static_cast<char>(input), modifiers);
     }
 
     static int convert_key_code_to_celestia_key(int key)
     {
         int celestiaKey = -1;
-        if (key >= (int)Windows::System::VirtualKey::NumberPad0 && key <= (int)Windows::System::VirtualKey::NumberPad9)
-            celestiaKey = CelestiaCore::Key_NumPad0 + (key - (int)Windows::System::VirtualKey::NumberPad0);
-        else if (key >= (int)Windows::System::VirtualKey::F1 && key <= (int)Windows::System::VirtualKey::F12)
-            celestiaKey = CelestiaCore::Key_F1 + (key - (int)Windows::System::VirtualKey::F1);
-        else if (key >= (int)Windows::System::VirtualKey::A && key <= (int)Windows::System::VirtualKey::Z)
-            celestiaKey = 'A' + (key - (int)Windows::System::VirtualKey::A);
+        if (key >= static_cast<int>(Windows::System::VirtualKey::NumberPad0) && key <= static_cast<int>(Windows::System::VirtualKey::NumberPad9))
+            celestiaKey = CelestiaCore::Key_NumPad0 + (key - static_cast<int>(Windows::System::VirtualKey::NumberPad0));
+        else if (key >= static_cast<int>(Windows::System::VirtualKey::F1) && key <= static_cast<int>(Windows::System::VirtualKey::F12))
+            celestiaKey = CelestiaCore::Key_F1 + (key - static_cast<int>(Windows::System::VirtualKey::F1));
+        else if (key >= static_cast<int>(Windows::System::VirtualKey::A) && key <= static_cast<int>(Windows::System::VirtualKey::Z))
+            celestiaKey = 'A' + (key - static_cast<int>(Windows::System::VirtualKey::A));
         else
             switch (key)
             {
-            case (int)Windows::System::VirtualKey::Up:
+            case static_cast<int>(Windows::System::VirtualKey::Up):
                 celestiaKey = CelestiaCore::Key_Up;
                 break;
-            case (int)Windows::System::VirtualKey::Down:
+            case static_cast<int>(Windows::System::VirtualKey::Down):
                 celestiaKey = CelestiaCore::Key_Down;
                 break;
-            case (int)Windows::System::VirtualKey::Left:
+            case static_cast<int>(Windows::System::VirtualKey::Left):
                 celestiaKey = CelestiaCore::Key_Left;
                 break;
-            case (int)Windows::System::VirtualKey::Right:
+            case static_cast<int>(Windows::System::VirtualKey::Right):
                 celestiaKey = CelestiaCore::Key_Right;
                 break;
-            case (int)Windows::System::VirtualKey::PageUp:
+            case static_cast<int>(Windows::System::VirtualKey::PageUp):
                 celestiaKey = CelestiaCore::Key_PageUp;
                 break;
-            case (int)Windows::System::VirtualKey::PageDown:
+            case static_cast<int>(Windows::System::VirtualKey::PageDown):
                 celestiaKey = CelestiaCore::Key_PageDown;
                 break;
-            case (int)Windows::System::VirtualKey::Home:
+            case static_cast<int>(Windows::System::VirtualKey::Home):
                 celestiaKey = CelestiaCore::Key_Home;
                 break;
-            case (int)Windows::System::VirtualKey::End:
+            case static_cast<int>(Windows::System::VirtualKey::End):
                 celestiaKey = CelestiaCore::Key_End;
                 break;
-            case (int)Windows::System::VirtualKey::Insert:
+            case static_cast<int>(Windows::System::VirtualKey::Insert):
                 celestiaKey = CelestiaCore::Key_Insert;
                 break;
-            case (int)Windows::System::VirtualKey::Back:
+            case static_cast<int>(Windows::System::VirtualKey::Back):
                 celestiaKey = celestiaKey;
                 break;
-            case (int)Windows::System::VirtualKey::Delete:
+            case static_cast<int>(Windows::System::VirtualKey::Delete):
                 celestiaKey = 127;
                 break;
             default:
@@ -318,12 +317,12 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::JoystickButtonDown(CelestiaComponent::CelestiaJoystickButton button)
     {
-        core->joystickButton((int)button, true);
+        core->joystickButton(static_cast<int>(button), true);
     }
 
     void CelestiaAppCore::JoystickButtonUp(CelestiaComponent::CelestiaJoystickButton button)
     {
-        core->joystickButton((int)button, false);
+        core->joystickButton(static_cast<int>(button), false);
     }
 
     void CelestiaAppCore::JoystickAxis(CelestiaComponent::CelestiaJoystickAxis axis, float amount)
@@ -351,7 +350,7 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaAppCore::SetRenderFont(hstring const& fontPath, int32_t collectionIndex, int32_t fontSize, CelestiaComponent::CelestiaFontStyle fontStyle)
     {
-        core->setRendererFont(to_string(fontPath), collectionIndex, fontSize, (Renderer::FontStyle)fontStyle);
+        core->setRendererFont(to_string(fontPath), collectionIndex, fontSize, static_cast<Renderer::FontStyle>(fontStyle));
     }
 
     void CelestiaAppCore::RunScript(hstring const& path)
@@ -385,7 +384,7 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<CelestiaComponent::CelestiaDestination> vector;
         for (unsigned int i = 0; i < destinations->size(); ++i)
         {
-            vector.push_back(make<implementation::CelestiaDestination>(destinations->at(i)));
+            vector.emplace_back(make<implementation::CelestiaDestination>(destinations->at(i)));
         }
         return com_array(vector);
     }
@@ -425,7 +424,7 @@ namespace winrt::CelestiaComponent::implementation
     {
 #ifdef ENABLE_NLS
         const char* lang = dgettext("celestia", "LANGUAGE");
-        if (strcmp(lang, "LANGUAGE") == 0)
+        if (std::string_view(lang) == "LANGUAGE")
             return L"en";
         return to_hstring(lang);
 #else
@@ -525,7 +524,7 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<CelestiaComponent::CelestiaScript> vector;
         for (const auto &result : results)
         {
-            vector.push_back(make<implementation::CelestiaScript>(result));
+            vector.emplace_back(make<implementation::CelestiaScript>(result));
         }
         return com_array(vector);
     }
@@ -1042,7 +1041,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     int32_t CelestiaAppCore::MeasurementSystem()
     {
-        return (int32_t)core->getMeasurementSystem();
+        return static_cast<int32_t>(core->getMeasurementSystem());
     }
 
     void CelestiaAppCore::MeasurementSystem(int32_t measurementSystem)
@@ -1052,7 +1051,7 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     int32_t CelestiaAppCore::TemperatureScale()
     {
-        return (int32_t)core->getTemperatureScale();
+        return static_cast<int32_t>(core->getTemperatureScale());
     }
 
     void CelestiaAppCore::TemperatureScale(int32_t temperatureScale)
@@ -1062,17 +1061,17 @@ void CelestiaAppCore::Enable##flag(bool value) \
 
     int32_t CelestiaAppCore::ScriptSystemAccessPolicy()
     {
-        return (int32_t)core->getScriptSystemAccessPolicy();
+        return static_cast<int32_t>(core->getScriptSystemAccessPolicy());
     }
 
     void CelestiaAppCore::ScriptSystemAccessPolicy(int32_t scriptSystemAccessPolicy)
     {
-        core->setScriptSystemAccessPolicy((CelestiaCore::ScriptSystemAccessPolicy)scriptSystemAccessPolicy);
+        core->setScriptSystemAccessPolicy(static_cast<CelestiaCore::ScriptSystemAccessPolicy>(scriptSystemAccessPolicy));
     }
 
     CelestiaComponent::CelestiaLayoutDirection CelestiaAppCore::LayoutDirection()
     {
-        return (CelestiaComponent::CelestiaLayoutDirection)core->getLayoutDirection();
+        return static_cast<CelestiaComponent::CelestiaLayoutDirection>(core->getLayoutDirection());
     }
 
     void CelestiaAppCore::LayoutDirection(CelestiaComponent::CelestiaLayoutDirection layoutDirection)

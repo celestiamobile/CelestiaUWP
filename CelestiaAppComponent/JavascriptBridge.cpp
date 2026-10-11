@@ -54,7 +54,7 @@ namespace winrt::CelestiaAppComponent::implementation
             {
                 auto operation = object.GetNamedString(L"operation");
                 auto content = object.GetNamedString(L"content");
-                auto minScriptVersion = (int32_t)object.GetNamedNumber(L"minScriptVersion");
+                auto minScriptVersion = static_cast<int32_t>(object.GetNamedNumber(L"minScriptVersion"));
                 return make<JavascriptMessagePayload>(operation, content, minScriptVersion);
             }
             catch(hresult_error const&) {}

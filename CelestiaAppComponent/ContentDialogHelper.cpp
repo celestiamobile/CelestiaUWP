@@ -97,7 +97,7 @@ namespace winrt::CelestiaAppComponent::implementation
         else
         {
             completion_source<bool> completionSource;
-            pendingContentDialogRequests[xamlRoot].push_back(&completionSource);
+            pendingContentDialogRequests[xamlRoot].emplace_back(&completionSource);
             co_await completionSource;
             co_await context;
             contentDialog.XamlRoot(xamlRoot);
@@ -113,7 +113,7 @@ namespace winrt::CelestiaAppComponent::implementation
         if (result != pendingContentDialogRequests.end())
         {
             auto& pendingRequests = result->second;
-            if (pendingRequests.size() > 0)
+            if (!pendingRequests.empty())
             {
                 auto pendingRequest = pendingRequests[0];
                 pendingRequests.erase(pendingRequests.begin());

@@ -36,7 +36,7 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
         for (const auto& child : children)
         {
-            vec.push_back(child);
+            vec.emplace_back(child);
         }
         if (!sorted)
             std::sort(vec.begin(), vec.end(), CompareBrowserItems);
@@ -74,7 +74,7 @@ namespace winrt::CelestiaComponent::implementation
             std::vector<CelestiaComponent::CelestiaBrowserItem> vec;
             for (const auto& child : arr)
             {
-                vec.push_back(child);
+                vec.emplace_back(child);
             }
             if (!sorted)
                 std::sort(vec.begin(), vec.end(), CompareBrowserItems);

@@ -191,7 +191,7 @@ namespace winrt::CelestiaWinUI::implementation
 
         std::vector<hstring> extraPaths;
         if (!extraAddonFolderPath.empty())
-            extraPaths.push_back(extraAddonFolderPath);
+            extraPaths.emplace_back(extraAddonFolderPath);
 
         SetCurrentDirectoryW(resourcePath.c_str());
         hstring localeDirectory = PathHelper::Combine(resourcePath, L"locale");
@@ -345,7 +345,7 @@ namespace winrt::CelestiaWinUI::implementation
             auto potentialInt32Entry = CelestiaExtension::GetInt32EntryByName(key);
             if (potentialInt32Entry != CelestiaSettingInt32Entry::None)
             {
-                int32_t currentValue = (int32_t)value.GetNumber();
+                int32_t currentValue = static_cast<int32_t>(value.GetNumber());
                 if (customSetting != nullptr)
                     currentValue = unbox_value_or<int32_t>(customSetting, currentValue);
                 CelestiaExtension::SetCelestiaInt32Value(appCore, potentialInt32Entry, currentValue);
@@ -354,7 +354,7 @@ namespace winrt::CelestiaWinUI::implementation
             auto potentialSingleEntry = CelestiaExtension::GetSingleEntryByName(key);
             if (potentialSingleEntry != CelestiaSettingSingleEntry::None)
             {
-                float currentValue = (float)value.GetNumber();
+                float currentValue = static_cast<float>(value.GetNumber());
                 if (customSetting != nullptr)
                     currentValue = unbox_value_or<float>(customSetting, currentValue);
                 CelestiaExtension::SetCelestiaSingleValue(appCore, potentialSingleEntry, currentValue);
@@ -407,7 +407,7 @@ namespace winrt::CelestiaWinUI::implementation
                 std::vector<hstring> availableLocales;
                 for (const auto& file : files)
                 {
-                    availableLocales.push_back(file.Name());
+                    availableLocales.emplace_back(file.Name());
                 }
                 std::sort(availableLocales.begin(), availableLocales.end());
                 availableLanguages = availableLocales;
@@ -1979,7 +1979,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     for (const auto& child : children)
                     {
-                        browserMenuItems.push_back(strong_this->CreateMenuItem(child));
+                        browserMenuItems.emplace_back(strong_this->CreateMenuItem(child));
                     }
                 }
 
@@ -2128,7 +2128,7 @@ namespace winrt::CelestiaWinUI::implementation
                 {
                     auto strong_this{ weak_this.get() };
                     if (strong_this == nullptr) return;
-                    strong_this->appCore.MouseMove((float)x, (float)y, button);
+                    strong_this->appCore.MouseMove(static_cast<float>(x), static_cast<float>(y), button);
                 });
 
             if (appSettings.InfiniteDragging() && lastMouseGlobalPosition.has_value())
@@ -2402,7 +2402,7 @@ namespace winrt::CelestiaWinUI::implementation
     void PopulateBodyMenu(CelestiaBody const& body, MenuFlyout const& menu, CelestiaAppCore const& appCore, CelestiaRenderer const& renderer)
     {
         auto surfaces = body.AlternateSurfaceNames();
-        if (surfaces.size() > 0)
+        if (!surfaces.empty())
         {
             menu.Items().Append(MenuFlyoutSeparator());
 
@@ -2534,9 +2534,9 @@ namespace winrt::CelestiaWinUI::implementation
                         if (strong_this == nullptr) return;
                         strong_this->ShowInfo(CelestiaSelection(obj));
                     });
-                    children.push_back(getInfoItem);
+                    children.emplace_back(getInfoItem);
 
-                    children.push_back(MenuFlyoutSeparator());
+                    children.emplace_back(MenuFlyoutSeparator());
 
                     MenuFlyoutItem selectItem;
                     selectItem.Text(LocalizationHelper::Localize(L"Select", L"Select an object"));
@@ -2548,7 +2548,7 @@ namespace winrt::CelestiaWinUI::implementation
                                     appCore.Simulation().Selection(selection);
                                 });
                         });
-                    children.push_back(selectItem);
+                    children.emplace_back(selectItem);
                     std::vector<std::pair<hstring, CelestiaAction>> actions =
                     {
                         {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo},
@@ -2574,16 +2574,16 @@ namespace winrt::CelestiaWinUI::implementation
                                     appCore.Perform(copiedCode);
                                 });
                         });
-                        children.push_back(newItem);
+                        children.emplace_back(newItem);
                     }
                 }
                 if (auto items = item.Children(); items != nullptr && items.Size() > 0)
                 {
-                    children.push_back(MenuFlyoutSeparator());
+                    children.emplace_back(MenuFlyoutSeparator());
 
                     for (const auto child : items)
                     {
-                        children.push_back(strong_this->CreateMenuItem(child));
+                        children.emplace_back(strong_this->CreateMenuItem(child));
                     }
                 }
                 for (const auto& child : children)
@@ -2597,10 +2597,10 @@ namespace winrt::CelestiaWinUI::implementation
     Windows::Foundation::IReference<int32_t> MainWindow::MaximumDisplayFrequency()
     {
         auto hWnd = WindowHandle();
-        if (hWnd == 0) return nullptr;
+        if (hWnd == nullptr) return nullptr;
 
         HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-        if (hMonitor == NULL) return nullptr;
+        if (hMonitor == nullptr) return nullptr;
 
         MONITORINFOEXW info = {};
         info.cbSize = sizeof(MONITORINFOEXW);

@@ -90,12 +90,12 @@ namespace winrt::CelestiaAppComponent::implementation
             std::vector<std::string> components;
 
             for (auto const& component : name)
-                components.push_back(component.string());
+                components.emplace_back(component.string());
 
             bool isRegularFile = name.has_filename();
             std::filesystem::path currentDirectory = destinationFolder;
 
-            for (int j = 0; j < components.size(); ++j)
+            for (std::size_t j = 0; j < components.size(); ++j)
             {
                 const auto& component = components[j];
                 if (component.empty())
@@ -246,7 +246,7 @@ namespace winrt::CelestiaAppComponent::implementation
                     totalRead += buffer.Length();
                     if (canReportProgress)
                     {
-                        downloadProgressUpdateEvent(*this, make<ResourceManagerDownloadProgressArgs>(item, (double)totalRead / total));
+                        downloadProgressUpdateEvent(*this, make<ResourceManagerDownloadProgressArgs>(item, static_cast<double>(totalRead) / total));
                     }
                 }
                 else
@@ -384,7 +384,7 @@ namespace winrt::CelestiaAppComponent::implementation
                     auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
                     if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && parsedItem.Type() == L"script")
                     {
-                        items.push_back(parsedItem);
+                        items.emplace_back(parsedItem);
                     }
                 }
                 catch (hresult_error const&) {}
@@ -402,7 +402,7 @@ namespace winrt::CelestiaAppComponent::implementation
                     auto parsedItem = CelestiaAppComponent::ResourceItem::TryParse(fileContent);
                     if (parsedItem != nullptr && parsedItem.ID() == folder.Name() && parsedItem.Type() != L"script")
                     {
-                        items.push_back(parsedItem);
+                        items.emplace_back(parsedItem);
                     }
                 }
                 catch (hresult_error const&) {}

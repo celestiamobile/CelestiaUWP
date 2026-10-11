@@ -63,13 +63,13 @@ namespace winrt::CelestiaComponent::implementation
 
         CelestiaCore* core = nullptr;
 
-        enum RenderThreadMessage {
-            MSG_NONE = 0,
-            MSG_WINDOW_SET,
-            MSG_RENDER_LOOP_EXIT,
+        enum class RenderThreadMessage {
+            None,
+            WindowSet,
+            RenderLoopExit,
         };
 
-        enum RenderThreadMessage msg = MSG_NONE;
+        RenderThreadMessage msg = RenderThreadMessage::None;
 
         bool enableMultisample = false;
         bool engineStartedCalled = false;

@@ -57,7 +57,7 @@ namespace winrt::CelestiaAppComponent::implementation
 
     void GamepadManager::GamepadJoystickAction(CelestiaAppCore const& appCore, CelestiaJoystickAxis axis, double amount)
     {
-        appCore.JoystickAxis(axis, (float)amount);
+        appCore.JoystickAxis(axis, static_cast<float>(amount));
     }
 
     void GamepadManager::UpdateGamepad()
@@ -76,18 +76,18 @@ namespace winrt::CelestiaAppComponent::implementation
         if (gamepad == nullptr) return;
 
         auto reading = gamepad.GetCurrentReading();
-        bool isAPressedNew = (int)(reading.Buttons & GamepadButtons::A) != 0;
-        bool isBPressedNew = (int)(reading.Buttons & GamepadButtons::B) != 0;
-        bool isXPressedNew = (int)(reading.Buttons & GamepadButtons::X) != 0;
-        bool isYPressedNew = (int)(reading.Buttons & GamepadButtons::Y) != 0;
+        bool isAPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::A) != 0;
+        bool isBPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::B) != 0;
+        bool isXPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::X) != 0;
+        bool isYPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::Y) != 0;
         bool isLeftTriggerPressedNew = reading.LeftTrigger >= 0.5;
         bool isRightTriggerPressedNew = reading.RightTrigger >= 0.5;
-        bool isLeftBumperPressedNew = (int)(reading.Buttons & GamepadButtons::LeftShoulder) != 0;
-        bool isRightBumperPressedNew = (int)(reading.Buttons & GamepadButtons::RightShoulder) != 0;
-        bool isDpadUpPressedNew = (int)(reading.Buttons & GamepadButtons::DPadUp) != 0;
-        bool isDpadDownPressedNew = (int)(reading.Buttons & GamepadButtons::DPadDown) != 0;
-        bool isDpadLeftPressedNew = (int)(reading.Buttons & GamepadButtons::DPadLeft) != 0;
-        bool isDpadRightPressedNew = (int)(reading.Buttons & GamepadButtons::DPadRight) != 0;
+        bool isLeftBumperPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::LeftShoulder) != 0;
+        bool isRightBumperPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::RightShoulder) != 0;
+        bool isDpadUpPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::DPadUp) != 0;
+        bool isDpadDownPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::DPadDown) != 0;
+        bool isDpadLeftPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::DPadLeft) != 0;
+        bool isDpadRightPressedNew = static_cast<int>(reading.Buttons & GamepadButtons::DPadRight) != 0;
         double thumbstickXLeft = 0.0;
         double thumbstickYLeft = 0.0;
         double thumbstickXRight = 0.0;

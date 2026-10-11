@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <cmath>
 #include <numbers>
 #include <celastro/astro.h>
 #include <celastro/date.h>
@@ -124,7 +125,7 @@ namespace winrt::CelestiaComponent::implementation
         auto obj = get_self<CelestiaVector>(rect);
         auto v = Eigen::Vector3d(obj->X(), obj->Y(), obj->Z());
         double r = v.norm();
-        double theta = atan2(v.y(), v.x());
+        double theta = std::atan2(v.y(), v.x());
         if (theta < 0)
             theta = theta + 2 * std::numbers::pi;
         double phi = asin(v.z() / r);

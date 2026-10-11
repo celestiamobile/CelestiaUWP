@@ -407,7 +407,7 @@ namespace winrt::CelestiaComponent::implementation
 
         if (currentWindowHeight != windowHeight || currentWindowWidth != windowWidth)
         {
-            core->resize((GLsizei)windowWidth, (GLsizei)windowHeight);
+            core->resize(static_cast<GLsizei>(windowWidth), static_cast<GLsizei>(windowHeight));
             currentWindowWidth = windowWidth;
             currentWindowHeight = windowHeight;
         }
@@ -444,16 +444,16 @@ namespace winrt::CelestiaComponent::implementation
             bool shouldQuit = false;
             switch (renderer->msg)
             {
-            case CelestiaRenderer::MSG_WINDOW_SET:
+            case CelestiaRenderer::RenderThreadMessage::WindowSet:
                 shouldQuit = !renderer->Initialize();
                 break;
-            case CelestiaRenderer::MSG_RENDER_LOOP_EXIT:
+            case CelestiaRenderer::RenderThreadMessage::RenderLoopExit:
                 renderingEnabled = false;
                 break;
             default:
                 break;
             }
-            renderer->msg = CelestiaRenderer::MSG_NONE;
+            renderer->msg = CelestiaRenderer::RenderThreadMessage::None;
 
             if (shouldQuit)
                 break;
@@ -507,7 +507,7 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::Stop()
     {
         Lock();
-        msg = CelestiaRenderer::MSG_RENDER_LOOP_EXIT;
+        msg = CelestiaRenderer::RenderThreadMessage::RenderLoopExit;
         Unlock();
 
         WaitForSingleObject(threadHandle, INFINITE);
@@ -549,7 +549,7 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::SetSurface(Microsoft::UI::Xaml::Controls::SwapChainPanel const& surface, float scale)
     {
         Lock();
-        msg = CelestiaRenderer::MSG_WINDOW_SET;
+        msg = CelestiaRenderer::RenderThreadMessage::WindowSet;
         window = surface;
         windowScale = scale;
         Unlock();
@@ -565,7 +565,7 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task)
     {
         Lock();
-        tasks.push_back(task);
+        tasks.emplace_back(task);
         Unlock();
     }
 

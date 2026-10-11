@@ -151,7 +151,7 @@ namespace winrt::CelestiaComponent::implementation
         Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
         if (loc->longitude && loc->latitude)
         {
-            sim->gotoSelectionLongLat(5.0, distance, loc->longitude.Value() * static_cast<float>(std::numbers::pi) / 180.0f, loc->latitude.Value() * static_cast<float>(std::numbers::pi) / 180.0f, up);
+            sim->gotoSelectionLongLat(5.0, distance, loc->longitude.Value() * std::numbers::pi_v<float> / 180.0f, loc->latitude.Value() * std::numbers::pi_v<float> / 180.0f, up);
         }
         else
         {
@@ -232,7 +232,7 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<celestia::engine::Completion> results;
         sim->getObjectCompletion(results, to_string(name), true);
         for (const auto& result : results)
-            vec.push_back(make<CelestiaCompletion>(result));
+            vec.emplace_back(make<CelestiaCompletion>(result));
         return com_array<CelestiaComponent::CelestiaCompletion>(vec);
     }
 }

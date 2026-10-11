@@ -15,11 +15,9 @@
 
 using namespace std;
 
-#define BROWSER_MAX_STAR_COUNT          100
-
 namespace winrt::CelestiaComponent::implementation
 {
-	CelestiaStarBrowser::CelestiaStarBrowser(celestia::engine::StarBrowser* sb) : CelestiaStarBrowserT<CelestiaStarBrowser>(), sb(sb)
+	CelestiaStarBrowser::CelestiaStarBrowser(std::unique_ptr<celestia::engine::StarBrowser> sb) : CelestiaStarBrowserT<CelestiaStarBrowser>(), sb(std::move(sb))
 	{
 	}
 
@@ -32,18 +30,14 @@ namespace winrt::CelestiaComponent::implementation
 
         std::vector<CelestiaComponent::CelestiaStar> starVec;
         for (const auto &record : records)
-            starVec.push_back(make<CelestiaStar>(const_cast<Star*>(record.star)));
+            starVec.emplace_back(make<CelestiaStar>(const_cast<Star*>(record.star)));
 
         return com_array<CelestiaComponent::CelestiaStar>(starVec);
 	}
 
     void CelestiaStarBrowser::Close()
     {
-        if (sb != nullptr)
-        {
-            delete sb;
-            sb = nullptr;
-        }
+        sb.reset();
     }
 
 	CelestiaStarBrowser::~CelestiaStarBrowser()

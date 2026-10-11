@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "CelestiaBody.h"
 #include "CelestiaEclipse.h"
 #include "CelestiaEclipseFinder.g.h"
@@ -24,8 +26,8 @@ namespace winrt::CelestiaComponent::implementation
         void Abort();
         void Close();
 
-        EclipseFinder* f;
-        EclipseFinderWatcher* w;
+        std::unique_ptr<EclipseFinderWatcher> w;
+        std::unique_ptr<EclipseFinder> f;
         bool aborted;
     };
 }

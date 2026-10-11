@@ -339,9 +339,9 @@ namespace winrt::CelestiaWinUI::implementation
 
         if (maximumDisplayFrequency && displayInformation != nullptr && displayInformation.MaximumSwapInterval() > 1)
         {
-            rendererSettingItems.push_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation")));
-            rendererSettingItems.push_back(CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to frame rate take effect after a restart.", L"Frame rate setting restart notice")));
-            rendererSettingItems.push_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
+            rendererSettingItems.emplace_back(SettingHeaderItem(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation")));
+            rendererSettingItems.emplace_back(CelestiaWinUI::SettingInfoItem(LocalizationHelper::Localize(L"Changes to frame rate take effect after a restart.", L"Frame rate setting restart notice")));
+            rendererSettingItems.emplace_back(FrameRateInt32Item(LocalizationHelper::Localize(L"Frame Rate", L"Frame rate of simulation"), appSettings, renderer, maximumDisplayFrequency.Value(), displayInformation, localSettings));
         }
 
         auto rendererSettingItemGroupItems = single_threaded_observable_vector<IInspectable>();

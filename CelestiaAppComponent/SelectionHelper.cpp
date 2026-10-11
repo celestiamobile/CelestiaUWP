@@ -59,9 +59,9 @@ namespace winrt::CelestiaAppComponent::implementation
                 radiusString = fmt::sprintf(to_string(LocalizationHelper::Localize(L"%s m", L"Unit meter")), to_string(numberFormatter.FormatInt(static_cast<int64_t>(radius * 1000.0f))));
         }
         if (body.IsEllipsoid())
-            lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Equatorial radius: %s", L"")), radiusString));
+            lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Equatorial radius: %s", L"")), radiusString));
         else
-            lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Size: %s", L"Size of an object")), radiusString));
+            lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Size: %s", L"Size of an object")), radiusString));
         auto julianDay = appCore.Simulation().JulianDay();
         auto orbit = body.OrbitAtTime(julianDay);
         auto rotation = body.RotationModelAtTime(julianDay);
@@ -93,21 +93,21 @@ namespace winrt::CelestiaAppComponent::implementation
             }
             rotPeriod = std::round(rotPeriod * 100.0) / 100.0;
             dayLength = std::round(dayLength * 100.0) / 100.0;
-            lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Sidereal rotation period: %s", L"")), fmt::sprintf(to_string(unitTemplate), to_string(numberFormatter.FormatDouble(rotPeriod)))));
+            lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Sidereal rotation period: %s", L"")), fmt::sprintf(to_string(unitTemplate), to_string(numberFormatter.FormatDouble(rotPeriod)))));
 
             if (dayLength != 0.0)
             {
-                lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Length of day: %s", L"")), fmt::sprintf(to_string(unitTemplate), to_string(numberFormatter.FormatDouble(dayLength)))));
+                lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Length of day: %s", L"")), fmt::sprintf(to_string(unitTemplate), to_string(numberFormatter.FormatDouble(dayLength)))));
             }
         }
         if (body.HasRings())
         {
-            lines.push_back(to_string(LocalizationHelper::Localize(L"Has rings", L"Indicate that an object has rings")));
+            lines.emplace_back(to_string(LocalizationHelper::Localize(L"Has rings", L"Indicate that an object has rings")));
         }
 
         if (body.HasAtmosphere())
         {
-            lines.push_back(to_string(LocalizationHelper::Localize(L"Has atmosphere", L"Indicate that an object has atmosphere")));
+            lines.emplace_back(to_string(LocalizationHelper::Localize(L"Has atmosphere", L"Indicate that an object has atmosphere")));
         }
 
         return JoinLines(lines);
@@ -171,7 +171,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         std::vector<std::string> lines;
 
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Spectral type: %s", L"")), to_string(star.SpectralType())));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"Spectral type: %s", L"")), to_string(star.SpectralType())));
 
         auto julianDay = appCore.Simulation().JulianDay();
         auto celPos = star.PositionAtTime(julianDay).OffsetFrom(CelestiaUniversalCoord::Zero());
@@ -184,11 +184,11 @@ namespace winrt::CelestiaAppComponent::implementation
 
         CelestiaDMS hms{ CelestiaHelper::DegFromRad(sph.X()) };
         double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(hms.HMSHours())), to_string(numberFormatter.FormatInt(hms.HMSMinutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(hms.HMSHours())), to_string(numberFormatter.FormatInt(hms.HMSMinutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ CelestiaHelper::DegFromRad(sph.Y()) };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }
@@ -198,7 +198,7 @@ namespace winrt::CelestiaAppComponent::implementation
         std::vector<std::string> lines;
 
         if (!dso.Description().empty())
-            lines.push_back(to_string(dso.Description()));
+            lines.emplace_back(to_string(dso.Description()));
 
         auto celPos = dso.Position();
         auto eqPos = CelestiaHelper::EclipticToEquatorial(CelestiaHelper::CelToJ2000Ecliptic(celPos));
@@ -210,22 +210,22 @@ namespace winrt::CelestiaAppComponent::implementation
 
         CelestiaDMS hms{ CelestiaHelper::DegFromRad(sph.X()) };
         double seconds = std::round(hms.HMSSeconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(hms.HMSHours())), to_string(numberFormatter.FormatInt(hms.HMSMinutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"RA: %sh %sm %ss", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(hms.HMSHours())), to_string(numberFormatter.FormatInt(hms.HMSMinutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         CelestiaDMS dms{ CelestiaHelper::DegFromRad(sph.Y()) };
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"DEC: %s\u00b0 %s\u2032 %s\u2033", L"Equatorial coordinate")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         auto galPos = CelestiaHelper::EquatorialToGalactic(eqPos);
         sph = CelestiaHelper::RectToSpherical(galPos);
 
         dms = CelestiaDMS(CelestiaHelper::DegFromRad(sph.X()));
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"L: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"L: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         dms = CelestiaDMS(CelestiaHelper::DegFromRad(sph.Y()));
         seconds = std::round(dms.Seconds() * 100.0) / 100.0;
-        lines.push_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"B: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
+        lines.emplace_back(fmt::sprintf(to_string(LocalizationHelper::Localize(L"B: %s\u00b0 %s\u2032 %s\u2033", L"Galactic coordinates")), to_string(numberFormatter.FormatInt(dms.Degrees())), to_string(numberFormatter.FormatInt(dms.Minutes())), to_string(numberFormatter.FormatDouble(seconds))));
 
         return JoinLines(lines);
     }

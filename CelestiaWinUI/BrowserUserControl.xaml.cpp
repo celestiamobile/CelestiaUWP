@@ -244,7 +244,7 @@ namespace winrt::CelestiaWinUI::implementation
                     if (strong_this == nullptr) return com_array<CelestiaBrowserItem>();
                     return CelestiaExtension::GetChildren(item, strong_this->appCore);
                 }, false };
-                vectorToAdd->push_back(item);
+                vectorToAdd->emplace_back(item);
             }
             auto dsoCategories = single_threaded_observable_vector<BrowserItem>();
             std::vector<CelestiaBrowserItem> galaxyBrowserItems;
@@ -252,7 +252,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 if (items.empty())
                     continue;
-                galaxyBrowserItems.push_back(CelestiaBrowserItem(name, items, false));
+                galaxyBrowserItems.emplace_back(CelestiaBrowserItem(name, items, false));
             }
             dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Galaxies", L""), galaxyBrowserItems, true)));
             dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Globulars", L""), globularItems, false)));
@@ -261,7 +261,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 if (items.empty())
                     continue;
-                nebulaBrowserItems.push_back(CelestiaBrowserItem(name, items, false));
+                nebulaBrowserItems.emplace_back(CelestiaBrowserItem(name, items, false));
             }
             dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Nebulae", L""), nebulaBrowserItems, true)));
             dsoCategories.Append(BrowserItem(CelestiaBrowserItem(LocalizationHelper::Localize(L"Open Clusters", L""), openClusterItems, false)));

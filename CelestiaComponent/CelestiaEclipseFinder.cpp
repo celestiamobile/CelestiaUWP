@@ -35,8 +35,8 @@ namespace winrt::CelestiaComponent::implementation
 
 	CelestiaEclipseFinder::CelestiaEclipseFinder(CelestiaComponent::CelestiaBody body) : CelestiaEclipseFinderT<CelestiaEclipseFinder>(), aborted(true)
 	{
-        w = new EclipseSeacherWatcher(*this);
-        f = new EclipseFinder(reinterpret_cast<Body*>(get_self<CelestiaBody>(body)->obj), w);
+        w = std::make_unique<EclipseSeacherWatcher>(*this);
+        f = std::make_unique<EclipseFinder>(reinterpret_cast<Body*>(get_self<CelestiaBody>(body)->obj), w.get());
 	}
 
 	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const& startTime, Windows::Foundation::DateTime const& endTime)
@@ -47,23 +47,15 @@ namespace winrt::CelestiaComponent::implementation
 
         std::vector<CelestiaComponent::CelestiaEclipse> vec;
         for (Eclipse& result : results)
-            vec.push_back(make<CelestiaEclipse>(&result));
+            vec.emplace_back(make<CelestiaEclipse>(&result));
         aborted = true;
 		return com_array<CelestiaComponent::CelestiaEclipse>(vec);
 	}
 
     void CelestiaEclipseFinder::Close()
     {
-        if (w != nullptr)
-        {
-            delete w;
-            w = nullptr;
-        }
-        if (f != nullptr)
-        {
-            delete f;
-            f = nullptr;
-        }
+        f.reset();
+        w.reset();
     }
 
     CelestiaEclipseFinder::~CelestiaEclipseFinder()
