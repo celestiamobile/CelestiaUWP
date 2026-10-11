@@ -1,5 +1,5 @@
 diff --git a/CelestiaAppComponent/CelestiaAppComponent.vcxproj b/CelestiaAppComponent/CelestiaAppComponent.vcxproj
-index 83c43da..b5580ef 100644
+index a48e53f..144851f 100644
 --- a/CelestiaAppComponent/CelestiaAppComponent.vcxproj
 +++ b/CelestiaAppComponent/CelestiaAppComponent.vcxproj
 @@ -7,6 +7,7 @@
@@ -10,7 +10,7 @@ index 83c43da..b5580ef 100644
    <PropertyGroup Label="Globals">
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
-@@ -324,6 +325,7 @@
+@@ -326,6 +327,7 @@
      <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
@@ -18,7 +18,7 @@ index 83c43da..b5580ef 100644
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
-@@ -344,5 +346,7 @@
+@@ -346,5 +348,7 @@
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
@@ -28,7 +28,7 @@ index 83c43da..b5580ef 100644
  </Project>
 \ No newline at end of file
 diff --git a/CelestiaAppComponent/packages.config b/CelestiaAppComponent/packages.config
-index a1902d8..af5920f 100644
+index ac6821c..3eb9362 100644
 --- a/CelestiaAppComponent/packages.config
 +++ b/CelestiaAppComponent/packages.config
 @@ -8,4 +8,5 @@
@@ -39,7 +39,7 @@ index a1902d8..af5920f 100644
  </packages>
 \ No newline at end of file
 diff --git a/CelestiaComponent/CelestiaComponent.vcxproj b/CelestiaComponent/CelestiaComponent.vcxproj
-index 02ba5cf..aa46bf9 100644
+index 59d17a5..db75996 100644
 --- a/CelestiaComponent/CelestiaComponent.vcxproj
 +++ b/CelestiaComponent/CelestiaComponent.vcxproj
 @@ -7,6 +7,7 @@
@@ -50,7 +50,7 @@ index 02ba5cf..aa46bf9 100644
    <ItemGroup Label="ProjectConfigurations">
      <ProjectConfiguration Include="Debug|ARM">
        <Configuration>Debug</Configuration>
-@@ -1204,6 +1205,7 @@
+@@ -1202,6 +1203,7 @@
      <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
@@ -58,7 +58,7 @@ index 02ba5cf..aa46bf9 100644
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
-@@ -1225,5 +1227,7 @@
+@@ -1223,5 +1225,7 @@
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
@@ -68,7 +68,7 @@ index 02ba5cf..aa46bf9 100644
  </Project>
 \ No newline at end of file
 diff --git a/CelestiaComponent/packages.config b/CelestiaComponent/packages.config
-index d53fe46..90e4821 100644
+index ed5a1bb..a6d1ad2 100644
 --- a/CelestiaComponent/packages.config
 +++ b/CelestiaComponent/packages.config
 @@ -9,4 +9,5 @@
@@ -79,7 +79,7 @@ index d53fe46..90e4821 100644
  </packages>
 \ No newline at end of file
 diff --git a/CelestiaWinUI/CelestiaWinUI.vcxproj b/CelestiaWinUI/CelestiaWinUI.vcxproj
-index c1dfa1a..bc40a60 100644
+index 0a1f2ad..b1e4d4d 100644
 --- a/CelestiaWinUI/CelestiaWinUI.vcxproj
 +++ b/CelestiaWinUI/CelestiaWinUI.vcxproj
 @@ -7,6 +7,7 @@
@@ -90,7 +90,7 @@ index c1dfa1a..bc40a60 100644
    <PropertyGroup Label="Globals">
      <CppWinRTOptimized>true</CppWinRTOptimized>
      <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
-@@ -745,6 +746,7 @@
+@@ -735,6 +736,7 @@
      <Import Project="..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.1.9\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" />
      <Import Project="..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
@@ -98,7 +98,7 @@ index c1dfa1a..bc40a60 100644
    </ImportGroup>
    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
      <PropertyGroup>
-@@ -766,5 +768,7 @@
+@@ -756,5 +758,7 @@
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.Foundation.2.3.12\build\native\Microsoft.WindowsAppSDK.Foundation.targets'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
      <Error Condition="!Exists('..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.WindowsAppSDK.WinUI.2.3.9\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
@@ -108,7 +108,7 @@ index c1dfa1a..bc40a60 100644
  </Project>
 \ No newline at end of file
 diff --git a/CelestiaWinUI/packages.config b/CelestiaWinUI/packages.config
-index fd42a0d..6794f1a 100644
+index 8347758..4ca34cc 100644
 --- a/CelestiaWinUI/packages.config
 +++ b/CelestiaWinUI/packages.config
 @@ -9,4 +9,5 @@
