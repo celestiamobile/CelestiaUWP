@@ -42,6 +42,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <ProjectGuid>{f0bc785c-485c-433b-8128-22a79b58f307}</ProjectGuid>
     <Keyword>WindowsRuntimeComponent</Keyword>
     <RootNamespace>CelestiaComponent</RootNamespace>
