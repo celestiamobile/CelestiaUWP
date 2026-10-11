@@ -151,7 +151,7 @@ namespace winrt::CelestiaComponent::implementation
         Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
         if (loc->longitude && loc->latitude)
         {
-            sim->gotoSelectionLongLat(5.0, distance, loc->longitude.Value() * static_cast<float>(std::numbers::pi) / 180.0f, loc->latitude.Value() * static_cast<float>(celestia::numbers::pi) / 180.0f, up);
+            sim->gotoSelectionLongLat(5.0, distance, loc->longitude.Value() * static_cast<float>(std::numbers::pi) / 180.0f, loc->latitude.Value() * static_cast<float>(std::numbers::pi) / 180.0f, up);
         }
         else
         {
