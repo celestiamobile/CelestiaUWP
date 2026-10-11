@@ -78,7 +78,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         ObservableVector(Windows::Foundation::Collections::IObservableVector<T> const& store) : store(store)
         {
-            store.VectorChanged([weak_this{ get_weak() }](Windows::Foundation::IInspectable const&, Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
+            store.VectorChanged([weak_this{ this->get_weak() }](Windows::Foundation::IInspectable const&, Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
                 {
                     auto strong_this{ weak_this.get() };
                     if (strong_this == nullptr) return;
