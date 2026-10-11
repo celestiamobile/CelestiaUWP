@@ -198,6 +198,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -215,6 +216,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -232,6 +234,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -249,6 +252,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -266,6 +270,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -283,6 +288,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -300,6 +306,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -317,6 +324,7 @@
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zc:__cplusplus /utf-8</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
       <SDLCheck>false</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
