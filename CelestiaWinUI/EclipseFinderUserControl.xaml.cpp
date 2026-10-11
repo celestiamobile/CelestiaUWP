@@ -37,7 +37,7 @@ namespace
 {
     hstring FormatObjectName(hstring const& format, hstring const& name)
     {
-        return to_hstring(fmt::format(to_string(format), to_string(name)));
+        return to_hstring(fmt::format(fmt::runtime(to_string(format)), to_string(name)));
     }
 }
 
@@ -190,8 +190,8 @@ namespace winrt::CelestiaWinUI::implementation
         {
             hstring displayName = to_hstring(fmt::format(
                 "{}\n{}",
-                fmt::format(to_string(LocalizationHelper::Localize(L"Occulter: {}", L"Eclipse finder result")), to_string(eclipse.Occulter().Name())),
-                fmt::format(to_string(LocalizationHelper::Localize(L"Eclipsed body: {}", L"Eclipse finder result")), to_string(eclipse.Receiver().Name()))));
+                fmt::format(fmt::runtime(to_string(LocalizationHelper::Localize(L"Occulter: {}", L"Eclipse finder result"))), to_string(eclipse.Occulter().Name())),
+                fmt::format(fmt::runtime(to_string(LocalizationHelper::Localize(L"Eclipsed body: {}", L"Eclipse finder result"))), to_string(eclipse.Receiver().Name()))));
             vectorResults.Append(CelestiaWinUI::EclipseResult(eclipse, displayName));
         }
         co_await ui_thread;

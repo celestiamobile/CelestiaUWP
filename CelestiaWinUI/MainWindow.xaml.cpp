@@ -2597,18 +2597,18 @@ namespace winrt::CelestiaWinUI::implementation
     Windows::Foundation::IReference<int32_t> MainWindow::MaximumDisplayFrequency()
     {
         auto hWnd = WindowHandle();
-        if (hWnd == 0) return std::nullopt;
+        if (hWnd == 0) return nullptr;
 
         HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-        if (hMonitor == NULL) return std::nullopt;
+        if (hMonitor == NULL) return nullptr;
 
         MONITORINFOEXW info = {};
         info.cbSize = sizeof(MONITORINFOEXW);
-        if (!GetMonitorInfoW(hMonitor, &info)) return std::nullopt;
+        if (!GetMonitorInfoW(hMonitor, &info)) return nullptr;
 
         DEVMODEW devMode = {};
         devMode.dmSize = sizeof(DEVMODEW);
-        if (!EnumDisplaySettingsW(info.szDevice, ENUM_CURRENT_SETTINGS, &devMode)) return std::nullopt;
+        if (!EnumDisplaySettingsW(info.szDevice, ENUM_CURRENT_SETTINGS, &devMode)) return nullptr;
 
         return static_cast<int32_t>(devMode.dmDisplayFrequency);
     }
