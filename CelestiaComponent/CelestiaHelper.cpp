@@ -8,6 +8,7 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <numbers>
 #include <celastro/astro.h>
 #include <celastro/date.h>
 #include "CelestiaHelper.h"
@@ -125,7 +126,7 @@ namespace winrt::CelestiaComponent::implementation
         double r = v.norm();
         double theta = atan2(v.y(), v.x());
         if (theta < 0)
-            theta = theta + 2 * celestia::numbers::pi;
+            theta = theta + 2 * std::numbers::pi;
         double phi = asin(v.z() / r);
         return make<CelestiaVector>(theta, phi, r);
     }
