@@ -50,7 +50,7 @@ namespace winrt::CelestiaComponent::implementation
 
 	void CelestiaUniverse::MarkSelection(CelestiaComponent::CelestiaSelection const& selection, CelestiaComponent::CelestiaMarkerRepresentation marker)
 	{
-		u->markObject(get_self<CelestiaSelection>(selection)->AsSelection(), celestia::MarkerRepresentation(celestia::MarkerRepresentation::Symbol(marker), 10.0f, Color(0.0f, 1.0f, 0.0f, 0.9f)), 1);
+		u->markObject(get_self<CelestiaSelection>(selection)->AsSelection(), celestia::engine::MarkerRepresentation(celestia::engine::MarkerSymbol(marker), 10.0f, Color(0.0f, 1.0f, 0.0f, 0.9f)), 1);
 	}
 
 	void CelestiaUniverse::UnmarkSelection(CelestiaComponent::CelestiaSelection const& selection)

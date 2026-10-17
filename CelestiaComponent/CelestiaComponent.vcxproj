@@ -501,7 +501,6 @@
     <ClInclude Include="..\..\Celestia\src\celscript\lua\luascript.h" />
     <ClInclude Include="..\..\Celestia\src\celttf\truetypefont.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\align.h" />
-    <ClInclude Include="..\..\Celestia\src\celutil\array_view.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\associativearray.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binaryread.h" />
     <ClInclude Include="..\..\Celestia\src\celutil\binarywrite.h" />

@@ -694,9 +694,6 @@
     <ClInclude Include="..\..\Celestia\src\celutil\align.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Celestia\src\celutil\array_view.h">
-      <Filter>Celestia\celutil</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celutil\blockarray.h">
       <Filter>Celestia\celutil</Filter>
     </ClInclude>
