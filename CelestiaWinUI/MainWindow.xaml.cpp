@@ -326,6 +326,14 @@ namespace winrt::CelestiaWinUI::implementation
     {
         if (defaultSettings == nullptr) return;
         auto localSettings = AppDataHelper::LocalSettings();
+        auto values = localSettings.Values();
+        if (!unbox_value_or<bool>(values.TryLookup(L"StarColorsIlluminantEMigrated"), false))
+        {
+            auto starColors = unbox_value_or<int32_t>(values.TryLookup(L"StarColors"), 0);
+            if (starColors >= 1 && starColors <= 3)
+                values.Insert(L"StarColors", box_value(starColors + 1));
+            values.Insert(L"StarColorsIlluminantEMigrated", box_value(true));
+        }
         for (const auto& [key, value] : defaultSettings)
         {
             auto customSetting = localSettings.Values().TryLookup(key);

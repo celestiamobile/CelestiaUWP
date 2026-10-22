@@ -311,9 +311,10 @@ namespace winrt::CelestiaWinUI::implementation
             AppCoreInt32Item(LocalizationHelper::Localize(L"Star Colors", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarColors, single_threaded_vector<OptionPair>
             ({
                 OptionPair(0, LocalizationHelper::Localize(L"Classic Colors", L"Star colors option")),
-                OptionPair(1, LocalizationHelper::Localize(L"Blackbody D65", L"Star colors option")),
-                OptionPair(2, LocalizationHelper::Localize(L"Blackbody (Solar Whitepoint)", L"Star colors option")),
-                OptionPair(3, LocalizationHelper::Localize(L"Blackbody (Vega Whitepoint)", L"Star colors option")),
+                OptionPair(1, LocalizationHelper::Localize(L"Blackbody Illuminant E", L"Star colors option")),
+                OptionPair(2, LocalizationHelper::Localize(L"Blackbody D65", L"Star colors option")),
+                OptionPair(3, LocalizationHelper::Localize(L"Blackbody (Solar Whitepoint)", L"Star colors option")),
+                OptionPair(4, LocalizationHelper::Localize(L"Blackbody (Vega Whitepoint)", L"Star colors option")),
             }), localSettings),
             AppCoreSingleItem(LocalizationHelper::Localize(L"Tinted Illumination Saturation", L""), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::TintSaturation, 0.0f, 1.0f, 0.01f, localSettings, LocalizationHelper::Localize(L"Tinted illumination saturation setting is only effective with Blackbody star colors.", L"")),
 

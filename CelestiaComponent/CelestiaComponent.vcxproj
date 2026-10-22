@@ -312,6 +312,7 @@
     <ClInclude Include="..\..\Celestia\src\celengine\constellation.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\curveplot.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h" />
+    <ClInclude Include="..\..\Celestia\src\celengine\dsobrowser.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsodbbuilder.h" />
     <ClInclude Include="..\..\Celestia\src\celengine\dsooctree.h" />
@@ -555,6 +556,7 @@
     <ClCompile Include="..\..\Celestia\src\celengine\constellation.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\curveplot.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp" />
+    <ClCompile Include="..\..\Celestia\src\celengine\dsobrowser.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsodbbuilder.cpp" />
     <ClCompile Include="..\..\Celestia\src\celengine\dsooctree.cpp" />
