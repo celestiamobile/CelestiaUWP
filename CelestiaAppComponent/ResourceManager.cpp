@@ -13,9 +13,13 @@
 #include "ResourceManager.g.cpp"
 #endif
 
+#include <atomic>
 #include <filesystem>
 #include <fstream>
+#include <memory>
+#include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
 #include <zip.h>
 
@@ -27,6 +31,134 @@ using namespace Windows::Web::Http;
 
 namespace winrt::CelestiaAppComponent::implementation
 {
+    class ResourceDownloadCancellation
+    {
+        struct State
+        {
+            std::atomic<bool> requested{ false };
+            std::mutex mutex;
+            bool finished{ false };
+            winrt::delegate<> callback;
+        };
+
+        std::shared_ptr<State> state{ std::make_shared<State>() };
+
+    public:
+        bool operator()() const noexcept
+        {
+            return state->requested.load();
+        }
+
+        void Cancel() const
+        {
+            winrt::delegate<> callback;
+            {
+                std::lock_guard guard(state->mutex);
+                if (state->finished || state->requested.load())
+                    return;
+                state->requested.store(true);
+                callback = std::move(state->callback);
+            }
+            if (callback)
+                callback();
+        }
+
+        void callback(winrt::delegate<>&& handler) const
+        {
+            bool requested;
+            {
+                std::lock_guard guard(state->mutex);
+                if (state->finished)
+                    return;
+                requested = state->requested.load();
+                if (!requested)
+                    std::swap(state->callback, handler);
+            }
+            if (requested && handler)
+                handler();
+        }
+
+        bool Complete() const
+        {
+            winrt::delegate<> callback;
+            bool requested;
+            {
+                std::lock_guard guard(state->mutex);
+                state->finished = true;
+                requested = state->requested.load();
+                callback = std::move(state->callback);
+            }
+            return requested;
+        }
+    };
+
+    struct ResourceDownloadAction : implements<ResourceDownloadAction, IAsyncAction, IAsyncInfo>
+    {
+        ResourceDownloadAction(IAsyncAction const& worker, ResourceDownloadCancellation cancellation)
+            : worker(worker), cancellation(std::move(cancellation))
+        {
+        }
+
+        uint32_t Id() const { return worker.Id(); }
+        AsyncStatus Status() const { return worker.Status(); }
+        hresult ErrorCode() const { return worker.ErrorCode(); }
+        void GetResults() const { worker.GetResults(); }
+        void Close() const { worker.Close(); }
+
+        void Cancel() const
+        {
+            if (worker.Status() == AsyncStatus::Started)
+                cancellation.Cancel();
+        }
+
+        void Completed(AsyncActionCompletedHandler const& handler)
+        {
+            agile_ref<AsyncActionCompletedHandler> agileHandler;
+            if (handler)
+                agileHandler = agile_ref<AsyncActionCompletedHandler>{ handler };
+            {
+                std::lock_guard guard(mutex);
+                if (completedAssigned)
+                    throw hresult_illegal_delegate_assignment();
+                completedAssigned = true;
+                completedHandler = agileHandler;
+            }
+            worker.Completed([lifetime = get_strong()](IAsyncAction const&, AsyncStatus status)
+                {
+                    agile_ref<AsyncActionCompletedHandler> handler;
+                    {
+                        std::lock_guard guard(lifetime->mutex);
+                        handler = std::move(lifetime->completedHandler);
+                    }
+                    if (handler)
+                    {
+                        auto callback = handler.get();
+                        if (callback)
+                            callback(lifetime.as<IAsyncAction>(), status);
+                        else
+                            CelestiaComponent::CelestiaLogger::Log(L"Unable to resolve add-on download completion handler");
+                    }
+                });
+        }
+
+        AsyncActionCompletedHandler Completed() const
+        {
+            agile_ref<AsyncActionCompletedHandler> handler;
+            {
+                std::lock_guard guard(mutex);
+                handler = completedHandler;
+            }
+            return handler ? handler.get() : nullptr;
+        }
+
+    private:
+        IAsyncAction worker;
+        ResourceDownloadCancellation cancellation;
+        mutable std::mutex mutex;
+        bool completedAssigned{ false };
+        agile_ref<AsyncActionCompletedHandler> completedHandler;
+    };
+
     bool CompareResourceItems(const CelestiaAppComponent::ResourceItem& lhs, const CelestiaAppComponent::ResourceItem& rhs)
     {
         return CompareStringEx(nullptr, SORT_DIGITSASNUMBERS, lhs.Name().c_str(), lhs.Name().size(), rhs.Name().c_str(), rhs.Name().size(), nullptr, nullptr, 0) == CSTR_LESS_THAN;
@@ -56,7 +188,7 @@ namespace winrt::CelestiaAppComponent::implementation
         std::error_code error;
         std::filesystem::remove_all(path, error);
         if (error)
-            CelestiaComponent::CelestiaLogger::Log(to_hstring(L"Unable to remove temporary add-on path " + path.wstring() + L": ") + to_hstring(error.message()));
+            CelestiaComponent::CelestiaLogger::Log(hstring{ L"Unable to remove temporary add-on path " + path.wstring() + L": " } + to_hstring(error.message()));
     }
 
     void CommitResourceInstallation(std::filesystem::path const& staging, std::filesystem::path const& destination)
@@ -76,7 +208,7 @@ namespace winrt::CelestiaAppComponent::implementation
                 std::error_code error;
                 std::filesystem::rename(backup, destination, error);
                 if (error)
-                    CelestiaComponent::CelestiaLogger::Log(to_hstring(L"Unable to restore add-on from " + backup.wstring() + L": ") + to_hstring(error.message()));
+                    CelestiaComponent::CelestiaLogger::Log(hstring{ L"Unable to restore add-on from " + backup.wstring() + L": " } + to_hstring(error.message()));
             }
             throw;
         }
@@ -84,11 +216,11 @@ namespace winrt::CelestiaAppComponent::implementation
             RemoveTemporaryResource(backup);
     }
 
-    IAsyncOperation<CelestiaAppComponent::ResourceManagerDownloadFailureArgs> Unzip(CelestiaAppComponent::ResourceItem const item, hstring source, hstring destinationPath)
+    template<typename Token>
+    IAsyncOperation<CelestiaAppComponent::ResourceManagerDownloadFailureArgs> Unzip(CelestiaAppComponent::ResourceItem const item, hstring source, hstring destinationPath, Token cancellation)
     {
         winrt::apartment_context ui_thread;
         co_await resume_background();
-        auto cancellation = co_await get_cancellation_token();
         auto archive = zip_open(to_string(source).c_str(), 0, nullptr);
         std::string destinationFolder = to_string(destinationPath);
 
@@ -240,10 +372,24 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         if (tasks.find(item.ID()) != tasks.end())
             return;
-        tasks[item.ID()] = DownloadAsync(item);
+        auto identifier = GuidHelper::CreateNewGuid();
+        tasks[item.ID()] = DownloadTask{ identifier, RunDownloadAsync(item, identifier) };
     }
 
     IAsyncAction ResourceManager::DownloadAsync(CelestiaAppComponent::ResourceItem const item)
+    {
+        return RunDownloadAsync(item, GuidHelper::CreateNewGuid());
+    }
+
+    IAsyncAction ResourceManager::RunDownloadAsync(CelestiaAppComponent::ResourceItem item, guid identifier)
+    {
+        ResourceDownloadCancellation cancellation;
+        auto worker = DownloadAndFinalizeAsync(item, identifier, cancellation);
+        return make<ResourceDownloadAction>(worker, std::move(cancellation));
+    }
+
+    template<typename Token>
+    IAsyncAction ResourceManager::DownloadAndFinalizeAsync(CelestiaAppComponent::ResourceItem item, guid identifier, Token cancellation)
     {
         auto lifetime = get_strong();
         apartment_context ui_thread;
@@ -252,21 +398,21 @@ namespace winrt::CelestiaAppComponent::implementation
         std::filesystem::path archivePath;
         std::filesystem::path stagingPath;
         auto errorType = CelestiaAppComponent::ResourceErrorType::Download;
-        auto cancellation = co_await get_cancellation_token();
-
         try
         {
             HttpClient client;
             auto tempFolder{ AppDataHelper::TemporaryFolder() };
             tempFile = co_await tempFolder.CreateFileAsync(to_hstring(GuidHelper::CreateNewGuid()) + L".zip");
             archivePath = tempFile.Path().c_str();
+            if (cancellation())
+                throw hresult_canceled();
 
-            auto response = co_await client.GetAsync(Uri(item.URL()), HttpCompletionOption::ResponseHeadersRead);
+            auto response = co_await MakeCancellable(client.GetAsync(Uri(item.URL()), HttpCompletionOption::ResponseHeadersRead), cancellation);
             response.EnsureSuccessStatusCode();
 
             int64_t total = response.Content().Headers().ContentLength() != nullptr ? response.Content().Headers().ContentLength().Value() : -1L;
             bool canReportProgress = total > 0;
-            auto httpStream = co_await response.Content().ReadAsInputStreamAsync();
+            auto httpStream = co_await MakeCancellable(response.Content().ReadAsInputStreamAsync(), cancellation);
             auto fileStream = co_await tempFile.OpenAsync(FileAccessMode::ReadWrite);
             auto fileOutputStream = fileStream.GetOutputStreamAt(0);
 
@@ -280,7 +426,7 @@ namespace winrt::CelestiaAppComponent::implementation
             {
                 if (cancellation())
                     throw hresult_canceled();
-                auto buffer{ co_await httpStream.ReadAsync(Buffer{ bufferSize }, bufferSize, InputStreamOptions::None) };
+                auto buffer{ co_await MakeCancellable(httpStream.ReadAsync(Buffer{ bufferSize }, bufferSize, InputStreamOptions::None), cancellation) };
                 if (buffer.Length() > 0)
                 {
                     co_await fileOutputStream.WriteAsync(buffer);
@@ -306,9 +452,13 @@ namespace winrt::CelestiaAppComponent::implementation
             auto parentFolder = item.Type() == L"script" ? scriptFolder : addonFolder;
             auto stagingFolder = co_await parentFolder.CreateFolderAsync(L"." + item.ID() + L"." + to_hstring(GuidHelper::CreateNewGuid()) + L".staging");
             stagingPath = stagingFolder.Path().c_str();
+            if (cancellation())
+                throw hresult_canceled();
 
             errorType = CelestiaAppComponent::ResourceErrorType::Zip;
-            failureArgs = co_await MakeCancellable(Unzip(item, tempFile.Path(), stagingFolder.Path()), cancellation);
+            failureArgs = co_await Unzip(item, tempFile.Path(), stagingFolder.Path(), cancellation);
+            if (cancellation())
+                throw hresult_canceled();
             if (failureArgs == nullptr)
             {
                 errorType = CelestiaAppComponent::ResourceErrorType::WriteFile;
@@ -335,22 +485,19 @@ namespace winrt::CelestiaAppComponent::implementation
             failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::WriteFile, ItemPath(item));
         }
 
-        // Cleanup must not run in this operation's cancelled promise.
-        FinishDownloadAsync(item, ui_thread, std::move(stagingPath), std::move(archivePath), failureArgs);
-    }
-
-    fire_and_forget ResourceManager::FinishDownloadAsync(CelestiaAppComponent::ResourceItem item, apartment_context ui_thread, std::filesystem::path stagingPath, std::filesystem::path archivePath, CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs)
-    {
-        auto lifetime = get_strong();
         co_await resume_background();
         RemoveTemporaryResource(stagingPath);
         RemoveTemporaryResource(archivePath);
         co_await ui_thread;
-        tasks.erase(item.ID());
+        auto task = tasks.find(item.ID());
+        if (task != tasks.end() && task->second.identifier == identifier)
+            tasks.erase(task);
         if (failureArgs != nullptr)
             downloadFailureEvent(*this, failureArgs);
         else
             downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
+        if (cancellation.Complete())
+            throw hresult_canceled();
     }
 
     hstring ResourceManager::ItemPath(CelestiaAppComponent::ResourceItem const& item)
@@ -389,7 +536,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         auto task = tasks.find(item.ID());
         if (task != tasks.end())
-            task->second.Cancel();
+            task->second.operation.Cancel();
     }
 
     IAsyncAction ResourceManager::Uninstall(CelestiaAppComponent::ResourceItem const item)
