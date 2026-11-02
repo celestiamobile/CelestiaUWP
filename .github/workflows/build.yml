@@ -30,7 +30,7 @@ concurrency:
 env:
   DEPENDENCY_VERSION: '1.0.42'
   ANGLE_VERSION: '1.1.48'
-  CONTENT_COMMIT_HASH: 'e6d05411f1ab8aecbd8d72173711ae37f228deaf'
+  CONTENT_COMMIT_HASH: 'd6bb1f4973590cb5b151ed7ca958510ad2349d0b'
 
 jobs:
   check-build:
@@ -593,8 +593,8 @@ jobs:
           $packageManifestContent = Get-Content -Path CelestiaWinUI\Package.appxmanifest -Raw
           $packageManifestXML = [xml]$packageManifestContent
           $version = $packageManifestXML.Package.Identity.Version
-          packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\bin\10.0.28000.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
-          packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2705\bin\10.0.28000.0\x64\signtool.exe sign /f "$env:RUNNER_TEMP\3d.pfx" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
+          packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2957\bin\10.0.28000.0\x64\makeappx.exe bundle /d "msix-files" /p "CelestiaWinUI_${version}_x64_arm64.msixbundle" /bv "${version}" /o
+          packages\Microsoft.Windows.SDK.BuildTools.10.0.28000.2957\bin\10.0.28000.0\x64\signtool.exe sign /f "$env:RUNNER_TEMP\3d.pfx" /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 "CelestiaWinUI_${version}_x64_arm64.msixbundle"
 
       - name: Prepare Upload Package
         shell: pwsh
