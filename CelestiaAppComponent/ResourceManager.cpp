@@ -49,6 +49,41 @@ namespace winrt::CelestiaAppComponent::implementation
         return std::forward<Async>(async);
     }
 
+    void RemoveTemporaryResource(std::filesystem::path const& path)
+    {
+        if (path.empty())
+            return;
+        std::error_code error;
+        std::filesystem::remove_all(path, error);
+        if (error)
+            CelestiaComponent::CelestiaLogger::Log(to_hstring(L"Unable to remove temporary add-on path " + path.wstring() + L": ") + to_hstring(error.message()));
+    }
+
+    void CommitResourceInstallation(std::filesystem::path const& staging, std::filesystem::path const& destination)
+    {
+        auto backup = destination.parent_path() / (L"." + destination.filename().wstring() + L"." + to_hstring(GuidHelper::CreateNewGuid()).c_str() + L".backup");
+        bool replacing = std::filesystem::exists(destination);
+        if (replacing)
+            std::filesystem::rename(destination, backup);
+        try
+        {
+            std::filesystem::rename(staging, destination);
+        }
+        catch (std::filesystem::filesystem_error const&)
+        {
+            if (replacing)
+            {
+                std::error_code error;
+                std::filesystem::rename(backup, destination, error);
+                if (error)
+                    CelestiaComponent::CelestiaLogger::Log(to_hstring(L"Unable to restore add-on from " + backup.wstring() + L": ") + to_hstring(error.message()));
+            }
+            throw;
+        }
+        if (replacing)
+            RemoveTemporaryResource(backup);
+    }
+
     IAsyncOperation<CelestiaAppComponent::ResourceManagerDownloadFailureArgs> Unzip(CelestiaAppComponent::ResourceItem const item, hstring source, hstring destinationPath)
     {
         winrt::apartment_context ui_thread;
@@ -210,8 +245,13 @@ namespace winrt::CelestiaAppComponent::implementation
 
     IAsyncAction ResourceManager::DownloadAsync(CelestiaAppComponent::ResourceItem const item)
     {
+        auto lifetime = get_strong();
+        apartment_context ui_thread;
         CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs = nullptr;
         StorageFile tempFile = nullptr;
+        std::filesystem::path archivePath;
+        std::filesystem::path stagingPath;
+        auto errorType = CelestiaAppComponent::ResourceErrorType::Download;
         auto cancellation = co_await get_cancellation_token();
 
         try
@@ -219,6 +259,7 @@ namespace winrt::CelestiaAppComponent::implementation
             HttpClient client;
             auto tempFolder{ AppDataHelper::TemporaryFolder() };
             tempFile = co_await tempFolder.CreateFileAsync(to_hstring(GuidHelper::CreateNewGuid()) + L".zip");
+            archivePath = tempFile.Path().c_str();
 
             auto response = co_await client.GetAsync(Uri(item.URL()), HttpCompletionOption::ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
@@ -254,71 +295,55 @@ namespace winrt::CelestiaAppComponent::implementation
                     isMoreToRead = false;
                 }
             } while (isMoreToRead);
+            co_await fileOutputStream.FlushAsync();
+            fileOutputStream.Close();
+            fileStream.Close();
+            httpStream.Close();
+
+            if (cancellation())
+                throw hresult_canceled();
+            errorType = CelestiaAppComponent::ResourceErrorType::CreateDirectory;
+            auto parentFolder = item.Type() == L"script" ? scriptFolder : addonFolder;
+            auto stagingFolder = co_await parentFolder.CreateFolderAsync(L"." + item.ID() + L"." + to_hstring(GuidHelper::CreateNewGuid()) + L".staging");
+            stagingPath = stagingFolder.Path().c_str();
+
+            errorType = CelestiaAppComponent::ResourceErrorType::Zip;
+            failureArgs = co_await MakeCancellable(Unzip(item, tempFile.Path(), stagingFolder.Path()), cancellation);
+            if (failureArgs == nullptr)
+            {
+                errorType = CelestiaAppComponent::ResourceErrorType::WriteFile;
+                co_await WriteDescriptionFile(stagingFolder, item);
+                auto destinationPath = std::filesystem::path(ItemPath(item).c_str());
+                co_await resume_background();
+                if (cancellation())
+                    throw hresult_canceled();
+                CommitResourceInstallation(stagingPath, destinationPath);
+            }
         }
         catch (hresult_canceled const&)
         {
             failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
         }
-        catch (hresult_error const&)
+        catch (hresult_error const& error)
         {
-            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Download);
+            CelestiaComponent::CelestiaLogger::Log(error.message());
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, errorType, ItemPath(item));
+        }
+        catch (std::filesystem::filesystem_error const& error)
+        {
+            CelestiaComponent::CelestiaLogger::Log(to_hstring(error.what()));
+            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::WriteFile, ItemPath(item));
         }
 
-        if (failureArgs != nullptr)
-        {
-            tasks.erase(item.ID());
-            downloadFailureEvent(*this, failureArgs);
-            co_return;
-        }
-
-        // Create directory
-        StorageFolder destinationFolder = nullptr;
-        try
-        {
-            destinationFolder = co_await (item.Type() == L"script" ? scriptFolder : addonFolder).CreateFolderAsync(item.ID(), CreationCollisionOption::OpenIfExists);
-        }
-        catch (hresult_error const&)
-        {
-            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::CreateDirectory, ItemPath(item));
-        }
-
-        if (failureArgs != nullptr)
-        {
-            tasks.erase(item.ID());
-            downloadFailureEvent(*this, failureArgs);
-            co_return;
-        }
-
-        // Extract the archive
-        try
-        {
-            failureArgs = co_await MakeCancellable(Unzip(item, tempFile.Path(), destinationFolder.Path()), cancellation);
-        }
-        catch (hresult_canceled const&)
-        {
-            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Cancelled);
-        }
-        catch (hresult_error const&)
-        {
-            failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::Zip);
-        }
-
-        if (failureArgs != nullptr)
-        {
-            tasks.erase(item.ID());
-            downloadFailureEvent(*this, failureArgs);
-            co_return;
-        }
-
-        // Create description file, ignore error
-        try
-        {
-            co_await WriteDescriptionFile(destinationFolder, item);
-        }
-        catch (hresult_error const&) {}
-
+        co_await resume_background();
+        RemoveTemporaryResource(stagingPath);
+        RemoveTemporaryResource(archivePath);
+        co_await ui_thread;
         tasks.erase(item.ID());
-        downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
+        if (failureArgs != nullptr)
+            downloadFailureEvent(*this, failureArgs);
+        else
+            downloadSuccessEvent(*this, make<ResourceManagerDownloadSuccessArgs>(item));
     }
 
     hstring ResourceManager::ItemPath(CelestiaAppComponent::ResourceItem const& item)

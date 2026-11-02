@@ -86,7 +86,7 @@ namespace winrt::CelestiaWinUI::implementation
         event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChangedEvent;
         hstring objectPath{ L"" };
 
-        Windows::Foundation::IAsyncOperation<Windows::Foundation::Collections::IVector<CelestiaWinUI::EclipseResult>> ComputeEclipsesAsync(CelestiaComponent::CelestiaBody const body, CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const startTime, Windows::Foundation::DateTime const endTime);
+        static Windows::Foundation::IAsyncOperation<Windows::Foundation::Collections::IVector<CelestiaWinUI::EclipseResult>> ComputeEclipsesAsync(CelestiaComponent::CelestiaEclipseFinder const eclipseFinder, CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const startTime, Windows::Foundation::DateTime const endTime);
     };
 }
 

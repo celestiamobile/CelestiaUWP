@@ -90,18 +90,10 @@ namespace winrt::CelestiaWinUI::implementation
             strong_this->UpdateState();
     }
 
-    fire_and_forget ResourceItemUserControl::UpdateButton_Click(IInspectable const&, RoutedEventArgs const&)
+    void ResourceItemUserControl::UpdateButton_Click(IInspectable const&, RoutedEventArgs const&)
     {
-        auto weak_this{ get_weak() };
-
-        auto addon = item;
-        auto manager = resourceManager;
-        co_await manager.Uninstall(addon);
-        manager.Download(addon);
-
-        auto strong_this = weak_this.get();
-        if (strong_this)
-            strong_this->UpdateState();
+        resourceManager.Download(item);
+        UpdateState();
     }
 
     IAsyncAction ResourceItemUserControl::RequestUninstall()

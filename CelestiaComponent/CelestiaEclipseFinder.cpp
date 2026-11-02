@@ -21,19 +21,19 @@ namespace winrt::CelestiaComponent::implementation
     class EclipseSeacherWatcher : public EclipseFinderWatcher
     {
     public:
-        EclipseSeacherWatcher(CelestiaComponent::CelestiaEclipseFinder const& f) : EclipseFinderWatcher(), f(f) {}
+        EclipseSeacherWatcher(CelestiaEclipseFinder const& finder) : EclipseFinderWatcher(), finder(finder) {}
 
         virtual Status eclipseFinderProgressUpdate(double t)
         {
-            if (get_self<CelestiaEclipseFinder>(f)->aborted)
+            if (finder.aborted)
                 return Status::AbortOperation;
             return Status::ContinueOperation;
         };
     private:
-        CelestiaComponent::CelestiaEclipseFinder f;
+        CelestiaEclipseFinder const& finder;
     };
 
-	CelestiaEclipseFinder::CelestiaEclipseFinder(CelestiaComponent::CelestiaBody body) : CelestiaEclipseFinderT<CelestiaEclipseFinder>(), aborted(true)
+	CelestiaEclipseFinder::CelestiaEclipseFinder(CelestiaComponent::CelestiaBody body) : CelestiaEclipseFinderT<CelestiaEclipseFinder>(), aborted(false)
 	{
         w = std::make_unique<EclipseSeacherWatcher>(*this);
         f = std::make_unique<EclipseFinder>(reinterpret_cast<Body*>(get_self<CelestiaBody>(body)->obj), w.get());
@@ -41,14 +41,13 @@ namespace winrt::CelestiaComponent::implementation
 
 	com_array<CelestiaComponent::CelestiaEclipse> CelestiaEclipseFinder::Search(CelestiaComponent::CelestiaEclipseKind kind, Windows::Foundation::DateTime const& startTime, Windows::Foundation::DateTime const& endTime)
 	{
-        aborted = false;
         std::vector<Eclipse> results;
         f->findEclipses(CelestiaHelper::JulianDayFromDateTime(startTime), CelestiaHelper::JulianDayFromDateTime(endTime), static_cast<Eclipse::Type>(kind), results);
 
         std::vector<CelestiaComponent::CelestiaEclipse> vec;
         for (Eclipse& result : results)
             vec.emplace_back(make<CelestiaEclipse>(&result));
-        aborted = true;
+        aborted = false;
 		return com_array<CelestiaComponent::CelestiaEclipse>(vec);
 	}
 

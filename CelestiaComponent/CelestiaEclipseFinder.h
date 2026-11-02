@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <memory>
 
 #include "CelestiaBody.h"
@@ -28,7 +29,7 @@ namespace winrt::CelestiaComponent::implementation
 
         std::unique_ptr<EclipseFinderWatcher> w;
         std::unique_ptr<EclipseFinder> f;
-        bool aborted;
+        std::atomic<bool> aborted;
     };
 }
 
