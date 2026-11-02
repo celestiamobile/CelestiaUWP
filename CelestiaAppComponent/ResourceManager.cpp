@@ -335,6 +335,13 @@ namespace winrt::CelestiaAppComponent::implementation
             failureArgs = make<ResourceManagerDownloadFailureArgs>(item, CelestiaAppComponent::ResourceErrorType::WriteFile, ItemPath(item));
         }
 
+        // Cleanup must not run in this operation's cancelled promise.
+        FinishDownloadAsync(item, ui_thread, std::move(stagingPath), std::move(archivePath), failureArgs);
+    }
+
+    fire_and_forget ResourceManager::FinishDownloadAsync(CelestiaAppComponent::ResourceItem item, apartment_context ui_thread, std::filesystem::path stagingPath, std::filesystem::path archivePath, CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs)
+    {
+        auto lifetime = get_strong();
         co_await resume_background();
         RemoveTemporaryResource(stagingPath);
         RemoveTemporaryResource(archivePath);

@@ -14,6 +14,8 @@
 #include "ResourceManagerDownloadSuccessArgs.g.h"
 #include "ResourceManagerDownloadFailureArgs.g.h"
 
+#include <filesystem>
+
 namespace winrt::CelestiaAppComponent::implementation
 {
     struct ResourceManagerDownloadProgressArgs : ResourceManagerDownloadProgressArgsT<ResourceManagerDownloadProgressArgs>
@@ -69,6 +71,8 @@ namespace winrt::CelestiaAppComponent::implementation
         void DownloadFailure(event_token const&);
 
     private:
+        fire_and_forget FinishDownloadAsync(CelestiaAppComponent::ResourceItem item, apartment_context ui_thread, std::filesystem::path stagingPath, std::filesystem::path archivePath, CelestiaAppComponent::ResourceManagerDownloadFailureArgs failureArgs);
+
         Windows::Storage::StorageFolder addonFolder;
         Windows::Storage::StorageFolder scriptFolder;
         std::unordered_map<hstring, Windows::Foundation::IAsyncAction> tasks;

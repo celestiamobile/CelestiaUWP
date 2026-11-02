@@ -68,7 +68,7 @@ namespace winrt::CelestiaAppComponent::implementation
         auto url = object.GetNamedString(L"item");
         auto type = object.GetNamedString(L"type");
         // Get optional fields
-        auto checksum = object.GetNamedString(L"checksum");
+        auto checksum = object.GetNamedString(L"checksum", L"");
         auto demoObjectName = object.GetNamedString(L"objectName", L"");
         auto mainScriptName = object.GetNamedString(L"mainScriptName", L"");
         return CelestiaAppComponent::ResourceItem(name, id, url, checksum, type, demoObjectName, mainScriptName);
