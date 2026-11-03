@@ -660,7 +660,6 @@
     <ClCompile Include="..\..\Celestia\src\celestia\scriptmenu.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\textprintposition.cpp" />
-    <ClCompile Include="..\..\Celestia\src\celestia\url.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\viewmanager.cpp" />
     <ClCompile Include="..\..\Celestia\src\celestia\windowmetrics.cpp" />

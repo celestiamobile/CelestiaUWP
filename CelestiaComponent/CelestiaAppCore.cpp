@@ -15,7 +15,6 @@
 #include <celestia/configfile.h>
 #include <celestia/helper.h>
 #include <celestia/progressnotifier.h>
-#include <celestia/url.h>
 #include <celutil/flag.h>
 #ifdef ENABLE_NLS
 #include <celutil/gettext.h>
@@ -398,11 +397,7 @@ namespace winrt::CelestiaComponent::implementation
 
     hstring CelestiaAppCore::CurrentURL()
     {
-        CelestiaState appState(core);
-        appState.captureState();
-
-        Url currentURL(appState, Url::CurrentVersion);
-        return to_hstring(currentURL.getAsString());
+        return to_hstring(celestia::CelestiaState::capture(*core).createURL());
     }
 
     hstring CelestiaAppCore::RenderInfo()

@@ -490,9 +490,6 @@
     <ClCompile Include="..\..\Celestia\src\celestia\textinput.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Celestia\src\celestia\url.cpp">
-      <Filter>Celestia\celestia</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celestia\view.cpp">
       <Filter>Celestia\celestia</Filter>
     </ClCompile>
