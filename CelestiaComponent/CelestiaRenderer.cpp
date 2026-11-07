@@ -17,6 +17,7 @@
 #endif
 
 #include "CelestiaLogger.h"
+#include <exception>
 #include <fmt/format.h>
 
 template<typename... Args>
@@ -427,7 +428,28 @@ namespace winrt::CelestiaComponent::implementation
         {
             if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
             {
-                bool started = renderer->engineStarted(static_cast<int32_t>(renderer->sampleCount));
+                bool started;
+                try
+                {
+                    started = renderer->engineStarted(static_cast<int32_t>(renderer->sampleCount));
+                }
+                catch (winrt::hresult_error const& error)
+                {
+                    try
+                    {
+                        CelestiaLog("Engine startup failed: HRESULT=0x{:08X}, message={}",
+                            static_cast<uint32_t>(error.code().value), winrt::to_string(error.message()));
+                    }
+                    catch (winrt::hresult_error const&)
+                    {
+                        OutputDebugStringW(L"[CelestiaRenderer] Unable to log startup failure; rethrowing the original exception.\n");
+                    }
+                    catch (std::exception const&)
+                    {
+                        OutputDebugStringW(L"[CelestiaRenderer] Unable to log startup failure; rethrowing the original exception.\n");
+                    }
+                    throw;
+                }
                 if (renderer->startCompletionSource != nullptr)
                 {
                     renderer->startCompletionSource->set(started);

@@ -34,7 +34,8 @@ using namespace CelestiaWinUI::implementation;
 App::App()
 {
     auto localFolder = AppDataHelper::LocalFolder().Path();
-    CelestiaComponent::CelestiaLogger::SetLogFilePath(PathHelper::Combine(localFolder, L"celestia.log"));
+    auto logFilePath = PathHelper::Combine(localFolder, L"celestia.log");
+    CelestiaComponent::CelestiaLogger::SetLogFilePath(logFilePath);
 
     if (!AppDataHelper::IsPackaged())
         RegisterUnpackagedActivations();
@@ -48,6 +49,7 @@ App::App()
     sentry_options_set_dsn(options, "SENTRY-DSN");
     sentry_options_set_handler_pathw(options, crashpadHandlerPath.c_str());
     sentry_options_set_database_pathw(options, sentryDatabasePath.c_str());
+    sentry_options_add_attachmentw(options, logFilePath.c_str());
     try
     {
         auto installedAddonFilePath = PathHelper::Combine(sentryDatabasePath, L"installed-addons.txt");
