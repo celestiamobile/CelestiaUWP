@@ -231,6 +231,9 @@ namespace winrt::CelestiaComponent::implementation
         std::vector<CelestiaComponent::CelestiaCompletion> vec;
         std::vector<celestia::engine::Completion> results;
         sim->getObjectCompletion(results, to_string(name), true);
+        if (results.size() > 100)
+            results.erase(results.begin() + 100, results.end());
+        vec.reserve(results.size());
         for (const auto& result : results)
             vec.emplace_back(make<CelestiaCompletion>(result));
         return com_array<CelestiaComponent::CelestiaCompletion>(vec);
