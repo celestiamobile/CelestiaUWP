@@ -1945,7 +1945,8 @@ namespace winrt::CelestiaWinUI::implementation
                                 strong_this->appCore.Simulation().Selection(selection);
                             });
                     });
-                std::vector<std::pair<hstring, CelestiaAction>> actions =
+                auto menuState = std::make_shared<ContextMenuState>();
+                menuState->actions =
                 {
                     {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo},
                     {LocalizationHelper::Localize(L"Center", L"Center an object"), CelestiaAction::Center},
@@ -1956,7 +1957,7 @@ namespace winrt::CelestiaWinUI::implementation
                     {LocalizationHelper::Localize(L"Lock", L""), CelestiaAction::Lock},
                     {LocalizationHelper::Localize(L"Land", L"Go to surface of an object"), CelestiaAction::GoToSurface},
                 };
-                for (const auto& [name, code] : actions)
+                for (const auto& [name, code] : menuState->actions)
                 {
                     auto copiedCode = code;
                     AppendItem(menu, name, [weak_this{ strong_this->get_weak() }, selection, copiedCode](IInspectable const&, RoutedEventArgs const&)
@@ -1976,20 +1977,13 @@ namespace winrt::CelestiaWinUI::implementation
                     PopulateBodyMenu(body, menu, strong_this->appCore, strong_this->renderer);
                 }
 
-                std::vector<MenuFlyoutItemBase> browserMenuItems;
                 CelestiaBrowserItem browserItem{ strong_this->appCore.Simulation().Universe().NameForSelection(selection), selection.Object(), [weak_this{ strong_this->get_weak() }](CelestiaBrowserItem const& item)
                     {
                         auto strong_this{ weak_this.get() };
                         if (strong_this == nullptr) return com_array<CelestiaBrowserItem>();
                         return CelestiaExtension::GetChildren(item, strong_this->appCore);
                     }, false };
-                if (auto children = browserItem.Children(); children != nullptr && children.Size() > 0)
-                {
-                    for (const auto& child : children)
-                    {
-                        browserMenuItems.emplace_back(strong_this->CreateMenuItem(child));
-                    }
-                }
+                auto browserMenuItems = strong_this->CreateChildMenuItems(browserItem, selection, 0, menuState);
 
                 if (!browserMenuItems.empty())
                 {
@@ -2517,18 +2511,19 @@ namespace winrt::CelestiaWinUI::implementation
         menu.Items().Append(refMarkMenu);
     }
 
-    MenuFlyoutItemBase MainWindow::CreateMenuItem(CelestiaBrowserItem const item)
+    MenuFlyoutItemBase MainWindow::CreateMenuItem(CelestiaBrowserItem const item, CelestiaSelection const& parentSelection, uint32_t depth, std::shared_ptr<ContextMenuState> const& state)
     {
         MenuFlyoutSubItem menu;
         menu.Text(item.Name());
 
-        menu.Loaded([weak_this{ get_weak() }, item](IInspectable const& sender, RoutedEventArgs const&)
+        menu.Loaded([weak_this{ get_weak() }, item, parentSelection, depth, state, loaded = false](IInspectable const& sender, RoutedEventArgs const&) mutable
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
 
+                if (loaded) return;
+                loaded = true;
                 auto senderMenu = sender.as<MenuFlyoutSubItem>();
-                if (auto subItems = senderMenu.Items(); subItems != nullptr && subItems.Size() > 0) return;
 
                 std::vector<MenuFlyoutItemBase> children;
                 auto obj = item.Object();
@@ -2557,18 +2552,7 @@ namespace winrt::CelestiaWinUI::implementation
                                 });
                         });
                     children.emplace_back(selectItem);
-                    std::vector<std::pair<hstring, CelestiaAction>> actions =
-                    {
-                        {LocalizationHelper::Localize(L"Go", L"Go to an object"), CelestiaAction::GoTo},
-                        {LocalizationHelper::Localize(L"Center", L"Center an object"), CelestiaAction::Center},
-                        {LocalizationHelper::Localize(L"Follow", L""), CelestiaAction::Follow},
-                        {LocalizationHelper::Localize(L"Chase", L""), CelestiaAction::Chase},
-                        {LocalizationHelper::Localize(L"Track", L"Track an object"), CelestiaAction::Track},
-                        {LocalizationHelper::Localize(L"Sync Orbit", L""), CelestiaAction::SyncOrbit},
-                        {LocalizationHelper::Localize(L"Lock", L""), CelestiaAction::Lock},
-                        {LocalizationHelper::Localize(L"Land", L"Go to surface of an object"), CelestiaAction::GoToSurface},
-                    };
-                    for (const auto& [name, code] : actions)
+                    for (const auto& [name, code] : state->actions)
                     {
                         auto copiedCode = code;
                         MenuFlyoutItem newItem;
@@ -2585,14 +2569,12 @@ namespace winrt::CelestiaWinUI::implementation
                         children.emplace_back(newItem);
                     }
                 }
-                if (auto items = item.Children(); items != nullptr && items.Size() > 0)
+                auto selection = obj != nullptr ? CelestiaSelection(obj) : parentSelection;
+                auto childItems = strong_this->CreateChildMenuItems(item, selection, depth, state, true);
+                if (!childItems.empty())
                 {
                     children.emplace_back(MenuFlyoutSeparator());
-
-                    for (const auto child : items)
-                    {
-                        children.emplace_back(strong_this->CreateMenuItem(child));
-                    }
+                    children.insert(children.end(), childItems.begin(), childItems.end());
                 }
                 for (const auto& child : children)
                 {
@@ -2600,6 +2582,54 @@ namespace winrt::CelestiaWinUI::implementation
                 }
             });
         return menu;
+    }
+
+    std::vector<MenuFlyoutItemBase> MainWindow::CreateChildMenuItems(CelestiaBrowserItem const& item, CelestiaSelection const& selection, uint32_t depth, std::shared_ptr<ContextMenuState> const& state, bool fallbackReserved)
+    {
+        std::vector<MenuFlyoutItemBase> result;
+        auto children = item.Children();
+        if (children == nullptr || children.Size() == 0)
+        {
+            if (fallbackReserved) ++state->remainingItems;
+            return result;
+        }
+
+        if (!fallbackReserved) --state->remainingItems;
+        bool shouldInsertShowMore = depth >= MaximumContextMenuDepth;
+        if (!shouldInsertShowMore)
+        {
+            for (const auto& child : children)
+            {
+                auto itemCost = child.Object() != nullptr ? state->actions.size() + 3 : std::size_t{ 1 };
+                // Lazy submenus reserve their own fallback before they load.
+                ++itemCost;
+                if (state->remainingItems < itemCost)
+                {
+                    shouldInsertShowMore = true;
+                    break;
+                }
+                state->remainingItems -= itemCost;
+                result.emplace_back(CreateMenuItem(child, selection, depth + 1, state));
+            }
+        }
+
+        if (shouldInsertShowMore)
+        {
+            MenuFlyoutItem showMore;
+            showMore.Text(LocalizationHelper::Localize(L"Show More\u2026", L"Menu action to indicate that more items that are not shown in the menu"));
+            showMore.Click([weak_this{ get_weak() }, selection](IInspectable const&, RoutedEventArgs const&)
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->ShowSubsystem(selection);
+                });
+            result.emplace_back(showMore);
+        }
+        else
+        {
+            ++state->remainingItems;
+        }
+        return result;
     }
 
     Windows::Foundation::IReference<int32_t> MainWindow::MaximumDisplayFrequency()

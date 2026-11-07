@@ -10,6 +10,8 @@
 #pragma once
 
 #include <atomic>
+#include <cstddef>
+#include <memory>
 
 #include "MainWindow.g.h"
 
@@ -23,6 +25,14 @@ namespace winrt::CelestiaWinUI::implementation
         void WillActivate(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args);
 
     private:
+        static constexpr uint32_t MaximumContextMenuDepth = 2;
+        static constexpr std::size_t MaximumContextMenuBrowserItems = 100;
+        struct ContextMenuState
+        {
+            std::size_t remainingItems{ MaximumContextMenuBrowserItems };
+            std::vector<std::pair<hstring, CelestiaComponent::CelestiaAction>> actions;
+        };
+
         CelestiaComponent::CelestiaAppCore appCore{ nullptr };
         CelestiaComponent::CelestiaRenderer renderer{ nullptr };
         CelestiaAppComponent::AppSettings appSettings{ nullptr };
@@ -110,7 +120,8 @@ namespace winrt::CelestiaWinUI::implementation
         void FocusHelperControl_KeyDown(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         void FocusHelperControl_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
         void MenuBar_KeyUp(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
-        Microsoft::UI::Xaml::Controls::MenuFlyoutItemBase CreateMenuItem(CelestiaComponent::CelestiaBrowserItem const item);
+        Microsoft::UI::Xaml::Controls::MenuFlyoutItemBase CreateMenuItem(CelestiaComponent::CelestiaBrowserItem const item, CelestiaComponent::CelestiaSelection const& parentSelection, uint32_t depth, std::shared_ptr<ContextMenuState> const& state);
+        std::vector<Microsoft::UI::Xaml::Controls::MenuFlyoutItemBase> CreateChildMenuItems(CelestiaComponent::CelestiaBrowserItem const& item, CelestiaComponent::CelestiaSelection const& selection, uint32_t depth, std::shared_ptr<ContextMenuState> const& state, bool fallbackReserved = false);
         Windows::Foundation::IReference<int32_t> MaximumDisplayFrequency();
     };
 }
