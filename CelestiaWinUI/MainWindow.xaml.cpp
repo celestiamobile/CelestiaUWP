@@ -1421,6 +1421,7 @@ namespace winrt::CelestiaWinUI::implementation
         if (trackedWindow != nullptr)
         {
             trackedWindow.Activate();
+            trackedWindow.Content().as<CelestiaWinUI::SearchUserControl>().FocusSearchBox();
             return;
         }
         SearchUserControl userControl{ appCore, renderer };

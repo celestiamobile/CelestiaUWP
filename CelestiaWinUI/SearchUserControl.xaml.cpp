@@ -37,7 +37,16 @@ namespace winrt::CelestiaWinUI::implementation
         const auto clearHistoryTitle = LocalizationHelper::Localize(L"Clear History", L"");
         Automation::AutomationProperties::SetName(ClearHistoryButton(), clearHistoryTitle);
         ToolTipService::SetToolTip(ClearHistoryButton(), box_value(clearHistoryTitle));
+        SearchBox().Loaded([](IInspectable const& sender, RoutedEventArgs const&)
+            {
+                sender.as<AutoSuggestBox>().Focus(FocusState::Programmatic);
+            });
         UpdateRecentSearches();
+    }
+
+    void SearchUserControl::FocusSearchBox()
+    {
+        SearchBox().Focus(FocusState::Programmatic);
     }
 
     std::vector<hstring> SearchUserControl::ReadRecentSearches()

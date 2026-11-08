@@ -15,6 +15,7 @@ namespace CelestiaWinUI
     runtimeclass SearchUserControl : Microsoft.UI.Xaml.Controls.UserControl
     {
         SearchUserControl(CelestiaComponent.CelestiaAppCore appCore, CelestiaComponent.CelestiaRenderer renderer);
+        void FocusSearchBox();
 
         event Windows.Foundation.EventHandler<String> OpenURL;
         event Windows.Foundation.EventHandler<InfoGetInfoArgs> GetInfo;

@@ -27,11 +27,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="RecentSearchTitle" Style="{StaticResource BodyStrongTextBlockStyle}" VerticalAlignment="Center"/>
-                <Button x:Name="ClearHistoryButton" Grid.Column="1" Click="ClearHistoryButton_Click">
-                    <SymbolIcon Symbol="Delete"/>
+                <Button x:Name="ClearHistoryButton" Grid.Column="1" Width="32" Height="32" MinWidth="32" MinHeight="32" Padding="0" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" Click="ClearHistoryButton_Click">
+                    <FontIcon Glyph="&#xE74D;" FontSize="16"/>
                 </Button>
             </Grid>
-            <ListView x:Name="RecentSearchList" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="RecentSearchList_ItemClick"/>
+            <!-- Offset the native ListViewItemPresenter's horizontal inset. -->
+            <ListView x:Name="RecentSearchList" Grid.Row="1" Margin="-4,0,-4,0" IsItemClickEnabled="True" SelectionMode="None" ItemClick="RecentSearchList_ItemClick"/>
         </Grid>
         <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="SearchBox" Margin="{StaticResource TopSpacing}" x:Name="SearchResultContainer"/>
     </RelativePanel>
