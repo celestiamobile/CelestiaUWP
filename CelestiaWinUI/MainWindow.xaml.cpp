@@ -2167,7 +2167,7 @@ namespace winrt::CelestiaWinUI::implementation
         request->completed.attach(CreateEvent(nullptr, true, false, nullptr));
         if (!request->completed)
         {
-            CelestiaLogger::Log(L"Cannot create script permission completion event; denying access, error " + to_hstring(GetLastError()));
+            CelestiaLogger::Log(L"Cannot create script permission completion event; denying access, error " + to_hstring(static_cast<uint32_t>(GetLastError())));
             return;
         }
 
@@ -2204,7 +2204,7 @@ namespace winrt::CelestiaWinUI::implementation
         }
         else if (result != WAIT_OBJECT_0)
         {
-            CelestiaLogger::Log(L"Script permission wait failed; denying access, error " + to_hstring(GetLastError()));
+            CelestiaLogger::Log(L"Script permission wait failed; denying access, error " + to_hstring(static_cast<uint32_t>(GetLastError())));
         }
     }
 
