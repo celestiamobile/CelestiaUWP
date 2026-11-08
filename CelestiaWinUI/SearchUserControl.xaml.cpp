@@ -99,8 +99,8 @@ namespace winrt::CelestiaWinUI::implementation
                         if (strong_this->recentSearchGeneration != generation) return;
                         for (auto const& [path, name] : entries)
                         {
-                            ListViewItem item;
-                            item.Content(box_value(name));
+                            TextBlock item;
+                            item.Text(name);
                             item.Tag(box_value(path));
                             strong_this->RecentSearchList().Items().Append(item);
                         }
@@ -153,9 +153,9 @@ namespace winrt::CelestiaWinUI::implementation
 
     void SearchUserControl::RecentSearchList_ItemClick(IInspectable const&, ItemClickEventArgs const& args)
     {
-        auto item = args.ClickedItem().as<ListViewItem>();
+        auto item = args.ClickedItem().as<TextBlock>();
         auto path = unbox_value<hstring>(item.Tag());
-        SearchBox().Text(unbox_value<hstring>(item.Content()));
+        SearchBox().Text(item.Text());
         ShowSearchResult(nullptr, path);
     }
 
