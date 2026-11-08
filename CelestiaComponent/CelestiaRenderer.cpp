@@ -423,8 +423,8 @@ namespace winrt::CelestiaComponent::implementation
     DWORD CelestiaRenderer::Main(LPVOID context)
     {
         auto* renderer = reinterpret_cast<CelestiaRenderer*>(context);
-        bool renderingEnabled = true;
-        while (renderingEnabled)
+        auto strong_this = renderer->get_strong();
+        while (!renderer->stopRequested)
         {
             if (renderer->surface != EGL_NO_SURFACE && !renderer->engineStartedCalled)
             {
@@ -463,14 +463,17 @@ namespace winrt::CelestiaComponent::implementation
             renderer->Lock();
             renderer->Wait();
 
+            if (renderer->stopRequested)
+            {
+                renderer->Unlock();
+                break;
+            }
+
             bool shouldQuit = false;
             switch (renderer->msg)
             {
             case CelestiaRenderer::RenderThreadMessage::WindowSet:
                 shouldQuit = !renderer->Initialize();
-                break;
-            case CelestiaRenderer::RenderThreadMessage::RenderLoopExit:
-                renderingEnabled = false;
                 break;
             default:
                 break;
@@ -478,7 +481,10 @@ namespace winrt::CelestiaComponent::implementation
             renderer->msg = CelestiaRenderer::RenderThreadMessage::None;
 
             if (shouldQuit)
+            {
+                renderer->Unlock();
                 break;
+            }
 
             bool needsDrawn = false;
             if (renderer->engineStartedCalled && renderer->surface != EGL_NO_SURFACE && renderer->core != nullptr)
@@ -487,9 +493,17 @@ namespace winrt::CelestiaComponent::implementation
 
             renderer->Unlock();
 
+            if (renderer->stopRequested)
+                break;
 
             for (const auto& task : tasks)
+            {
+                if (renderer->stopRequested)
+                    break;
                 task();
+            }
+            if (renderer->stopRequested)
+                break;
             if (prerenderTask != nullptr)
                 prerenderTask();
 
@@ -498,28 +512,47 @@ namespace winrt::CelestiaComponent::implementation
                 renderer->ResizeIfNeeded();
                 renderer->TickAndDraw();
                 if (!eglSwapBuffers(renderer->display, renderer->surface))
-                    CelestiaLog("eglSwapBuffers() failed in render loop, error {}", eglGetError());
+                {
+                    const auto error = eglGetError();
+                    CelestiaLog("eglSwapBuffers() failed; stopping rendering, error {}", error);
+                    renderer->stopRequested = true;
+                    renderer->renderingFailedEvent(*renderer, error);
+                    break;
+                }
             }
         }
+        renderer->stopRequested = true;
+        renderer->Lock();
+        renderer->tasks.clear();
+        renderer->preRenderTask = nullptr;
+        renderer->Unlock();
         renderer->Destroy();
+        if (renderer->startCompletionSource != nullptr)
+        {
+            auto completion = renderer->startCompletionSource;
+            renderer->startCompletionSource = nullptr;
+            completion->set(false);
+        }
         return 0;
     }
 
     Windows::Foundation::IAsyncAction CelestiaRenderer::Start()
 	{
-        threadHandle = CreateThread(nullptr, 0, CelestiaRenderer::Main, this, CREATE_SUSPENDED, &threadID);
-        if (threadHandle == nullptr)
+        if (stopRequested)
             co_return;
-        SetThreadPriority(threadHandle, THREAD_PRIORITY_TIME_CRITICAL);
+        threadHandle.attach(CreateThread(nullptr, 0, CelestiaRenderer::Main, this, CREATE_SUSPENDED, &threadID));
+        if (!threadHandle)
+            throw_last_error();
+        SetThreadPriority(threadHandle.get(), THREAD_PRIORITY_TIME_CRITICAL);
 
         winrt::apartment_context context;
         completion_source<bool> completion;
         startCompletionSource = &completion;
         auto strong_this{ get_strong() };
-        if (ResumeThread(threadHandle) == -1)
+        if (ResumeThread(threadHandle.get()) == -1)
         {
             startCompletionSource = nullptr;
-            co_return;
+            throw_last_error();
         }
 
         co_await completion;
@@ -528,11 +561,22 @@ namespace winrt::CelestiaComponent::implementation
 
     void CelestiaRenderer::Stop()
     {
+        stopRequested = true;
         Lock();
-        msg = CelestiaRenderer::RenderThreadMessage::RenderLoopExit;
+        WakeAllConditionVariable(&resumeCond);
         Unlock();
 
-        WaitForSingleObject(threadHandle, INFINITE);
+        if (threadHandle && WaitForSingleObject(threadHandle.get(), INFINITE) == WAIT_FAILED)
+            throw_last_error();
+    }
+
+    Windows::Foundation::IAsyncAction CelestiaRenderer::StopAsync()
+    {
+        auto strong_this = get_strong();
+        stopRequested = true;
+        // ANGLE may dispatch to the UI thread during initialization and destruction.
+        co_await resume_background();
+        Stop();
     }
 
     inline void CelestiaRenderer::Lock()
@@ -562,7 +606,7 @@ namespace winrt::CelestiaComponent::implementation
 
     inline void CelestiaRenderer::Wait()
     {
-        while (suspendedFlag)
+        while (suspendedFlag && !stopRequested)
         {
             SleepConditionVariableCS(&resumeCond, &msgCritSection, INFINITE);
         }
@@ -587,6 +631,12 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::EnqueueTask(CelestiaComponent::CelestiaRendererTask const& task)
     {
         Lock();
+        if (stopRequested)
+        {
+            Unlock();
+            CelestiaLog("Cannot enqueue a task after rendering has stopped");
+            return;
+        }
         tasks.emplace_back(task);
         Unlock();
     }
@@ -594,6 +644,12 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::SetPreRenderTask(CelestiaComponent::CelestiaRendererTask const& task)
     {
         Lock();
+        if (stopRequested)
+        {
+            Unlock();
+            CelestiaLog("Cannot set a prerender task after rendering has stopped");
+            return;
+        }
         preRenderTask = task;
         Unlock();
     }
@@ -621,5 +677,15 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaRenderer::MakeContextCurrent()
     {
         eglMakeCurrent(display, surface, surface, context);
+    }
+
+    event_token CelestiaRenderer::RenderingFailed(Windows::Foundation::EventHandler<int32_t> const& handler)
+    {
+        return renderingFailedEvent.add(handler);
+    }
+
+    void CelestiaRenderer::RenderingFailed(event_token const& token)
+    {
+        renderingFailedEvent.remove(token);
     }
 }

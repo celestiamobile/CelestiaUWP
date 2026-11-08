@@ -33,6 +33,15 @@ namespace winrt::CelestiaWinUI::implementation
             std::vector<std::pair<hstring, CelestiaComponent::CelestiaAction>> actions;
         };
 
+        struct PendingSystemAccessRequest
+        {
+            winrt::handle completed;
+            bool granted{ false };
+        };
+
+        winrt::handle systemAccessShutdownEvent;
+        Microsoft::UI::Xaml::Controls::ContentDialog systemAccessDialog{ nullptr };
+
         CelestiaComponent::CelestiaAppCore appCore{ nullptr };
         CelestiaComponent::CelestiaRenderer renderer{ nullptr };
         CelestiaAppComponent::AppSettings appSettings{ nullptr };
@@ -40,7 +49,7 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaAppComponent::ResourceManager resourceManager{ nullptr };
         float scale{ 1.0f };
         float textScaleFactor{ 1.0f };
-        bool readyForInput{ false };
+        std::atomic<bool> readyForInput{ false };
         hstring defaultParentPath{ L""};
         hstring defaultResourcePath{ L"" };
         hstring defaultConfigFilePath{ L"" };
@@ -59,6 +68,10 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaWinUI::FeatureFlags featureFlags;
         bool isGLViewFocused{ false };
         std::atomic<bool> isClosed{ false };
+        bool rendererStopped{ false };
+
+        fire_and_forget CloseAfterRendererStops();
+        void ResetPointerInteraction();
 
         bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();
@@ -97,7 +110,7 @@ namespace winrt::CelestiaWinUI::implementation
         fire_and_forget ReportBugOrSuggestFeatureFallback();
         fire_and_forget ReportBug(Windows::Storage::StorageFile const screenshotFile, Windows::Storage::StorageFile const renderInfoFile, Windows::Storage::StorageFile const urlInfoFile, Windows::Storage::StorageFile const systemInfoFile, Windows::Storage::StorageFile const addonInfoFile, hstring const renderInfo, hstring const url);
         fire_and_forget InitialSetUpComplete();
-        fire_and_forget ShowSystemAccessRequest(HANDLE semaphore, CelestiaComponent::SystemAccessRequestArgs const args);
+        fire_and_forget ShowSystemAccessRequest(std::shared_ptr<PendingSystemAccessRequest> request);
         void OpenFileIfReady(Windows::Storage::StorageFile const scriptFileToOpen);
         void OpenURLIfReady(Windows::Foundation::Uri const urlToOpen);
         Windows::Foundation::IAsyncOperation<bool> OpenURL(Windows::Foundation::Uri const url);

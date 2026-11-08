@@ -25,6 +25,7 @@ namespace CelestiaComponent
         CelestiaRenderer(Boolean enableMultisample, Int32 swapInterval, CelestiaRendererEngineStartedHandler engineStarted);
         Windows.Foundation.IAsyncAction Start();
         void Stop();
+        Windows.Foundation.IAsyncAction StopAsync();
         void Pause();
         void Resume();
         void SetSurface(Microsoft.UI.Xaml.Controls.SwapChainPanel surface, Single scale);
@@ -33,5 +34,6 @@ namespace CelestiaComponent
         void SetPreRenderTask(CelestiaRendererTask task);
         void MakeContextCurrent();
         DisplayInformation DisplayInformation{ get; };
+        event Windows.Foundation.EventHandler<Int32> RenderingFailed;
     }
 }

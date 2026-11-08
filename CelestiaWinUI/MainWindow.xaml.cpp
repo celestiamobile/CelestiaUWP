@@ -45,6 +45,10 @@ namespace winrt::CelestiaWinUI::implementation
 
     MainWindow::MainWindow()
     {
+        systemAccessShutdownEvent.attach(CreateEvent(nullptr, true, false, nullptr));
+        if (!systemAccessShutdownEvent)
+            throw_last_error();
+
         CelestiaAppCore::SetUpLocale();
         appCore = CelestiaAppCore();
         appSettings = CelestiaAppComponent::AppSettings(AppDataHelper::LocalSettings());
@@ -77,6 +81,61 @@ namespace winrt::CelestiaWinUI::implementation
                 if (strong_this)
                     strong_this->isClosed = true;
             });
+
+        AppWindow().Closing([weak_this{ get_weak() }](auto&&, Microsoft::UI::Windowing::AppWindowClosingEventArgs const& args)
+            {
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr || strong_this->rendererStopped) return;
+                if (strong_this->renderer == nullptr)
+                {
+                    strong_this->isClosed = true;
+                    return;
+                }
+                args.Cancel(true);
+                strong_this->CloseAfterRendererStops();
+            });
+    }
+
+    fire_and_forget MainWindow::CloseAfterRendererStops()
+    {
+        auto strong_this = get_strong();
+        if (isClosed.exchange(true))
+            co_return;
+
+        check_bool(SetEvent(systemAccessShutdownEvent.get()));
+        if (systemAccessDialog != nullptr)
+        {
+            try
+            {
+                systemAccessDialog.Hide();
+            }
+            catch (hresult_error const& error)
+            {
+                CelestiaLogger::Log(L"Unable to dismiss script permission dialog: " + error.message());
+            }
+        }
+
+        readyForInput = false;
+        ResetPointerInteraction();
+        GLView().IsHitTestVisible(false);
+        MenuBar().IsEnabled(false);
+        if (renderer != nullptr)
+            co_await renderer.StopAsync();
+        rendererStopped = true;
+        Close();
+    }
+
+    void MainWindow::ResetPointerInteraction()
+    {
+        lastMousePosition = std::nullopt;
+        lastMouseGlobalPosition = std::nullopt;
+        currentPressedButton = std::nullopt;
+        GLView().ReleasePointerCaptures();
+        if (isMouseHidden)
+        {
+            GLView().as<IUIElementProtected>().ProtectedCursor(Microsoft::UI::Input::InputSystemCursor::Create(Microsoft::UI::Input::InputSystemCursorShape::Arrow));
+            isMouseHidden = false;
+        }
     }
 
     void MainWindow::WillActivate(Microsoft::Windows::AppLifecycle::AppActivationArguments const& args)
@@ -119,6 +178,10 @@ namespace winrt::CelestiaWinUI::implementation
 
     fire_and_forget MainWindow::SetUpWindow()
     {
+        auto strong_this = get_strong();
+        if (isClosed)
+            co_return;
+
         auto customDataFolderPath = appSettings.DataDirectoryPath();
         auto customConfigFilePath = appSettings.ConfigFilePath();
 
@@ -128,12 +191,19 @@ namespace winrt::CelestiaWinUI::implementation
             try
             {
                 auto customDataFolder = co_await AppDataHelper::LocalFolder().GetFolderAsync(L"Override");
+                if (isClosed)
+                    co_return;
                 auto customConfigFile = co_await customDataFolder.GetFileAsync(L"celestia.cfg");
+                if (isClosed)
+                    co_return;
                 customDataFolderPath = customDataFolder.Path();
                 customConfigFilePath = customConfigFile.Path();
             }
             catch (hresult_error const&) {}
         }
+
+        if (isClosed)
+            co_return;
 
         auto resourcePath = !customDataFolderPath.empty() ? customDataFolderPath : defaultResourcePath;
         auto configPath = !customConfigFilePath.empty() ? customConfigFilePath : defaultConfigFilePath;
@@ -167,18 +237,41 @@ namespace winrt::CelestiaWinUI::implementation
         }
 
         auto locale = co_await GetLocale(localePath);
+        if (isClosed)
+            co_return;
         WindowHelper::SetWindowFlowDirection(*this);
 
         auto resourceLoader{ Microsoft::Windows::ApplicationModel::Resources::ResourceLoader() };
         CelestiaLayoutDirection layoutDirection = resourceLoader.GetString(L"ApplicationFlowDirection") == L"RightToLeft" ? CelestiaLayoutDirection::RTL : CelestiaLayoutDirection::LTR;
 
         co_await CreateExtraFolders();
+        if (isClosed)
+            co_return;
         auto defaultSettings = co_await ReadDefaultSettings();
+        if (isClosed)
+            co_return;
 
         renderer = CelestiaRenderer(appSettings.EnableMSAA(), appSettings.SwapInterval(), [weak_this{get_weak()}, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t)
             {
                 auto strong_this{ weak_this.get() };
                 return (strong_this == nullptr || strong_this->isClosed) ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings);
+            });
+        renderer.RenderingFailed([weak_this{ get_weak() }, dispatcher{ DispatcherQueue() }](IInspectable const&, int32_t)
+            {
+                if (!dispatcher.TryEnqueue([weak_this]()
+                    {
+                        auto strong_this{ weak_this.get() };
+                        if (strong_this == nullptr || strong_this->isClosed) return;
+                        strong_this->readyForInput = false;
+                        strong_this->ResetPointerInteraction();
+                        strong_this->GLView().IsHitTestVisible(false);
+                        strong_this->MenuBar().IsEnabled(false);
+                        strong_this->LoadingText().Text(LocalizationHelper::Localize(L"Rendering stopped. Please restart Celestia.", L""));
+                        strong_this->LoadingTextContainer().Visibility(Visibility::Visible);
+                    }))
+                {
+                    CelestiaLogger::Log(L"Unable to show rendering failure: dispatcher queue is shutting down");
+                }
             });
         renderer.SetCorePointer(appCore.Pointer());
         renderer.SetSurface(GLView(), scale);
@@ -567,9 +660,11 @@ namespace winrt::CelestiaWinUI::implementation
             fileItem.Items().Append(MenuFlyoutSeparator());
         }
 
-        AppendItem(fileItem, LocalizationHelper::Localize(L"Exit", L"Exit Celestia"), [](IInspectable const&, RoutedEventArgs const&)
+        AppendItem(fileItem, LocalizationHelper::Localize(L"Exit", L"Exit Celestia"), [weak_this{ get_weak() }](IInspectable const&, RoutedEventArgs const&)
             {
-                Application::Current().Exit();
+                auto strong_this{ weak_this.get() };
+                if (strong_this == nullptr) return;
+                strong_this->CloseAfterRendererStops();
             });
         MenuBarItem navigationItem;
         navigationItem.Title(LocalizationHelper::Localize(L"Navigation", L"Navigation menu"));
@@ -1892,15 +1987,38 @@ namespace winrt::CelestiaWinUI::implementation
 #endif
     }
 
-    fire_and_forget MainWindow::ShowSystemAccessRequest(HANDLE semaphore, SystemAccessRequestArgs const args)
+    fire_and_forget MainWindow::ShowSystemAccessRequest(std::shared_ptr<PendingSystemAccessRequest> request)
     {
-        bool result = co_await ContentDialogHelper::ShowOption(
-            Content(),
-            LocalizationHelper::Localize(L"Script System Access", L"Alert title for scripts requesting system access"),
-            LocalizationHelper::Localize(L"This script requests permission to read/write files and execute external programs. Allowing this can be dangerous.\nDo you trust the script and want to allow this?", L"Alert message for scripts requesting system access")
-        );
-        args.Result(result ? SystemAccessRequestResult::Granted : SystemAccessRequestResult::Denied);
-        ReleaseSemaphore(semaphore, 1, nullptr);
+        auto strong_this = get_strong();
+        if (!isClosed)
+        {
+            try
+            {
+                ContentDialog dialog;
+                dialog.DefaultButton(ContentDialogButton::Primary);
+                dialog.Title(box_value(LocalizationHelper::Localize(L"Script System Access", L"Alert title for scripts requesting system access")));
+                dialog.Content(box_value(LocalizationHelper::Localize(L"This script requests permission to read/write files and execute external programs. Allowing this can be dangerous.\nDo you trust the script and want to allow this?", L"Alert message for scripts requesting system access")));
+                dialog.PrimaryButtonText(LocalizationHelper::Localize(L"OK", L""));
+                dialog.SecondaryButtonText(LocalizationHelper::Localize(L"Cancel", L""));
+                dialog.IsSecondaryButtonEnabled(true);
+                dialog.Opened([weak_this{ get_weak() }](ContentDialog const& sender, auto&&)
+                    {
+                        auto strong_this{ weak_this.get() };
+                        // The shared dialog helper may have queued this behind another dialog.
+                        if (strong_this == nullptr || strong_this->isClosed)
+                            sender.Hide();
+                    });
+                systemAccessDialog = dialog;
+                auto result = co_await ContentDialogHelper::ShowContentDialogAsync(Content(), dialog);
+                request->granted = !isClosed && result == ContentDialogResult::Primary;
+            }
+            catch (hresult_error const& error)
+            {
+                CelestiaLogger::Log(L"Script permission request failed; denying access: " + error.message());
+            }
+            systemAccessDialog = nullptr;
+        }
+        check_bool(SetEvent(request->completed.get()));
     }
 
     HWND MainWindow::WindowHandle()
@@ -2040,19 +2158,54 @@ namespace winrt::CelestiaWinUI::implementation
 
     void MainWindow::AppCore_SystemAccessRequest(IInspectable const&, SystemAccessRequestArgs const& args)
     {
-        auto sem = CreateSemaphore(nullptr, 0, 1, nullptr);
-        DispatcherQueue().TryEnqueue([weak_this{ get_weak() }, sem, args]()
+        args.Result(SystemAccessRequestResult::Denied);
+        if (isClosed)
+            return;
+
+        // A late UI completion must retain its event after the render thread stops waiting.
+        auto request = std::make_shared<PendingSystemAccessRequest>();
+        request->completed.attach(CreateEvent(nullptr, true, false, nullptr));
+        if (!request->completed)
+        {
+            CelestiaLogger::Log(L"Cannot create script permission completion event; denying access, error " + to_hstring(GetLastError()));
+            return;
+        }
+
+        try
+        {
+            auto dispatcher = DispatcherQueue();
+            if (dispatcher == nullptr || !dispatcher.TryEnqueue([weak_this{ get_weak() }, request]()
             {
                 auto strong_this{ weak_this.get() };
-                if (!strong_this)
+                if (strong_this == nullptr || strong_this->isClosed)
                 {
-                    ReleaseSemaphore(sem, 1, nullptr);
+                    check_bool(SetEvent(request->completed.get()));
                     return;
                 }
-                strong_this->ShowSystemAccessRequest(sem, args);
-            });
-        WaitForSingleObject(sem, INFINITE);
-        CloseHandle(sem);
+                strong_this->ShowSystemAccessRequest(request);
+            }))
+            {
+                CelestiaLogger::Log(L"Cannot enqueue script permission request; denying access");
+                return;
+            }
+        }
+        catch (hresult_error const& error)
+        {
+            CelestiaLogger::Log(L"Cannot dispatch script permission request; denying access: " + error.message());
+            return;
+        }
+
+        HANDLE events[] = { systemAccessShutdownEvent.get(), request->completed.get() };
+        const auto result = WaitForMultipleObjects(2, events, false, INFINITE);
+        if (result == WAIT_OBJECT_0 + 1)
+        {
+            if (!isClosed && request->granted)
+                args.Result(SystemAccessRequestResult::Granted);
+        }
+        else if (result != WAIT_OBJECT_0)
+        {
+            CelestiaLogger::Log(L"Script permission wait failed; denying access, error " + to_hstring(GetLastError()));
+        }
     }
 
     void MainWindow::GLView_PointerPressed(IInspectable const& sender, Input::PointerRoutedEventArgs const& args)

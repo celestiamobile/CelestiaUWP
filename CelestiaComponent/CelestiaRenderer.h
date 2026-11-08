@@ -16,6 +16,7 @@
 #endif
 
 #include <epoxy/egl.h>
+#include <atomic>
 #include <thread>
 #include <mutex>
 
@@ -45,6 +46,7 @@ namespace winrt::CelestiaComponent::implementation
         inline void TickAndDraw() const;
         Windows::Foundation::IAsyncAction Start();
         void Stop();
+        Windows::Foundation::IAsyncAction StopAsync();
         inline void Lock();
         inline void Unlock();
         void Pause();
@@ -60,13 +62,14 @@ namespace winrt::CelestiaComponent::implementation
         static DWORD WINAPI Main(LPVOID context);
 
         void MakeContextCurrent();
+        event_token RenderingFailed(Windows::Foundation::EventHandler<int32_t> const& handler);
+        void RenderingFailed(event_token const& token);
 
         CelestiaCore* core = nullptr;
 
         enum class RenderThreadMessage {
             None,
             WindowSet,
-            RenderLoopExit,
         };
 
         RenderThreadMessage msg = RenderThreadMessage::None;
@@ -82,6 +85,7 @@ namespace winrt::CelestiaComponent::implementation
 
     private:
         bool suspendedFlag = false;
+        std::atomic<bool> stopRequested{ false };
         CRITICAL_SECTION msgCritSection;
         CONDITION_VARIABLE resumeCond;
 
@@ -93,12 +97,13 @@ namespace winrt::CelestiaComponent::implementation
         Microsoft::UI::Xaml::Controls::SwapChainPanel window{ nullptr };
 
         DWORD threadID{ 0 };
-        HANDLE threadHandle{ 0 };
+        winrt::handle threadHandle;
 
         std::vector<CelestiaComponent::CelestiaRendererTask> tasks;
         CelestiaComponent::CelestiaRendererTask preRenderTask;
 
         CelestiaComponent::CelestiaRendererEngineStartedHandler engineStarted;
+        event<Windows::Foundation::EventHandler<int32_t>> renderingFailedEvent;
         int32_t swapInterval;
 
         completion_source<bool> *startCompletionSource{ nullptr };
