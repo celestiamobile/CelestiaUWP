@@ -42,6 +42,8 @@ namespace winrt::CelestiaWinUI::implementation
         uint64_t searchGeneration = 0;
         uint64_t selectionGeneration = 0;
         uint64_t recentSearchGeneration = 0;
+        CelestiaComponent::CelestiaSelection retainedSelection{ nullptr };
+        hstring retainedQuery;
         CelestiaComponent::CelestiaAppCore appCore;
         CelestiaComponent::CelestiaRenderer renderer;
         event<Windows::Foundation::EventHandler<hstring>> openURLEvent;

@@ -164,6 +164,8 @@ namespace winrt::CelestiaWinUI::implementation
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         auto text = suggestBox.Text();
         if (args.Reason() != Controls::AutoSuggestionBoxTextChangeReason::UserInput) return;
+        retainedSelection = nullptr;
+        retainedQuery = L"";
         const auto generation = ++searchGeneration;
         ++selectionGeneration;
         UpdateRecentSearches();
@@ -196,6 +198,9 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         auto selected = args.SelectedItem().as<CelestiaComponent::CelestiaCompletion>();
+        ++selectionGeneration;
+        retainedSelection = selected.Selection();
+        retainedQuery = L"";
         suggestBox.Text(selected.Name());
     }
 
@@ -209,12 +214,14 @@ namespace winrt::CelestiaWinUI::implementation
         else
         {
             if (!SearchBox().Text().empty())
-                ShowSearchResult(nullptr, SearchBox().Text());
+                ShowSearchResult(retainedSelection, retainedQuery.empty() ? SearchBox().Text() : retainedQuery);
         }
     }
 
     void SearchUserControl::ShowSearchResult(CelestiaComponent::CelestiaSelection const& selection, hstring const& query)
     {
+        retainedSelection = selection;
+        retainedQuery = query;
         const auto generation = ++selectionGeneration;
         ++recentSearchGeneration;
         renderer.EnqueueTask([weak_this{ get_weak() }, selection, query, generation]()
@@ -227,7 +234,14 @@ namespace winrt::CelestiaWinUI::implementation
                     {
                         if (strong_this->selectionGeneration != generation) return;
                         if (!resolved.IsEmpty())
+                        {
+                            strong_this->retainedSelection = resolved;
                             strong_this->RecordRecentSearch(path);
+                        }
+                        else
+                        {
+                            strong_this->retainedSelection = nullptr;
+                        }
                         strong_this->PresentSearchResult(resolved);
                     });
             });
