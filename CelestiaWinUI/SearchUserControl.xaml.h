@@ -25,7 +25,6 @@ namespace winrt::CelestiaWinUI::implementation
         void SearchBox_QuerySubmitted(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::AutoSuggestBoxQuerySubmittedEventArgs const&);
         void ShowSearchResult(CelestiaComponent::CelestiaSelection const&, hstring const& query = L"");
         void RecentSearchList_ItemClick(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::Controls::ItemClickEventArgs const&);
-        void ClearHistoryButton_Click(Windows::Foundation::IInspectable const&, Microsoft::UI::Xaml::RoutedEventArgs const&);
 
         event_token OpenURL(Windows::Foundation::EventHandler<hstring> const& handler);
         void OpenURL(event_token const& token) noexcept;

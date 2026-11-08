@@ -8,7 +8,6 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
-#include <winrt/Microsoft.UI.Xaml.Automation.h>
 #include "SearchUserControl.xaml.h"
 #if __has_include("SearchUserControl.g.cpp")
 #include "SearchUserControl.g.cpp"
@@ -34,9 +33,6 @@ namespace winrt::CelestiaWinUI::implementation
     {
         SearchUserControlT::InitializeComponent();
         RecentSearchTitle().Text(LocalizationHelper::Localize(L"Recent Searches", L""));
-        const auto clearHistoryTitle = LocalizationHelper::Localize(L"Clear History", L"");
-        Automation::AutomationProperties::SetName(ClearHistoryButton(), clearHistoryTitle);
-        ToolTipService::SetToolTip(ClearHistoryButton(), box_value(clearHistoryTitle));
         SearchBox().Loaded([](IInspectable const& sender, RoutedEventArgs const&)
             {
                 sender.as<AutoSuggestBox>().Focus(FocusState::Programmatic);
@@ -133,22 +129,6 @@ namespace winrt::CelestiaWinUI::implementation
         {
             CelestiaLogger::Log(hstring{ L"Unable to save recent searches: " } + error.message());
         }
-    }
-
-    void SearchUserControl::ClearHistoryButton_Click(IInspectable const&, RoutedEventArgs const&)
-    {
-        ++selectionGeneration;
-        try
-        {
-            auto values = AppDataHelper::LocalSettings().Values();
-            if (values.HasKey(L"RecentSearches"))
-                values.Remove(L"RecentSearches");
-        }
-        catch (hresult_error const& error)
-        {
-            CelestiaLogger::Log(hstring{ L"Unable to clear recent searches: " } + error.message());
-        }
-        UpdateRecentSearches();
     }
 
     void SearchUserControl::RecentSearchList_ItemClick(IInspectable const&, ItemClickEventArgs const& args)
