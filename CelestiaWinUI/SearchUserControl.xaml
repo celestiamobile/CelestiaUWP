@@ -16,6 +16,23 @@
                 </DataTemplate>
             </AutoSuggestBox.ItemTemplate>
         </AutoSuggestBox>
+        <Grid x:Name="RecentSearchContainer" RelativePanel.Below="SearchBox" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="{StaticResource TopSpacing}" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="RecentSearchTitle" Style="{StaticResource BodyStrongTextBlockStyle}" VerticalAlignment="Center"/>
+                <Button x:Name="ClearHistoryButton" Grid.Column="1" Click="ClearHistoryButton_Click">
+                    <SymbolIcon Symbol="Delete"/>
+                </Button>
+            </Grid>
+            <ListView x:Name="RecentSearchList" Grid.Row="1" IsItemClickEnabled="True" SelectionMode="None" ItemClick="RecentSearchList_ItemClick"/>
+        </Grid>
         <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="SearchBox" Margin="{StaticResource TopSpacing}" x:Name="SearchResultContainer"/>
     </RelativePanel>
 </UserControl>

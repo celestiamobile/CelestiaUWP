@@ -39,6 +39,7 @@ namespace CelestiaComponent
     runtimeclass CelestiaUniverse
     {
         String NameForSelection(CelestiaSelection selection);
+        String PathForSelection(CelestiaSelection selection);
 
         Boolean IsSelectionMarked(CelestiaSelection selection);
         void MarkSelection(CelestiaSelection selection, CelestiaMarkerRepresentation marker);

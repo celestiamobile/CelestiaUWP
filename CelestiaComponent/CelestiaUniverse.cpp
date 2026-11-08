@@ -43,6 +43,24 @@ namespace winrt::CelestiaComponent::implementation
 		}
 	}
 
+	hstring CelestiaUniverse::PathForSelection(CelestiaComponent::CelestiaSelection const& selection)
+	{
+		const Selection s = get_self<CelestiaSelection>(selection)->AsSelection();
+		switch (s.getType())
+		{
+		case SelectionType::Star:
+			return to_hstring(u->getStarCatalog()->getStarName(*s.star(), false));
+		case SelectionType::Body:
+			return to_hstring(s.body()->getPath(u->getStarCatalog()));
+		case SelectionType::DeepSky:
+			return to_hstring(u->getDSOCatalog()->getDSOName(s.deepsky(), false));
+		case SelectionType::Location:
+			return to_hstring(s.location()->getPath(u->getStarCatalog()));
+		default:
+			return L"";
+		}
+	}
+
 	bool CelestiaUniverse::IsSelectionMarked(CelestiaComponent::CelestiaSelection const& selection)
 	{
 		return u->isMarked(get_self<CelestiaSelection>(selection)->AsSelection(), 1);

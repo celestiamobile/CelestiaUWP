@@ -8,10 +8,13 @@
 // of the License, or (at your option) any later version.
 
 #include "pch.h"
+#include <winrt/Microsoft.UI.Xaml.Automation.h>
 #include "SearchUserControl.xaml.h"
 #if __has_include("SearchUserControl.g.cpp")
 #include "SearchUserControl.g.cpp"
 #endif
+#include <algorithm>
+#include <utility>
 
 using namespace winrt;
 using namespace CelestiaAppComponent;
@@ -19,17 +22,132 @@ using namespace CelestiaComponent;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 using namespace Windows::Foundation;
+using namespace Windows::Data::Json;
 
 namespace winrt::CelestiaWinUI::implementation
 {
     SearchUserControl::SearchUserControl(CelestiaAppCore const& appCore, CelestiaRenderer const& renderer) : appCore(appCore), renderer(renderer)
     {
-        object = CelestiaSelection();
     }
 
     void SearchUserControl::InitializeComponent()
     {
         SearchUserControlT::InitializeComponent();
+        RecentSearchTitle().Text(LocalizationHelper::Localize(L"Recent Searches", L""));
+        const auto clearHistoryTitle = LocalizationHelper::Localize(L"Clear History", L"");
+        Automation::AutomationProperties::SetName(ClearHistoryButton(), clearHistoryTitle);
+        ToolTipService::SetToolTip(ClearHistoryButton(), box_value(clearHistoryTitle));
+        UpdateRecentSearches();
+    }
+
+    std::vector<hstring> SearchUserControl::ReadRecentSearches()
+    {
+        std::vector<hstring> paths;
+        auto stored = AppDataHelper::LocalSettings().Values().TryLookup(L"RecentSearches");
+        if (!stored) return paths;
+        try
+        {
+            auto values = JsonArray::Parse(unbox_value<hstring>(stored));
+            for (auto const& value : values)
+            {
+                auto path = value.GetString();
+                if (!path.empty() && std::find(paths.begin(), paths.end(), path) == paths.end())
+                    paths.push_back(path);
+                if (paths.size() == 10) break;
+            }
+        }
+        catch (hresult_error const& error)
+        {
+            CelestiaLogger::Log(hstring{ L"Unable to read recent searches: " } + error.message());
+            paths.clear();
+        }
+        return paths;
+    }
+
+    void SearchUserControl::UpdateRecentSearches()
+    {
+        const auto generation = ++recentSearchGeneration;
+        RecentSearchList().Items().Clear();
+        RecentSearchContainer().Visibility(Visibility::Collapsed);
+        SearchResultContainer().Visibility(Visibility::Visible);
+        if (!SearchBox().Text().empty()) return;
+        auto paths = ReadRecentSearches();
+        if (paths.empty()) return;
+        renderer.EnqueueTask([weak_this{ get_weak() }, paths = std::move(paths), generation]()
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this) return;
+                std::vector<std::pair<hstring, hstring>> entries;
+                auto simulation = strong_this->appCore.Simulation();
+                for (auto const& path : paths)
+                {
+                    auto selection = simulation.Find(path);
+                    if (!selection.IsEmpty())
+                        entries.emplace_back(path, simulation.Universe().NameForSelection(selection));
+                }
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [strong_this, entries = std::move(entries), generation]()
+                    {
+                        if (strong_this->recentSearchGeneration != generation) return;
+                        for (auto const& [path, name] : entries)
+                        {
+                            ListViewItem item;
+                            item.Content(box_value(name));
+                            item.Tag(box_value(path));
+                            strong_this->RecentSearchList().Items().Append(item);
+                        }
+                        bool visible = !entries.empty();
+                        strong_this->RecentSearchContainer().Visibility(visible ? Visibility::Visible : Visibility::Collapsed);
+                        strong_this->SearchResultContainer().Visibility(visible ? Visibility::Collapsed : Visibility::Visible);
+                    });
+            });
+    }
+
+    void SearchUserControl::RecordRecentSearch(hstring const& path)
+    {
+        if (path.empty())
+        {
+            CelestiaLogger::Log(L"Selected object has no search path");
+            return;
+        }
+        auto paths = ReadRecentSearches();
+        paths.erase(std::remove(paths.begin(), paths.end(), path), paths.end());
+        paths.insert(paths.begin(), path);
+        if (paths.size() > 10) paths.resize(10);
+        JsonArray values;
+        for (auto const& entry : paths)
+            values.Append(JsonValue::CreateStringValue(entry));
+        try
+        {
+            AppDataHelper::LocalSettings().Values().Insert(L"RecentSearches", box_value(values.Stringify()));
+        }
+        catch (hresult_error const& error)
+        {
+            CelestiaLogger::Log(hstring{ L"Unable to save recent searches: " } + error.message());
+        }
+    }
+
+    void SearchUserControl::ClearHistoryButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        ++selectionGeneration;
+        try
+        {
+            auto values = AppDataHelper::LocalSettings().Values();
+            if (values.HasKey(L"RecentSearches"))
+                values.Remove(L"RecentSearches");
+        }
+        catch (hresult_error const& error)
+        {
+            CelestiaLogger::Log(hstring{ L"Unable to clear recent searches: " } + error.message());
+        }
+        UpdateRecentSearches();
+    }
+
+    void SearchUserControl::RecentSearchList_ItemClick(IInspectable const&, ItemClickEventArgs const& args)
+    {
+        auto item = args.ClickedItem().as<ListViewItem>();
+        auto path = unbox_value<hstring>(item.Tag());
+        SearchBox().Text(unbox_value<hstring>(item.Content()));
+        ShowSearchResult(nullptr, path);
     }
 
     void SearchUserControl::SearchBox_TextChanged(IInspectable const& sender, Controls::AutoSuggestBoxTextChangedEventArgs const& args)
@@ -37,28 +155,28 @@ namespace winrt::CelestiaWinUI::implementation
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         auto text = suggestBox.Text();
         if (args.Reason() != Controls::AutoSuggestionBoxTextChangeReason::UserInput) return;
+        const auto generation = ++searchGeneration;
+        ++selectionGeneration;
+        UpdateRecentSearches();
 
         if (text.empty())
         {
-            object = CelestiaComponent::CelestiaSelection();
             suggestBox.ItemsSource(single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>());
             return;
         }
 
-        renderer.EnqueueTask([weak_this{ get_weak() }, suggestBox, text]()
+        renderer.EnqueueTask([weak_this{ get_weak() }, suggestBox, text, generation]()
             {
                 auto strong_this = weak_this.get();
                 if (!strong_this) return;
                 auto comCompletions = strong_this->appCore.Simulation().GetCompletion(text);
-                auto fullMatch = strong_this->appCore.Simulation().Find(text);
                 auto source = single_threaded_observable_vector<CelestiaComponent::CelestiaCompletion>();
                 for (auto const& completion : comCompletions)
                     source.Append(completion);
-                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, fullMatch, strong_this]()
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [text, source, suggestBox, strong_this, generation]()
                     {
-                        if (suggestBox.Text() == text)
+                        if (strong_this->searchGeneration == generation && suggestBox.Text() == text)
                         {
-                            strong_this->object = fullMatch;
                             suggestBox.ItemsSource(source);
                         }
                     });
@@ -69,7 +187,6 @@ namespace winrt::CelestiaWinUI::implementation
     {
         auto suggestBox = sender.as<Controls::AutoSuggestBox>();
         auto selected = args.SelectedItem().as<CelestiaComponent::CelestiaCompletion>();
-        object = selected.Selection();
         suggestBox.Text(selected.Name());
     }
 
@@ -82,15 +199,43 @@ namespace winrt::CelestiaWinUI::implementation
         }
         else
         {
-            ShowSearchResult(object);
+            if (!SearchBox().Text().empty())
+                ShowSearchResult(nullptr, SearchBox().Text());
         }
     }
 
-    void SearchUserControl::ShowSearchResult(CelestiaComponent::CelestiaSelection const& selection)
+    void SearchUserControl::ShowSearchResult(CelestiaComponent::CelestiaSelection const& selection, hstring const& query)
     {
+        const auto generation = ++selectionGeneration;
+        ++recentSearchGeneration;
+        renderer.EnqueueTask([weak_this{ get_weak() }, selection, query, generation]()
+            {
+                auto strong_this = weak_this.get();
+                if (!strong_this) return;
+                auto resolved = selection ? selection : strong_this->appCore.Simulation().Find(query);
+                auto path = strong_this->appCore.Simulation().Universe().PathForSelection(resolved);
+                strong_this->DispatcherQueue().TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal, [strong_this, resolved, path, generation]()
+                    {
+                        if (strong_this->selectionGeneration != generation) return;
+                        if (!resolved.IsEmpty())
+                            strong_this->RecordRecentSearch(path);
+                        strong_this->PresentSearchResult(resolved);
+                    });
+            });
+    }
+
+    void SearchUserControl::PresentSearchResult(CelestiaComponent::CelestiaSelection const& selection)
+    {
+        RecentSearchContainer().Visibility(Visibility::Collapsed);
+        SearchResultContainer().Visibility(Visibility::Visible);
         SearchResultContainer().Children().Clear();
         if (selection.IsEmpty())
+        {
+            TextBlock error;
+            error.Text(LocalizationHelper::Localize(L"Object not found", L""));
+            SearchResultContainer().Children().Append(error);
             return;
+        }
 
         InfoUserControl userControl{ appCore, renderer, selection, false };
         userControl.OpenURL([weak_this{ get_weak() }](IInspectable const&, hstring const& url)
