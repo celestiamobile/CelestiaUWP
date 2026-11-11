@@ -79,28 +79,21 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this)
-                    strong_this->isClosed = true;
+                    strong_this->PrepareForClose();
             });
 
-        AppWindow().Closing([weak_this{ get_weak() }](auto&&, Microsoft::UI::Windowing::AppWindowClosingEventArgs const& args)
+        AppWindow().Closing([weak_this{ get_weak() }](auto&&, auto&&)
             {
                 auto strong_this{ weak_this.get() };
-                if (strong_this == nullptr || strong_this->rendererStopped) return;
-                if (strong_this->renderer == nullptr)
-                {
-                    strong_this->isClosed = true;
-                    return;
-                }
-                args.Cancel(true);
-                strong_this->CloseAfterRendererStops();
+                if (strong_this)
+                    strong_this->PrepareForClose();
             });
     }
 
-    fire_and_forget MainWindow::CloseAfterRendererStops()
+    void MainWindow::PrepareForClose()
     {
-        auto strong_this = get_strong();
         if (isClosed.exchange(true))
-            co_return;
+            return;
 
         check_bool(SetEvent(systemAccessShutdownEvent.get()));
         if (systemAccessDialog != nullptr)
@@ -119,10 +112,6 @@ namespace winrt::CelestiaWinUI::implementation
         ResetPointerInteraction();
         GLView().IsHitTestVisible(false);
         MenuBar().IsEnabled(false);
-        if (renderer != nullptr)
-            co_await renderer.StopAsync();
-        rendererStopped = true;
-        Close();
     }
 
     void MainWindow::ResetPointerInteraction()
@@ -664,7 +653,7 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 auto strong_this{ weak_this.get() };
                 if (strong_this == nullptr) return;
-                strong_this->CloseAfterRendererStops();
+                strong_this->Close();
             });
         MenuBarItem navigationItem;
         navigationItem.Title(LocalizationHelper::Localize(L"Navigation", L"Navigation menu"));

@@ -68,9 +68,8 @@ namespace winrt::CelestiaWinUI::implementation
         CelestiaWinUI::FeatureFlags featureFlags;
         bool isGLViewFocused{ false };
         std::atomic<bool> isClosed{ false };
-        bool rendererStopped{ false };
 
-        fire_and_forget CloseAfterRendererStops();
+        void PrepareForClose();
         void ResetPointerInteraction();
 
         bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);

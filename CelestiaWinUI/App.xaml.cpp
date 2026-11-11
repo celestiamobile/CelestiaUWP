@@ -116,8 +116,8 @@ fire_and_forget App::OnLaunched(LaunchActivatedEventArgs const)
 #ifdef SUPPORTS_SENTRY
             sentry_close();
 #endif
-            CelestiaComponent::CelestiaLogger::Close();
-            Application::Current().Exit();
+            // Loading may still be running; skip destructors and DLL teardown.
+            check_bool(TerminateProcess(GetCurrentProcess(), 0));
         });
     Launch(AppInstance::GetCurrent().GetActivatedEventArgs());
 }
