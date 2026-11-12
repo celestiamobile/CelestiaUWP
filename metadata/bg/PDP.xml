@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ProductDescription language="en-us" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="bg" Release="RELEASE_VERSION_PLACEHOLDER">
+<ProductDescription language="bg" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="bg" Release="RELEASE_VERSION_PLACEHOLDER">
   <AppStoreName _locID="App_AppStoreName">
     <!-- This is optional.  AppStoreName is typically extracted from your package's AppxManifest DisplayName property. -->
     <!-- Uncomment (and localize) this Store name if your application package does not contain a localization for the DisplayName in this language. -->
@@ -12,36 +12,32 @@
     <Keyword _locID="App_keyword1">
       <!-- _locComment_text="{MaxLength=30} App keyword 1" -->celestia</Keyword>
     <Keyword _locID="App_keyword2">
-      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->space</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->космос</Keyword>
     <Keyword _locID="App_keyword3">
-      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->planetarium</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->планетариум</Keyword>
     <Keyword _locID="App_keyword4">
-      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->universe</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->Вселена</Keyword>
     <Keyword _locID="App_keyword5">
-      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->solar system</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->Слънчева система</Keyword>
     <Keyword _locID="App_keyword6">
-      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->astronomy</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->астрономия</Keyword>
     <Keyword _locID="App_keyword7">
-      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->simulation</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->симулация</Keyword>
   </Keywords>
   <Description _locID="App_Description">
-    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia - 3D визуализация на космоса в реално време
+    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia — 3D визуализация на космоса в реално време
 
-3D космически симулатор | Celestia ви позволява да изследвате Вселената в три измерения.
+3D космически симулатор | Celestia ви позволява да изследвате нашата Вселена в три измерения.
 
-Celestia симулира различни видове небесни обекти. От планети и спътници до звездни купове и галактики, може да посетите всеки обект в разширяемата база данни и да го видите от всяка точка в пространството и времето. Позициите и движението на обектите от Слънчевата система са точно изчислени в реално време при всяка желана скорост.
+Celestia симулира различни видове небесни обекти. От планети и спътници до звездни купове и галактики, можете да посетите всеки обект в разширяемата база данни и да го наблюдавате от всяка точка в пространството и във всеки момент от времето. Позициите и движението на обектите от Слънчевата система се изчисляват точно в реално време при избрана от вас скорост на протичане на времето.
 
-Интерактивен планетариум
+Интерактивен планетариум | Celestia служи като планетариум за наблюдател върху всяко небесно тяло.
 
-Celestia служи като планетариум - за наблюдение на всеки небесен обект.
+Можете лесно да посетите всеки свят и да кацнете на повърхността му. Когато се използва като планетариум, Celestia показва точните позиции на обектите от Слънчевата система в небето. Можете да включвате и изключвате надписите и други помощни функции с клавишни комбинации, както и да увеличавате и намалявате изгледа към обект, който ви интересува, например системата от спътници на Юпитер.
 
-Лесно може да посетите всеки обект и да кацнете на повърхността му. Когато се използва като планетариум, Celestia показва точните позиции на обектите от Слънчевата система в небето. Може да включвате и изключвате надписите и други поддържащи функции с клавишни комбинации или да се приближите или отдалечите от даден обект, например спътниците на Юпитер.
+Разширяемо съдържание | Персонализирайте Celestia според вашите нужди.
 
-Разширяемо съдържание
-
-Персонализирайте Celestia според вашите нужди.
-
-Каталозите на Celestia лесно могат да бъдат разширени. Налични са различни добавки с нови обекти като комети или звезди, текстури с висока разделителна способност на Земята и други добре картографирани тела от Слънчевата система, както и триизмерни модели на астероиди и космически апарати с прецизни траектории. Налични са и обекти от добре познати научнофантастични филми.</Description>
+Каталозите на Celestia лесно могат да бъдат разширени. Налични са много добавки с нови обекти като комети или звезди, текстури с висока разделителна способност на Земята и други добре картографирани тела от Слънчевата система, както и триизмерни модели на астероиди и космически апарати с прецизни траектории. Можете да намерите дори измислени обекти от добре познати научнофантастични поредици.</Description>
   <ShortDescription _locID="App_ShortDescription">
     <!-- Only used for games. This description appears in the Information section of the Game Hub on Xbox One, and helps customers understand more about your game. -->
     <!-- _locComment_text="{MaxLength=500} App ShortDescription" -->
@@ -97,7 +93,7 @@ Celestia служи като планетариум - за наблюдение 
   <AppFeatures>
     <!-- Valid length: 200 character limit, up to 20 elements -->
     <AppFeature _locID="App_feature1">
-      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->Real-time universe simulator</AppFeature>
+      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->Симулатор на Вселената в реално време</AppFeature>
   </AppFeatures>
   <RecommendedHardware>
     <!-- Valid length: 200 character limit, up to 11 elements -->

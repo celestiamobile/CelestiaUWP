@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ProductDescription language="en-us" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="pt-br" Release="RELEASE_VERSION_PLACEHOLDER">
+<ProductDescription language="pt-br" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="pt-br" Release="RELEASE_VERSION_PLACEHOLDER">
   <AppStoreName _locID="App_AppStoreName">
     <!-- This is optional.  AppStoreName is typically extracted from your package's AppxManifest DisplayName property. -->
     <!-- Uncomment (and localize) this Store name if your application package does not contain a localization for the DisplayName in this language. -->
@@ -12,36 +12,32 @@
     <Keyword _locID="App_keyword1">
       <!-- _locComment_text="{MaxLength=30} App keyword 1" -->celestia</Keyword>
     <Keyword _locID="App_keyword2">
-      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->space</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->espaço</Keyword>
     <Keyword _locID="App_keyword3">
-      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->planetarium</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->planetário</Keyword>
     <Keyword _locID="App_keyword4">
-      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->universe</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->universo</Keyword>
     <Keyword _locID="App_keyword5">
-      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->solar system</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->sistema solar</Keyword>
     <Keyword _locID="App_keyword6">
-      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->astronomy</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->astronomia</Keyword>
     <Keyword _locID="App_keyword7">
-      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->simulation</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->simulação</Keyword>
   </Keywords>
   <Description _locID="App_Description">
-    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia - visualização 3D do espaço em tempo real
+    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia — visualização 3D do espaço em tempo real
 
-3D Space Simulator | Celestia permite explorar nosso universo em três dimensões.
+Simulador espacial 3D | Explore nosso universo em três dimensões com o Celestia.
 
-Celestia simula muitos tipos diferentes de objetos celestes. De planetas e luas a aglomerados de estrelas e galáxias, você pode visitar todos os objetos no banco de dados expansível e visualizá-lo em qualquer ponto do espaço e do tempo. A posição e o movimento dos objetos do sistema solar são calculados com precisão em tempo real, a qualquer taxa desejada.
+O Celestia simula muitos tipos de objetos celestes. De planetas e luas a aglomerados estelares e galáxias, você pode visitar qualquer objeto do banco de dados expansível e observá-lo de qualquer ponto do espaço e em qualquer momento. A posição e o movimento dos objetos do Sistema Solar são calculados com precisão em tempo real, com a velocidade de passagem do tempo que você escolher.
 
-Planetário interativo
+Planetário interativo | O Celestia funciona como um planetário para um observador em qualquer corpo celeste.
 
-Celestia serve como um planetário - para um observador em qualquer objeto celeste.
+Você pode navegar facilmente até qualquer mundo e pousar em sua superfície. Como planetário, o Celestia mostra as posições exatas dos objetos do Sistema Solar no céu. Você pode ativar ou desativar rótulos e outros recursos auxiliares com atalhos de teclado, ou ampliar e reduzir a visualização de um objeto de interesse, como o sistema de luas de Júpiter.
 
-Você pode navegar facilmente para qualquer mundo e pousar em sua superfície. Quando usado como um planetário, Celestia mostra posições precisas de objetos do sistema solar no céu. Você pode ativar ou desativar rótulos e outros recursos de suporte com teclas de atalho ou ampliar e reduzir um objeto de interesse, por exemplo, o sistema de luas de Júpiter.
+Conteúdo expansível | Personalize o Celestia de acordo com suas necessidades.
 
-Conteúdo expansível
-
-Personalize o Celestia de acordo com suas necessidades.
-
-Os catálogos da Celestia podem ser facilmente expandidos. Existem muitos complementos diferentes disponíveis, contendo novos objetos, como cometas ou estrelas, texturas de alta resolução da Terra e outros corpos do sistema solar bem mapeados, além de modelos 3D para asteróides e naves espaciais em trajetórias precisas. Até objetos fictícios de franquias de ficção científica bem conhecidas podem ser encontrados.</Description>
+Os catálogos do Celestia podem ser facilmente expandidos. Há diversos complementos com novos objetos, como cometas ou estrelas, texturas de alta resolução da Terra e de outros corpos do Sistema Solar bem mapeados, além de modelos 3D de asteroides e de espaçonaves em trajetórias precisas. Você pode encontrar até objetos fictícios de franquias conhecidas de ficção científica.</Description>
   <ShortDescription _locID="App_ShortDescription">
     <!-- Only used for games. This description appears in the Information section of the Game Hub on Xbox One, and helps customers understand more about your game. -->
     <!-- _locComment_text="{MaxLength=500} App ShortDescription" -->
@@ -97,7 +93,7 @@ Os catálogos da Celestia podem ser facilmente expandidos. Existem muitos comple
   <AppFeatures>
     <!-- Valid length: 200 character limit, up to 20 elements -->
     <AppFeature _locID="App_feature1">
-      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->Real-time universe simulator</AppFeature>
+      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->Simulador de universo em tempo real</AppFeature>
   </AppFeatures>
   <RecommendedHardware>
     <!-- Valid length: 200 character limit, up to 11 elements -->

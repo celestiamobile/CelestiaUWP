@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ProductDescription language="en-us" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="ja" Release="RELEASE_VERSION_PLACEHOLDER">
+<ProductDescription language="ja" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="ja" Release="RELEASE_VERSION_PLACEHOLDER">
   <AppStoreName _locID="App_AppStoreName">
     <!-- This is optional.  AppStoreName is typically extracted from your package's AppxManifest DisplayName property. -->
     <!-- Uncomment (and localize) this Store name if your application package does not contain a localization for the DisplayName in this language. -->
@@ -12,36 +12,32 @@
     <Keyword _locID="App_keyword1">
       <!-- _locComment_text="{MaxLength=30} App keyword 1" -->celestia</Keyword>
     <Keyword _locID="App_keyword2">
-      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->space</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->宇宙空間</Keyword>
     <Keyword _locID="App_keyword3">
-      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->planetarium</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->プラネタリウム</Keyword>
     <Keyword _locID="App_keyword4">
-      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->universe</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->宇宙</Keyword>
     <Keyword _locID="App_keyword5">
-      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->solar system</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->太陽系</Keyword>
     <Keyword _locID="App_keyword6">
-      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->astronomy</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->天文学</Keyword>
     <Keyword _locID="App_keyword7">
-      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->simulation</Keyword>
+      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->シミュレーション</Keyword>
   </Keywords>
   <Description _locID="App_Description">
-    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia-空間のリアルタイム3D視覚化
+    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia — 宇宙をリアルタイムで3D表示
 
-3D空間シミュレーター | Celestiaを使用すると、宇宙を3次元で探索できます。
+3D宇宙シミュレーター | Celestiaで、私たちの宇宙を3次元で探索できます。
 
-Celestiaは、さまざまな種類の天体をシミュレートします。惑星や月から星団や銀河まで、拡張可能なデータベースのすべてのオブジェクトにアクセスして、空間と時間の任意のポイントからそれを表示できます。太陽系天体の位置と動きは、希望する速度でリアルタイムに正確に計算されます。
+Celestiaは、さまざまな種類の天体をシミュレートします。惑星や衛星から星団、銀河まで、拡張可能なデータベースに含まれるあらゆる天体を訪れ、好きな場所や時点から眺めることができます。太陽系の天体の位置と動きは、シミュレーションの時間の進み方を自由に変えながら、リアルタイムで正確に計算されます。
 
-インタラクティブプラネタリウム
+インタラクティブなプラネタリウム | どの天体にいても、その場所から見た空を再現できます。
 
-セレスティアはプラネタリウムとして機能します–天体のオブザーバーのために。
+好きな天体へ簡単に移動し、その表面に着陸できます。プラネタリウムとして使うと、Celestiaは空に見える太陽系の天体の位置を正確に表示します。キーボードショートカットでラベルやその他の補助機能を切り替えたり、木星の衛星系など、興味のある対象を拡大・縮小したりできます。
 
-あなたは簡単に任意の世界に移動し、その表面に着陸することができます。 Celestiaをプラネタリウムとして使用すると、太陽系の天体の正確な位置が表示されます。ラベルやその他のサポート機能をホットキーでオンまたはオフに切り替えたり、関心のあるオブジェクト（たとえば、木星の月のシステム）を拡大または縮小したりできます。
+拡張できるコンテンツ | 用途に合わせてCelestiaをカスタマイズ。
 
-拡張可能なコンテンツ
-
-必要に応じてCelestiaをカスタマイズします。
-
-Celestiaのカタログは簡単に拡張できます。彗星や星のような新しいオブジェクト、地球や他のよくマッピングされた太陽系のボディの高解像度テクスチャ、正確な軌道上の小惑星や宇宙船の3Dモデルなど、さまざまなアドオンが利用可能です。有名なSFフランチャイズの架空のオブジェクトでさえ見つけることができます。</Description>
+Celestiaのカタログは簡単に拡張できます。彗星や恒星などの新しい天体、地球や詳しく地図化された太陽系の天体の高解像度テクスチャ、小惑星や正確な軌道をたどる宇宙探査機の3Dモデルなど、多彩なアドオンが用意されています。有名なSF作品シリーズに登場する架空の天体や物体も見つかります。</Description>
   <ShortDescription _locID="App_ShortDescription">
     <!-- Only used for games. This description appears in the Information section of the Game Hub on Xbox One, and helps customers understand more about your game. -->
     <!-- _locComment_text="{MaxLength=500} App ShortDescription" -->
@@ -97,7 +93,7 @@ Celestiaのカタログは簡単に拡張できます。彗星や星のような
   <AppFeatures>
     <!-- Valid length: 200 character limit, up to 20 elements -->
     <AppFeature _locID="App_feature1">
-      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->Real-time universe simulator</AppFeature>
+      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->リアルタイム宇宙シミュレーター</AppFeature>
   </AppFeatures>
   <RecommendedHardware>
     <!-- Valid length: 200 character limit, up to 11 elements -->

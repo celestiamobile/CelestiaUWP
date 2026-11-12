@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProductDescription language="ko" xmlns="http://schemas.microsoft.com/appx/2012/ProductDescription" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="ko" Release="RELEASE_VERSION_PLACEHOLDER">
+  <AppStoreName _locID="App_AppStoreName">
+    <!-- This is optional.  AppStoreName is typically extracted from your package's AppxManifest DisplayName property. -->
+    <!-- Uncomment (and localize) this Store name if your application package does not contain a localization for the DisplayName in this language. -->
+    <!-- Leaving this uncommented for a language that your application package DOES contain a DisplayName for will result in a submission failure with the API. -->
+    <!-- _locComment_text="{MaxLength=200} App AppStoreName" -->
+    <!-- Celestia -->
+  </AppStoreName>
+  <Keywords>
+    <!-- Valid length: 30 character limit, up to 7 elements -->
+    <Keyword _locID="App_keyword1">
+      <!-- _locComment_text="{MaxLength=30} App keyword 1" -->celestia</Keyword>
+    <Keyword _locID="App_keyword2">
+      <!-- _locComment_text="{MaxLength=30} App keyword 2" -->우주 공간</Keyword>
+    <Keyword _locID="App_keyword3">
+      <!-- _locComment_text="{MaxLength=30} App keyword 3" -->천체투영관</Keyword>
+    <Keyword _locID="App_keyword4">
+      <!-- _locComment_text="{MaxLength=30} App keyword 4" -->우주</Keyword>
+    <Keyword _locID="App_keyword5">
+      <!-- _locComment_text="{MaxLength=30} App keyword 5" -->태양계</Keyword>
+    <Keyword _locID="App_keyword6">
+      <!-- _locComment_text="{MaxLength=30} App keyword 6" -->천문학</Keyword>
+    <Keyword _locID="App_keyword7">
+      <!-- _locComment_text="{MaxLength=30} App keyword 7" -->시뮬레이션</Keyword>
+  </Keywords>
+  <Description _locID="App_Description">
+    <!-- _locComment_text="{MaxLength=10000} App Description" -->Celestia — 우주를 실시간 3D로 시각화하다
+
+3D 우주 시뮬레이터 | Celestia로 우주를 3차원으로 탐험하세요.
+
+Celestia는 다양한 종류의 천체를 시뮬레이션합니다. 행성과 위성부터 성단과 은하까지, 확장 가능한 데이터베이스에 있는 모든 천체를 방문하고 시공간의 어느 지점에서든 관측할 수 있습니다. 태양계 천체의 위치와 움직임은 원하는 시간 진행 속도에 맞춰 실시간으로 정확하게 계산됩니다.
+
+대화형 천체투영관 | Celestia는 어떤 천체에 있든 관측자를 위한 천체투영관이 되어 줍니다.
+
+어떤 천체로든 쉽게 이동하고 그 표면에 착륙할 수 있습니다. 천체투영관으로 사용하는 Celestia는 하늘에 보이는 태양계 천체의 정확한 위치를 보여 줍니다. 단축키로 이름표와 기타 보조 기능을 켜거나 끄고, 목성의 위성계처럼 관심 있는 대상을 확대하거나 축소할 수 있습니다.
+
+확장 가능한 콘텐츠 | 필요에 맞게 Celestia를 맞춤 설정하세요.
+
+Celestia의 천체 목록은 손쉽게 확장할 수 있습니다. 혜성이나 별과 같은 새로운 천체, 지구와 상세한 지도가 만들어진 다른 태양계 천체의 고해상도 텍스처, 정밀한 궤적을 따르는 소행성과 우주선의 3D 모델 등 다양한 추가 콘텐츠를 이용할 수 있습니다. 유명 SF 시리즈에 등장하는 가상의 물체도 찾아볼 수 있습니다.</Description>
+  <ShortDescription _locID="App_ShortDescription">
+    <!-- Only used for games. This description appears in the Information section of the Game Hub on Xbox One, and helps customers understand more about your game. -->
+    <!-- _locComment_text="{MaxLength=500} App ShortDescription" -->
+  </ShortDescription>
+  <ShortTitle _locID="App_ShortTitle">
+    <!-- A shorter version of your product's name. If provided, this shorter name may appear in various places on Xbox One (during installation, in Achievements, etc.) in place of the full title of your product. -->
+    <!-- _locComment_text="{MaxLength=50} App ShortTitle" -->
+  </ShortTitle>
+  <SortTitle _locID="App_SortTitle">
+    <!-- If your product could be alphabetized in different ways, you can enter another version here. This may help customers find the product more quickly when searching. -->
+    <!-- _locComment_text="{MaxLength=255} App SortTitle" -->
+  </SortTitle>
+  <VoiceTitle _locID="App_VoiceTitle">
+    <!-- An alternate name for your product that, if provided, may be used in the audio experience on Xbox One when using Kinect or a headset. -->
+    <!-- _locComment_text="{MaxLength=255} App VoiceTitle" -->
+  </VoiceTitle>
+  <DevStudio _locID="App_DevStudio">
+    <!-- Specify this value if you want to include a "Developed by" field in the listing. (The "Published by" field will list the publisher display name associated with your account, whether or not you provide a devStudio value.) -->
+    <!-- _locComment_text="{MaxLength=255} App DevStudio" -->Celestia Development Team</DevStudio>
+  <ReleaseNotes _locID="App_ReleaseNotes">
+    <!-- _locComment_text="{MaxLength=1500} App Release Note" -->RELEASE_NOTES_PLACEHOLDER</ReleaseNotes>
+  <ScreenshotCaptions>
+    <!-- Valid length: 200 character limit, up to 9 elements per platform -->
+    <!-- Valid attributes: any of DesktopImage, MobileImage, XboxImage, SurfaceHubImage, and HoloLensImage -->
+    <Caption DesktopImage="Output0.png" _locID="App_caption1">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 1" -->
+    </Caption>
+    <Caption DesktopImage="Output1.png" _locID="App_caption2">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 2" -->
+    </Caption>
+    <Caption DesktopImage="Output2.png" _locID="App_caption3">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 3" -->
+    </Caption>
+    <Caption DesktopImage="Output3.png" _locID="App_caption4">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 4" -->
+    </Caption>
+    <Caption DesktopImage="Output4.png" _locID="App_caption5">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 5" -->
+    </Caption>
+    <Caption DesktopImage="Output5.png" _locID="App_caption6">
+      <!-- _locComment_text="{MaxLength=200} Screenshot caption 6" -->
+    </Caption>
+  </ScreenshotCaptions>
+  <AdditionalAssets>
+    <!-- Valid elements: StoreLogo9x16, StoreLogoSquare, Icon (use this value for the 1:1 300x300 pixels logo), -->
+    <!-- PromotionalArt16x9, PromotionalArtwork2400X1200, XboxBrandedKeyArt, XboxTitledHeroArt, XboxFeaturedPromotionalArt, -->
+    <!-- SquareIcon358X358, BackgroundImage1000X800, PromotionalArtwork414X180 -->
+    <!-- There is no content for any of these elements, just a single attribute called FileName. -->
+  </AdditionalAssets>
+  <Trailers>
+    <!-- Maximum number of trailers permitted: 15 -->
+  </Trailers>
+  <AppFeatures>
+    <!-- Valid length: 200 character limit, up to 20 elements -->
+    <AppFeature _locID="App_feature1">
+      <!-- _locComment_text="{MaxLength=200} App Feature 1" -->실시간 우주 시뮬레이터</AppFeature>
+  </AppFeatures>
+  <RecommendedHardware>
+    <!-- Valid length: 200 character limit, up to 11 elements -->
+  </RecommendedHardware>
+  <MinimumHardware>
+    <!-- Valid length: 200 character limit, up to 11 elements -->
+  </MinimumHardware>
+  <CopyrightAndTrademark _locID="App_CopyrightandTrademark">
+    <!-- _locComment_text="{MaxLength=200} Copyright and Trademark" -->2026 Celestia Development Team</CopyrightAndTrademark>
+  <AdditionalLicenseTerms _locID="App_AdditionalLicenseTerms">
+    <!-- _locComment_text="{MaxLength=10000} Additional License Terms" -->
+  </AdditionalLicenseTerms>
+  <WebsiteURL _locID="App_WebsiteURL">
+    <!-- _locComment_text="{MaxLength=2048} WebsiteURL" -->
+  </WebsiteURL>
+  <SupportContactInfo _locID="App_SupportContactInfo">
+    <!-- _locComment_text="{MaxLength=2048} Support Contact Info" -->
+  </SupportContactInfo>
+  <PrivacyPolicyURL _locID="App_PrivacyURL">
+    <!-- _locComment_text="{MaxLength=2048} Privacy Policy URL" -->
+  </PrivacyPolicyURL>
+</ProductDescription>
