@@ -137,9 +137,12 @@ namespace winrt::CelestiaComponent::implementation
 
     bool CelestiaRenderer::Initialize()
     {
-        if (context == EGL_NO_CONTEXT)
+        bool tryMultisample = enableMultisample;
+        while (context == EGL_NO_CONTEXT)
         {
             CelestiaLog("Initializing context");
+            config = nullptr;
+            sampleCount = 0;
 
             const EGLint multisampleAttribs[] =
             {
@@ -175,7 +178,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
                 // Use fast present path https://github.com/microsoft/angle/wiki/Getting-Good-Performance-From-ANGLE#--use-the-fast-present-path-aka-render-to-backbuffer-flags
                 // Not used for MSAA path as it requires direct backbuffer rendering.
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, tryMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
@@ -187,7 +190,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9,
                 EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3,
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, tryMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
@@ -198,7 +201,7 @@ namespace winrt::CelestiaComponent::implementation
                 EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
                 EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_WARP_ANGLE,
                 EGL_PLATFORM_ANGLE_ENABLE_AUTOMATIC_TRIM_ANGLE, EGL_TRUE,
-                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, enableMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
+                EGL_EXPERIMENTAL_PRESENT_PATH_ANGLE, tryMultisample ? EGL_EXPERIMENTAL_PRESENT_PATH_COPY_ANGLE : EGL_EXPERIMENTAL_PRESENT_PATH_FAST_ANGLE,
                 EGL_NONE,
             };
 
@@ -247,7 +250,7 @@ namespace winrt::CelestiaComponent::implementation
             const EGLint configCount = 64;
             EGLConfig configs[configCount];
             EGLint numConfigs;
-            if (enableMultisample) {
+            if (tryMultisample) {
                 // Try to enable multisample but fallback if not available
                 if (eglChooseConfig(display, multisampleAttribs, configs, configCount, &numConfigs))
                 {
@@ -255,11 +258,18 @@ namespace winrt::CelestiaComponent::implementation
                     {
                         if (eglGetConfigAttrib(display, configs[i], EGL_NATIVE_VISUAL_ID, &format))
                         {
-                            config = configs[i];
                             EGLint numSamples;
-                            if (eglGetConfigAttrib(display, config, EGL_SAMPLES, &numSamples) && numSamples > 1)
+                            if (!eglGetConfigAttrib(display, configs[i], EGL_SAMPLES, &numSamples))
+                            {
+                                CelestiaLog("eglGetConfigAttrib() failed for multisample sample count {}, error {}", i, eglGetError());
+                                continue;
+                            }
+                            if (numSamples > 1)
+                            {
+                                config = configs[i];
                                 sampleCount = numSamples;
-                            break;
+                                break;
+                            }
                         }
                         else
                         {
@@ -270,6 +280,20 @@ namespace winrt::CelestiaComponent::implementation
                 else
                 {
                     CelestiaLog("eglChooseConfig() failed for multisample, error {}", eglGetError());
+                }
+
+                if (config == nullptr)
+                {
+                    CelestiaLog("No suitable multisample EGLConfig found; retrying with fast presentation");
+                    if (!eglTerminate(display))
+                    {
+                        CelestiaLog("eglTerminate() failed before non-MSAA fallback, error {}", eglGetError());
+                        Destroy();
+                        return false;
+                    }
+                    display = EGL_NO_DISPLAY;
+                    tryMultisample = false;
+                    continue;
                 }
             }
 
