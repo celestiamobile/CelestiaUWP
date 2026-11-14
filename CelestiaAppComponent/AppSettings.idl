@@ -22,6 +22,7 @@ namespace CelestiaAppComponent
         GamepadEnableRightThumbstick,
         HideCursorDuringDragging,
         InfiniteDragging,
+        EnablePresentationMSAA,
     };
 
     enum AppSettingInt32Entry
@@ -61,6 +62,7 @@ namespace CelestiaAppComponent
         AppSettings(Microsoft.Windows.Storage.ApplicationDataContainer settings);
         Boolean UseFullDPI;
         Boolean EnableMSAA;
+        Boolean EnablePresentationMSAA;
         Boolean EnableSRGBRendering;
         Boolean IgnoreXboxWelcomeMessage;
         Boolean OnboardMessageDisplayed;

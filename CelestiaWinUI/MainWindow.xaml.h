@@ -72,7 +72,7 @@ namespace winrt::CelestiaWinUI::implementation
         void PrepareForClose();
         void ResetPointerInteraction();
 
-        bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings, int32_t samples);
+        bool StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaComponent::CelestiaLayoutDirection layoutDirection, Windows::Data::Json::JsonObject const& defaultSettings);
         Windows::Foundation::IAsyncAction CreateExtraFolders();
         void ShowLoadingFailure();
         void UpdateScale(bool updateCelestia);

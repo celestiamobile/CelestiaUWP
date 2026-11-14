@@ -240,10 +240,10 @@ namespace winrt::CelestiaWinUI::implementation
         if (isClosed)
             co_return;
 
-        renderer = CelestiaRenderer(appSettings.EnableMSAA(), appSettings.SwapInterval(), [weak_this{get_weak()}, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t samples)
+        renderer = CelestiaRenderer(appSettings.EnablePresentationMSAA(), appSettings.SwapInterval(), [weak_this{get_weak()}, resourcePath, configPath, locale, layoutDirection, defaultSettings](int32_t)
             {
                 auto strong_this{ weak_this.get() };
-                return (strong_this == nullptr || strong_this->isClosed) ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings, samples);
+                return (strong_this == nullptr || strong_this->isClosed) ? false : strong_this->StartEngine(resourcePath, configPath, locale, layoutDirection, defaultSettings);
             });
         renderer.RenderingFailed([weak_this{ get_weak() }, dispatcher{ DispatcherQueue() }](IInspectable const&, int32_t)
             {
@@ -267,7 +267,7 @@ namespace winrt::CelestiaWinUI::implementation
         co_await renderer.Start();
     }
 
-    bool MainWindow::StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaLayoutDirection layoutDirection, JsonObject const& defaultSettings, int32_t samples)
+    bool MainWindow::StartEngine(hstring const resourcePath, hstring const& configPath, hstring const& locale, CelestiaLayoutDirection layoutDirection, JsonObject const& defaultSettings)
     {
         CelestiaAppCore::InitGL();
 
@@ -330,7 +330,7 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
 
-        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering(), appSettings.ShadowMapSize(), samples))
+        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering(), appSettings.ShadowMapSize(), appSettings.EnableMSAA() ? 4 : 1))
         {
             ShowLoadingFailure();
             return false;

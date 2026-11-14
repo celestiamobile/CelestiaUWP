@@ -28,6 +28,9 @@ namespace winrt::CelestiaAppComponent::implementation
         auto enableMSAAResult = propertySet.TryLookup(L"EnableMSAA");
         if (enableMSAAResult)
             enableMSAA = unbox_value_or(enableMSAAResult, enableMSAA);
+        auto enablePresentationMSAAResult = propertySet.TryLookup(L"EnablePresentationMSAA");
+        if (enablePresentationMSAAResult)
+            enablePresentationMSAA = unbox_value_or(enablePresentationMSAAResult, enablePresentationMSAA);
         auto enableSRGBRenderingResult = propertySet.TryLookup(L"EnableSRGBRendering");
         if (enableSRGBRenderingResult)
             enableSRGBRendering = unbox_value_or(enableSRGBRenderingResult, enableSRGBRendering);
@@ -132,6 +135,16 @@ namespace winrt::CelestiaAppComponent::implementation
     void AppSettings::EnableMSAA(bool value)
     {
         enableMSAA = value;
+    }
+
+    bool AppSettings::EnablePresentationMSAA()
+    {
+        return enablePresentationMSAA;
+    }
+
+    void AppSettings::EnablePresentationMSAA(bool value)
+    {
+        enablePresentationMSAA = value;
     }
 
     bool AppSettings::EnableSRGBRendering()
@@ -424,6 +437,9 @@ namespace winrt::CelestiaAppComponent::implementation
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
             EnableMSAA(value);
             break;
+        case CelestiaAppComponent::AppSettingBooleanEntry::EnablePresentationMSAA:
+            EnablePresentationMSAA(value);
+            break;
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableSRGBRendering:
             EnableSRGBRendering(value);
             break;
@@ -464,6 +480,8 @@ namespace winrt::CelestiaAppComponent::implementation
             return UseFullDPI();
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableMSAA:
             return EnableMSAA();
+        case CelestiaAppComponent::AppSettingBooleanEntry::EnablePresentationMSAA:
+            return EnablePresentationMSAA();
         case CelestiaAppComponent::AppSettingBooleanEntry::EnableSRGBRendering:
             return EnableSRGBRendering();
         case CelestiaAppComponent::AppSettingBooleanEntry::IgnoreXboxWelcomeMessage:
@@ -640,6 +658,7 @@ namespace winrt::CelestiaAppComponent::implementation
     {
         settings.Values().Insert(L"FullDPI", box_value(useFullDPI));
         settings.Values().Insert(L"EnableMSAA", box_value(enableMSAA));
+        settings.Values().Insert(L"EnablePresentationMSAA", box_value(enablePresentationMSAA));
         settings.Values().Insert(L"EnableSRGBRendering", box_value(enableSRGBRendering));
         settings.Values().Insert(L"IgnoreXboxWelcomeMessage", box_value(ignoreXboxWelcomeMessage));
         settings.Values().Insert(L"OnboardMessageDisplayed", box_value(onboardMessageDisplayed));
