@@ -233,7 +233,9 @@ namespace winrt::CelestiaWinUI::implementation
         AppCoreInt32Item toneMappingItem(LocalizationHelper::Localize(L"Tone Mapping", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::ToneMapping, single_threaded_vector<OptionPair>
         ({
             OptionPair(0, LocalizationHelper::Localize(L"Off", L"Tone mapping mode")),
-            OptionPair(1, LocalizationHelper::Localize(L"Manual", L"Tone mapping mode")),
+            OptionPair(1, LocalizationHelper::Localize(L"Exponential", L"Tone mapping mode")),
+            OptionPair(2, LocalizationHelper::Localize(L"ACES (fitted)", L"Tone mapping mode")),
+            OptionPair(3, LocalizationHelper::Localize(L"Reinhard", L"Tone mapping mode")),
         }), localSettings);
         AppCoreSingleItem exposureItem(LocalizationHelper::Localize(L"Exposure", L"Output rendering setting"), appCore, renderer, CelestiaComponent::CelestiaSettingSingleEntry::Exposure, 0.01f, 100.0f, 0.01f, localSettings, L"", true);
 
@@ -245,7 +247,7 @@ namespace winrt::CelestiaWinUI::implementation
         BindVisibility(exposureItem, [appSettings, weakToneMappingItem]
             {
                 auto strongToneMappingItem = weakToneMappingItem.get();
-                return appSettings.EnableSRGBRendering() && strongToneMappingItem && strongToneMappingItem.Value() == 1;
+                return appSettings.EnableSRGBRendering() && strongToneMappingItem && strongToneMappingItem.Value() > 0;
             }, srgbRenderingItem, toneMappingItem);
 
         AppCoreInt32Item starStyleItem(LocalizationHelper::Localize(L"Star Style", L""), appCore, renderer, CelestiaComponent::CelestiaSettingInt32Entry::StarStyle, single_threaded_vector<OptionPair>
