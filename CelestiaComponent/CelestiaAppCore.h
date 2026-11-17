@@ -162,6 +162,8 @@ namespace winrt::CelestiaComponent::implementation
         void ShowSmoothLines(bool showSmoothLines);
         int32_t ToneMapping();
         void ToneMapping(int32_t toneMapping);
+        bool SceneMSAA();
+        void SceneMSAA(bool enabled);
         bool ShowEclipseShadows();
         void ShowEclipseShadows(bool showEclipseShadows);
         bool ShowRingShadows();

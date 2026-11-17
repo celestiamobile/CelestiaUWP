@@ -215,6 +215,9 @@ namespace CelestiaComponent
         Boolean ShowPartialTrajectories;
         Boolean ShowSmoothLines;
         Int32 ToneMapping;
+        // Use on the core thread after renderer initialization; applied on the next draw.
+        // Enabled requests 4 samples, disabled requests 1, subject to hardware limits.
+        Boolean SceneMSAA;
         Boolean ShowEclipseShadows;
         Boolean ShowRingShadows;
         Boolean ShowCloudShadows;

@@ -160,6 +160,7 @@ namespace CelestiaComponent
         EnableFocusZooming,
         EnableAlignCameraToSurfaceOnLand,
         SeparateRayleighMieScaleHeights,
+        SceneMSAA,
     };
 
     enum CelestiaSettingInt32Entry

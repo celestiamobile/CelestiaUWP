@@ -330,7 +330,11 @@ namespace winrt::CelestiaWinUI::implementation
             }
         }
 
-        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering(), appSettings.ShadowMapSize(), appSettings.EnableMSAA() ? 4 : 1))
+        auto values = AppDataHelper::LocalSettings().Values();
+        if (!values.HasKey(L"SceneMSAA"))
+            values.Insert(L"SceneMSAA", box_value(appSettings.EnableMSAA()));
+        auto sceneMSAA = unbox_value<bool>(values.Lookup(L"SceneMSAA"));
+        if (!appCore.StartRenderer(appSettings.EnableSRGBRendering(), appSettings.ShadowMapSize(), sceneMSAA ? 4 : 1))
         {
             ShowLoadingFailure();
             return false;

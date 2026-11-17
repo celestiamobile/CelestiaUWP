@@ -53,7 +53,7 @@ namespace winrt::CelestiaComponent::implementation
         static const std::unordered_map<winrt::hstring, Entry> entries = []
             {
                 std::unordered_map<winrt::hstring, Entry> result;
-                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::SeparateRayleighMieScaleHeights); ++value)
+                for (auto value = static_cast<int>(Entry::ShowStars); value <= static_cast<int>(Entry::SceneMSAA); ++value)
                 {
                     auto entry = static_cast<Entry>(value);
                     auto entryName = GetNameByBooleanEntry(entry);
@@ -359,6 +359,8 @@ namespace winrt::CelestiaComponent::implementation
             return L"EnableAlignCameraToSurfaceOnLand";
         case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
             return L"SeparateRayleighMieScaleHeights";
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SceneMSAA:
+            return L"SceneMSAA";
         default:
             break;
         }
@@ -809,6 +811,9 @@ namespace winrt::CelestiaComponent::implementation
         case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
             appCore.SeparateRayleighMieScaleHeights(value);
             break;
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SceneMSAA:
+            appCore.SceneMSAA(value);
+            break;
         default:
             break;
         }
@@ -1156,6 +1161,8 @@ namespace winrt::CelestiaComponent::implementation
             return appCore.EnableAlignCameraToSurfaceOnLand();
         case CelestiaComponent::CelestiaSettingBooleanEntry::SeparateRayleighMieScaleHeights:
             return appCore.SeparateRayleighMieScaleHeights();
+        case CelestiaComponent::CelestiaSettingBooleanEntry::SceneMSAA:
+            return appCore.SceneMSAA();
         default:
             break;
         }

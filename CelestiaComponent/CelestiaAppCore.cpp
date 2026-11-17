@@ -955,6 +955,16 @@ void CelestiaAppCore::Enable##flag(bool value) \
         core->getRenderer()->setToneMappingMode(static_cast<ToneMappingMode>(toneMapping));
     }
 
+    bool CelestiaAppCore::SceneMSAA()
+    {
+        return core->getSceneMSAASamples() > 1;
+    }
+
+    void CelestiaAppCore::SceneMSAA(bool enabled)
+    {
+        core->setSceneMSAASamples(enabled ? 4u : 1u);
+    }
+
     float CelestiaAppCore::Exposure()
     {
         return core->getRenderer()->getToneMappingExposure();
