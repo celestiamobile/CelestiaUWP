@@ -196,6 +196,9 @@
     <ClCompile Include="..\..\Celestia\src\celengine\deepskyobj.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Celestia\src\celengine\depthpartition.cpp">
+      <Filter>Celestia\celengine</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Celestia\src\celengine\dsodb.cpp">
       <Filter>Celestia\celengine</Filter>
     </ClCompile>
@@ -869,6 +872,9 @@
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\deepskyobj.h">
+      <Filter>Celestia\celengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Celestia\src\celengine\depthpartition.h">
       <Filter>Celestia\celengine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Celestia\src\celengine\dsodb.h">
