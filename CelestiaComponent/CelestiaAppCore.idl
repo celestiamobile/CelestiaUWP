@@ -156,6 +156,7 @@ namespace CelestiaComponent
         Int32 ScreenDPI;
         Single TextScaleFactor;
         void SetSafeAreaInsets(Int32 left, Int32 top, Int32 right, Int32 bottom);
+        Boolean CursorWarping;
         void MouseMove(Single x, Single y, CelestiaMouseButton button);
         void MouseButtonUp(Single x, Single y, CelestiaMouseButton button);
         void MouseButtonDown(Single x, Single y, CelestiaMouseButton button);

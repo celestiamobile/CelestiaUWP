@@ -2273,18 +2273,13 @@ namespace winrt::CelestiaWinUI::implementation
             auto y = scaledPosition.Y - oldScaledPosition.Y;
             auto button = currentPressedButton.value();
 
-            renderer.EnqueueTask([weak_this{ get_weak() }, x, y, button]()
-                {
-                    auto strong_this{ weak_this.get() };
-                    if (strong_this == nullptr) return;
-                    strong_this->appCore.MouseMove(static_cast<float>(x), static_cast<float>(y), button);
-                });
-
+            bool cursorWarping = false;
             if (appSettings.InfiniteDragging() && lastMouseGlobalPosition.has_value())
             {
                 int globalX = static_cast<int>(lastMouseGlobalPosition.value().X);
                 int globalY = static_cast<int>(lastMouseGlobalPosition.value().Y);
-                if (!SetCursorPos(globalX, globalY))
+                cursorWarping = SetCursorPos(globalX, globalY) != 0;
+                if (!cursorWarping)
                 {
                     lastMouseGlobalPosition = std::nullopt;
                     lastMousePosition = position;
@@ -2294,6 +2289,14 @@ namespace winrt::CelestiaWinUI::implementation
             {
                 lastMousePosition = position;
             }
+
+            renderer.EnqueueTask([weak_this{ get_weak() }, x, y, button, cursorWarping]()
+                {
+                    auto strong_this{ weak_this.get() };
+                    if (strong_this == nullptr) return;
+                    strong_this->appCore.CursorWarping(cursorWarping);
+                    strong_this->appCore.MouseMove(static_cast<float>(x), static_cast<float>(y), button);
+                });
         }
     }
 

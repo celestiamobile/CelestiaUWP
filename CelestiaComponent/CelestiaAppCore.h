@@ -77,6 +77,8 @@ namespace winrt::CelestiaComponent::implementation
         float TextScaleFactor();
         void TextScaleFactor(float textScaleFactor);
         void SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom);
+        bool CursorWarping();
+        void CursorWarping(bool enabled);
         void MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button);
         void MouseButtonUp(float x, float y, CelestiaComponent::CelestiaMouseButton button);
         void MouseButtonDown(float x, float y, CelestiaComponent::CelestiaMouseButton button);
@@ -452,6 +454,7 @@ namespace winrt::CelestiaComponent::implementation
 
     private:
         CelestiaCore* core;
+        bool cursorWarping{ false };
         CelestiaComponent::CelestiaSimulation sim;
     };
 }

@@ -90,6 +90,12 @@ namespace winrt::CelestiaComponent::implementation
         }
 
         CelestiaCore::CursorShape getCursorShape() const { return CelestiaCore::ArrowCursor; }
+
+        bool warpsCursor() const override
+        {
+            auto appCore = weakAppCore.get();
+            return appCore != nullptr && appCore->CursorWarping();
+        }
     private:
         weak_ref<CelestiaAppCore> weakAppCore;
     };
@@ -217,6 +223,16 @@ namespace winrt::CelestiaComponent::implementation
     void CelestiaAppCore::SetSafeAreaInsets(int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         core->setSafeAreaInsets(left, top, right, bottom);
+    }
+
+    bool CelestiaAppCore::CursorWarping()
+    {
+        return cursorWarping;
+    }
+
+    void CelestiaAppCore::CursorWarping(bool enabled)
+    {
+        cursorWarping = enabled;
     }
 
     void CelestiaAppCore::MouseMove(float x, float y, CelestiaComponent::CelestiaMouseButton button)
